@@ -18,15 +18,12 @@ class Gridworld:
     grey = (192, 192, 192)
     white = (255, 255, 255)
 
-    def __init__(self, grid_size=10, problem_type='CE', debug=False, verbose=False, render_type = 'ASCII'):
+    def __init__(self, grid_size=10, render_type = 'ASCII'):
         '''Set Parameters '''
         self._seed = 0
         self.grid_size = grid_size
-        self.debug = debug  # restart or not once done
-        self.verbose = verbose
         self.init_render = True
         self.render_type = render_type
-        self.problem_type = problem_type
 
 
     ############  Create new Scenario ###########################################
@@ -37,11 +34,11 @@ class Gridworld:
         return Map
         
 
-    def Creat_New_map(self, problem_type='Train_env'):
+    def Creat_New_map(self, problem_type):
         '''Create Initial Map  only exterior walls'''
         Map = self.Create_empty_map()
         Map = self.Spawn_init_and_Goal(Map)
-        if not ('Test_1' in problem_type or 'Test_3' in problem_type):
+        if not ('NDAO' in problem_type or 'MA' in problem_type):
             Map = self.Spawn_Obstacles(Map)
         return Map
 
@@ -64,7 +61,6 @@ class Gridworld:
         goal_pos = self.goal_pos
         # Remove all obstacles if any
         if not list(obstacle_loc[0]) == []:
-            #print('true')
             Map = self.Create_empty_map()
             Map[current_pos[0]][current_pos[1]] = 1
             Map[goal_pos[0]][goal_pos[1]] = 2
