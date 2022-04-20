@@ -1,8 +1,9 @@
 
 import os
+from typing import Callback
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from simulation.Simulation import SatelliteSim
-from simulation.Reward_functions import Reward_v1 as Reward
+from simulation.Reward_functions import Reward_v1 
 from simulation.DrawSim import SatelliteView 
 import pygame
 
@@ -12,15 +13,16 @@ from gym import spaces
 
 import numpy as np
 class Simple_satellite_v0(gym.Env):
-    def __init__(self, sim: SatelliteSim, time_step: float):
+    def __init__(self,
+            Reward: Callback[[gym.Env, int], float] = Reward_v1):
         super(Simple_satellite_v0, self).__init__()
         
-        # start render enviroment
-        self.view = SatelliteView()
+        # set true so initialization is only done once
+        self.first_render = False
+
         # save the satelite enviroment
-        self.SatSim = sim 
-        self.t = 0
-        self.dt= time_step
+        self.SatSim = SatelliteSim()
+        
 
         # The actions available are:
         self.action_dict = {"Take":0 ,
@@ -37,11 +39,19 @@ class Simple_satellite_v0(gym.Env):
                                             shape=(5,), dtype=np.float)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
-
-    def step(self, action, dt=1):
-
+        self.Reward = Reward
+        
+    def step(self, action):
+        # Take action 
         next_state, done = self.SatSim.update(action, self.dt)
-        reward = Reward(next_state, self.state, action)
+        Action_avaible = self.SatSim.action_is_posible()
+        # Only stop when action is needed to be taken
+        while not Action_avaible and not done:
+            next_state, done = self.SatSim.update(3)
+            Action_avaible = self.SatSim.action_is_posible()
+        self.next_state = next_state
+        self.done = done
+        reward = self.Reward(next_state, self.state, action)
 
         self.state = next_state
         self.Total_reward += reward
@@ -62,6 +72,15 @@ class Simple_satellite_v0(gym.Env):
         return observation 
 
     def render(self):
+        if self.first_render:
+            # start render enviroment
+            self.view = SatelliteView(self.SatSim)
+            self.first_render = False
+        Action_avaible =self.Action_avaible 
+        done = self.done
+        while not Action_avaible and not done:
+            next_state, done = self.SatSim.update(3)
+            Action_avaible = self.SatSim.action_is_posible()
         self.view.drawSim(self.SatSim)
 
     def close (self):

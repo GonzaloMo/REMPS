@@ -1,6 +1,6 @@
 from simulation.Simulation import SatelliteSim
 
-def Reward_v1(new_state, state, action):
+def Reward_v1(env, action):
     """
     First version of the reward function. The structure is define as:
         +10 Dumps analyzed image
@@ -13,6 +13,7 @@ def Reward_v1(new_state, state, action):
         - sim = curreent satellite simulation
     """ 
     R = 0
+    state = env.state
     if action!=3 and state[2]==1:
         R -= 50
     else:

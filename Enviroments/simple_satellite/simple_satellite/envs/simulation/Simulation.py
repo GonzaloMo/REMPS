@@ -1,7 +1,6 @@
 import math
-import random
+from numpy import random
 from simulation.GoalReferee import GoalReferee
-
 class SatelliteSim:
 
     MAX_ORBITS = 30
@@ -23,7 +22,8 @@ class SatelliteSim:
 
         self.sim_time = 0
         self.PERIOD = period
-        self.velocity = SatelliteSim.CIRCUNFERENCE/self.PERIOD
+        self.dt = period/SatelliteSim.CIRCUNFERENCE
+        self.velocity = SatelliteSim.CIRCUNFERENCE/period
 
         # satellite state
         self.pos = 0
@@ -44,12 +44,12 @@ class SatelliteSim:
         # goals
         self.goalRef = GoalReferee()
 
-    def update(self, action, dt: float):
+    def update(self, action):
         done = False
 
         # update time variables
-        self.sim_time += dt
-        self.pos += self.velocity*dt
+        self.sim_time += self.dt
+        self.pos += self.velocity*self.dt
 
         # update orbit position
         if self.pos > SatelliteSim.CIRCUNFERENCE:
@@ -57,24 +57,19 @@ class SatelliteSim:
             self.orbit += 1
 
         if self.satellite_busy_time > 0:
-            self.satellite_busy_time = self.satellite_busy_time - dt
+            self.satellite_busy_time = self.satellite_busy_time - self.dt
 
         # Check if simulation ends
         if self.orbit>=SatelliteSim.MAX_ORBITS:
             done = True
 
         # update state
-        if len(action)==1:
+        if not action==3:
             self.apply_action(action)
             state = self.get_state()
             return state, done
-        elif len(action)==3:
-            self.apply_action(action[0], image_target=action[1], memory_slot=action[2])
-            return done
-        else:
-            raise SyntaxError("Action length not Valid")
 
-    def apply_action(self, action, image_target=None, memory_slot=None):   
+    def apply_action(self, action):   
 
         # check if busy or the satellite does nothing 
         if self.satellite_busy_time > 0 or action==3 or action==None:
@@ -83,28 +78,21 @@ class SatelliteSim:
         
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            for index in len(self.targets):
-                if image_target:
-                    ind_mem = memory_slot
-                    index = image_target
-                else: 
-                    ind_mem = self.memory_level
+            for index in range(len(self.targets)):
+                ind_mem = self.memory_level
                 if self.targets[index][0] < self.pos < self.targets[index][1] and self.memory_level<SatelliteSim.MEMORY_SIZE:
                     self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
                     self.images[ind_mem] = index
                     self.memory_level += 1
                     self.last_action = action
                     break
-                index += 1 
             return
         
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
             self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
-            for index in len(self.analysis):
-                if memory_slot:
-                    index = memory_slot 
-                if not self.analysis:
+            for index in range(len(self.analysis)):
+                if not self.analysis[index]:
                     if random.random() > 0.0:
                         self.analysis[index] = True
                     else:
@@ -112,15 +100,13 @@ class SatelliteSim:
                         self.images[index] = -1
                         self.memory_level -= 1
                     self.last_action = action
-                    break
-                index += 1
-            return
+                    return
         
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
             picture_to_dump = None
-            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]) and self>0 :
+            if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = SatelliteSim.DURATION_DUMP
                 # Check all the images except the last one
                 for index in range(len(self.analysis)-1):
@@ -138,7 +124,37 @@ class SatelliteSim:
                     # score the goal value
                     self.goalRef.evaluateDump(self.orbit, self.images[index])
                     return
-    
+
+
+    def action_is_posible(self):
+        # check if busy or the satellite does nothing 
+        if self.satellite_busy_time > 0:
+            self.busy=1
+            return False
+        
+        # Check if Take picture action is possible
+        for index in range(len(self.targets)):
+            # Checks if memory space is available and that the satellite is above target
+            if self.targets[index][0] < self.pos < self.targets[index][1] and self.memory_level<SatelliteSim.MEMORY_SIZE:
+                print("Take pic")
+                return True
+        
+        # Check if Analyse picture action is possible
+        for index in range(len(self.images)):
+            if not self.analysis[index] and self.images[index]>-.1:
+                print("Analysis")
+                return True
+        
+        # Check if Dump picture action is possible
+        # check if it is above the ground station and if their is any analysed image
+        if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]):
+            if any(self.analysis):
+                print("Dump")
+                return True
+
+        # No action is possible    
+        return False
+
     def reset(self):
         self.sim_time = 0
 
@@ -157,7 +173,7 @@ class SatelliteSim:
         self.initRandomTargets(int(round(random.normal(8,4))))
 
         # Generate Ground Stations
-        self.initRandomStations(int(round(random.normal(2,1))))
+        self.initRandomStations(int(max(1,round(random.normal(3,2)))))
 
     def initRandomStations(self, amount):
         self.groundStations = []

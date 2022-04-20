@@ -161,6 +161,7 @@ class SatelliteView:
                     self.screen.blit(self.text_digits[t[0]], (
                                 offset + ti * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.3,
                                 SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.2-index)))
-
-
         pygame.display.flip()
+
+    def quit(self):
+        pygame.quit()
