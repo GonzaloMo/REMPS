@@ -87,10 +87,7 @@ class SatelliteSim:
                             self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
                             self.images[ind_mem] = index
                             self.analysis[ind_mem] = False
-<<<<<<< HEAD
                             self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
-=======
->>>>>>> 71a807e93adbcfb26d91ee96fb07986b64ac58e8
                             self.last_action = action
                             return
         
@@ -119,11 +116,7 @@ class SatelliteSim:
                     if self.analysis[pic2dump]:
                         self.analysis[pic2dump] = False
                         self.images[pic2dump] = -1
-<<<<<<< HEAD
                         self.memory_level = max(0,self.memory_level-1)
-=======
-                        self.memory_level -= 1
->>>>>>> 71a807e93adbcfb26d91ee96fb07986b64ac58e8
                         self.last_action = action
                         # score the goal value
                         self.goalRef.evaluateDump(self.orbit, self.images[pic2dump])
