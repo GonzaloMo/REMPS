@@ -94,8 +94,8 @@ class SatelliteView:
             if image >= 0:
                 panelColor = SatelliteView.BLACK
                 if sim.analysis[index] and sim.satellite_busy_time > 0 \
-                        and sim.last_action[0] == SatelliteSim.ACTION_ANALYSE \
-                        and sim.last_action[2] == index:
+                        and sim.last_action == SatelliteSim.ACTION_ANALYSE:# \
+                        # and sim.last_action[2] == index:
                     panelColor = [o + (p - o)*(sim.satellite_busy_time/SatelliteSim.DURATION_ANALYSE) for p,o in zip(SatelliteView.ORANGE, SatelliteView.PURPLE)]
                 elif sim.analysis[index]:
                     panelColor = SatelliteView.PURPLE
