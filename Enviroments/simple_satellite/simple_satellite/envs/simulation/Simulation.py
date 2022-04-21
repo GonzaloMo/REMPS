@@ -6,7 +6,7 @@ class SatelliteSim:
     MAX_ORBITS = 30
 
     CIRCUNFERENCE = 360
-    ACTION_THRESHOLD = 6
+    ACTION_THRESHOLD = 1
 
     MEMORY_SIZE = 10
 
@@ -64,10 +64,10 @@ class SatelliteSim:
             done = True
 
         # update state
-        if not action==3:
-            self.apply_action(action)
-            state = self.get_state()
-            return state, done
+        self.apply_action(action)
+        state = self.get_state()
+        return state, done
+        
 
     def apply_action(self, action):   
 
@@ -78,15 +78,17 @@ class SatelliteSim:
         
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            for index in range(len(self.targets)):
-                ind_mem = self.memory_level
-                if self.targets[index][0] < self.pos < self.targets[index][1] and self.memory_level<SatelliteSim.MEMORY_SIZE:
-                    self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
-                    self.images[ind_mem] = index
-                    self.memory_level += 1
-                    self.last_action = action
-                    break
-            return
+            # Check free location in the memory
+            for ind_mem in range(len(self.images)):
+                if self.images[ind_mem] == -1:
+                    # Check if above which target the satellite is
+                    for index in range(len(self.targets)):
+                        if self.targets[index][0] < self.pos < self.targets[index][1]:
+                            self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
+                            self.images[ind_mem] = index
+                            self.analysis[ind_mem] = False
+                            self.last_action = action
+                            return
         
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:

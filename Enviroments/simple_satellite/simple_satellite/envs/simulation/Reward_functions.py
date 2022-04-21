@@ -14,6 +14,7 @@ def Reward_v1(env, action):
     """ 
     R = 0
     state = env.state
+    new_state = env.next_state
     if action!=3 and state[2]==1:
         R -= 50
     else:
