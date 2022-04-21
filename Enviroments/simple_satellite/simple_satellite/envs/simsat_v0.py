@@ -35,7 +35,7 @@ class Simple_satellite_v0(gym.Env):
 
         # Observation space is composed as: 
         # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]
-        max_memory = self.SatSim.MEMORY_SIZE2
+        max_memory = self.SatSim.MEMORY_SIZE
         
         self.observation_space = spaces.Box(low=np.array([0.0, 0.0, 0, 0, 0]), high=np.array([999999999, 360.0, 1, max_memory, max_memory]),
                                             shape=(5,), dtype=np.float)
@@ -83,7 +83,7 @@ class Simple_satellite_v0(gym.Env):
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
         self.view.drawSim(self.SatSim)
-        sleep(.1)
+        sleep(.01)
 
     def close (self):
         pygame.quit()

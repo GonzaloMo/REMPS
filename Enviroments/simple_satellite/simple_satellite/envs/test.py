@@ -24,6 +24,9 @@ env.reset()
 action = 3
 print(action)
 while 0<=action<=3:
-    env.step(action, render=True)
+    print(env.step(action, render=True))
     action = int(input('Action: '))
+    if action ==3: 
+        for i in range(10):
+            env.SatSim.update(3)
 env.view.quit()
