@@ -62,7 +62,11 @@ class Simple_satellite_v0(gym.Env):
         self.state = next_state
         self.Total_reward += reward
         info = {}
+<<<<<<< HEAD
         observation = np.array(self.state, dtype=object)
+=======
+        observation = np.array(self.state)
+>>>>>>> 71a807e93adbcfb26d91ee96fb07986b64ac58e8
         # if not(observation.shape == self.observation_space.shape):
         #     print('Observation_space')
         #     print(self.observation_space.shape)
