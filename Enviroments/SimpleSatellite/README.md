@@ -8,3 +8,17 @@ Video: https://youtu.be/cAdJuryALuc
 PDDL: http://editor.planning.domains/#read_session=DUrGySABsW
 
 [![Simple Satellite video](http://img.youtube.com/vi/cAdJuryALuc/0.jpg)](http://www.youtube.com/watch?v=cAdJuryALuc)
+
+
+<!-- ## Instalation 
+```
+git clone https://github.com/GonzaloMo/REMPS.git 
+cd SimpleSatellite
+pip3 install -e .
+``` -->
+## Usage
+'''
+import gym
+import SimpleSatellite
+env = gym.make('SimpleSatellite-v0')
+'''

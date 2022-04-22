@@ -1,6 +1,6 @@
 import math
 import pygame
-from simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 
 
 class SatelliteView:

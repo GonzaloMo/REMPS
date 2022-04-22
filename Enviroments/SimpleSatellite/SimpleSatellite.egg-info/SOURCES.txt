@@ -1,0 +1,15 @@
+README.md
+setup.py
+SimpleSatellite/__init__.py
+SimpleSatellite.egg-info/PKG-INFO
+SimpleSatellite.egg-info/SOURCES.txt
+SimpleSatellite.egg-info/dependency_links.txt
+SimpleSatellite.egg-info/requires.txt
+SimpleSatellite.egg-info/top_level.txt
+SimpleSatellite/envs/__init__.py
+SimpleSatellite/envs/simsat_v0.py
+SimpleSatellite/envs/test.py
+SimpleSatellite/envs/simulation/DrawSim.py
+SimpleSatellite/envs/simulation/GoalReferee.py
+SimpleSatellite/envs/simulation/Reward_functions.py
+SimpleSatellite/envs/simulation/Simulation.py

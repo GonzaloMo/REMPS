@@ -3,9 +3,9 @@ import os
 from time import sleep
 from typing import Callable
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-from simulation.Simulation import SatelliteSim
-from simulation.Reward_functions import Reward_v1 
-from simulation.DrawSim import SatelliteView 
+from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.Reward_functions import Reward_v1 
+from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
 
 # import the gym class and spaces

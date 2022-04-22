@@ -1,4 +1,4 @@
-from simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 
 def Reward_v1(env, action):
     """

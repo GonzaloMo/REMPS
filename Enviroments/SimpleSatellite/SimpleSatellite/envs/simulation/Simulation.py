@@ -1,6 +1,6 @@
 import math
 from numpy import random
-from simulation.GoalReferee import GoalReferee
+from SimpleSatellite.envs.simulation.GoalReferee import GoalReferee
 class SatelliteSim:
 
     MAX_ORBITS = 30

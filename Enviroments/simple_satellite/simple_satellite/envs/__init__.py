@@ -1,1 +1,0 @@
-from simple_satellite.envs.simsat_v0 import Simple_satellite_v0
