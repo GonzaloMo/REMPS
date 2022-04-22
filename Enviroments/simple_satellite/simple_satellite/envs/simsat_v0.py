@@ -82,7 +82,7 @@ class Simple_satellite_v0(gym.Env):
             # start render enviroment
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
-        self.view.drawSim(self.SatSim)
+        self.view.drawSim(self.SatSim, reward=float(self.Total_reward))
         sleep(.01)
 
     def close (self):

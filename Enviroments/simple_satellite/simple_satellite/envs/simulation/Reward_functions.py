@@ -15,23 +15,23 @@ def Reward_v1(env, action):
     R = 0
     state = env.state
     new_state = env.next_state
-    if action!=3 and state[2]==1:
+    if action!=3 and state[2]==0:
         R -= 50
     else:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Picture were correctly taken
             if state[3]<new_state[3]:
-                R+=0.01*(new_state[3]-state[3])
+                R+=0.1
             else:
                 R-=10
 
         if action == SatelliteSim.ACTION_DUMP:
             # Files have been correctly dumped
-            if state[4] > new_state[4]:
-                R+=10*(new_state[4]-state[4])
+            print(state[3])
+            print(new_state[3])
+            print(state[3] > new_state[3])
+            if state[3] > new_state[3]:
+                R+=10
             else:
                 R-=10
-    if all([state[i]==new_state[i] for i in range(len(state))]):
-        # So the spacecraft does something
-        R -= 0.001 
     return R
