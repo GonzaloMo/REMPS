@@ -147,20 +147,17 @@ class SatelliteSim:
         for index in range(len(self.targets)):
             # Checks if memory space is available and that the satellite is above target
             if self.targets[index][0] < self.pos < self.targets[index][1] and self.memory_level<SatelliteSim.MEMORY_SIZE:
-                print("Stopped to Take pic")
                 return True
         
         # Check if Analyse picture action is possible
         for index in range(len(self.images)):
             if not self.analysis[index] and self.images[index]>0:
-                print("Stopped to Analysis")
                 return True
         
         # Check if Dump picture action is possible
         # check if it is above the ground station and if their is any analysed image
         if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]):
             if any(self.analysis):
-                print("Stopped to Dump")
                 return True
 
         # No action is possible    
