@@ -196,8 +196,8 @@ class SatelliteSim:
             self.targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
 
     def get_state(self):
-        obs = {'Orbit': np.array(self.orbit), 
-                'Pos': np.array(self.pos),
+        obs = {'Orbit': np.array([self.orbit]), 
+                'Pos': np.array([self.pos]),
                 'Busy': self.busy,
                 'Memory Level': self.memory_level,
                 'Images': np.array(self.images),

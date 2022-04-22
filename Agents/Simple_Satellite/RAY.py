@@ -14,12 +14,12 @@ register_env("SimpleSatellite-v0", env_creator)
 ray.init(ignore_reinit_error=True)
 config = {
     'env': 'SimpleSatellite-v0',
-    # "num_workers": 2,
-    # "vf_share_layers": tune.grid_search([True, False]),
-    # "lr": tune.grid_search([1e-4, 1e-5, 1e-6]),
+    "num_workers": 2,
+    "vf_share_layers": tune.grid_search([True, False]),
+    "lr": tune.grid_search([1e-4, 1e-5, 1e-6]),
 }
 stop = {
-    'timesteps_total': 10000
+    'timesteps_total': 1000000
 }
 results = tune.run(
     'PPO', # Specify the algorithm to train

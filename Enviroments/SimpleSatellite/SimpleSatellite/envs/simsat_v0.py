@@ -54,6 +54,7 @@ class Simple_satellite_v0(gym.Env):
         # Take action 
         next_state, done = self.SatSim.update(action)
         Action_avaible = self.SatSim.action_is_posible()
+        self.next_state = next_state
         if render:
             self.render()
         # Only stop when action is needed to be taken
@@ -62,7 +63,7 @@ class Simple_satellite_v0(gym.Env):
             Action_avaible = self.SatSim.action_is_posible()
             if render:
                 self.render()
-        self.next_state = next_state
+        
         self.done = done
         reward = self.Reward(self, action)
         self.state = next_state
