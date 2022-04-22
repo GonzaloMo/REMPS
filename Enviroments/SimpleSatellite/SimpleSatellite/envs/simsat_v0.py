@@ -36,9 +36,16 @@ class Simple_satellite_v0(gym.Env):
         # Observation space is composed as: 
         # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]
         max_memory = self.SatSim.MEMORY_SIZE
-        
-        self.observation_space = spaces.Box(low=np.array([0.0, 0.0, 0, 0, 0]), high=np.array([999999999, 360.0, 1, max_memory, max_memory]),
-                                            shape=(5,), dtype=np.float)
+        n_targets = self.SatSim.n_tagets
+        n_gs = self.SatSim.n_gs
+        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31, shape=()), 
+                                                'Pos': spaces.Box(low=0, high=360., shape=()),
+                                                'Busy': spaces.Discrete(2),
+                                                'Memory Level': spaces.Discrete(max_memory),
+                                                'Images': spaces.MultiDiscrete(max_memory),
+                                                'Analysi': spaces.MultiBinary(max_memory),
+                                                'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
+                                                'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
@@ -62,12 +69,7 @@ class Simple_satellite_v0(gym.Env):
         self.state = next_state
         self.Total_reward += reward
         info = {}
-        observation = np.array(self.state, dtype=object)
-        # if not(observation.shape == self.observation_space.shape):
-        #     print('Observation_space')
-        #     print(self.observation_space.shape)
-        #     print('Observation')
-        #     print(observation.shape)
+        observation = self.state
         return observation, reward, done, info
 
     def reset(self):

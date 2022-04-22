@@ -18,6 +18,9 @@ class SatelliteSim:
     DURATION_DUMP = 19
     DURATION_ANALYSE = 49
 
+    TARGET_HALF_SIZE = 5.
+    GS_HALF_SIZE = 15.
+
     def __init__(self, period=600):
 
         self.sim_time = 0
@@ -31,8 +34,18 @@ class SatelliteSim:
         self.last_action = None
 
         # planet position
+        self.random = False
+        self.n_gs = 1
+        gs_c = [288]
         self.groundStations = []
+        for i in range(self.n_gs):
+            self.groundStations.append([gs_c[i]-SatelliteSim.GS_HALF_SIZE, gs_c[i]+SatelliteSim.GS_HALF_SIZE])
+
+        self.n_tagets = 4
+        t_c= [0., 72., 144., 216.]
         self.targets = []
+        for i in range(self.n_tagets):
+            self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
 
         # memory state
         self.memory_level = 0
@@ -107,7 +120,6 @@ class SatelliteSim:
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
-            picture_to_dump = None
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = SatelliteSim.DURATION_DUMP
                 # Check all the images
@@ -165,51 +177,39 @@ class SatelliteSim:
         self.images = [-1] * self.MEMORY_SIZE
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
+        if self.random:
+            # Generate Targets
+            self.initRandomTargets()
 
-        # Generate Targets
-        self.initSetTargets()
-        #self.initRandomTargets(int(round(random.normal(8,4))))
+            # Generate Ground Stations
+            self.initRandomStations()
 
-        # Generate Ground Stations
-        self.initSetStations()
-        #self.initRandomStations(int(max(1,round(random.normal(3,2)))))
-
-    def initRandomStations(self, amount):
+    def initRandomStations(self):
         self.groundStations = []
-        for i in range(amount):
-            s = random.random()*(SatelliteSim.CIRCUNFERENCE-15)
-            self.groundStations.append((s, s+15))
-    def initSetStations(self):
-        self.groundStations = []
-        for s in [270]:
-            start = s-10
-            end = s+10
-            if start<0:
-                start = 360 - start
-            if end>360:
-                end -= 360
-            self.groundStations.append((start, end))
+        for i in range(self.n_gs):
+            s = random.random()*(SatelliteSim.CIRCUNFERENCE-SatelliteSim.GS_HALF_SIZE)
+            self.groundStations.append((s, s+SatelliteSim.GS_HALF_SIZE))
 
     def initRandomTargets(self, amount):
         self.targets = []
-        for i in range(amount):
-            s = random.random()*(SatelliteSim.CIRCUNFERENCE-5)
-            self.targets.append((s, s+5))
-    def initSetTargets(self):
-        self.targets = []
-        for s in [180]:
-            start = s-5
-            end = s+5
-            # if start<0:
-            #     start = SatelliteSim.CIRCUNFERENCE - start
-            # if end>SatelliteSim.CIRCUNFERENCE:
-            #     end -= SatelliteSim.CIRCUNFERENCE
-            self.targets.append((start, end))
+        for i in range(self.n_tagets):
+            s = random.random()*(SatelliteSim.CIRCUNFERENCE-SatelliteSim.TARGET_HALF_SIZE)
+            self.targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
 
     def get_state(self):
-        state = [self.sim_time, self.pos, self.busy, self.memory_level, 
-                *self.images, *self.analysis, *self.targets, *self.groundStations]
-        return state
+        obs = {'Orbit': self.orbit, 
+                'Pos': self.pos,
+                'Busy': self.busy,
+                'Memory Level': self.memory_level,
+                'Images': self.images,
+                'Analysis': self.analysis,
+                'Targets': self.targets,
+                'Ground Stations': self.groundStations}
+        return obs
+    # def get_state(self):
+    #     state = [self.sim_time, self.pos, self.busy, self.memory_level, 
+    #             *self.images, *self.analysis, *self.targets, *self.groundStations]
+    #     return state
         
     def time2angle(self, time):
         delta_t = time - math.floor(time/self.PERIOD) * self.PERIOD
