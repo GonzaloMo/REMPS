@@ -1,6 +1,8 @@
 import math
 from numpy import random
 from SimpleSatellite.envs.simulation.GoalReferee import GoalReferee
+import numpy as np
+
 class SatelliteSim:
 
     MAX_ORBITS = 30
@@ -49,7 +51,7 @@ class SatelliteSim:
 
         # memory state
         self.memory_level = 0
-        self.images = [-1] * self.MEMORY_SIZE
+        self.images = [0] * self.MEMORY_SIZE
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
         self.busy=0
@@ -93,12 +95,12 @@ class SatelliteSim:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Check free location in the memory
             for ind_mem in range(len(self.images)):
-                if self.images[ind_mem] == -1:
+                if self.images[ind_mem] == 0:
                     # Check if above which target the satellite is
                     for index in range(len(self.targets)):
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
                             self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
-                            self.images[ind_mem] = index
+                            self.images[ind_mem] = index+1
                             self.analysis[ind_mem] = False
                             self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
                             self.last_action = action
@@ -108,12 +110,12 @@ class SatelliteSim:
         if action == SatelliteSim.ACTION_ANALYSE:
             self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
             for index in range(len(self.analysis)):
-                if not self.analysis[index] and not(self.images[index]== -1):
+                if not self.analysis[index] and not(self.images[index]== 0):
                     if random.random() > 0.0:
                         self.analysis[index] = True
                     else:
                         self.analysis[index] = False
-                        self.images[index] = -1
+                        self.images[index] = 0
                     self.last_action = action
                     return
         
@@ -127,7 +129,7 @@ class SatelliteSim:
                     pic2dump = len(self.analysis) - index
                     if self.analysis[pic2dump]:
                         self.analysis[pic2dump] = False
-                        self.images[pic2dump] = -1
+                        self.images[pic2dump] = 0
                         self.memory_level = max(0,self.memory_level-1)
                         self.last_action = action
                         # score the goal value
@@ -150,7 +152,7 @@ class SatelliteSim:
         
         # Check if Analyse picture action is possible
         for index in range(len(self.images)):
-            if not self.analysis[index] and self.images[index]>-.1:
+            if not self.analysis[index] and self.images[index]>0:
                 print("Stopped to Analysis")
                 return True
         
@@ -174,7 +176,7 @@ class SatelliteSim:
 
         # memory state
         self.memory_level = 0
-        self.images = [-1] * self.MEMORY_SIZE
+        self.images = [0] * self.MEMORY_SIZE
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
         if self.random:
@@ -183,6 +185,7 @@ class SatelliteSim:
 
             # Generate Ground Stations
             self.initRandomStations()
+        return self.get_state()
 
     def initRandomStations(self):
         self.groundStations = []
@@ -197,14 +200,14 @@ class SatelliteSim:
             self.targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
 
     def get_state(self):
-        obs = {'Orbit': self.orbit, 
-                'Pos': self.pos,
+        obs = {'Orbit': np.array(self.orbit), 
+                'Pos': np.array(self.pos),
                 'Busy': self.busy,
                 'Memory Level': self.memory_level,
-                'Images': self.images,
+                'Images': np.array(self.images),
                 'Analysis': self.analysis,
-                'Targets': self.targets,
-                'Ground Stations': self.groundStations}
+                'Targets': np.array(self.targets),
+                'Ground Stations': np.array(self.groundStations)}
         return obs
     # def get_state(self):
     #     state = [self.sim_time, self.pos, self.busy, self.memory_level, 

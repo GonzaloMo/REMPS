@@ -92,7 +92,7 @@ class SatelliteView:
             pygame.draw.rect(self.screen, SatelliteView.WHITE, [offset + index * (SatelliteView.IMAGE_SIZE * 1.2),
                                                                 SatelliteView.IMAGE_SIZE, SatelliteView.IMAGE_SIZE,
                                                                 SatelliteView.IMAGE_SIZE])
-            if image >= 0:
+            if image > 0:
                 panelColor = SatelliteView.BLACK
                 if sim.analysis[index] and sim.satellite_busy_time > 0 \
                         and sim.last_action == SatelliteSim.ACTION_ANALYSE:# \

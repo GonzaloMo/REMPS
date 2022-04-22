@@ -38,12 +38,12 @@ class Simple_satellite_v0(gym.Env):
         max_memory = self.SatSim.MEMORY_SIZE
         n_targets = self.SatSim.n_tagets
         n_gs = self.SatSim.n_gs
-        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31, shape=()), 
-                                                'Pos': spaces.Box(low=0, high=360., shape=()),
+        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31, shape=(1,)), 
+                                                'Pos': spaces.Box(low=0, high=360., shape=(1,)),
                                                 'Busy': spaces.Discrete(2),
                                                 'Memory Level': spaces.Discrete(max_memory),
-                                                'Images': spaces.MultiDiscrete(max_memory),
-                                                'Analysi': spaces.MultiBinary(max_memory),
+                                                'Images': spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
+                                                'Analysis': spaces.MultiBinary(max_memory),
                                                 'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
                                                 'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
         self.state = self.SatSim.get_state()
@@ -73,10 +73,9 @@ class Simple_satellite_v0(gym.Env):
         return observation, reward, done, info
 
     def reset(self):
-        self.SatSim.reset()
-        self.state = self.SatSim.get_state()
+        self.state = self.SatSim.reset()
         self.Total_reward = 0
-        observation = np.array(self.state)
+        observation = self.state
         return observation 
 
     def render(self):
