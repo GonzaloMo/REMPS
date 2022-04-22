@@ -17,8 +17,8 @@ cd REMPS/Environments/SimpleSatellite
 pip3 install -e .
 ```
 ## Usage
-'''
+```
 import gym
 import SimpleSatellite
 env = gym.make('SimpleSatellite-v0')
-'''
+```
