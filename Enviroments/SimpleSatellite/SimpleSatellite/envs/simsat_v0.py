@@ -41,7 +41,7 @@ class Simple_satellite_v0(gym.Env):
         self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31, shape=(1,)), 
                                                 'Pos': spaces.Box(low=0, high=360., shape=(1,)),
                                                 'Busy': spaces.Discrete(2),
-                                                'Memory Level': spaces.Discrete(max_memory),
+                                                'Memory Level': spaces.Discrete(max_memory+1),
                                                 'Images': spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
                                                 'Analysis': spaces.MultiBinary(max_memory),
                                                 'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
@@ -65,11 +65,11 @@ class Simple_satellite_v0(gym.Env):
         self.next_state = next_state
         self.done = done
         reward = self.Reward(self, action)
-
         self.state = next_state
         self.Total_reward += reward
         info = {}
         observation = self.state
+        
         return observation, reward, done, info
 
     def reset(self):
@@ -84,7 +84,14 @@ class Simple_satellite_v0(gym.Env):
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
         self.view.drawSim(self.SatSim, reward=float(self.Total_reward))
+        self.print_obs()
         sleep(.01)
 
     def close (self):
         pygame.quit()
+
+    def print_obs(self):
+        print('----------State-----------')
+        for k, v in self.next_state.items():
+            print(k+': ',v)
+        print('---------------------')

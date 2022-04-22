@@ -44,7 +44,7 @@ class SatelliteSim:
             self.groundStations.append([gs_c[i]-SatelliteSim.GS_HALF_SIZE, gs_c[i]+SatelliteSim.GS_HALF_SIZE])
 
         self.n_tagets = 4
-        t_c= [0., 72., 144., 216.]
+        t_c= [6., 72., 144., 216.]
         self.targets = []
         for i in range(self.n_tagets):
             self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
@@ -90,7 +90,6 @@ class SatelliteSim:
         if self.satellite_busy_time > 0 or action==3 or action==None:
             self.busy=1
             return 
-        
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Check free location in the memory
