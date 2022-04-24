@@ -8,7 +8,7 @@ if __name__ == '__main__':
     # Create the vectorized environment
     env = gym.make("SimpleSatellite-v0")
     # Create model
-    model = PPO.load(save_dir+'ppo_SimpleSatellite_v0_1')
+    model = PPO.load(save_dir+'SBL3/ppo_SimpleSatellite_v0_1')
     obs = env.reset()
     print(obs)
     done = False

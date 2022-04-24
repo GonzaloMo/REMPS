@@ -5,12 +5,6 @@ def Reward_v1(env, action):
     First version of the reward function. The structure is define as:
         +10 Dumps analyzed image
         -10 per big fails (takes image over non valid zone, dumps image over non valid zone)
-    
-    Input: 
-        - new_state = [t, theta, busy, used_memory, images_vec, memory_analyzed, target_loc, groundstation]
-        - state = [t, theta, busy, images_vector, binary_analysed_picture] 
-        - action = integer representing each action
-        - sim = curreent satellite simulation
     """ 
     R = 0
     state = env.state
@@ -23,7 +17,7 @@ def Reward_v1(env, action):
             if state['Memory Level']<new_state['Memory Level']:
                 R+=0.1
             else:
-                R-=10
+                R-=10            
 
         if action == SatelliteSim.ACTION_DUMP:
             # Files have been correctly dumped
