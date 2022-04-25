@@ -23,7 +23,7 @@ class SatelliteSim:
     TARGET_HALF_SIZE = 5.
     GS_HALF_SIZE = 15.
 
-    def __init__(self, period=600):
+    def __init__(self, period=600, random=False):
 
         self.sim_time = 0
         self.PERIOD = period
@@ -36,7 +36,7 @@ class SatelliteSim:
         self.last_action = None
 
         # planet position
-        self.random = False
+        self.random = random
         self.n_gs = 1
         gs_c = [288]
         self.groundStations = []

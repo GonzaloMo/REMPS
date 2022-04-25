@@ -15,7 +15,8 @@ from gym import spaces
 import numpy as np
 class Simple_satellite_v0(gym.Env):
     def __init__(self,
-            Reward: Callable[[gym.Env, int], float] = Reward_v1):
+            Reward: Callable[[gym.Env, int], float] = Reward_v1,
+            random: bool = False):
         super(Simple_satellite_v0, self).__init__()
         
         # set true so initialization is only done once
