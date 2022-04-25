@@ -38,17 +38,18 @@ class Simple_satellite_v0(gym.Env):
         max_memory = self.SatSim.MEMORY_SIZE
         n_targets = self.SatSim.n_tagets
         n_gs = self.SatSim.n_gs
-        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31, shape=(1,)), 
+        # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
+        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31., shape=(1,), dtype=np.int8), #spaces.Discrete(31), 
                                                 'Pos': spaces.Box(low=0, high=360., shape=(1,)),
-                                                'Busy': spaces.Discrete(2),
-                                                'Memory Level': spaces.Discrete(max_memory+1),
-                                                'Images': spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
-                                                'Analysis': spaces.MultiBinary(max_memory),
+                                                'Busy': spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),#spaces.Discrete(2),
+                                                'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), #spaces.Discrete(max_memory+1),
+                                                'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),#spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
+                                                'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), #spaces.MultiBinary(max_memory),
                                                 'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
                                                 'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
-        self.Reward = Reward
+        self.Reward = Reward_v1
         
     def step(self, action, render=False):
         # Take action 
@@ -70,7 +71,6 @@ class Simple_satellite_v0(gym.Env):
         self.Total_reward += reward
         info = {}
         observation = self.state
-        
         return observation, reward, done, info
 
     def reset(self):
@@ -85,14 +85,22 @@ class Simple_satellite_v0(gym.Env):
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
         self.view.drawSim(self.SatSim, reward=float(self.Total_reward))
-        self.print_obs()
+        self.print_obs(self.next_state)
         sleep(.01)
 
     def close (self):
         pygame.quit()
 
-    def print_obs(self):
+    def print_obs(self, obs):
         print('----------State-----------')
-        for k, v in self.next_state.items():
+        for k, v in obs.items():
             print(k+': ',v)
+        print('---------------------')
+    def print_obs_shape(self,obs):
+        print('----------State-----------')
+        for k, v in obs.items():
+            if isinstance(v, np.ndarray):
+                print(k+': ',np.shape(v))
+            else:
+                print(k+': ',type(v))
         print('---------------------')

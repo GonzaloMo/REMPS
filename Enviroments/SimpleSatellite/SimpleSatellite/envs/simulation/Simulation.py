@@ -196,14 +196,22 @@ class SatelliteSim:
             self.targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
 
     def get_state(self):
-        obs = {'Orbit': np.array([self.orbit]), 
-                'Pos': np.array([self.pos]),
-                'Busy': self.busy,
-                'Memory Level': self.memory_level,
-                'Images': np.array(self.images),
-                'Analysis': self.analysis,
-                'Targets': np.array(self.targets),
-                'Ground Stations': np.array(self.groundStations)}
+        # obs = {'Orbit': self.orbit, 
+        #         'Pos': np.array([self.pos], dtype=np.float32),
+        #         'Busy': self.busy,
+        #         'Memory Level': self.memory_level,
+        #         'Images': np.array(self.images, dtype=np.float32),
+        #         'Analysis': np.array(self.analysis, dtype=np.int8),
+        #         'Targets': np.array(self.targets, dtype=np.float32),
+        #         'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
+        obs = {'Orbit': np.array([self.orbit], dtype=np.int8), 
+                'Pos': np.array([self.pos], dtype=np.float32),
+                'Busy': np.array([self.busy], dtype=np.int8),
+                'Memory Level': np.array([self.memory_level], dtype=np.int8),
+                'Images': np.array(self.images, dtype=np.float32),
+                'Analysis': np.array(self.analysis, dtype=np.int8),
+                'Targets': np.array(self.targets, dtype=np.float32),
+                'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
         return obs
     # def get_state(self):
     #     state = [self.sim_time, self.pos, self.busy, self.memory_level, 

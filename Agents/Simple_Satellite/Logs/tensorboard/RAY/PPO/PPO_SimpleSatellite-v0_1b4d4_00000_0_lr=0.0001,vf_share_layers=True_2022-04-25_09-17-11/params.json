@@ -1,0 +1,14 @@
+{
+  "env": "SimpleSatellite-v0",
+  "framework": "torch",
+  "lr": 0.0001,
+  "model": {
+    "fcnet_activation": "relu",
+    "fcnet_hiddens": [
+      64,
+      64
+    ]
+  },
+  "num_workers": 0,
+  "vf_share_layers": true
+}
