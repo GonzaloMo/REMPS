@@ -14,6 +14,8 @@ from ray.rllib.agents.ppo import PPOTrainer
 from ray.tune.registry import register_env
 register_env("SimpleSatellite-v0", lambda env_config: env_creator(env_config))
 ray.init(ignore_reinit_error=True)
+
+import IPython as ip
 if __name__ == "__main__":
 
 
@@ -25,8 +27,9 @@ if __name__ == "__main__":
             "fcnet_activation": "relu"
             },
         "num_workers": 0,
-        "vf_share_layers": tune.grid_search([True, False]),
-        "lr": tune.grid_search([1e-4, 1e-5, 1e-6]),
+        "lr": 1e-5, #tune.grid_search([1e-4, 1e-5, 1e-6]),
+        "entropy_coeff": 0.02, # tune.grid_search([0.0, 0.01, 0.02]),
+        "sgd_minibatch_size": 128, # tune.grid_search([64,128,256])
     }
     stop = {
         'timesteps_total': 1000000
@@ -36,5 +39,12 @@ if __name__ == "__main__":
         config=config,
         stop=stop,
         local_dir="Logs/tensorboard/RAY",
-        checkpoint_at_end=True
+       checkpoint_at_end=True
     ) 
+    checkpoints = results.get_trial_checkpoints_paths(trial=results.get_best_trial('episode_reward_mean'),
+                                                       metric='episode_reward_mean')
+    # retriev the checkpoint path; we only have a single checkpoint, so take the first one
+    checkpoint_path = checkpoints[0][0]
+    print(checkpoint_path)
+
+    ip.embeded()
