@@ -12,13 +12,17 @@ class SatelliteSim:
 
     MEMORY_SIZE = 10
 
+    ACTIONS = [0, 1, 2, 3]
     ACTION_TAKE_IMAGE = 0
     ACTION_DUMP = 1
     ACTION_ANALYSE = 2
+    ACTION_DO_NOTHING = 2
+    ACTION_NAMES = ["TP","AN","DP","DN"]
 
     DURATION_TAKE_IMAGE = 2
     DURATION_DUMP = 19
     DURATION_ANALYSE = 49
+    DURATIONS = [DURATION_TAKE_IMAGE,DURATION_DUMP,DURATION_ANALYSE]
 
     TARGET_HALF_SIZE = 5.
     GS_HALF_SIZE = 15.
@@ -33,7 +37,7 @@ class SatelliteSim:
         # satellite state
         self.pos = 0
         self.orbit = 0
-        self.last_action = None
+        self.last_action = 3
 
         # planet position
         self.random = random
@@ -79,6 +83,7 @@ class SatelliteSim:
             done = True
 
         # update state
+        self.action = action
         self.apply_action(action)
         state = self.get_state()
         return state, done
@@ -168,7 +173,7 @@ class SatelliteSim:
         # satellite state
         self.pos = 0
         self.orbit = 0
-        self.last_action = None
+        self.last_action = 3
 
         # memory state
         self.memory_level = 0

@@ -1,7 +1,7 @@
 import math
 import pygame
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-
+from time import sleep
 
 class SatelliteView:
 
@@ -119,7 +119,20 @@ class SatelliteView:
         pygame.draw.rect(self.screen, SatelliteView.PURPLE, [offset + SatelliteView.IMAGE_SIZE * 0.1,
                                                              2.3 * SatelliteView.IMAGE_SIZE, barWidth,
                                                              SatelliteView.IMAGE_SIZE * 0.8])
-
+        # Draw action taken
+        for index, act in enumerate(sim.ACTION_NAMES):
+            offset_y = (3) * (SatelliteView.IMAGE_SIZE * 1.2 * len(sim.ACTION_NAMES)/2)
+            x_a = offset - (SatelliteView.IMAGE_SIZE * 1.7)
+            y_a = offset_y + index * SatelliteView.IMAGE_SIZE * 1.2
+            w_a = h_a = SatelliteView.IMAGE_SIZE
+            if act == sim.ACTION_NAMES[sim.action]:
+                c = SatelliteView.ORANGE
+            else:
+                c = SatelliteView.WHITE
+            pygame.draw.rect(self.screen, c, [x_a, y_a,
+                                              w_a, h_a])
+            name = self.font.render(act, True, SatelliteView.WHITE)
+            self.screen.blit(name, (x_a-w_a*.5, y_a+h_a*.4))
         # # draw score
         # max_score = max(sim.goalRef.value, 100)
         # barWidth = SatelliteView.HUD_WIDTH * sim.goalRef.value / max_score
@@ -165,13 +178,17 @@ class SatelliteView:
 
         #  Render Reward
         if reward:
-            pygame.draw.rect(self.screen, SatelliteView.WHITE, [offset + SatelliteView.GOAL_SIZE * 0.1,
-                                                             SatelliteView.HEIGHT - 6.2 * SatelliteView.GOAL_SIZE,
-                                                             SatelliteView.HUD_WIDTH*.2, SatelliteView.GOAL_SIZE])
-            reward_txt = self.font.render("Reward = "+str(reward), True, SatelliteView.BLACK)
-            self.screen.blit(reward_txt, [offset + SatelliteView.GOAL_SIZE * 0.1,
-                                            SatelliteView.HEIGHT - 6.2 * SatelliteView.GOAL_SIZE,
-                                            SatelliteView.HUD_WIDTH, SatelliteView.GOAL_SIZE])
+            lamba_w_r = 0.3
+            lamba_h_r = (1-lamba_w_r)/2
+            x_r = offset + SatelliteView.GOAL_SIZE * 0.1 + SatelliteView.HUD_WIDTH*lamba_h_r
+            y_r = SatelliteView.HEIGHT - 5.5 * SatelliteView.GOAL_SIZE
+            w_r = SatelliteView.HUD_WIDTH*lamba_w_r
+            h_r = SatelliteView.GOAL_SIZE
+            pygame.draw.rect(self.screen, SatelliteView.WHITE, [x_r, y_r,
+                                                                w_r, h_r])
+            reward_txt = self.font.render("Reward = "+str(round(reward,2)), True, SatelliteView.BLACK)
+            self.screen.blit(reward_txt, [x_r+.1*w_r, y_r+.25*h_r,
+                                          .5*w_r, .5*h_r])
         pygame.display.flip()
 
     def quit(self):
