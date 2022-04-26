@@ -23,12 +23,6 @@ def Reward(env, action):
                 R+=0.1
             else:
                 R-=10          
-        if action == env.SatSim.ACTION_ANALYSE:
-            if np.sum(state['Analysis']) < np.sum(new_state['Analysis']):
-                R+=0.1
-            else:
-                R-=0.05
-
         if action == env.SatSim.ACTION_DUMP:
             # Files have been correctly dumped
             if state['Memory Level'] > new_state['Memory Level']:
