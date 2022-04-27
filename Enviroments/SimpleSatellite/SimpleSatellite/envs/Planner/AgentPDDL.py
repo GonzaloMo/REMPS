@@ -1,11 +1,9 @@
 import math
 import threading
-from Planner import PDDLManager
-from agent.AgentInterface import AgentInterface
-from simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.Planner import PDDLManager 
 
-
-class PDDLAgent(AgentInterface):
+class PDDLAgent:
 
     def __init__(self):
         super(PDDLAgent, self).__init__("PDDLAgent")
@@ -14,19 +12,25 @@ class PDDLAgent(AgentInterface):
         self.plan_start = -1
         self.plan = []
         self.current_action = None
+        self.name = "Planner"
+        self.save_dir = "SimpleSatellite/envs/Planner/"
 
     def generatePlan(self, sim: SatelliteSim):
-        print("({name}) generating a plan".format(name=self.name))
-        PDDLManager.writePDDLProblem(sim, "pddl/problem.pddl", orbits=8)
-        if PDDLManager.generatePlan("pddl/domain.pddl", "pddl/problem.pddl", "pddl/plan.pddl"):
-            print("({name}) planning complete".format(name=self.name))
-            self.plan = PDDLManager.readPDDLPlan("pddl/plan.pddl")
+        
+        # print("({name}) generating a plan".format(name=self.name))
+        PDDLManager.writePDDLProblem(sim, self.save_dir+"problem/p.pddl", orbits=8)
+        if PDDLManager.generatePlan(self.save_dir+"domain.pddl", self.save_dir+"problem/p.pddl", self.save_dir+"plan/p.pddl"):
+            # print("({name}) planning complete".format(name=self.name))
+            self.plan = PDDLManager.readPDDLPlan(self.save_dir+"plan/p.pddl")
             if len(self.plan) > 0: self.current_action = self.plan.pop(0)
         else:
             print("({name}) planning failed".format(name=self.name))
         self.plan_received = True
         self.plan_requested = False
         self.plan_start = -1
+
+    
+    
 
     def getAction(self, sim: SatelliteSim):
 

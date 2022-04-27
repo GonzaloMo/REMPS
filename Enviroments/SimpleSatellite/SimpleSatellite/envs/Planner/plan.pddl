@@ -1,27 +1,15 @@
-3.653: (take_image img2 mem0)  [3.000]
-6.654: (analyse_image img2 mem0)  [50.000]
-59.331: (dump_image img2 mem0)  [20.000]
-79.332: (take_image img6 mem0)  [3.000]
-82.333: (analyse_image img6 mem0)  [50.000]
-155.933: (take_image img9 mem1)  [3.000]
-158.934: (take_image img5 mem2)  [3.000]
-161.935: (analyse_image img5 mem2)  [50.000]
-267.904: (analyse_image img9 mem1)  [50.000]
-317.905: (take_image img3 mem3)  [3.000]
-566.354: (analyse_image img3 mem3)  [50.000]
-616.355: (take_image img7 mem4)  [3.000]
-624.328: (analyse_image img7 mem4)  [50.000]
-674.329: (dump_image img7 mem4)  [20.000]
-786.927: (take_image img8 mem4)  [3.000]
-792.111: (take_image img0 mem5)  [3.000]
-795.112: (analyse_image img0 mem5)  [50.000]
-845.113: (analyse_image img8 mem4)  [50.000]
-1228.309: (take_image img4 mem6)  [3.000]
-1796.080: (analyse_image img4 mem6)  [50.000]
-1846.081: (dump_image img4 mem6)  [20.000]
-1874.329: (dump_image img0 mem5)  [20.000]
-2431.083: (dump_image img8 mem4)  [20.000]
-2474.329: (dump_image img3 mem3)  [20.000]
-3046.081: (dump_image img5 mem2)  [20.000]
-3074.329: (dump_image img9 mem1)  [20.000]
-3631.083: (dump_image img6 mem0)  [20.000]
+Number of literals: 101
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+[01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
+All the ground actions in this problem are compression-safe
+Initial heuristic = 3.000
+
+Resorting to best-first search
+b (2.000 | 70.001)b (1.000 | 120.002);;;; Solution Found
+; States evaluated: 41009
+; Cost: 293.001
+; Time 27.12
+67.001: (take_image img1 mem0)  [3.000]
+70.002: (analyse_image img1 mem0)  [50.000]
+273.001: (dump_image img1 mem0)  [20.000]

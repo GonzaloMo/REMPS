@@ -1,17 +1,19 @@
-from simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 import requests
-
+import subprocess
 
 def generatePlan(domain: str, problem: str, plan: str):
-    data = {'domain': open(domain, 'r').read(), 'problem': open(problem, 'r').read()}
-    resp = requests.post('https://popf-cloud-solver.herokuapp.com/solve', verify=True, json=data).json()
-    if not 'plan' in resp['result']:
-        print("WARN: Plan was not found!")
+    with open('SimpleSatellite/envs/Planner/generateplan.sh', 'rb') as file:
+        script = file.read()
+    domain = domain.encode('UTF-8')
+    problem = problem.encode('UTF-8')
+    plan = plan.encode('UTF-8')
+    script = script % (domain, problem, plan,)
+    exit_code = subprocess.call(script, shell=True)
+    if exit_code:
         return False
-    with open(plan, 'w') as f:
-        f.write(''.join([act for act in resp['result']['plan']]))
-    f.close()
-    return True
+    else:
+        return True
 
 
 def writePDDLProblem(sim: SatelliteSim, file: str, orbits=5):
@@ -50,6 +52,7 @@ def writePDDLProblem(sim: SatelliteSim, file: str, orbits=5):
         f.write("(:goal (and\n")
         for target in sim.goalRef.single_goals:
             f.write("  (image_dumped img" + str(target) + ")\n")
+        f.write("  (image_dumped img" + str(1) + ")\n")
         f.write(")))\n")
         f.close()
 
@@ -71,7 +74,26 @@ def readPDDLPlan(file: str):
         f.close()
     return plan
 
-
+def read_plan(self, filename):
+    with open(filename, 'r') as f:
+        check = True
+        r_from = False
+        plan = []
+        while check:
+            line = f.readline()
+            if line:
+                if r_from:
+                    self.plan.append(line[8:-11].split())
+                elif line[0:6] == '; Time':
+                    r_from = True
+            else:
+                check = False
+                if self.write_output:
+                    print('finished')
+            
 if __name__ == '__main__':
-    generatePlan("domain.pddl", "problem.pddl", "plan.pddl")
+    writePDDLProblem(SatelliteSim(),'SimpleSatellite/envs/Planner/problem.pddl')
+    generatePlan("Domain.pddl", 
+                "problem.pddl", 
+                "plan.pddl")
     print("done")
