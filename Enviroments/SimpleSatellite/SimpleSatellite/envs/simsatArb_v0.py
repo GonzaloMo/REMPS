@@ -15,12 +15,12 @@ from typing import Dict,List
 from simulation.Utils import BaseVoice
 
 import numpy as np
-class Simple_satellite_v0(gym.Env):
+class Simple_satellite_Arb_v0(gym.Env):
     def __init__(self,
             Voices: List[BaseVoice],
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             ):
-        super(Simple_satellite_v0, self).__init__()
+        super(Simple_satellite_Arb_v0, self).__init__()
 
         # Voices
         self.n_voices = len(Voices)

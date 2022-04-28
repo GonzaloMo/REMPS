@@ -1,1 +1,2 @@
 from SimpleSatellite.envs.simsat_v0 import Simple_satellite_v0
+from SimpleSatellite.envs.simsatArb_v0 import Simple_satellite_Arb_v0
