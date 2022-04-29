@@ -30,7 +30,7 @@ class SatelliteSim:
     def __init__(self, period=600, random=False):
 
         self.sim_time = 0
-        self.PERIOD = period
+        self.period = period
         self.dt = period/SatelliteSim.CIRCUNFERENCE
         self.velocity = SatelliteSim.CIRCUNFERENCE/period
 
@@ -90,7 +90,6 @@ class SatelliteSim:
         
 
     def apply_action(self, action):   
-
         # check if busy or the satellite does nothing 
         if self.satellite_busy_time > 0 or action==3 or action==None:
             self.busy=1
@@ -182,7 +181,7 @@ class SatelliteSim:
         self.satellite_busy_time = 0
         if self.random:
             # Generate Targets
-            self.initRandomTargets()
+            self.targets = self.initRandomTargets(self.n_tagets)
 
             # Generate Ground Stations
             self.initRandomStations()
@@ -195,20 +194,13 @@ class SatelliteSim:
             self.groundStations.append((s, s+SatelliteSim.GS_HALF_SIZE))
 
     def initRandomTargets(self, amount):
-        self.targets = []
-        for i in range(self.n_tagets):
+        targets = []
+        for i in range(amount):
             s = random.random()*(SatelliteSim.CIRCUNFERENCE-SatelliteSim.TARGET_HALF_SIZE)
-            self.targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
+            targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
+        return targets
 
     def get_state(self):
-        # obs = {'Orbit': self.orbit, 
-        #         'Pos': np.array([self.pos], dtype=np.float32),
-        #         'Busy': self.busy,
-        #         'Memory Level': self.memory_level,
-        #         'Images': np.array(self.images, dtype=np.float32),
-        #         'Analysis': np.array(self.analysis, dtype=np.int8),
-        #         'Targets': np.array(self.targets, dtype=np.float32),
-        #         'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
         obs = {'Orbit': np.array([self.orbit], dtype=np.int8), 
                 'Pos': np.array([self.pos], dtype=np.float32),
                 'Busy': np.array([self.busy], dtype=np.int8),
@@ -218,16 +210,12 @@ class SatelliteSim:
                 'Targets': np.array(self.targets, dtype=np.float32),
                 'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
         return obs
-    # def get_state(self):
-    #     state = [self.sim_time, self.pos, self.busy, self.memory_level, 
-    #             *self.images, *self.analysis, *self.targets, *self.groundStations]
-    #     return state
         
     def time2angle(self, time):
-        delta_t = time - math.floor(time/self.PERIOD) * self.PERIOD
+        delta_t = time - math.floor(time/self.period) * self.period
         return self.velocity*delta_t
     
     def angle2time(self, angle):
-        T = self.orbit*self.PERIOD
+        T = self.orbit*self.period
         t = T + angle / self.velocity
 

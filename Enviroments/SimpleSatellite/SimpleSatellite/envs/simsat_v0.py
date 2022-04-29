@@ -56,17 +56,17 @@ class Simple_satellite_v0(gym.Env):
         self.action = action
         # Take action 
         next_state, done = self.SatSim.update(action)
-        Action_avaible = self.SatSim.action_is_posible()
+        # Action_avaible = self.SatSim.action_is_posible()
         self.next_state = next_state
         if render:
             self.render()
         # Only stop when action is needed to be taken
-        while not Action_avaible and not done:
-            self.action = 3
-            next_state, done = self.SatSim.update(self.action)
-            Action_avaible = self.SatSim.action_is_posible()
-            if render:
-                self.render()
+        # while not Action_avaible and not done:
+        #     self.action = 3
+        #     next_state, done = self.SatSim.update(self.action)
+        #     Action_avaible = self.SatSim.action_is_posible()
+        #     if render:
+        #         self.render()
         
         self.done = done
         reward = self.Reward(self, action)

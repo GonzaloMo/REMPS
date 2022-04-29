@@ -16,15 +16,15 @@ def generatePlan(domain: str, problem: str, plan: str):
         return True
 
 
-def writePDDLProblem(sim: SatelliteSim, file: str, orbits=5):
+def writePDDLProblem(obs: dict, goals: dict, file: str, orbit: int=5):
     with open(file, "w") as f:
         f.write("(define(problem satprob)\n") 
         f.write("(:domain SimpleSatellite)\n")
         f.write("(:objects\n ")
-        for index in range(SatelliteSim.MEMORY_SIZE):
+        for index in range(len(obs['Analysis'])):
             f.write(" mem" + str(index))
         f.write(" - memory\n")
-        for index, target in enumerate(sim.targets):
+        for index, target in enumerate(obs["Targets"]):
             f.write(" img" + str(index))
         f.write(" - image\n")
         f.write(")\n")
@@ -35,24 +35,23 @@ def writePDDLProblem(sim: SatelliteSim, file: str, orbits=5):
         for index in range(SatelliteSim.MEMORY_SIZE):
             f.write("  (memory_free mem" + str(index) + ")\n")
         f.write("\n")
-        for o in range(orbits):
-            for index, target in enumerate(sim.targets):
-                start = target[0] + sim.PERIOD * o
-                end = target[1] + sim.PERIOD * o
+        for o in range(orbit):
+            for index, target in enumerate(obs['Targets']):
+                start = target[0] + o * SatelliteSim.CIRCUNFERENCE
+                end = target[1] + o * SatelliteSim.CIRCUNFERENCE
                 f.write("  (at " + str(round(start, 3)) + " (image_available img" + str(index) + "))\n")
                 f.write("  (at " + str(round(end, 3)) + " (not (image_available img" + str(index) + ")))\n")
         f.write("\n")
-        for o in range(orbits):
-            for index, target in enumerate(sim.groundStations):
-                start = target[0] + sim.PERIOD * o
-                end = target[1] + sim.PERIOD * o
+        for o in range(orbit):
+            for index, target in enumerate(obs['Ground Stations']):
+                start = target[0] + o * SatelliteSim.CIRCUNFERENCE
+                end = target[1] + o * SatelliteSim.CIRCUNFERENCE
                 f.write("  (at " + str(round(start, 3)) + " (dump_available))\n")
                 f.write("  (at " + str(round(end, 3)) + " (not (dump_available)))\n")
         f.write(")\n")
         f.write("(:goal (and\n")
-        for target in sim.goalRef.single_goals:
+        for target in goals['Target']:
             f.write("  (image_dumped img" + str(target) + ")\n")
-        f.write("  (image_dumped img" + str(1) + ")\n")
         f.write(")))\n")
         f.close()
 

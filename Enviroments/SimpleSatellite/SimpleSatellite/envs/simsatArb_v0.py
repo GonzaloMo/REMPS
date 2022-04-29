@@ -12,7 +12,7 @@ import pygame
 import gym
 from gym import spaces
 from typing import Dict,List
-from simulation.Utils import BaseVoice
+from SimpleSatellite.envs.simulation.Utils import BaseVoice
 
 import numpy as np
 class Simple_satellite_Arb_v0(gym.Env):
@@ -47,6 +47,7 @@ class Simple_satellite_Arb_v0(gym.Env):
         # Voice Action observation space
         obs_act_space = [len(self.n_action)for i in range(self.n_voices)]
         obs_dict = {'Actions': spaces.MultiDiscrete(obs_act_space)}
+        n_target_before_voice = self.SatSim.n_tagets
         # Voices Added observation Space
         for v, k in self.Voices.items():
             if hasattr(v, 'added_observation_space'):
@@ -56,13 +57,13 @@ class Simple_satellite_Arb_v0(gym.Env):
         n_targets = self.SatSim.n_tagets
         n_gs = self.SatSim.n_gs
         obs_dict['State'] = spaces.Dict({'Orbit': spaces.Box(low=0, high=31., shape=(1,), dtype=np.int8), 
-                                                'Pos': spaces.Box(low=0, high=360., shape=(1,)),
-                                                'Busy': spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),
-                                                'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), 
-                                                'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),
-                                                'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), 
-                                                'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
-                                                'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
+                                        'Pos': spaces.Box(low=0, high=360., shape=(1,)),
+                                        'Busy': spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),
+                                        'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), 
+                                        'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),
+                                        'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), 
+                                        'Targets': spaces.Box(low=0, high=360., shape=(n_target_before_voice,2)),
+                                        'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
         self.observation_space = spaces.Dict(obs_dict)
 
         # Reward Initialization

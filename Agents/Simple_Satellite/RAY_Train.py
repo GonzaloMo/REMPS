@@ -13,7 +13,7 @@ config = {
     "sgd_minibatch_size": 128, # tune.grid_search([64,128,256])
 }
 agent = RAY_agent()
-stop_criteria = {'timesteps_total': 500}
+stop_criteria = {'timesteps_total': 10000000}
 agent.add_to_config(config)
 agent.train(stop_criteria)
 with open("Logs/RAY/Agent.pickle", "wb") as f:
