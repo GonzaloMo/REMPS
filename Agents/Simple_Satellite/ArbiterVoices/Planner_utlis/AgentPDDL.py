@@ -17,11 +17,13 @@ class PDDLAgent:
         PDDLManager.writePDDLDomain(sim, self.save_dir+"Domain.pddl")
 
     def generatePlan(self, obs, amount=4):
+        print(f"{self.name} begin planning")
         goals = self.GoalRef.generateSingleGoals(len(obs['Targets']), amount=amount)       
         print(goals)
         # print("({name}) generating a plan".format(name=self.name))
         PDDLManager.writePDDLProblem(obs, self.save_dir+"Problems/pr_"+self.name+".pddl", goals,orbits=8)
         MadePlan = PDDLManager.generatePlan(self.save_dir, "Domain.pddl", "Problems/pr_"+self.name+".pddl", "Plans/pl_"+self.name+".pddl")
+        print(f"{self.name} completed planning")
         if MadePlan:
             plan = PDDLManager.readPDDLPlan(self.save_dir+"Plans/pl_"+self.name+".pddl")
             return plan

@@ -7,8 +7,9 @@ env = gym.make("SimpleSatellite-v0", random=True)
 
 # Initialize arbiter
 n_targets_per_planner = 2
-n_planners = 2
+n_planners = 4
 total_targets = n_targets_per_planner*n_planners
+
 agent = Arbiter(env, n_targets_per_planner=n_targets_per_planner, n_planners=n_planners)
 
 # Start Simulation
