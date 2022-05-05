@@ -23,7 +23,7 @@ class Simple_satellite_v0(gym.Env):
         self.first_render = True
 
         # save the satelite enviroment
-        self.SatSim = SatelliteSim()
+        self.SatSim = SatelliteSim(random=random)
         
 
         # The actions available are:
@@ -76,8 +76,8 @@ class Simple_satellite_v0(gym.Env):
         observation = self.state
         return observation, reward, done, info
 
-    def reset(self):
-        self.state = self.SatSim.reset()
+    def reset(self, n_targ: int = 4):
+        self.state = self.SatSim.reset(n_targets=n_targ)
         self.Total_reward = 0
         observation = self.state
         return observation 

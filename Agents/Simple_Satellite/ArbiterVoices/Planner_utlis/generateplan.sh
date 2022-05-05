@@ -1,5 +1,5 @@
 #!/bin/bash
-cd SimpleSatellite/envs/Planner/
+cd %s
 chmod 755 popf
 ./popf %s %s > %s
 cd ..

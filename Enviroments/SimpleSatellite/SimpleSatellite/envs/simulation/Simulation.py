@@ -19,8 +19,8 @@ class SatelliteSim:
     ACTION_DO_NOTHING = 2
     ACTION_NAMES = ["TP","AN","DP","DN"]
 
-    DURATION_TAKE_IMAGE = 2
-    DURATION_DUMP = 19
+    DURATION_TAKE_IMAGE = 20
+    DURATION_DUMP = 20
     DURATION_ANALYSE = 49
     DURATIONS = [DURATION_TAKE_IMAGE,DURATION_DUMP,DURATION_ANALYSE]
 
@@ -49,9 +49,11 @@ class SatelliteSim:
 
         self.n_tagets = 4
         t_c= [6., 72., 144., 216.]
+        self.target_list = []
         self.targets = []
         for i in range(self.n_tagets):
             self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
+            self.target_list.append(i)
 
         # memory state
         self.memory_level = 0
@@ -166,9 +168,9 @@ class SatelliteSim:
         # No action is possible    
         return False
 
-    def reset(self):
+    def reset(self, n_targets: int =4):
         self.sim_time = 0
-
+        self.n_tagets = n_targets
         # satellite state
         self.pos = 0
         self.orbit = 0
@@ -183,8 +185,8 @@ class SatelliteSim:
             # Generate Targets
             self.targets = self.initRandomTargets(self.n_tagets)
 
-            # Generate Ground Stations
-            self.initRandomStations()
+            # # Generate Ground Stations
+            # self.initRandomStations()
         return self.get_state()
 
     def initRandomStations(self):

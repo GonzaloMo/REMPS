@@ -36,7 +36,7 @@
 
     (:durative-action take_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 3)
+        :duration (= ?duration 12)
         :condition (and 
             (at start (sat_free))
             (at start (image_available ?i))
@@ -51,10 +51,10 @@
             (at end (sat_free))
             )
     )
-    
+  
     (:durative-action analyse_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 50)
+        :duration (= ?duration 30)
         :condition (and 
             (at start (sat_free))
             (at start (memory_taken ?m ?i))
@@ -70,8 +70,8 @@
     
     (:durative-action dump_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 20)
-        :condition (and 
+        :duration (= ?duration 12)
+        :condition (and
             (at start (sat_free))
             (at start (image_analysed ?m ?i))
             (at start (dump_available))
@@ -81,10 +81,11 @@
             (at start (sat_busy))
             (at start (not (memory_taken ?m ?i)))
             (at end (memory_free ?m))
+            (at end (not (image_analysed ?m ?i)))
             (at end (image_dumped ?i))
             (at end (not (sat_busy)))
             (at end (sat_free))
-            (at end (increase (total_score) (image_score ?i)))
+            (at end (increase (image_score ?i) 1))
             )
     )
 )
