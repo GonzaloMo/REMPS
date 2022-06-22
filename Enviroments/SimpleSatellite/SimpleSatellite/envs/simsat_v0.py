@@ -52,22 +52,13 @@ class Simple_satellite_v0(gym.Env):
         self.Total_reward = 0
         self.Reward = Reward_v1
         
-    def step(self, action, render=False):
+    def step(self, action):
         self.action = action
         # Take action 
         next_state, done = self.SatSim.update(action)
         # Action_avaible = self.SatSim.action_is_posible()
         self.next_state = next_state
-        if render:
-            self.render()
-        # Only stop when action is needed to be taken
-        # while not Action_avaible and not done:
-        #     self.action = 3
-        #     next_state, done = self.SatSim.update(self.action)
-        #     Action_avaible = self.SatSim.action_is_posible()
-        #     if render:
-        #         self.render()
-        
+
         self.done = done
         reward = self.Reward(self, action)
         self.state = next_state
@@ -89,12 +80,16 @@ class Simple_satellite_v0(gym.Env):
         #     self.first_render = False
         from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
         self.view = SatelliteView(self.SatSim)
-        self.view.drawSim(self.SatSim, reward=float(self.Total_reward))
+        self.view.drawSim(self.SatSim)
         # self.print_obs(self.next_state)
+        # self.view.draw_reward(float(self.Total_reward))
+        pygame.display.flip()
         if self.action == 3:
             sleep(.01)
         else:
             sleep(.1)
+
+        
 
     def close (self):
         pygame.quit()

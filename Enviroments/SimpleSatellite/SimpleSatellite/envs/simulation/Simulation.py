@@ -133,12 +133,14 @@ class SatelliteSim:
                 for index in range(1,len(self.analysis)+1):
                     pic2dump = len(self.analysis) - index
                     if self.analysis[pic2dump]:
+                        image_dumped = self.images[pic2dump]
                         self.analysis[pic2dump] = False
+                        self.Goal_achived[image_dumped] += 1
                         self.images[pic2dump] = 0
                         self.memory_level = max(0,self.memory_level-1)
                         self.last_action = action
                         # score the goal value
-                        self.goalRef.evaluateDump(self.orbit, self.images[pic2dump])
+                        self.goalRef.evaluateDump(self.orbit, image_dumped)
                         return
 
 
@@ -175,6 +177,8 @@ class SatelliteSim:
         self.pos = 0
         self.orbit = 0
         self.last_action = 3
+        self.Goal_achived = {}
+        
 
         # memory state
         self.memory_level = 0
@@ -184,9 +188,14 @@ class SatelliteSim:
         if self.random:
             # Generate Targets
             self.targets = self.initRandomTargets(self.n_tagets)
-
+            self.target_list = []
+            for i in range(self.n_tagets):
+                self.target_list.append(i+1)
+                
             # # Generate Ground Stations
             # self.initRandomStations()
+        for i in self.target_list:
+            self.Goal_achived[i] = 0
         return self.get_state()
 
     def initRandomStations(self):

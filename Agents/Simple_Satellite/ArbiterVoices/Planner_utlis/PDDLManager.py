@@ -56,7 +56,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     initC +=memfree + "\n"
     tg = ''
     gs = ''
-    for o in range(orbits):
+    for o in range(obs['Orbit'][0], obs['Orbit'][0]+orbits):
         for index, target in enumerate(obs['Targets']):
             start = target[0] + 360 * o
             end = target[1] + 360 * o

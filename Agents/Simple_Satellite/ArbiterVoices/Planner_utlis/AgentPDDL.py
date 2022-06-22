@@ -3,6 +3,8 @@ import threading
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from ArbiterVoices.Planner_utlis import PDDLManager 
 from ArbiterVoices.Planner_utlis.GoalReferee import GoalReferee
+import IPython
+
 class PDDLAgent:
 
     def __init__(self, sim: SatelliteSim, name:str):
@@ -17,17 +19,16 @@ class PDDLAgent:
         PDDLManager.writePDDLDomain(sim, self.save_dir+"Domain.pddl")
 
     def generatePlan(self, obs, amount=4):
-        print(f"{self.name} begin planning")
+        print(f"{self.name} | Generating plan")
         goals = self.GoalRef.generateSingleGoals(len(obs['Targets']), amount=amount)       
-        print(goals)
-        # print("({name}) generating a plan".format(name=self.name))
+        print(f"{self.name} | Goals: {goals}")
         PDDLManager.writePDDLProblem(obs, self.save_dir+"Problems/pr_"+self.name+".pddl", goals,orbits=8)
         MadePlan = PDDLManager.generatePlan(self.save_dir, "Domain.pddl", "Problems/pr_"+self.name+".pddl", "Plans/pl_"+self.name+".pddl")
-        print(f"{self.name} completed planning")
+        print(f"{self.name} | Plan generated")
         if MadePlan:
             plan = PDDLManager.readPDDLPlan(self.save_dir+"Plans/pl_"+self.name+".pddl")
             return plan
         else:
-            print("({name}) planning failed".format(name=self.name))
+            print(f"({self.name}) planning failed")
             return []
         

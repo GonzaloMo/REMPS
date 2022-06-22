@@ -26,7 +26,7 @@ class GoalReferee:
 
     def generateSingleGoals(self, n_targets: List[int], amount=1):
         goals = numpy.random.randint(amount, size=n_targets)
-        if GoalReferee.MAX_SINGLE_GOALS > numpy.sum(goals):
+        if GoalReferee.MAX_SINGLE_GOALS < numpy.sum(goals):
             self.generateSingleGoals(n_targets, amount=max(4,amount-1))
         return goals
 
