@@ -8,7 +8,7 @@ env = gym.make("SimpleSatellitePlanner-v0", random=True)
 
 # Initialize arbiter
 n_targets_per_planner = 2
-n_planners = 1
+n_planners = 2
 total_targets = n_targets_per_planner*n_planners
 
 # agent = Arbiter(env, n_targets_per_planner=n_targets_per_planner, n_planners=n_planners)
@@ -28,8 +28,6 @@ while not done:
     action = planner.getAction(obs)
     obs, reward, done, info = env.step(action)
     env.render(planner.full_plan)
+    # env.render(agent.Voices)
     episode_reward += reward
 print(episode_reward)
-
-
-

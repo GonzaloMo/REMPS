@@ -16,6 +16,8 @@ class Arbiter:
         self.npp = n_targets_per_planner
 
     def take_action(self, obs):
+        if obs['Busy'] == 0:
+            return 3
         for i, voice in  enumerate(self.Voices):
             First_target = i*self.npp
             Last_target = First_target + (i+1)*self.npp
