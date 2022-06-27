@@ -114,9 +114,9 @@ def writePDDLDomain(sim: SatelliteSim, file: str):
     # - V is the velocity of the satellite in degrees/seconds
     # - da = duration of the action in seconds
     # - DA = Duration of the action in degrees
-    DA = math.ceil(sim.velocity * sim.DURATION_ANALYSE)
-    DD = math.ceil(sim.velocity * sim.DURATION_DUMP)
-    DI = math.ceil(sim.velocity * sim.DURATION_TAKE_IMAGE)
+    DA = math.ceil(sim.DURATION_ANALYSE)
+    DD = math.ceil(sim.DURATION_DUMP)
+    DI = math.ceil(sim.DURATION_TAKE_IMAGE)
     with open(file, "w") as f:
         f.write(
 f"""(define (domain SimpleSatellite)

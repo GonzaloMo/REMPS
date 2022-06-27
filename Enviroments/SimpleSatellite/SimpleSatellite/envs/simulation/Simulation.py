@@ -98,7 +98,6 @@ class SatelliteSim:
 
     def apply_action(self, action):   
         # check if busy or the satellite does nothing 
-        print(self.busy)
         if self.satellite_busy_time > 0:
             return 
         if action==3 or action==None:
