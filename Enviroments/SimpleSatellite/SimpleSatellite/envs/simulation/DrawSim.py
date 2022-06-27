@@ -190,7 +190,9 @@ class SatelliteView:
         #                         SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.2-index)))
         pygame.draw.line(self.screen, SatelliteView.WHITE, [0, SatelliteView.DIV_AGENT],[800, SatelliteView.DIV_AGENT], width=2)
         
-
+    ############
+    ## Reward ##
+    ############
     def draw_reward(self, reward):
         lamba_w_r = 0.3
         lamba_h_r = (1-lamba_w_r)/2
@@ -203,18 +205,66 @@ class SatelliteView:
         reward_txt = self.font.render("Reward = "+str(round(reward,2)), True, SatelliteView.BLACK)
         self.screen.blit(reward_txt, [x_r+.1*w_r, y_r+.25*h_r,
                                         .5*w_r, .5*h_r])
-    def draw_arbiter(self, arbiter):
-        lamba_w_r = 0.3
-        lamba_h_r = (1-lamba_w_r)/2
-        x_r = SatelliteView.OFFSET + SatelliteView.GOAL_SIZE * 0.1 + SatelliteView.HUD_WIDTH*lamba_h_r
-        y_r = SatelliteView.DIV_AGENT + SatelliteView.GOAL_SIZE * 0.
-        w_r = SatelliteView.HUD_WIDTH*lamba_w_r
-        h_r = SatelliteView.GOAL_SIZE
-        pygame.draw.rect(self.screen, SatelliteView.WHITE, [x_r, y_r,
-                                                            w_r, h_r])
-        arbiter_txt = self.font.render("Arbiter = "+str(arbiter), True, SatelliteView.BLACK)
-        self.screen.blit(arbiter_txt, [x_r+.1*w_r, y_r+.25*h_r,
-                                        .5*w_r, .5*h_r])
+
+    ##################
+    ## Draw Arbiter ##
+    ##################
+    def draw_arbiter(self, Voices, obs):
+        self.draw_legend()
+
+        n_voices = len(Voices)
+
+        ### Draw timeline 
+        line_w = SatelliteView.WIDTH - SatelliteView.OFFSET
+        line_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.8
+
+        # Horizontal line
+        pygame.draw.line(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, line_y],
+                            [SatelliteView.OFFSET/2 + line_w, line_y], width=2)
+        
+        # Vertical line
+        pygame.draw.line(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, line_y - SatelliteView.GOAL_SIZE*(n_voices+1)],
+                            [SatelliteView.OFFSET/2, line_y], width=2)
+        
+        for i,v in enumerate(Voices):
+            y = line_y - SatelliteView.GOAL_SIZE*(n_voices - i)
+            # Voice name
+            voice_txt = self.font.render(v.name, True, SatelliteView.WHITE)
+            self.screen.blit(voice_txt, [SatelliteView.OFFSET/4 - SatelliteView.GOAL_SIZE*0.5, y + SatelliteView.GOAL_SIZE*0.5])
+            
+            # Voice plan
+            self.draw_single_plan(v.full_plan, obs, line_w, y)
+
+
+    ##################
+    ## Draw Planner ##
+    ##################
+    def draw_planner(self, plan, obs, target_dump):
+        
+        self.draw_legend()
+        # Draw timeline 
+        line_w = SatelliteView.WIDTH - SatelliteView.OFFSET
+        line_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.6
+        pygame.draw.line(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, line_y],
+                            [SatelliteView.OFFSET/2 + line_w, line_y], width=2)
+        pygame.draw.line(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, line_y - SatelliteView.GOAL_SIZE*3],
+                            [SatelliteView.OFFSET/2, line_y], width=2)
+        # Draw plan
+        self.draw_single_plan(plan, obs, line_w, line_y) 
+
+        # Draw Dump images
+        st_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.7
+        pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, st_y, line_w, SatelliteView.GOAL_SIZE*2])
+        Goals = 'Image Dumped = '
+        for k,v in target_dump.items():
+            Goals += str(k)+': '+str(v)+' | '
+        font_Goals = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE))
+        Goals_txt = font_Goals.render(Goals, True, SatelliteView.BLACK, )
+        self.screen.blit(Goals_txt, [SatelliteView.OFFSET/2, st_y+SatelliteView.GOAL_SIZE*0.5,
+                                    .5*line_w, .5*SatelliteView.GOAL_SIZE])
+    ##################
+    ## Helpers     ##
+    ##################
     def draw_pos(self, obs):
         current_pos = obs['Pos'][0]+ 360*obs['Orbit'][0]
         lamba_w_r = 0.3
@@ -226,10 +276,9 @@ class SatelliteView:
         arbiter_txt = self.font.render("Pos = "+str(current_pos), True, SatelliteView.ORANGE)
         self.screen.blit(arbiter_txt, [x_r, y_r,
                                         .5*w_r, .5*h_r])
-
-       
-    def draw_planner(self, plan, obs, target_dump):
-        
+                                    
+    
+    def draw_legend(self):
         #* Draw legend Take image (orange), Analyze (orange-purple), and Dump (purple)
         lamba_w_r = 1.0
         lamba_h_r = (1-lamba_w_r)/2
@@ -264,27 +313,6 @@ class SatelliteView:
         DP_txt = self.font.render("Dump picture (DP)", True, SatelliteView.BLACK)
         self.screen.blit(DP_txt, [x_leg, y_r+pad,
                                     .3*w_r, .5*h_r])
-        # Draw timeline 
-        line_w = SatelliteView.WIDTH - SatelliteView.OFFSET
-        line_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.6
-        pygame.draw.line(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, line_y],
-                            [SatelliteView.OFFSET/2 + line_w, line_y], width=2)
-        pygame.draw.line(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, line_y - SatelliteView.GOAL_SIZE*3],
-                            [SatelliteView.OFFSET/2, line_y], width=2)
-        # Draw plan
-        self.draw_single_plan(plan, obs, line_w, line_y) 
-
-        # Draw Dump images
-        st_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.7
-        pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, st_y, line_w, SatelliteView.GOAL_SIZE*2])
-        Goals = 'Image Dumped = '
-        for k,v in target_dump.items():
-            Goals += str(k)+': '+str(v)+' | '
-        font_Goals = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE))
-        Goals_txt = font_Goals.render(Goals, True, SatelliteView.BLACK, )
-        self.screen.blit(Goals_txt, [SatelliteView.OFFSET/2, st_y+SatelliteView.GOAL_SIZE*0.5,
-                                    .5*line_w, .5*SatelliteView.GOAL_SIZE])
-
 
     def draw_single_plan(self, plan, obs, line_w, line_y):
         # Draw plan
@@ -310,6 +338,7 @@ class SatelliteView:
                     action_end = current_pos + 360
                 time_width = (action_end - action_begin) / 360 * line_w 
                 x = SatelliteView.OFFSET/2 + (action_begin - current_pos) / 360 * line_w
-                pygame.draw.rect(self.screen, color, [x, line_y - SatelliteView.GOAL_SIZE*2, time_width, SatelliteView.GOAL_SIZE])
+                pygame.draw.rect(self.screen, color, [x, line_y , time_width, SatelliteView.GOAL_SIZE])
+
     def quit(self):
         pygame.quit()

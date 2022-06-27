@@ -59,8 +59,10 @@ class SatelliteSim:
         self.memory_level = 0
         self.images = [0] * self.MEMORY_SIZE
         self.analysis = [False] * self.MEMORY_SIZE
+
+        # satellite busy time
         self.satellite_busy_time = 0
-        self.busy=0
+        self.busy = 0
 
         # goals
         self.goalRef = GoalReferee()
@@ -71,15 +73,18 @@ class SatelliteSim:
         # update time variables
         self.sim_time += self.dt
         self.pos += self.velocity*self.dt
+        self.satellite_busy_time -= self.dt
 
         # update orbit position
         if self.pos > SatelliteSim.CIRCUNFERENCE:
             self.pos -=  SatelliteSim.CIRCUNFERENCE
             self.orbit += 1
 
+        # update the satellite state
         if self.satellite_busy_time > 0:
-            self.satellite_busy_time = self.satellite_busy_time - self.dt
-
+            self.busy = 1
+        else:
+            self.busy = 0
         # Check if simulation ends
         if self.orbit>=SatelliteSim.MAX_ORBITS:
             done = True
@@ -93,9 +98,12 @@ class SatelliteSim:
 
     def apply_action(self, action):   
         # check if busy or the satellite does nothing 
-        if self.satellite_busy_time > 0 or action==3 or action==None:
-            self.busy=1
+        print(self.busy)
+        if self.satellite_busy_time > 0:
             return 
+        if action==3 or action==None:
+            
+            return
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Check free location in the memory
@@ -109,11 +117,13 @@ class SatelliteSim:
                             self.analysis[ind_mem] = False
                             self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
                             self.last_action = action
+                            self.busy = 1
                             return
         
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
             self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
+            self.busy = 1
             for index in range(len(self.analysis)):
                 if not self.analysis[index] and not(self.images[index]== 0):
                     if random.random() > 0.0:
@@ -129,6 +139,7 @@ class SatelliteSim:
             # check if it is above the ground station and if their is any analysed image
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = SatelliteSim.DURATION_DUMP
+                self.busy = 1
                 # Check all the images
                 for index in range(1,len(self.analysis)+1):
                     pic2dump = len(self.analysis) - index
@@ -145,10 +156,6 @@ class SatelliteSim:
 
 
     def action_is_posible(self):
-        # check if busy or the satellite does nothing 
-        if self.satellite_busy_time > 0:
-            self.busy=1
-            return False
         
         # Check if Take picture action is possible
         for index in range(len(self.targets)):
@@ -185,6 +192,7 @@ class SatelliteSim:
         self.images = [0] * self.MEMORY_SIZE
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
+        self.busy = 0
         if self.random:
             # Generate Targets
             self.targets = self.initRandomTargets(self.n_tagets)

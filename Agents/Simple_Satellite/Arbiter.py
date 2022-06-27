@@ -12,11 +12,11 @@ class Arbiter:
         for i in  range(n_planners):
             First_target = i* n_targets_per_planner
             Last_target = First_target + n_targets_per_planner
-            self.Voices.append(Planner_Voice(env.SatSim, First_target, Last_target, name=f"Planner_{i}"))
+            self.Voices.append(Planner_Voice(env.SatSim, First_target, Last_target, name=f"V_{i}"))
         self.npp = n_targets_per_planner
 
     def take_action(self, obs):
-        if obs['Busy'] == 0:
+        if obs['Busy'] == 1:
             return 3
         for i, voice in  enumerate(self.Voices):
             First_target = i*self.npp
