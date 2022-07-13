@@ -2,10 +2,12 @@ import math
 from numpy import random
 from SimpleSatellite.envs.simulation.GoalReferee import GoalReferee
 import numpy as np
+import datetime
+import os
 
 class SatelliteSim:
 
-    MAX_ORBITS = 30
+    MAX_ORBITS = 20
 
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1
@@ -21,14 +23,26 @@ class SatelliteSim:
 
     DURATION_TAKE_IMAGE = 20
     DURATION_DUMP = 20
-    DURATION_ANALYSE = 49
+    DURATION_ANALYSE = 50
     DURATIONS = [DURATION_TAKE_IMAGE,DURATION_DUMP,DURATION_ANALYSE]
 
     TARGET_HALF_SIZE = 5.
     GS_HALF_SIZE = 15.
 
-    def __init__(self, period=600, random=False):
+    def __init__(self, period=600, seed=None, random_tg=False, n_gs=2, n_targets=4, log_dir = "./Logs/Simulation/"):
+        """
+        Initialize the satellite simulation.
 
+        Args:
+            period: the period of the satellite orbit.
+            seed: the seed for the random number generator.
+            random_tg: if True, the targets are randomly placed.
+            n_gs: the number of ground stations.
+            n_targets: the number of targets.
+        """
+        # initialize logger
+        self.log_dir = log_dir
+        # initialize simulation time
         self.sim_time = 0
         self.period = period
         self.dt = period/SatelliteSim.CIRCUNFERENCE
@@ -40,20 +54,35 @@ class SatelliteSim:
         self.last_action = 3
 
         # planet position
-        self.random = random
-        self.n_gs = 1
-        gs_c = [288]
+        self.n_gs = n_gs
+        gs_c = [90, 270]
         self.groundStations = []
         for i in range(self.n_gs):
-            self.groundStations.append([gs_c[i]-SatelliteSim.GS_HALF_SIZE, gs_c[i]+SatelliteSim.GS_HALF_SIZE])
+            min_pos = gs_c[i]-SatelliteSim.GS_HALF_SIZE
+            max_pos = gs_c[i]+SatelliteSim.GS_HALF_SIZE
+            if min_pos < 0:
+                min_pos = 0
+                self.groundStations.append([0, max_pos])
+                self.groundStations.append([SatelliteSim.CIRCUNFERENCE + min_pos, SatelliteSim.CIRCUNFERENCE])
+            elif max_pos > SatelliteSim.CIRCUNFERENCE:
+                max_pos = SatelliteSim.CIRCUNFERENCE
+                self.groundStations.append([0, max_pos - SatelliteSim.CIRCUNFERENCE])
+                self.groundStations.append([min_pos, SatelliteSim.CIRCUNFERENCE])
+            else: 
+                self.groundStations.append([gs_c[i]-SatelliteSim.GS_HALF_SIZE, gs_c[i]+SatelliteSim.GS_HALF_SIZE])
+            
 
-        self.n_tagets = 4
-        t_c= [6., 72., 144., 216.]
-        self.target_list = []
+        # targets
+        self.random_targets = random_tg
+        self.n_tagets = n_targets
         self.targets = []
-        for i in range(self.n_tagets):
-            self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
-            self.target_list.append(i)
+        self.target_list = []
+        if random_tg:
+            self.n_tagets = 4
+            t_c= [6., 72., 144., 216.]
+            for i in range(self.n_tagets):
+                self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
+                self.target_list.append(i)
 
         # memory state
         self.memory_level = 0
@@ -65,9 +94,23 @@ class SatelliteSim:
         self.busy = 0
 
         # goals
-        self.goalRef = GoalReferee()
+        self.goalRef = GoalReferee(log_dir=log_dir)
+
+        # initialize random seed file
+        with open(self.log_dir+"seed.txt", "a") as f:
+            f.write(datetime.datetime.now().strftime("  Date and Time  ") + " | " +"Sim Seed" +"\n")
 
     def update(self, action):
+        """
+        Update the satellite simulation.
+
+        Args:
+            action: the action to be taken.
+
+        Returns:
+            state: the state of the satellite.
+            done: if the simulation is has been terminated.
+        """
         done = False
 
         # update time variables
@@ -96,7 +139,13 @@ class SatelliteSim:
         return state, done
         
 
-    def apply_action(self, action):   
+    def apply_action(self, action): 
+        """
+        Apply the action to the satellite.
+
+        Args:
+            action: the action to be taken.
+        """
         # check if busy or the satellite does nothing 
         if self.satellite_busy_time > 0:
             return 
@@ -155,30 +204,46 @@ class SatelliteSim:
 
 
     def action_is_posible(self):
-        
-        # Check if Take picture action is possible
-        for index in range(len(self.targets)):
-            # Checks if memory space is available and that the satellite is above target
-            if self.targets[index][0] < self.pos < self.targets[index][1] and self.memory_level<SatelliteSim.MEMORY_SIZE:
-                return True
-        
-        # Check if Analyse picture action is possible
-        for index in range(len(self.images)):
-            if not self.analysis[index] and self.images[index]>0:
-                return True
-        
-        # Check if Dump picture action is possible
-        # check if it is above the ground station and if their is any analysed image
-        if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]):
-            if any(self.analysis):
-                return True
+        """
+        Check if the action is posible.
 
-        # No action is possible    
+        Returns:
+            True if the action is posible.
+        """
+        if self.satellite_busy_time > 0:
+            return False
+        if self.action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Check free location in the memory
+            for ind_mem in range(len(self.images)):
+                if self.images[ind_mem] == 0:
+                    # Check if above which target the satellite is
+                    for index in range(len(self.targets)):
+                        if self.targets[index][0] < self.pos < self.targets[index][1]:
+                            return True
+        if self.action == SatelliteSim.ACTION_ANALYSE:
+            for index in range(len(self.analysis)):
+                if not self.analysis[index] and not(self.images[index]== 0):
+                    return True
+        if self.action == SatelliteSim.ACTION_DUMP:
+            # check if it is above the ground station and if their is any analysed image
+            if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
+                return True
         return False
 
-    def reset(self, n_targets: int =4):
-        self.sim_time = 0
-        self.n_tagets = n_targets
+    def reset(self, n_targets: int =4, seed: int =None):
+        """
+        Reset the satellite simulation.
+
+        Args:
+            n_targets: the number of targets to be used in the simulation.
+
+        Returns:
+            The initial state of the satellite.
+        """
+        
+        # Reset the random seed
+        self.set_seed(seed=seed)
+
         # satellite state
         self.pos = 0
         self.orbit = 0
@@ -192,7 +257,7 @@ class SatelliteSim:
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
         self.busy = 0
-        if self.random:
+        if not self.random_targets:
             # Generate Targets
             self.targets = self.initRandomTargets(self.n_tagets)
             self.target_list = []
@@ -206,19 +271,40 @@ class SatelliteSim:
         return self.get_state()
 
     def initRandomStations(self):
+        """
+        Generate random ground stations.
+            
+        Returns:
+            The list of ground stations.
+        """
         self.groundStations = []
         for i in range(self.n_gs):
             s = random.random()*(SatelliteSim.CIRCUNFERENCE-SatelliteSim.GS_HALF_SIZE)
             self.groundStations.append((s, s+SatelliteSim.GS_HALF_SIZE))
 
     def initRandomTargets(self, amount):
+        """
+        Generate random targets.
+
+        Args:
+            amount: the number of targets to be generated.
+
+        Returns:
+            The list of targets.
+        """
         targets = []
         for i in range(amount):
-            s = random.random()*(SatelliteSim.CIRCUNFERENCE-SatelliteSim.TARGET_HALF_SIZE)
-            targets.append((s, s+SatelliteSim.TARGET_HALF_SIZE))
+            s = random.randint(0+SatelliteSim.TARGET_HALF_SIZE, SatelliteSim.CIRCUNFERENCE-SatelliteSim.TARGET_HALF_SIZE)
+            targets.append((s-SatelliteSim.TARGET_HALF_SIZE, s+SatelliteSim.TARGET_HALF_SIZE))
         return targets
 
     def get_state(self):
+        """
+        Get the current state of the satellite.
+            
+        Returns:
+            The current state of the satellite.
+        """
         obs = {'Orbit': np.array([self.orbit], dtype=np.int8), 
                 'Pos': np.array([self.pos], dtype=np.float32),
                 'Busy': np.array([self.busy], dtype=np.int8),
@@ -230,10 +316,46 @@ class SatelliteSim:
         return obs
         
     def time2angle(self, time):
+        """
+        Convert time to angle.
+            
+        Args:
+            time: the time to be converted.
+
+        Returns:
+            The angle corresponding to the time.
+        """
         delta_t = time - math.floor(time/self.period) * self.period
         return self.velocity*delta_t
     
     def angle2time(self, angle):
+        """
+        Convert angle to time.
+                
+        Args:
+            angle: the angle to be converted.
+
+        Returns:
+            The time corresponding to the angle.
+        """
         T = self.orbit*self.period
         t = T + angle / self.velocity
+        return t
 
+    def set_seed(self, seed):
+        """
+        Set the seed of the random number generator.
+            
+        Args:
+            seed: the seed to be set.
+        """
+        seed = seed if seed is not None else np.random.randint(0, 2**32)
+        np.random.seed(seed)
+        random.seed(seed)
+        self.seed = seed
+        print("Sim Seed: ", self.seed)
+        # Create Log folder
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
+        with open(self.log_dir+"seed.txt", "a") as f:
+            f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + str(self.seed)+"\n")

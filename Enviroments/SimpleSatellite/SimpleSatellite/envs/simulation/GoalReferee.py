@@ -1,6 +1,8 @@
 import math
 import random
-
+import datetime
+import numpy as np
+import os
 class CampaignGoal:
 
     def __init__(self, targets=[], reward=1):
@@ -17,10 +19,11 @@ class GoalReferee:
     MAX_SINGLE_GOALS = 10
     MAX_CAMPAIGNS = 3
 
-    def __init__(self):
+    def __init__(self, log_dir="logs/"):
         self.single_goals = {}
         self.campaigns = []
         self.value = 0
+        self.log_dir = log_dir
 
     def generateSingleGoals(self, images, amount=1):
         amount = min(amount, GoalReferee.MAX_SINGLE_GOALS - len(self.single_goals))
@@ -69,3 +72,27 @@ class GoalReferee:
                 if c.campaign_started and not c.targets_completed[index] and orbit > target[1] + c.campaign_start_orbit:
                     c.campaign_failed = True
         self.campaigns = [c for c in self.campaigns if not c.campaign_failed and not c.campaign_completed]
+
+    def set_seed(self, seed, Planner:str):
+        """
+        Set the seed of the random number generator.
+            
+        Args:
+            seed: the seed to be set.
+        """
+        seed = seed if seed is not None else np.random.randint(0, 2**32)
+        np.random.seed(seed)
+        random.seed(seed)
+        self.seed = seed
+        print("Goal Seed: ", self.seed)
+        with open(self.log_dir+"seed.txt", "a") as f:
+            
+            f.write(Planner+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + str(self.seed)+"\n")
+    
+    def log_env(self):
+        with open(self.log_dir+"Goal_seed.txt", "a") as f:
+            f.write("----------------------------- Env  ----------------------------------"+"\n")
+
+    def log_sim(self):
+        with open(self.log_dir+"Goal_seed.txt", "a") as f:
+            f.write("----------------------------- Sim  ----------------------------------"+"\n")

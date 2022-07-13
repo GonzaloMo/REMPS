@@ -1,18 +1,19 @@
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-import requests
 import subprocess
 import math
+import numpy as np
 
-from tqdm import tgrange
-
-def generatePlan(loc: str, domain: str, problem: str, plan: str):
-    with open(loc+'generateplan.sh', 'rb') as file:
+def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int=10, memory_limit: int=1000000):
+    with open(loc+'generateplan_optic.sh', 'rb') as file:
         script = file.read()
     domain = domain.encode('UTF-8')
     problem = problem.encode('UTF-8')
     plan = plan.encode('UTF-8')
     loc = loc.encode('UTF-8')
-    script = script % (loc, domain, problem, plan,)
+    time_limit = str(time_limit).encode('UTF-8')
+    memory_limit = str(memory_limit).encode('UTF-8')
+    print(loc, time_limit, memory_limit, domain, problem, plan)
+    script = script % (loc, time_limit, memory_limit, domain, problem, plan,)
     exit_code = subprocess.call(script, shell=True)
     with open(loc+plan, 'a') as file:
         script = file.write('\nEND')
@@ -21,6 +22,22 @@ def generatePlan(loc: str, domain: str, problem: str, plan: str):
     else:
         return True
 
+# def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int=100, memory_limit: int=1000000):
+#     with open(loc+'generateplan.sh', 'rb') as file:
+#         script = file.read()
+#     domain = domain.encode('UTF-8')
+#     problem = problem.encode('UTF-8')
+#     plan = plan.encode('UTF-8')
+#     loc = loc.encode('UTF-8')
+#     print(loc, domain, problem, plan)
+#     script = script % (loc, domain, problem, plan,)
+#     exit_code = subprocess.call(script, shell=True)
+#     with open(loc+plan, 'a') as file:
+#         script = file.write('\nEND')
+#     if exit_code:
+#         return False
+#     else:
+#         return True
 
 def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     header = "(define(problem satprob)\n"
@@ -48,7 +65,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     animg = ''
     for memo, targ in enumerate(obs['Images']):
         if targ == 0:
-            memfree +="  (memory_free mem" + str(index) + ")\n"
+            memfree +="  (memory_free mem" + str(memo) + ")\n"
         else:
             memtak +="   (memory_taken mem" + str(memo) + " img" + str(targ) + ")\n"
             if obs['Analysis'][memo]:
@@ -60,8 +77,8 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
         for index, target in enumerate(obs['Targets']):
             start = target[0] + 360 * o
             end = target[1] + 360 * o
-            tg += "  (at " + str(round(start, 3)) + " (image_available img" + str(index+1) + "))\n"
-            tg += "  (at " + str(round(end, 3)) + " (not (image_available img" + str(index+1) + ")))\n"
+            tg += "  (at " + str(int(start)) + " (image_available img" + str(index+1) + "))\n"
+            tg += "  (at " + str(int(end)) + " (not (image_available img" + str(index+1) + ")))\n"
         for index, target in enumerate(obs['Ground Stations']):
             start = target[0] + 360 * o
             end = target[1] + 360 * o
@@ -73,13 +90,31 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     initC +=")\n"
     # Define Goals
     Goals = "(:goal (and\n"
+    metrics = "(:metric maximize (+\n"
+    i = 0
+    end_metrics = ""
+    total_targets = len(np.where(goals>0)[0])
     for targ, n_img in enumerate(goals):
+        space_infront = "  "*(i+1)
         if n_img>0:
-            Goals += "  (= (image_score img"+str(targ+1)+") "+str(n_img)+")\n"
-    Goals += ")))\n"
+            Goals += "  (> (image_score img"+str(targ+1)+") "+str(0)+")\n"
+            Goals += "  (<= (image_score img"+str(targ+1)+") "+str(n_img)+")\n\n"
+            metrics += space_infront 
+            if i == 0:
+                metrics += "(image_score img"+str(targ+1)+")\n"
+            elif i == total_targets-1:
+                metrics += "(image_score img"+str(targ+1)+")\n"
+            else:
+                metrics += "(+ (image_score img"+str(targ+1)+")\n"
+            i+=1
+
+            end_metrics += "  "*(total_targets - i) + ")\n"
+    Goals += "))\n"
+    metrics += end_metrics
+    metrics += ")\n"
 
     # Join full problem
-    problem = header + objects + initC + Goals
+    problem = header + objects + initC + Goals + metrics
     with open(file, "w") as f:
         f.write(problem)
         f.close()
@@ -95,11 +130,12 @@ def readPDDLPlan(file: str):
         while end:
             if start_reading and line:
                 tokens = line.split()
-                time = tokens[0][:-1]
-                action = tokens[1][1:]
-                image = tokens[2]
-                memory = tokens[3][:-1]
-                plan.append((float(time), actionMap[action], int(image[3:]), int(memory[3:])))
+                if "." in tokens[0]:
+                    time = tokens[0][:-1]
+                    action = tokens[1][1:]
+                    image = tokens[2]
+                    memory = tokens[3][:-1]
+                    plan.append((float(time), actionMap[action], int(image[3:]), int(memory[3:])))
             if 'Time' in line:
                 start_reading = True
             line = f.readline().strip()

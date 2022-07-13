@@ -15,14 +15,15 @@ import numpy as np
 class Simple_satellite_Arb_v0(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
-            random: bool = False):
+            random: bool = False,
+            n_targets: int = 4):
         super(Simple_satellite_Arb_v0, self).__init__()
         
         # set true so initialization is only done once
         self.first_render = True
 
         # save the satelite enviroment
-        self.SatSim = SatelliteSim(random=random)
+        self.SatSim = SatelliteSim(random_tg=random, n_targets=n_targets)
         
 
         # The actions available are:
@@ -65,8 +66,8 @@ class Simple_satellite_Arb_v0(gym.Env):
         observation = self.state
         return observation, reward, done, info
 
-    def reset(self, n_targ: int = 4):
-        self.state = self.SatSim.reset(n_targets=n_targ)
+    def reset(self, n_targ: int = 4, seed=None):
+        self.state = self.SatSim.reset(n_targets=n_targ, seed=seed)
         self.Total_reward = 0
         observation = self.state
         return observation 
@@ -81,8 +82,6 @@ class Simple_satellite_Arb_v0(gym.Env):
             sleep(.01)
         else:
             sleep(.5)
-
-        
 
     def close (self):
         pygame.quit()

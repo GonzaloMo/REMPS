@@ -54,7 +54,7 @@
   
     (:durative-action analyse_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 49)
+        :duration (= ?duration 50)
         :condition (and 
             (at start (sat_free))
             (at start (memory_taken ?m ?i))
