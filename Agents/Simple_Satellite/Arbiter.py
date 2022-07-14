@@ -21,6 +21,7 @@ class Arbiter:
         for i in  range(n_planners):
             self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}"))
         self.npp = n_targets_per_planner
+        self.Action_doNothing = Action(0, 3, "DoNothing")
 
     def take_action(self, obs, type_selec_method="Priority"):
         """
@@ -39,7 +40,7 @@ class Arbiter:
         for i, voice in enumerate(self.Voices):
             current_action = voice.getAction(obs)
             priority = alpha[i]
-            Voice_action = Action(current_action, priority)
+            Voice_action = Action(priority, current_action, voice.name)
             actions.append(Voice_action)
 
         if type_selec_method == "Priority":
@@ -48,7 +49,11 @@ class Arbiter:
             action = self.weighted_selection(actions)
         else:
             raise ValueError("Type must be either Priority or Weighted")
-        return action
+        self.prune_plan_voices(obs)
+        if not action.action == 3:
+            print(f"Selected Action {action.action} with priority {action.Value} sugested by {action.voice}")
+        
+        return action.action
 
     def high_priority_selection(self, actions):
         """
@@ -62,13 +67,12 @@ class Arbiter:
         """
         # sort actions in priority order
         actions.sort(key=lambda x: x.Value, reverse=True)
-
         # Try to take action with highest priority
-        for a in range(len(actions)):
+        for a in actions:
             # check if action is possible
             if self.env.SatSim.check_action(a.action) and a.action != 3:
-                return a.action
-        return 3
+                return a
+        return self.Action_doNothing
             
     def weighted_selection(self, actions):
         """
@@ -86,11 +90,12 @@ class Arbiter:
         # sort actions in value order
         Weighted_actions.sort(key=lambda x: x.Value, reverse=True)
         # Try to take action with highest priority
-        for a in range(actions):
+        for a in actions:
             # check if action is possible
             if self.env.SatSim.check_action(a.action) and a.action != 3:
-                return a.action
-        return 3
+                return a
+        
+        return self.Action_doNothing
 
     def reset_voices(self, obs):
         for i, voice in  enumerate(self.Voices):
@@ -99,5 +104,6 @@ class Arbiter:
     def render(self):
         self.env.render()
 
-
-
+    def prune_plan_voices(self, obs):
+        for i, voice in enumerate(self.Voices):
+            self.Voices[i].prune_plan(obs)

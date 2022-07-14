@@ -29,14 +29,12 @@ if option_agent == 0:
         obs, reward, done, info = env.step(action)
         env.render(agent.Voices)
         episode_reward += reward
+        print (f"Goals_achieved: {env.SatSim.Goals_achieved}")
     print(episode_reward)
     env.close()
 
 elif option_agent == 1:
     env = gym.make("SimpleSatellitePlanner-v0", random=True)
-    # Initialize arbiter
-    
-
     # Initialize Planner
     First_target = 0
     Last_target = First_target + n_targets_per_planner

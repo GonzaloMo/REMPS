@@ -12,12 +12,12 @@ import gym
 from gym import spaces
 
 import numpy as np
-class Simple_satellite_Arb_v0(gym.Env):
+class Simple_satellite_Arb_v1(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             random: bool = False,
             n_targets: int = 4):
-        super(Simple_satellite_Arb_v0, self).__init__()
+        super(Simple_satellite_Arb_v1, self).__init__()
         
         # set true so initialization is only done once
         self.first_render = True
@@ -27,13 +27,18 @@ class Simple_satellite_Arb_v0(gym.Env):
         
 
         # The actions available are:
-        self.action_dict = {"Nothing": 0,
-                            "Take":1 ,
-                            "Analyze":2,
-                            "Dump": 3
-                            }
-        self.action_list_names = ["Nothing","Analyze","Dump","Take"]
-        self.action_space = spaces.Discrete(4)
+        self.action_dict = {"Take Picture":0 ,
+                            "Analyze":1,
+                            "Dump": 2,
+                            "Nothing": 3}
+        self.action_list_names = ["Nothing", "Take Picture"]
+        temp_list = []
+        for i in range(n_targets):
+            self.action_list_names.append("Analyze img"+str(i))
+            temp_list.append("Dump img"+str(i))
+        self.action_list_names.extend(temp_list)
+        n_actions = len(self.action_list_names) 
+        self.action_space = spaces.Discrete(n_actions)
 
         # Observation space is composed as: 
         # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]
@@ -55,12 +60,21 @@ class Simple_satellite_Arb_v0(gym.Env):
         
     def step(self, action):
         self.action = action
+        action_name = self.action_list_names[action]
+        if action_name == "Take Picture":
+            action_tuple = (SatelliteSim.ACTION_TAKE_PICTURE, None)
+        elif "Analyze" in action_name:
+            action_tuple = (SatelliteSim.ACTION_ANALYZE, int(action_name[11:]))
+        elif "Dump" in action_name:
+            action_tuple = (SatelliteSim.ACTION_DUMP, int(action_name[8:]))
+        else:
+            action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
         # Take action 
-        next_state, done = self.SatSim.update(action)
+        next_state, done = self.SatSim.update(action_tuple)
         self.next_state = next_state
         
         self.done = done
-        reward = self.Reward(self, action)
+        reward = self.Reward(self, action_tuple[0])
         self.state = next_state
         self.Total_reward += reward
         info = {}
@@ -82,7 +96,7 @@ class Simple_satellite_Arb_v0(gym.Env):
         if self.action == SatelliteSim.ACTION_DO_NOTHING:
             sleep(.01)
         else:
-            sleep(.01)
+            sleep(.1)
 
     def close (self):
         pygame.quit()

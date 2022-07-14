@@ -20,29 +20,16 @@ class Planner_Voice(BaseVoice):
         self.goals = self.Goal_ref.generateSingleGoals(amount=20)
         
     def getAction(self, obs, epsilon=1) -> int:
-        planpointer = -1
-        if self.excuted_plan == []:
-            if 0<obs['Pos']<5*epsilon:
-                self.get_plan(obs)
-                if len(self.full_plan)<1:
-                    return 3
-            else:
-                return 3
-        processed_obs = self.get_obs(obs)
-        for i in range(len(self.excuted_plan)):
-            p, _ , _, _ = self.excuted_plan[i]
-            if processed_obs['Full_Pos']-epsilon < p < processed_obs['Full_Pos']+epsilon:
-                planpointer = i
-        if planpointer < 0:
-            return 3
-        self.excuted_plan = self.excuted_plan[planpointer:]
-        if len(self.excuted_plan)>1:
-            p, ac, _, _ = self.excuted_plan.pop(0)
-            return ac
+        if len(self.excuted_plan) < 1:
+            self.get_plan(obs)
+            self.getAction(obs, epsilon=epsilon)
+        pos, next_action, image, memory = self.excuted_plan[0]
+        obs = self.get_obs(obs)
+        if obs["Full_Pos"]-epsilon < pos < obs["Full_Pos"]+epsilon:
+            return next_action
         else:
             return 3
             
-
     def get_plan(self, obs, amount=4):
         processed_obs = self.get_obs(obs)
         goals = self.Goal_ref.goals.copy()
@@ -50,7 +37,6 @@ class Planner_Voice(BaseVoice):
         self.full_plan = self.planner.generatePlan(processed_obs, goals)
         self.excuted_plan = self.full_plan.copy()
         print(f"{self.name} | {self.full_plan}")
-        self.planpointer = 0 
 
     def get_obs(self, obs):
         state = copy(obs)
@@ -61,4 +47,14 @@ class Planner_Voice(BaseVoice):
         env.SatSim.targets = env.SatSim.initRandomTargets(self.opp_targets)
         return env
     
+    def prune_plan(self, obs):
+        plan = self.excuted_plan.copy()
+        pos = 360*obs['Orbit'] + obs['Pos']
+        for i in range(len(self.excuted_plan)):
+            if plan[i][0] > pos:
+                break
+        self.excuted_plan = plan[i:].copy()
+        if i == len(self.excuted_plan):
+            self.excuted_plan = []
+
     

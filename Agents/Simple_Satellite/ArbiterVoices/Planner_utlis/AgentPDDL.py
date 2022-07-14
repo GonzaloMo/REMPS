@@ -25,11 +25,11 @@ class PDDLAgent:
     def generatePlan(self, obs, goals, orbits:int = SatelliteSim.MAX_ORBITS):
         print(f"{self.name} | Generating plan")      
         PDDLManager.writePDDLProblem(obs, self.save_dir+"Problems/pr_"+self.name+".pddl", goals,orbits=orbits)
-        MadePlan = PDDLManager.generatePlan(self.save_dir, "Domain.pddl", "Problems/pr_"+self.name+".pddl", "Plans/pl_"+self.name+".pddl")
+        MadePlan = PDDLManager.generatePlan(self.save_dir, "Domain.pddl", "Problems/pr_"+self.name+".pddl", "Plans/pl_"+self.name+".txt")
         
         if MadePlan:
             print(f"{self.name} | Plan generated")
-            plan = PDDLManager.readPDDLPlan(self.save_dir+"Plans/pl_"+self.name+".pddl")
+            plan = PDDLManager.readPDDLPlan(self.save_dir+"Plans/pl_"+self.name+".txt")
             return plan
         else:
             print(f"({self.name}) planning failed")

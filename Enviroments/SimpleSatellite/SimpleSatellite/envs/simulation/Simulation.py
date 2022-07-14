@@ -15,10 +15,12 @@ class SatelliteSim:
     MEMORY_SIZE = 10
 
     ACTIONS = [0, 1, 2, 3]
-    ACTION_TAKE_IMAGE = 0
-    ACTION_DUMP = 1
+    ACTION_DO_NOTHING = 0
+    ACTION_TAKE_IMAGE = 1
     ACTION_ANALYSE = 2
-    ACTION_DO_NOTHING = 2
+    ACTION_DUMP = 3
+    
+    
     ACTION_NAMES = ["TP","AN","DP","DN"]
 
     DURATION_TAKE_IMAGE = 20
@@ -93,9 +95,6 @@ class SatelliteSim:
         self.satellite_busy_time = 0
         self.busy = 0
 
-        # goals
-        self.goalRef = GoalReferee(log_dir=log_dir)
-
         # initialize random seed file
         with open(self.log_dir+"seed.txt", "a") as f:
             f.write(datetime.datetime.now().strftime("  Date and Time  ") + " | " +"Sim Seed" +"\n")
@@ -105,7 +104,7 @@ class SatelliteSim:
         Update the satellite simulation.
 
         Args:
-            action: the action to be taken.
+            action: the action to be taken. 
 
         Returns:
             state: the state of the satellite.
@@ -134,23 +133,28 @@ class SatelliteSim:
 
         # update state
         self.action = action
-        self.apply_action(action)
+        self.apply_action_int(action)
         state = self.get_state()
         return state, done
         
 
-    def apply_action(self, action): 
+    def apply_action_int(self, action_in): 
         """
         Apply the action to the satellite.
 
         Args:
             action: the action to be taken.
         """
+        if type(action_in) is not int:
+            action = int(action_in[0])
+            img = int(action_in[1])
+        else:
+            action = action_in
+            img = None
         # check if busy or the satellite does nothing 
         if self.satellite_busy_time > 0:
             return 
         if action==3 or action==None:
-            
             return
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
@@ -174,13 +178,10 @@ class SatelliteSim:
             self.busy = 1
             for index in range(len(self.analysis)):
                 if not self.analysis[index] and not(self.images[index]== 0):
-                    if random.random() > 0.0:
+                    if img == self.images[index] or img == None:
                         self.analysis[index] = True
-                    else:
-                        self.analysis[index] = False
-                        self.images[index] = 0
-                    self.last_action = action
-                    return
+                        self.last_action = action
+                        return
         
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
@@ -188,31 +189,36 @@ class SatelliteSim:
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = SatelliteSim.DURATION_DUMP
                 self.busy = 1
-                # Check all the images
-                for index in range(1,len(self.analysis)+1):
-                    pic2dump = len(self.analysis) - index
-                    if self.analysis[pic2dump]:
-                        image_dumped = self.images[pic2dump]
-                        self.analysis[pic2dump] = False
-                        self.Goal_achived[image_dumped] += 1
-                        self.images[pic2dump] = 0
+                # Check if the image is analysed
+                for mem_slot in range(SatelliteSim.MEMORY_SIZE-1, -1, -1):
+                    if self.analysis[mem_slot]:
+                        if img == None:
+                            image_dumped = self.images[mem_slot]
+                        elif self.images[mem_slot] == img:
+                            image_dumped = img
+                        else:
+                            continue
+                        self.images[mem_slot] = 0
+                        self.analysis[mem_slot] = False
+                        self.Goals_achieved[image_dumped] += 1
                         self.memory_level = max(0,self.memory_level-1)
                         self.last_action = action
-                        # score the goal value
-                        self.goalRef.evaluateDump(self.orbit, image_dumped)
                         return
 
 
-    def action_is_posible(self):
+    def check_action(self, action):
         """
         Check if the action is posible.
+
+        Args:
+            action: the action to be taken.
 
         Returns:
             True if the action is posible.
         """
         if self.satellite_busy_time > 0:
             return False
-        if self.action == SatelliteSim.ACTION_TAKE_IMAGE:
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Check free location in the memory
             for ind_mem in range(len(self.images)):
                 if self.images[ind_mem] == 0:
@@ -220,11 +226,11 @@ class SatelliteSim:
                     for index in range(len(self.targets)):
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
                             return True
-        if self.action == SatelliteSim.ACTION_ANALYSE:
+        if action == SatelliteSim.ACTION_ANALYSE:
             for index in range(len(self.analysis)):
                 if not self.analysis[index] and not(self.images[index]== 0):
                     return True
-        if self.action == SatelliteSim.ACTION_DUMP:
+        if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 return True
@@ -248,7 +254,7 @@ class SatelliteSim:
         self.pos = 0
         self.orbit = 0
         self.last_action = 3
-        self.Goal_achived = {}
+        self.Goals_achieved = np.zeros(n_targets)
         
 
         # memory state
@@ -266,8 +272,6 @@ class SatelliteSim:
                 
             # # Generate Ground Stations
             # self.initRandomStations()
-        for i in self.target_list:
-            self.Goal_achived[i] = 0
         return self.get_state()
 
     def initRandomStations(self):
