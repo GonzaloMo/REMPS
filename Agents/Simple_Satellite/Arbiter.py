@@ -21,9 +21,10 @@ class Arbiter:
         for i in  range(n_planners):
             self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}"))
         self.npp = n_targets_per_planner
-        self.Action_doNothing = Action(0, 3, "DoNothing")
+        self.n_targets = tot_targets
+        self.Action_doNothing = Action(env.SatSim.ACTION_DO_NOTHING, "DoNothing")
 
-    def take_action(self, obs, type_selec_method="Priority"):
+    def take_action(self, obs, type_selec_method="Priority", action_type="Action_specific"):
         """
         Selects the action taken by the arbiter
 
@@ -38,9 +39,9 @@ class Arbiter:
         alpha = [1, 2]
         actions = [] 
         for i, voice in enumerate(self.Voices):
-            current_action = voice.getAction(obs)
+            Voice_action = voice.getAction(obs)
             priority = alpha[i]
-            Voice_action = Action(priority, current_action, voice.name)
+            Voice_action.set_value(priority)
             actions.append(Voice_action)
 
         if type_selec_method == "Priority":
@@ -50,10 +51,16 @@ class Arbiter:
         else:
             raise ValueError("Type must be either Priority or Weighted")
         self.prune_plan_voices(obs)
-        if not action.action == 3:
+        if not action.action == self.env.SatSim.ACTION_DO_NOTHING:
             print(f"Selected Action {action.action} with priority {action.Value} sugested by {action.voice}")
         
-        return action.action
+        if action_type == "Action_specific":
+            if not action.action == 0:
+                composed_action = action.get_action_from_tuple(self.n_targets)
+                print(f"{composed_action} -> {self.env.action_list_names[composed_action]} and action tuple is {action.action_tuple}")
+            return action.get_action_from_tuple(self.n_targets)
+        else: 
+            return action.action
 
     def high_priority_selection(self, actions):
         """
@@ -70,7 +77,7 @@ class Arbiter:
         # Try to take action with highest priority
         for a in actions:
             # check if action is possible
-            if self.env.SatSim.check_action(a.action) and a.action != 3:
+            if self.env.SatSim.check_action(a.action) and a.action != self.Action_doNothing.action:
                 return a
         return self.Action_doNothing
             
@@ -83,16 +90,22 @@ class Arbiter:
         Returns:
             action (int): action to take
         """
-        # index -> 0: take_image, 1: analyze, 2: dump, 3: idle
-        Weighted_actions = [Action(0, 0), Action(0, 1), Action(0, 2), Action(0, 3)]
+        Weighted_actions = []
+        visited_aciton = {}
+        i = 0
         for a in actions:
-            Weighted_actions[a.action].Value += a.Value
+            if str(a) in visited_aciton:
+                Weighted_actions[visited_aciton[str(a)]] += a.Value
+            else:
+                Weighted_actions.append(a)
+                i += 1
+                visited_aciton[str(a)] = i
         # sort actions in value order
         Weighted_actions.sort(key=lambda x: x.Value, reverse=True)
         # Try to take action with highest priority
         for a in actions:
             # check if action is possible
-            if self.env.SatSim.check_action(a.action) and a.action != 3:
+            if self.env.SatSim.check_action(a.action) and a.action != self.Action_doNothing.action:
                 return a
         
         return self.Action_doNothing
@@ -107,3 +120,8 @@ class Arbiter:
     def prune_plan_voices(self, obs):
         for i, voice in enumerate(self.Voices):
             self.Voices[i].prune_plan(obs)
+        
+
+    def upadte_voices_goals(self, obs):
+        for i, voice in enumerate(self.Voices):
+            self.Voices[i].update_goals(self.env.Satsim.goals_acieved)

@@ -35,8 +35,8 @@ class SatelliteView:
         # font
         pygame.font.init()
         self.font = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE / 2))
-        self.text_digits = [self.font.render(str(i), True, SatelliteView.WHITE) for i in
-                            range(SatelliteSim.MEMORY_SIZE)]
+        self.text_digits = [self.font.render(str(i+1), True, SatelliteView.WHITE) for i in
+                            range(sim.n_tagets)]
         self.text_goals = self.font.render("Open Goals", True, SatelliteView.WHITE)
 
         # Open a Main window
@@ -119,7 +119,7 @@ class SatelliteView:
                              [SatelliteView.OFFSET + index * (SatelliteView.IMAGE_SIZE * 1.2) + SatelliteView.IMAGE_SIZE * 0.1,
                               SatelliteView.IMAGE_SIZE * 1.1, SatelliteView.IMAGE_SIZE * 0.8,
                               SatelliteView.IMAGE_SIZE * 0.8])
-                self.screen.blit(self.text_digits[image], (
+                self.screen.blit(self.text_digits[image-1], (
                 SatelliteView.OFFSET + index * (SatelliteView.IMAGE_SIZE * 1.2) + SatelliteView.IMAGE_SIZE * 0.2,
                 SatelliteView.IMAGE_SIZE * 1.2))
 
@@ -318,14 +318,15 @@ class SatelliteView:
         # Draw plan
         current_pos = obs['Pos'][0]+ 360*obs['Orbit'][0]
         for i in range(len(plan)):
-            if plan[i][1] == SatelliteSim.ACTION_TAKE_IMAGE:
-                act_dur = SatelliteSim.DURATION_TAKE_IMAGE
+            ac = plan[i][1]
+            if ac == SatelliteSim.ACTION_TAKE_IMAGE:
+                act_dur = SatelliteSim.DURATION_TAKE_IMAGE*self.sim.velocity
                 color = SatelliteView.ORANGE
-            elif plan[i][1] == SatelliteSim.ACTION_ANALYSE:
-                act_dur = SatelliteSim.DURATION_ANALYSE
+            elif ac == SatelliteSim.ACTION_ANALYSE:
+                act_dur = SatelliteSim.DURATION_ANALYSE*self.sim.velocity
                 color = SatelliteView.PURPLE_ORANGE
-            elif plan[i][1] == SatelliteSim.ACTION_DUMP:
-                act_dur = SatelliteSim.DURATION_DUMP
+            elif ac == SatelliteSim.ACTION_DUMP:
+                act_dur = SatelliteSim.DURATION_DUMP*self.sim.velocity
                 color = SatelliteView.PURPLE
             else:
                 raise Exception("Unknown action")

@@ -25,31 +25,39 @@ class GoalReferee:
         self.MAX_SINGLE_GOALS = max_goals
         self.MAX_CAMPAIGNS = max_campaigns
         self.goals = np.zeros(tot_targets, dtype=np.int8)
-        self.target_planner = np.random.randint(tot_targets, size=n_targets_planner)
+        self.target_planner = np.random.randint(1, tot_targets+1, size=n_targets_planner)
 
 
     def generateSingleGoals(self, amount=1):
         goals = self.goals.copy()
         for i in self.target_planner:
-            goals[i] = random.randint(1, amount)
+            goals[i-1] = random.randint(1, amount)
 
         # Check if there are too many goals
         if np.sum(goals) > self.MAX_SINGLE_GOALS:
             self.generateSingleGoals(amount=amount-1)
         self.goals = goals
+        self.Initail_goals = goals.copy()
 
     def evaluateDump(self, image, weight:int = 1):
         
         # check single goals
         goals = self.goals.copy()
         if image in self.target_planner and goals[image] > 0:
-            goals[image] -= 1
-            self.goals = goals
             return weight
         else:
             return 0
         
-
+    def update(self, goals_achieved):
+        """
+        Update the goals achieved.
+            
+        Args:
+            goals_achieved: the goals achieved.
+        """
+        for i, g in enumerate(goals_achieved):
+            current_g = self.Initail_goals[i] - g
+            self.goals[i] = max(0, current_g)
 
     def set_seed(self, seed, Planner:str):
         """

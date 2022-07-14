@@ -4,6 +4,7 @@ from Arbiter import Arbiter
 import gym
 import SimpleSatellite
 from ArbiterVoices.Planner import Planner_Voice
+from time import sleep
 
 
 option_agent = 0
@@ -12,7 +13,7 @@ n_targets_per_planner = 5
 n_planners = 2
 total_targets = 10
 if option_agent == 0:
-    env = gym.make("SimpleSatelliteArb-v0", random=False, n_targets = total_targets)
+    env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets)
 
     # Initialize arbiter
     agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner, n_planners=n_planners)
@@ -27,9 +28,12 @@ if option_agent == 0:
     while not done:
         action = agent.take_action(obs)
         obs, reward, done, info = env.step(action)
+        if "Dump" in env.action_list_names[action]:
+            print (f"Goals_achieved: {env.SatSim.Goals_achieved}")
+            # import IPython
+            # IPython.embed()
         env.render(agent.Voices)
         episode_reward += reward
-        print (f"Goals_achieved: {env.SatSim.Goals_achieved}")
     print(episode_reward)
     env.close()
 

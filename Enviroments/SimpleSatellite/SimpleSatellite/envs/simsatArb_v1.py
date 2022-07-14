@@ -34,11 +34,12 @@ class Simple_satellite_Arb_v1(gym.Env):
         self.action_list_names = ["Nothing", "Take Picture"]
         temp_list = []
         for i in range(n_targets):
-            self.action_list_names.append("Analyze img"+str(i))
-            temp_list.append("Dump img"+str(i))
+            self.action_list_names.append("Analyze img"+str(i+1))
+            temp_list.append("Dump img"+str(i+1))
         self.action_list_names.extend(temp_list)
         n_actions = len(self.action_list_names) 
         self.action_space = spaces.Discrete(n_actions)
+        print(self.action_list_names)
 
         # Observation space is composed as: 
         # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]
@@ -61,10 +62,10 @@ class Simple_satellite_Arb_v1(gym.Env):
     def step(self, action):
         self.action = action
         action_name = self.action_list_names[action]
-        if action_name == "Take Picture":
-            action_tuple = (SatelliteSim.ACTION_TAKE_PICTURE, None)
+        if "Take Picture" in action_name:
+            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, None)
         elif "Analyze" in action_name:
-            action_tuple = (SatelliteSim.ACTION_ANALYZE, int(action_name[11:]))
+            action_tuple = (SatelliteSim.ACTION_ANALYSE, int(action_name[11:]))
         elif "Dump" in action_name:
             action_tuple = (SatelliteSim.ACTION_DUMP, int(action_name[8:]))
         else:

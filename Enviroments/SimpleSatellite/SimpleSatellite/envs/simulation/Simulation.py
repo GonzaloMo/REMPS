@@ -5,9 +5,10 @@ import numpy as np
 import datetime
 import os
 
+
 class SatelliteSim:
 
-    MAX_ORBITS = 20
+    MAX_ORBITS = 5
 
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1
@@ -132,7 +133,6 @@ class SatelliteSim:
             done = True
 
         # update state
-        self.action = action
         self.apply_action_int(action)
         state = self.get_state()
         return state, done
@@ -143,18 +143,19 @@ class SatelliteSim:
         Apply the action to the satellite.
 
         Args:
-            action: the action to be taken.
+            action: the action to be taken. 
         """
         if type(action_in) is not int:
-            action = int(action_in[0])
-            img = int(action_in[1])
+            action, img = action_in
+            
         else:
             action = action_in
             img = None
+        self.action = action
         # check if busy or the satellite does nothing 
         if self.satellite_busy_time > 0:
             return 
-        if action==3 or action==None:
+        if action==SatelliteSim.ACTION_DO_NOTHING or action==None:
             return
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
@@ -176,10 +177,13 @@ class SatelliteSim:
         if action == SatelliteSim.ACTION_ANALYSE:
             self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
             self.busy = 1
-            for index in range(len(self.analysis)):
-                if not self.analysis[index] and not(self.images[index]== 0):
-                    if img == self.images[index] or img == None:
-                        self.analysis[index] = True
+            for mem_slot in range(len(self.analysis)):
+                if not self.analysis[mem_slot] and not(self.images[mem_slot] == 0):
+                    # print(f"Analyse {self.images[mem_slot]} sent by planner {img}")
+                    # import IPython
+                    # IPython.embed()
+                    if img == self.images[mem_slot] or img == None:
+                        self.analysis[mem_slot] = True
                         self.last_action = action
                         return
         
@@ -198,15 +202,20 @@ class SatelliteSim:
                             image_dumped = img
                         else:
                             continue
+                        # print(f"Dump {self.images[mem_slot]} sent by planner {img}")
+                        # import IPython
+                        # from time import sleep
+                        # IPython.embed()
+                        # sleep(0.5)
                         self.images[mem_slot] = 0
                         self.analysis[mem_slot] = False
-                        self.Goals_achieved[image_dumped] += 1
+                        self.Goals_achieved[image_dumped-1] += 1
                         self.memory_level = max(0,self.memory_level-1)
                         self.last_action = action
                         return
 
 
-    def check_action(self, action):
+    def check_action(self, action_in):
         """
         Check if the action is posible.
 
@@ -218,6 +227,10 @@ class SatelliteSim:
         """
         if self.satellite_busy_time > 0:
             return False
+        if type(action_in) is not int:
+            action, img = action_in
+        else:
+            action, img = action_in, None
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Check free location in the memory
             for ind_mem in range(len(self.images)):
@@ -226,14 +239,20 @@ class SatelliteSim:
                     for index in range(len(self.targets)):
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
                             return True
+
         if action == SatelliteSim.ACTION_ANALYSE:
             for index in range(len(self.analysis)):
                 if not self.analysis[index] and not(self.images[index]== 0):
-                    return True
+                    if img == self.images[index] or img == None:
+                        return True
+
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
-            if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
-                return True
+            if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]):
+                for mem_slot in range(SatelliteSim.MEMORY_SIZE-1, -1, -1):
+                    if self.analysis[mem_slot]:
+                        if img == None or self.images[mem_slot] == img:
+                            return True
         return False
 
     def reset(self, n_targets: int =4, seed: int =None):
@@ -254,7 +273,7 @@ class SatelliteSim:
         self.pos = 0
         self.orbit = 0
         self.last_action = 3
-        self.Goals_achieved = np.zeros(n_targets)
+        self.Goals_achieved = np.zeros(n_targets, dtype=np.int8)
         
 
         # memory state

@@ -3,7 +3,7 @@ import subprocess
 import math
 import numpy as np
 
-def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int=10, memory_limit: int=1000000):
+def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int=5, memory_limit: int=1000000):
     with open(loc+'generateplan_optic.sh', 'rb') as file:
         script = file.read()
     domain = domain.encode('UTF-8')
@@ -73,6 +73,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     initC +=memfree + "\n"
     tg = ''
     gs = ''
+
     for o in range(obs['Orbit'][0], obs['Orbit'][0]+orbits):
         for index, target in enumerate(obs['Targets']):
             start = target[0] + 360 * o
@@ -121,7 +122,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
 
 
 def readPDDLPlan(file: str):
-    actionMap = {"take_image": 0, "dump_image": 1, "analyse_image": 2}
+    actionMap = {"take_image": SatelliteSim.ACTION_TAKE_IMAGE, "dump_image": SatelliteSim.ACTION_DUMP, "analyse_image": SatelliteSim.ACTION_ANALYSE}
     plan = []
     with open(file, "r") as f:
         line = f.readline().strip()

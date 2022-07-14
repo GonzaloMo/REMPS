@@ -7,6 +7,7 @@ from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 import numpy as np
 from ArbiterVoices.Planner_utlis.AgentPDDL import PDDLAgent
 from ArbiterVoices.Planner_utlis.GoalReferee import GoalReferee
+from ArbiterVoices.utils import Action
 
 class Planner_Voice(BaseVoice):
     def __init__(self, SatSim: SatelliteSim, n_targets, tot_targets, name="Planner", log_dir="./Logs/Simulation/"):
@@ -18,6 +19,7 @@ class Planner_Voice(BaseVoice):
         self.excuted_plan = []
         self.Goal_ref = GoalReferee(tot_targets, n_targets)
         self.goals = self.Goal_ref.generateSingleGoals(amount=20)
+        self.Action_doNothing = Action(SatSim.ACTION_DO_NOTHING, "DoNothing")
         
     def getAction(self, obs, epsilon=1) -> int:
         if len(self.excuted_plan) < 1:
@@ -26,15 +28,23 @@ class Planner_Voice(BaseVoice):
         pos, next_action, image, memory = self.excuted_plan[0]
         obs = self.get_obs(obs)
         if obs["Full_Pos"]-epsilon < pos < obs["Full_Pos"]+epsilon:
-            return next_action
+            action  = Action(next_action, self.name)
+            action.set_action_tuple(next_action, image)
+            return action
         else:
-            return 3
+            return self.Action_doNothing
             
     def get_plan(self, obs, amount=4):
+        self.current_orbit = obs["Orbit"][0]
+        self.current_pos = obs["Pos"][0]
         processed_obs = self.get_obs(obs)
+        processed_obs["Orbit"] = obs["Orbit"] - self.current_orbit
         goals = self.Goal_ref.goals.copy()
         print(f"{self.name} | Goals: ", goals)
         self.full_plan = self.planner.generatePlan(processed_obs, goals)
+        for i in range(len(self.full_plan)):
+            pos = self.full_plan[i][0] + self.current_orbit*360 + self.current_pos
+            self.full_plan[i] = (pos, self.full_plan[i][1], self.full_plan[i][2], self.full_plan[i][3])
         self.excuted_plan = self.full_plan.copy()
         print(f"{self.name} | {self.full_plan}")
 
@@ -56,5 +66,6 @@ class Planner_Voice(BaseVoice):
         self.excuted_plan = plan[i:].copy()
         if i == len(self.excuted_plan):
             self.excuted_plan = []
-
+    def update_goals(self, goals_achived):
+        self.Goal_ref.update(goals_achived)
     
