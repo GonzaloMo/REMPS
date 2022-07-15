@@ -36,7 +36,7 @@ class Arbiter:
         Returns:
             action (int): action to take
         """
-        alpha = [1, 2]
+        alpha = [.5, .3]
         actions = [] 
         for i, voice in enumerate(self.Voices):
             Voice_action = voice.getAction(obs)
@@ -52,12 +52,13 @@ class Arbiter:
             raise ValueError("Type must be either Priority or Weighted")
         self.prune_plan_voices(obs)
         if not action.action == self.env.SatSim.ACTION_DO_NOTHING:
-            print(f"Selected Action {action.action} with priority {action.Value} sugested by {action.voice}")
+            composed_action = action.get_action_from_tuple(self.n_targets)
+            print(f"Selected Action {self.env.action_list_names[composed_action]} with priority {action.Value} sugested by {action.voice}")
         
         if action_type == "Action_specific":
-            if not action.action == 0:
-                composed_action = action.get_action_from_tuple(self.n_targets)
-                print(f"{composed_action} -> {self.env.action_list_names[composed_action]} and action tuple is {action.action_tuple}")
+            # if not action.action == 0:
+            #     composed_action = action.get_action_from_tuple(self.n_targets)
+            #     print(f"{composed_action} -> {self.env.action_list_names[composed_action]} and action tuple is {action.action_tuple}")
             return action.get_action_from_tuple(self.n_targets)
         else: 
             return action.action
@@ -95,11 +96,11 @@ class Arbiter:
         i = 0
         for a in actions:
             if str(a) in visited_aciton:
-                Weighted_actions[visited_aciton[str(a)]] += a.Value
+                Weighted_actions[visited_aciton[str(a)]].Value += a.Value
             else:
                 Weighted_actions.append(a)
-                i += 1
                 visited_aciton[str(a)] = i
+                i += 1
         # sort actions in value order
         Weighted_actions.sort(key=lambda x: x.Value, reverse=True)
         # Try to take action with highest priority
@@ -122,6 +123,6 @@ class Arbiter:
             self.Voices[i].prune_plan(obs)
         
 
-    def upadte_voices_goals(self, obs):
+    def upadte_voices_goals(self):
         for i, voice in enumerate(self.Voices):
-            self.Voices[i].update_goals(self.env.Satsim.goals_acieved)
+            self.Voices[i].update_goals(self.env.SatSim.Goals_achieved)

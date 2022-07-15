@@ -18,7 +18,8 @@ class Planner_Voice(BaseVoice):
         self.full_plan = []
         self.excuted_plan = []
         self.Goal_ref = GoalReferee(tot_targets, n_targets)
-        self.goals = self.Goal_ref.generateSingleGoals(amount=20)
+        self.Goal_ref.generateSingleGoals(amount=20)
+        self.goals = self.Goal_ref.goals.copy()
         self.Action_doNothing = Action(SatSim.ACTION_DO_NOTHING, "DoNothing")
         
     def getAction(self, obs, epsilon=1) -> int:
@@ -40,7 +41,6 @@ class Planner_Voice(BaseVoice):
         processed_obs = self.get_obs(obs)
         processed_obs["Orbit"] = obs["Orbit"] - self.current_orbit
         goals = self.Goal_ref.goals.copy()
-        print(f"{self.name} | Goals: ", goals)
         self.full_plan = self.planner.generatePlan(processed_obs, goals)
         for i in range(len(self.full_plan)):
             pos = self.full_plan[i][0] + self.current_orbit*360 + self.current_pos
@@ -66,6 +66,15 @@ class Planner_Voice(BaseVoice):
         self.excuted_plan = plan[i:].copy()
         if i == len(self.excuted_plan):
             self.excuted_plan = []
-    def update_goals(self, goals_achived):
-        self.Goal_ref.update(goals_achived)
-    
+
+    def update_goals(self, goals_achieved, debug=False):
+        if debug:
+            print("----------------------")
+            print(f"{self.name} | Images:         {[int(i) for i in range(1, len(goals_achieved)+1)]}")
+            print(f"{self.name} | Goals :         {[int(g) for g in self.goals]}")
+            print(f"{self.name} | Goals Achieved: {[int(g) for g in goals_achieved]}")
+        self.Goal_ref.update(goals_achieved)
+        self.goals = self.Goal_ref.goals.copy()
+        if debug:
+            print(f"{self.name} | New Goals:      {[int(g) for g in self.goals]}")
+            print("----------------------")

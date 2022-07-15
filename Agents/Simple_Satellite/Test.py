@@ -26,12 +26,10 @@ if option_agent == 0:
     print(obs["Targets"])
     agent.reset_voices(obs)
     while not done:
-        action = agent.take_action(obs)
+        action = agent.take_action(obs, type_selec_method="Weighted")
         obs, reward, done, info = env.step(action)
         if "Dump" in env.action_list_names[action]:
-            print (f"Goals_achieved: {env.SatSim.Goals_achieved}")
-            # import IPython
-            # IPython.embed()
+            agent.upadte_voices_goals()
         env.render(agent.Voices)
         episode_reward += reward
     print(episode_reward)
