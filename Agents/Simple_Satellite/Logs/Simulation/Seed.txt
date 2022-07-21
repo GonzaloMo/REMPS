@@ -20,3 +20,145 @@ Simulation_Seed: 3121592158
 END
 ----------------------------------------------------
 
+New Simulation run at 2022-07-21 10:25:31.594013
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 15
+V_0: 2915100952 
+V_1: 2624791313 
+Simulation_Seed: 957401665
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 10:32:13.796244
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 15
+V_0: 3408812566 
+V_1: 3637368804 
+Simulation_Seed: 3150836118
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 10:33:03.969597
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 15
+V_0: 1867222379 
+V_1: 2319387128 
+Simulation_Seed: 1939744034
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 10:38:28.487850
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 15
+V_0: 1672242448 
+V_1: 902094882 
+Simulation_Seed: 924902024
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 11:38:17.560370
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 15
+V_0: 3936792379 
+V_1: 2379904557 
+Simulation_Seed: 1565042160
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 11:40:25.319602
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 15
+V_0: 3057305165 
+V_1: 760242363 
+Simulation_Seed: 3924214248
+END
+New Simulation run at 2022-07-21 11:50:15.726923
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 3864138430 
+V_1: 1101161811 
+Simulation_Seed: 2345512277
+New Simulation run at 2022-07-21 11:51:52.312560
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 1305628864 
+V_1: 972361137 
+Simulation_Seed: 1067252506
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 11:52:08.144581
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 3437302867 
+V_1: 1912851042 
+Simulation_Seed: 1721636398
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 11:53:34.104425
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 1359849497 
+V_1: 604794984 
+Simulation_Seed: 2450250129
+New Simulation run at 2022-07-21 13:51:58.073027
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 275780166 
+V_1: 1277588449 
+New Simulation run at 2022-07-21 13:52:21.723505
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 1511814547 
+V_1: 2841337952 
+Simulation_Seed: 142087780
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 13:54:03.902944
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 4208400523 
+V_1: 3265965833 
+Simulation_Seed: 1451058224
+END
+----------------------------------------------------
+
+New Simulation run at 2022-07-21 13:55:13.404160
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 15
+V_0: 706875011 
+V_1: 693115462 
+Simulation_Seed: 483096020
+END
+----------------------------------------------------
+

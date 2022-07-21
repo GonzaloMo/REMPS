@@ -9,22 +9,20 @@ from ArbiterVoices.Planner_utlis.AgentPDDL import PDDLAgent
 from ArbiterVoices.Planner_utlis.GoalReferee import GoalReferee
 from ArbiterVoices.utils import Action
 
-class Planner_Voice(BaseVoice):
-    def __init__(self, SatSim: SatelliteSim, n_targets, tot_targets, name="Planner", log_dir="./Logs/Simulation/", seed=None, amount=15):
+class Planner(BaseVoice):
+    def __init__(self, SatSim: SatelliteSim, name: str, goals: list):
         super().__init__(name=name)
         self.planner = PDDLAgent(SatSim, name)
-        self.opp_targets = np.random.randint(0, tot_targets, n_targets)
         self.name = name
         self.full_plan = []
         self.excuted_plan = []
-        self.Goal_ref = GoalReferee(tot_targets, n_targets, planner_name=name, seed=seed, log_dir=log_dir)
-        self.Goal_ref.generateSingleGoals(amount=amount)
-        self.goals = self.Goal_ref.goals.copy()
+        self.goals = goals
+        self.Initial_goals = goals
         self.Action_doNothing = Action(SatSim.ACTION_DO_NOTHING, name, -100)
         self.replan = True
         self.write_plan_log = True
         
-    def getAction(self, obs, epsilon=1) -> int:
+    def getAction(self, obs, epsilon=2) -> int:
         # if len(self.excuted_plan) < 1:
         if np.sum(self.Goal_ref.goals) == 0:
             if self.write_plan_log:
@@ -41,7 +39,7 @@ class Planner_Voice(BaseVoice):
             return self.Action_doNothing
         pos, next_action, image, memory = self.excuted_plan[0]
         obs = self.get_obs(obs)
-        if obs["Full_Pos"]-epsilon < pos < obs["Full_Pos"]+epsilon:
+        if obs["Full_Pos"] < pos < obs["Full_Pos"]+epsilon:
             action  = Action(next_action, self.name, pos)
             action.set_action_tuple(next_action, image)
             return action
@@ -53,8 +51,8 @@ class Planner_Voice(BaseVoice):
         self.current_pos = obs["Pos"][0]
         processed_obs = self.get_obs(obs)
         processed_obs["Orbit"] = obs["Orbit"] - self.current_orbit
-        goals = self.Goal_ref.goals.copy()
-        self.full_plan, self.replan = self.planner.generatePlan(processed_obs, goals, 0, orbits = 5)
+        goals = self.goals.copy()
+        self.full_plan, self.replan = self.planner.generatePlan(processed_obs, goals, 9, orbits = self.SatSim.MAX_ORBITS, time_limit=3600)
         # Correct to general reference frame
         for i in range(len(self.full_plan)):
             pos = self.full_plan[i][0] + self.current_orbit*360 + self.current_pos
@@ -84,13 +82,8 @@ class Planner_Voice(BaseVoice):
                 self.excuted_plan = []
 
     def update_goals(self, goals_achieved, debug=False):
-        if debug:
-            print("----------------------")
-            print(f"{self.name} | Images:         {[int(i) for i in range(1, len(goals_achieved)+1)]}")
-            print(f"{self.name} | Initial Goals:  {[int(g) for g in self.Goal_ref.Initail_goals]}")
-            print(f"{self.name} | Goals Achieved: {[int(g) for g in goals_achieved]}")
-        self.Goal_ref.update(goals_achieved)
-        self.goals = self.Goal_ref.goals.copy()
-        if debug:
-            print(f"{self.name} | New Goals:      {[int(g) for g in self.goals]}")
-            print("----------------------")
+        goals = self.goals.copy()
+        for i, g in enumerate(goals_achieved):
+            current_g = self.Initial_goals[i] - g
+            goals[i] = max(0, current_g)
+        self.goals = goals.copy()

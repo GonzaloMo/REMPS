@@ -1,6 +1,7 @@
 from logging import raiseExceptions
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from pyrsistent import s
+import numpy as np
 
 class Action(object):
     DURATIONS = [0, SatelliteSim.DURATION_TAKE_IMAGE, SatelliteSim.DURATION_ANALYSE, SatelliteSim.DURATION_DUMP]
@@ -56,6 +57,7 @@ def read_seed(seed_file, date_time):
         date = f"{date_time}"
         while True:
             line = f.readline().strip()
+            print(line)
             if "New Simulation" in line and date in line:
                 print(f"Loading simulation {line}")
                 while True:
@@ -66,8 +68,19 @@ def read_seed(seed_file, date_time):
                     if "END" in line:
                         break
                 return Seeding_dict
-            if line == "":
+            if line == None:
                 raiseExceptions(f"Seed file {seed_file} does not contain simulation {date}")
+
+def merge_goals(Arbiter):
+    goals = []
+    for i in range(Arbiter.n_targets):
+        max_goal = 0
+        for voice in Arbiter.Voices:
+            voice_goal = voice.Goal_ref.Initial_goals[i]
+            if max_goal < voice_goal:
+                max_goal = voice_goal
+        goals.append(max_goal)
+    return np.array(goals)
                 
             
     

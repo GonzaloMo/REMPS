@@ -128,7 +128,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     if total_targets > 1:
         metrics = "(:metric maximize (+\n"
     else:
-        metrics = "(:metric minimize (\n"
+        metrics = "(:metric maximize (\n"
     for targ, n_img in enumerate(goals):
         space_infront = "  "*(i+1)
         if n_img>0:

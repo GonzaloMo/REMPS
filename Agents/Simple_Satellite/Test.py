@@ -1,10 +1,12 @@
 
-from Arbiter import Arbiter
+from Agents.Arbiter import Arbiter
+from Agents.Planner import Planner
 # Load Environment with random target positions
 import gym
 import SimpleSatellite
-from ArbiterVoices.utils import read_seed
-from ArbiterVoices.Planner import Planner_Voice
+import numpy as np
+from ArbiterVoices.utils import read_seed, merge_goals
+from ArbiterVoices.Planner_voice import Planner_Voice
 from time import sleep
 import datetime
 
@@ -14,7 +16,7 @@ log_dir = "./Logs/Simulation/"
 if newsim:
     seed_env = None
     seed_planner = None
-    n_targets_per_planner = 5
+    n_targets_per_planner = 7
     n_planners = 2
     total_targets = 10
     amount_of_goals_per_target = 15
@@ -25,7 +27,7 @@ if newsim:
         f.write(f"N_targets_per_planner: {n_targets_per_planner}\n")
         f.write(f"Amount_of_goals_per_target: {amount_of_goals_per_target}\n")
 else:
-    date_time = "2022-07-19 17:34:14.429248"
+    date_time = "2022-07-21 10:09:20.999622"
     seed_dict = read_seed(f"{log_dir}Seed.txt", date_time)
     seed_planner = []
     planner_names = []
@@ -44,11 +46,21 @@ else:
     n_planners = len(planner_names)
     print(f"Loadded Simulation: {seed_dict}")
 
+
+
 alpha = list(range(1, n_planners+1))
+
 # Initialize Environment
 env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets)
+
 # Initialize arbiter
 agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner, n_planners=n_planners,seed_v=seed_planner, amount=amount_of_goals_per_target)
+
+# merge goals from all planners
+Complete_goals = merge_goals(agent)
+merged_planner = Planner(env.SatSim, "MP_", Complete_goals)
+print(f"{merged_planner.name} | Goals: {np.array(Complete_goals)}")
+
 # Start Simulation
 episode_reward = 0
 done = False

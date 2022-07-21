@@ -4,6 +4,7 @@ from SimpleSatellite.envs.simulation.GoalReferee import GoalReferee
 import numpy as np
 import datetime
 import os
+from copy import copy
 
 
 class SatelliteSim:
@@ -149,6 +150,7 @@ class SatelliteSim:
             action = action_in
             img = None
         self.action = action
+        self.action_tuple = (action, img)
         # check if busy or the satellite does nothing 
         if self.satellite_busy_time > 0:
             return 
@@ -164,11 +166,13 @@ class SatelliteSim:
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
                             self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
                             self.images[ind_mem] = index+1
+                            print(f"Image taken by satellite img{index+1}")
                             self.analysis[ind_mem] = False
                             self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
                             self.last_action = action
                             self.busy = 1
                             self.Taking_action = action
+                            self.last_action_tuple = copy(self.action_tuple)
                             return
         
         # Analyse picture
@@ -178,12 +182,13 @@ class SatelliteSim:
             self.Taking_action = action
             for mem_slot in range(len(self.analysis)):
                 if not self.analysis[mem_slot] and not(self.images[mem_slot] == 0):
-                    # print(f"Analyse {self.images[mem_slot]} sent by planner {img}")
+                    print(f"Analyse {self.images[mem_slot]} sent by planner {img}")
                     # import IPython
                     # IPython.embed()
                     if img == self.images[mem_slot] or img == None:
                         self.analysis[mem_slot] = True
                         self.last_action = action
+                        self.last_action_tuple = copy(self.action_tuple)
                         return
         
         # Dump picture
@@ -212,6 +217,7 @@ class SatelliteSim:
                         self.Goals_achieved[image_dumped-1] += 1
                         self.memory_level = max(0,self.memory_level-1)
                         self.last_action = action
+                        self.last_action_tuple = copy(self.action_tuple)
                         return
 
 

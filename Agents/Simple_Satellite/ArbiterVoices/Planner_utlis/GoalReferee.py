@@ -26,16 +26,17 @@ class GoalReferee:
         self.MAX_SINGLE_GOALS = max_goals
         self.MAX_CAMPAIGNS = max_campaigns
         self.goals = np.zeros(tot_targets, dtype=np.int8)
-        self.target_planner = np.random.randint(1, tot_targets+1, size=n_targets_planner)
         if seed is None:
             self.generate_seed()
         else:
             self.set_seed(seed)
+        self.target_planner = np.random.randint(1, tot_targets+1, size=n_targets_planner)
 
 
     def generateSingleGoals(self, amount=1):
         goals = self.goals.copy()
         for i in self.target_planner:
+            random.seed(self.seed+i)
             goals[i-1] = random.randint(1, amount)
 
         # Check if there are too many goals

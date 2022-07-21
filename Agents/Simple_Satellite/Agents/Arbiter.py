@@ -2,7 +2,7 @@ import gym
 from gym import spaces
 import SimpleSatellite
 import numpy as np
-from ArbiterVoices.Planner import Planner_Voice
+from ArbiterVoices.Planner_voice import Planner_Voice
 import IPython
 from ArbiterVoices.utils import Action
 from torch import seed

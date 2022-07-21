@@ -1,5 +1,6 @@
 
 # TODO List (Deadline 19/08/2022)
+## Simulation program 
 - [x] Test Goal Referee update funciton 
 - [x] Fix the replanning target and ground station bug
 - [x] Test weighted average Arbiter
@@ -10,14 +11,20 @@
 - [x] Fix to only replan when all actions from the plan have been taken or failed to be taken
 - [x] Fix the problem file when only one goal is left
 - [x] Fix planner action output when ther is no plan
+- [x] Add a full memory voice to the system
+- [x] Fix goals seeding
 - [ ] Fix image simulation problem (images taken are not the ones planned)
-- [ ] Fix goals seeding
-- [ ] Create a merged problem for a single planner
+- [ ] Fix rendering image analysis
+
+## Experiment and Analysis
+- [x] Create a merged problem for a single planner
+- [ ] Create Test Cases
+- [ ] Multiprocess the planner TestCases
 - [ ] Test the merged problem with a single planner
 - [ ] Run experiments for single planner vs complexity of the problem
 - [ ] Run experiments for Arbiter vs complexity of the problem
-- [ ] Fix rendering image analysis
-- [x] Add a full memory voice to the system
+
+## Paper details
 - [ ] Write a Paper
   - [ ] Abstract
   - [ ] Introduction
@@ -25,5 +32,7 @@
   - [ ] Problem Setup
   - [ ] Results
   - [ ] Conclusion
+- [ ] 1st Review
+- [ ] 2nd Review
 
 some of the task can be divided into further sub task
