@@ -1,9 +1,10 @@
+from ifaddr import IP
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 import subprocess
 import math
 import numpy as np
 
-def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int=5, memory_limit: int=1000000):
+def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int=10, memory_limit: int=1000000):
     with open(loc+'generateplan_optic.sh', 'rb') as file:
         script = file.read()
     domain = domain.encode('UTF-8')
@@ -12,7 +13,6 @@ def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int
     loc = loc.encode('UTF-8')
     time_limit = str(time_limit).encode('UTF-8')
     memory_limit = str(memory_limit).encode('UTF-8')
-    print(loc, time_limit, memory_limit, domain, problem, plan)
     script = script % (loc, time_limit, memory_limit, domain, problem, plan,)
     exit_code = subprocess.call(script, shell=True)
     with open(loc+plan, 'a') as file:
@@ -44,18 +44,15 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     header +="(:domain SimpleSatellite)\n"
     # Define Objects
     objects = "(:objects\n "
-    mem = ''
+    
     img = ''
     imgS = ''
     memfree = '' # used in initial condition
     for index, target in enumerate(obs['Targets']):
-        mem += " mem" + str(index)
         img += " img" + str(index+1)
         imgS += "  (= (image_score img"+str(index+1)+") 0)\n"
-        
-    mem += " - memory\n"
     img += " - image\n"
-    objects = "(:objects\n " + mem + img +")\n"
+    
     # Define initial conditions
     initC = "(:init\n"
     initC +="  (sat_free)\n"
@@ -63,41 +60,79 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     initC +="  (= (total_score) 0)\n\n"
     memtak = ''
     animg = ''
+    mem = ''
     for memo, targ in enumerate(obs['Images']):
+        mem += " mem" + str(memo)
         if targ == 0:
             memfree +="  (memory_free mem" + str(memo) + ")\n"
         else:
-            memtak +="   (memory_taken mem" + str(memo) + " img" + str(targ) + ")\n"
+            memtak +="   (memory_taken mem" + str(int(memo)) + " img" + str(int(targ)) + ")\n"
             if obs['Analysis'][memo]:
-                animg += "(image_analysed mem" + str(memo) + " img" + str(targ) + ")\n"
-    initC +=memfree + "\n"
+                animg += "(image_analysed mem" + str(int(memo)) + " img" + str(int(targ)) + ")\n"
+    initC +=memfree + "\n" + memtak + "\n" + animg + "\n"
+    mem += " - memory\n"
+    objects = "(:objects\n " + mem + img +")\n"
     tg = ''
     gs = ''
-
-    for o in range(obs['Orbit'][0], obs['Orbit'][0]+orbits):
+    #* Done in the Satellite reference frame
+    for o in range(0, orbits):
         for index, target in enumerate(obs['Targets']):
-            start = target[0] + 360 * o
-            end = target[1] + 360 * o
-            tg += "  (at " + str(int(start)) + " (image_available img" + str(index+1) + "))\n"
-            tg += "  (at " + str(int(end)) + " (not (image_available img" + str(index+1) + ")))\n"
+            #* Change to satelite reference frame ( + 360*orbit - satellite_position)
+            start = target[0] + 360 * o - obs['Pos'][0]
+            end = target[1] + 360 * o - obs['Pos'][0]
+            # Set start
+            if start < 0:
+                if end > 0:
+                    tg += "  (at " + str(0) + " (image_available img" + str(index+1) + "))\n"
+            else:
+                tg += "  (at " + str(int(start)+1) + " (image_available img" + str(index+1) + "))\n"
+            # Set end
+            if end > 0:
+                    tg += "  (at " + str(int(end)-1) + " (not (image_available img" + str(index+1) + ")))\n"  
+
         for index, target in enumerate(obs['Ground Stations']):
-            start = target[0] + 360 * o
-            end = target[1] + 360 * o
-            gs += "  (at " + str(round(start, 3)) + " (dump_available))\n"
-            gs += "  (at " + str(round(end, 3)) + " (not (dump_available)))\n"
+            #* Change to satelite reference frame ( + 360*orbit - satellite_position)
+            start = target[0] + 360 * o - obs['Pos'][0]
+            end = target[1] + 360 * o - obs['Pos'][0]
+            # Set start
+            if start < 0:
+                if end > 0:
+                    gs += "  (at " + str(0) + " (dump_available))\n"
+            else:
+                gs += "  (at " + str(round(start, 3)+1) + " (dump_available))\n"
+            # Set end
+            if end > 0:
+                   gs += "  (at " + str(round(end, 3)-1) + " (not (dump_available)))\n"
+            
+            
+    debug = False
+    if debug:
+        print("-----------------------------------------------------")
+        print("Satellite Position: ", obs['Pos'][0])
+        print("Orbit: ", obs['Orbit'])
+        print("Targets: ", obs['Targets'])
+        print("Ground Stations: ", obs['Ground Stations'])
+        print(tg)
+        print(gs)
+        print("-----------------------------------------------------")
     initC += tg
     initC += gs
     initC +="\n"
     initC +=")\n"
     # Define Goals
     Goals = "(:goal (and\n"
-    metrics = "(:metric maximize (+\n"
+    
     i = 0
     end_metrics = ""
     total_targets = len(np.where(goals>0)[0])
+    if total_targets > 1:
+        metrics = "(:metric maximize (+\n"
+    else:
+        metrics = "(:metric minimize (\n"
     for targ, n_img in enumerate(goals):
         space_infront = "  "*(i+1)
         if n_img>0:
+            
             Goals += "  (> (image_score img"+str(targ+1)+") "+str(0)+")\n"
             Goals += "  (<= (image_score img"+str(targ+1)+") "+str(n_img)+")\n\n"
             metrics += space_infront 
@@ -108,52 +143,63 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
             else:
                 metrics += "(+ (image_score img"+str(targ+1)+")\n"
             i+=1
-
             end_metrics += "  "*(total_targets - i) + ")\n"
     Goals += "))\n"
     metrics += end_metrics
-    metrics += ")\n"
+    if total_targets == 1:
+        metrics += ")\n"
+    # metrics += ")\n"
 
     # Join full problem
-    problem = header + objects + initC + Goals + metrics
+    problem = header + objects + initC + Goals + metrics + ")\n"
     with open(file, "w") as f:
         f.write(problem)
         f.close()
 
 
-def readPDDLPlan(file: str):
+def readPDDLPlan(file: str, obs: dict):
     actionMap = {"take_image": SatelliteSim.ACTION_TAKE_IMAGE, "dump_image": SatelliteSim.ACTION_DUMP, "analyse_image": SatelliteSim.ACTION_ANALYSE}
     plan = []
+    unMod_plan = []
     with open(file, "r") as f:
         line = f.readline().strip()
         start_reading = False
         end = True
+        sat_pos =  obs['Pos'][0] + 360 * obs['Orbit'][0]
         while end:
             if start_reading and line:
                 tokens = line.split()
                 if "." in tokens[0]:
-                    time = tokens[0][:-1]
+                    #* Change from satelite reference frame to general (+ satellite_position)
+                    
+                    time = float(tokens[0][:-1]) 
                     action = tokens[1][1:]
                     image = tokens[2]
                     memory = tokens[3][:-1]
                     plan.append((float(time), actionMap[action], int(image[3:]), int(memory[3:])))
+                    unMod_plan.append((float(time), actionMap[action], int(image[3:]), int(memory[3:])))
             if 'Time' in line:
                 start_reading = True
             line = f.readline().strip()
             if 'END' in line:
                 end = False
-        f.close()
+        # print("-----------------------------")
+        # print("Unmodified Plan: ", unMod_plan)
+        # print("Plan: ", plan)
+        # print("Targets: ", obs['Targets'])
+        # print("Ground Stations: ", obs['Ground Stations'])
+        # print("-----------------------------")
     return plan
 
-def writePDDLDomain(sim: SatelliteSim, file: str):
+def writePDDLDomain(sim: SatelliteSim, file: str, Conservative_add:float=2):
     # duration of action are set in relation to space not time done by 
     # DA = V*da where 
     # - V is the velocity of the satellite in degrees/seconds
     # - da = duration of the action in seconds
     # - DA = Duration of the action in degrees
-    DA = math.ceil(sim.DURATION_ANALYSE)
-    DD = math.ceil(sim.DURATION_DUMP)
-    DI = math.ceil(sim.DURATION_TAKE_IMAGE)
+    DA = math.ceil(sim.DURATION_ANALYSE*sim.velocity+Conservative_add)
+    DD = math.ceil(sim.DURATION_DUMP*sim.velocity+Conservative_add)
+    DI = math.ceil(sim.DURATION_TAKE_IMAGE*sim.velocity+Conservative_add)
     with open(file, "w") as f:
         f.write(
 f"""(define (domain SimpleSatellite)
@@ -248,7 +294,6 @@ f"""(define (domain SimpleSatellite)
     )
 )""")
         f.close()
-
 if __name__ == '__main__':
     import numpy
     sim = SatelliteSim()

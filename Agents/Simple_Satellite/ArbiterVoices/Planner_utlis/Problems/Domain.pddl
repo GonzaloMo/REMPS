@@ -36,7 +36,7 @@
 
     (:durative-action take_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 14)
+        :duration (= ?duration 20)
         :condition (and 
             (at start (sat_free))
             (at start (image_available ?i))
@@ -54,7 +54,7 @@
   
     (:durative-action analyse_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 32)
+        :duration (= ?duration 50)
         :condition (and 
             (at start (sat_free))
             (at start (memory_taken ?m ?i))
@@ -70,7 +70,7 @@
     
     (:durative-action dump_image
         :parameters (?i - image ?m - memory)
-        :duration (= ?duration 14)
+        :duration (= ?duration 20)
         :condition (and
             (at start (sat_free))
             (at start (image_analysed ?m ?i))

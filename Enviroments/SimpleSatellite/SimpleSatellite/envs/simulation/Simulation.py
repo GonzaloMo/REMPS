@@ -8,7 +8,7 @@ import os
 
 class SatelliteSim:
 
-    MAX_ORBITS = 5
+    MAX_ORBITS = 20
 
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1
@@ -22,7 +22,7 @@ class SatelliteSim:
     ACTION_DUMP = 3
     
     
-    ACTION_NAMES = ["TP","AN","DP","DN"]
+    ACTION_NAMES = ["DN","TP","AN","DP"]
 
     DURATION_TAKE_IMAGE = 20
     DURATION_DUMP = 20
@@ -30,9 +30,9 @@ class SatelliteSim:
     DURATIONS = [DURATION_TAKE_IMAGE,DURATION_DUMP,DURATION_ANALYSE]
 
     TARGET_HALF_SIZE = 5.
-    GS_HALF_SIZE = 15.
+    GS_HALF_SIZE = 20.
 
-    def __init__(self, period=600, seed=None, random_tg=False, n_gs=2, n_targets=4, log_dir = "./Logs/Simulation/"):
+    def __init__(self, period=600, random_tg=False, n_gs=2, n_targets=4, log_dir = "./Logs/Simulation/"):
         """
         Initialize the satellite simulation.
 
@@ -96,10 +96,6 @@ class SatelliteSim:
         self.satellite_busy_time = 0
         self.busy = 0
 
-        # initialize random seed file
-        with open(self.log_dir+"seed.txt", "a") as f:
-            f.write(datetime.datetime.now().strftime("  Date and Time  ") + " | " +"Sim Seed" +"\n")
-
     def update(self, action):
         """
         Update the satellite simulation.
@@ -128,6 +124,7 @@ class SatelliteSim:
             self.busy = 1
         else:
             self.busy = 0
+            self.Taking_action = 0
         # Check if simulation ends
         if self.orbit>=SatelliteSim.MAX_ORBITS:
             done = True
@@ -171,12 +168,14 @@ class SatelliteSim:
                             self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
                             self.last_action = action
                             self.busy = 1
+                            self.Taking_action = action
                             return
         
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
             self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
             self.busy = 1
+            self.Taking_action = action
             for mem_slot in range(len(self.analysis)):
                 if not self.analysis[mem_slot] and not(self.images[mem_slot] == 0):
                     # print(f"Analyse {self.images[mem_slot]} sent by planner {img}")
@@ -193,6 +192,7 @@ class SatelliteSim:
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = SatelliteSim.DURATION_DUMP
                 self.busy = 1
+                self.Taking_action = action
                 # Check if the image is analysed
                 for mem_slot in range(SatelliteSim.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
@@ -372,13 +372,20 @@ class SatelliteSim:
         Args:
             seed: the seed to be set.
         """
+        NewCase = True
+        if seed is None:
+            seed = np.random.randint(0, 2**32)
+        else:
+            seed = int(seed)
+            NewCase = False
         seed = seed if seed is not None else np.random.randint(0, 2**32)
         np.random.seed(seed)
         random.seed(seed)
         self.seed = seed
         print("Sim Seed: ", self.seed)
-        # Create Log folder
-        if not os.path.exists(self.log_dir):
-            os.makedirs(self.log_dir)
-        with open(self.log_dir+"seed.txt", "a") as f:
-            f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + str(self.seed)+"\n")
+        if NewCase:
+            # Create Log folder
+            if not os.path.exists(self.log_dir):
+                os.makedirs(self.log_dir)
+            with open(self.log_dir+"Seed.txt", "a") as f:
+                f.write(f"Simulation_Seed: {self.seed}\n")

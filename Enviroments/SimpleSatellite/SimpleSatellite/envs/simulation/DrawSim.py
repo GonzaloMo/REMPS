@@ -138,7 +138,7 @@ class SatelliteView:
             x_a = SatelliteView.OFFSET - (SatelliteView.IMAGE_SIZE * 1.7)
             y_a = SatelliteView.OFFSET_y + index * SatelliteView.IMAGE_SIZE * 1.2
             w_a = h_a = SatelliteView.IMAGE_SIZE
-            if act == sim.ACTION_NAMES[sim.action]:
+            if act == sim.ACTION_NAMES[sim.Taking_action]:
                 c = SatelliteView.ORANGE
             else:
                 c = SatelliteView.WHITE
@@ -273,7 +273,7 @@ class SatelliteView:
         y_r = 3.5 * SatelliteView.IMAGE_SIZE
         w_r = SatelliteView.HUD_WIDTH*lamba_w_r
         h_r = SatelliteView.GOAL_SIZE
-        arbiter_txt = self.font.render("Pos = "+str(current_pos), True, SatelliteView.ORANGE)
+        arbiter_txt = self.font.render("Orbit = "+str(obs['Orbit'][0]), True, SatelliteView.ORANGE)
         self.screen.blit(arbiter_txt, [x_r, y_r,
                                         .5*w_r, .5*h_r])
                                     

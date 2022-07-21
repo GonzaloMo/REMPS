@@ -17,15 +17,20 @@ class CampaignGoal:
         self.reward = reward
 
 class GoalReferee:
-    def __init__(self, tot_targets, n_targets_planner, log_dir:str= None, max_goals:int=300, max_campaigns:int=3):
+    def __init__(self, tot_targets, n_targets_planner, log_dir:str= "", max_goals:int=300, max_campaigns:int=3, planner_name:str="", seed:int=None):
         self.single_goals = {}
         self.campaigns = []
         self.value = 0
         self.log_dir = log_dir
+        self.planner_name = planner_name
         self.MAX_SINGLE_GOALS = max_goals
         self.MAX_CAMPAIGNS = max_campaigns
         self.goals = np.zeros(tot_targets, dtype=np.int8)
         self.target_planner = np.random.randint(1, tot_targets+1, size=n_targets_planner)
+        if seed is None:
+            self.generate_seed()
+        else:
+            self.set_seed(seed)
 
 
     def generateSingleGoals(self, amount=1):
@@ -37,7 +42,8 @@ class GoalReferee:
         if np.sum(goals) > self.MAX_SINGLE_GOALS:
             self.generateSingleGoals(amount=amount-1)
         self.goals = goals
-        self.Initail_goals = goals.copy()
+        self.Initial_goals = goals.copy()
+        print(f"{self.planner_name} | Goals: {self.goals}")
 
     def evaluateDump(self, image, weight:int = 1):
         
@@ -56,21 +62,30 @@ class GoalReferee:
             goals_achieved: the goals achieved.
         """
         for i, g in enumerate(goals_achieved):
-            current_g = self.Initail_goals[i] - g
+            current_g = self.Initial_goals[i] - g
             self.goals[i] = max(0, current_g)
 
-    def set_seed(self, seed, Planner:str):
+    def set_seed(self, seed):
         """
         Set the seed of the random number generator.
             
         Args:
             seed: the seed to be set.
-            Planner: the name of the planner.
         """
-        seed = seed if seed is not None else np.random.randint(0, 2**32)
+
+        self.seed = seed
+        random.seed(seed)
+        np.random.seed(seed)
+        print(f"{self.planner_name} | Goal Seed: {self.seed}")
+
+    def generate_seed(self):
+        """
+        Generate a seed for the random number generator.
+        """
+        seed = np.random.randint(0, 2**32)
         np.random.seed(seed)
         random.seed(seed)
         self.seed = seed
-        print("Goal Seed: ", self.seed)
-        with open(self.log_dir+"Goal_seed.txt", "a") as f:
-            f.write(Planner+" | "+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + str(self.seed)+"\n")
+        with open(self.log_dir+"Seed.txt", "a") as f:
+            f.write(f"{self.planner_name}: {self.seed} \n")
+        

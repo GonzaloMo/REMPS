@@ -16,7 +16,8 @@ class Simple_satellite_Arb_v1(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             random: bool = False,
-            n_targets: int = 4):
+            n_targets: int = 4,
+            seed: int = None):
         super(Simple_satellite_Arb_v1, self).__init__()
         
         # set true so initialization is only done once
@@ -39,7 +40,6 @@ class Simple_satellite_Arb_v1(gym.Env):
         self.action_list_names.extend(temp_list)
         n_actions = len(self.action_list_names) 
         self.action_space = spaces.Discrete(n_actions)
-        print(self.action_list_names)
 
         # Observation space is composed as: 
         # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]

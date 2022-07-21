@@ -22,18 +22,26 @@ class PDDLAgent:
         #         f.write("Planner | "+datetime.datetime.now().strftime("  Date and Time  ") + " | " +"Goals Sim"+"\n")
 
 
-    def generatePlan(self, obs, goals, orbits:int = SatelliteSim.MAX_ORBITS):
+    def generatePlan(self, obs, goals, n_tries, orbits:int = SatelliteSim.MAX_ORBITS, time_limit=5):
         print(f"{self.name} | Generating plan")      
         PDDLManager.writePDDLProblem(obs, self.save_dir+"Problems/pr_"+self.name+".pddl", goals,orbits=orbits)
-        MadePlan = PDDLManager.generatePlan(self.save_dir, "Domain.pddl", "Problems/pr_"+self.name+".pddl", "Plans/pl_"+self.name+".txt")
-        
+        MadePlan = PDDLManager.generatePlan(self.save_dir, "Domain.pddl", "Problems/pr_"+self.name+".pddl", "Plans/pl_"+self.name+".txt",time_limit=time_limit)
         if MadePlan:
-            print(f"{self.name} | Plan generated")
-            plan = PDDLManager.readPDDLPlan(self.save_dir+"Plans/pl_"+self.name+".txt")
-            return plan
+            plan = PDDLManager.readPDDLPlan(self.save_dir+"Plans/pl_"+self.name+".txt", obs)
+            if plan == [] and n_tries < 10:
+                print(f"({self.name}) planning failed, replanning")
+                n_tries += 1
+                return self.generatePlan(obs, goals, n_tries, orbits=orbits, time_limit=time_limit+5)
+            else: 
+                if plan == []:
+                    print(f"{self.name} | Plan Failed by trying {n_tries} times")
+                    return [], False
+                else:
+                    print(f"{self.name} | Plan generated")
+                    return plan, True
         else:
             print(f"({self.name}) planning failed")
-            return []
+            return [], True
 
     
     
