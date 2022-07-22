@@ -86,6 +86,7 @@
             (at end (not (sat_busy)))
             (at end (sat_free))
             (at end (increase (image_score ?i) 1))
+            (at end (increase (total_score) 1))
             )
     )
 )

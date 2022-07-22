@@ -92,12 +92,12 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
 
         for index, target in enumerate(obs['Ground Stations']):
             #* Change to satelite reference frame ( + 360*orbit - satellite_position)
-            start = target[0] + 360 * o - obs['Pos'][0]
-            end = target[1] + 360 * o - obs['Pos'][0]
+            start = target[0] + 360 * o - obs['Pos'][0] + 5
+            end = target[1] + 360 * o - obs['Pos'][0] + 5
             # Set start
             if start < 0:
                 if end > 0:
-                    gs += "  (at " + str(0) + " (dump_available))\n"
+                    gs += "  (at " + str(1) + " (dump_available))\n"
             else:
                 gs += "  (at " + str(round(start, 3)+1) + " (dump_available))\n"
             # Set end
@@ -128,7 +128,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
     if total_targets > 1:
         metrics = "(:metric maximize (+\n"
     else:
-        metrics = "(:metric maximize (\n"
+        metrics = "(:metric maximize \n"
     for targ, n_img in enumerate(goals):
         space_infront = "  "*(i+1)
         if n_img>0:
@@ -144,10 +144,11 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
                 metrics += "(+ (image_score img"+str(targ+1)+")\n"
             i+=1
             end_metrics += "  "*(total_targets - i) + ")\n"
+    Goals += "(>= (total_score) "+str(math.ceil(np.sum(goals)*0.2))+")\n"
     Goals += "))\n"
     metrics += end_metrics
-    if total_targets == 1:
-        metrics += ")\n"
+    # if total_targets == 1:
+    #     metrics += "\n"
     # metrics += ")\n"
 
     # Join full problem
@@ -290,6 +291,7 @@ f"""(define (domain SimpleSatellite)
             (at end (not (sat_busy)))
             (at end (sat_free))
             (at end (increase (image_score ?i) 1))
+            (at end (increase (total_score) 1))
             )
     )
 )""")

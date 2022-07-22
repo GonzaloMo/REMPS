@@ -46,10 +46,10 @@ class Action(object):
     
     def get_action_from_tuple(self, n_targets):
         ac, img = self.action_tuple
-        if ac < 2:
+        if ac == 0:
             return ac
         else:
-            return int((ac-2)*n_targets + img + 1)
+            return int((ac-1)*n_targets + img)
 
 def read_seed(seed_file, date_time):
     with open(seed_file, "r") as f:
@@ -57,7 +57,6 @@ def read_seed(seed_file, date_time):
         date = f"{date_time}"
         while True:
             line = f.readline().strip()
-            print(line)
             if "New Simulation" in line and date in line:
                 print(f"Loading simulation {line}")
                 while True:
@@ -81,6 +80,9 @@ def merge_goals(Arbiter):
                 max_goal = voice_goal
         goals.append(max_goal)
     return np.array(goals)
+
+def alpha_function(n_targets):
+    return np.array([i for i in range(n_targets)])
                 
             
     

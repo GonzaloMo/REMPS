@@ -9,7 +9,7 @@ from copy import copy
 
 class SatelliteSim:
 
-    MAX_ORBITS = 20
+    MAX_ORBITS = 10
 
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1
@@ -164,31 +164,32 @@ class SatelliteSim:
                     # Check if above which target the satellite is
                     for index in range(len(self.targets)):
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
-                            self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
-                            self.images[ind_mem] = index+1
-                            print(f"Image taken by satellite img{index+1}")
-                            self.analysis[ind_mem] = False
-                            self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
-                            self.last_action = action
-                            self.busy = 1
-                            self.Taking_action = action
-                            self.last_action_tuple = copy(self.action_tuple)
-                            return
-        
+                            # print(f"Image {index+1} sent by planner {img}")
+                            if img == (index+1) or img == None:
+                                self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
+                                self.images[ind_mem] = index+1
+                                self.analysis[ind_mem] = False
+                                self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
+                                self.last_action = action
+                                self.busy = 1
+                                self.Taking_action = action
+                                self.last_action_tuple = copy(self.action_tuple)
+                                return
+            
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
             self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
             self.busy = 1
             self.Taking_action = action
+            
             for mem_slot in range(len(self.analysis)):
                 if not self.analysis[mem_slot] and not(self.images[mem_slot] == 0):
-                    print(f"Analyse {self.images[mem_slot]} sent by planner {img}")
-                    # import IPython
-                    # IPython.embed()
+                    # print(f"Analyse {self.images[mem_slot]} sent by planner {img}")
                     if img == self.images[mem_slot] or img == None:
                         self.analysis[mem_slot] = True
                         self.last_action = action
                         self.last_action_tuple = copy(self.action_tuple)
+                        
                         return
         
         # Dump picture
@@ -198,6 +199,7 @@ class SatelliteSim:
                 self.satellite_busy_time = SatelliteSim.DURATION_DUMP
                 self.busy = 1
                 self.Taking_action = action
+                
                 # Check if the image is analysed
                 for mem_slot in range(SatelliteSim.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
@@ -208,10 +210,6 @@ class SatelliteSim:
                         else:
                             continue
                         # print(f"Dump {self.images[mem_slot]} sent by planner {img}")
-                        # import IPython
-                        # from time import sleep
-                        # IPython.embed()
-                        # sleep(0.5)
                         self.images[mem_slot] = 0
                         self.analysis[mem_slot] = False
                         self.Goals_achieved[image_dumped-1] += 1
@@ -244,7 +242,8 @@ class SatelliteSim:
                     # Check if above which target the satellite is
                     for index in range(len(self.targets)):
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
-                            return True
+                            if img == (index+1) or img == None:
+                                return True
 
         if action == SatelliteSim.ACTION_ANALYSE:
             for index in range(len(self.analysis)):

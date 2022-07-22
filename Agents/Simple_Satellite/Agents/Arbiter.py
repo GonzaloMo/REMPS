@@ -6,6 +6,7 @@ from ArbiterVoices.Planner_voice import Planner_Voice
 import IPython
 from ArbiterVoices.utils import Action
 from torch import seed
+from ArbiterVoices.emergencyVoices import Full_memory
 
 class Arbiter:
     def __init__(self, env: gym.Env, tot_targets:int, n_targets_per_planner :int = 2, n_planners: int = 2, seed_v = None, amount=15):
@@ -25,6 +26,8 @@ class Arbiter:
             else:
                 seed = seed_v[i]
             self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}", seed=seed, amount=amount))
+        self.emergency_voices = []
+        self.emergency_voices.append(Full_memory(env.SatSim))
         self.npp = n_targets_per_planner
         self.n_targets = tot_targets
         self.Action_doNothing = Action(env.SatSim.ACTION_DO_NOTHING, "DoNothing", -100)
@@ -41,7 +44,16 @@ class Arbiter:
         Returns:
             action (int): action to take
         """
-        
+        # Take emergency action if necessary
+        for e_voice in self.emergency_voices:
+            e_action = e_voice.getAction(obs)
+            if not (e_action == self.Action_doNothing):
+                print(f"EMERGENCY VOICE !!!!")
+                print(f"Emergency voice {e_voice.name} took action {e_action}")
+                if not e_voice.Engaged:
+                    self.reset_voices(obs)
+                return e_action.get_action_from_tuple(self.n_targets)
+        # If no emergency action is needed
         actions = [] 
         for i, voice in enumerate(self.Voices):
             Voice_action = voice.getAction(obs)
@@ -49,11 +61,12 @@ class Arbiter:
             Voice_action.set_value(priority)
             actions.append(Voice_action)
 
-        if type_selec_method == "Priority":
+        if type_selec_method.lower() == "priority":
             action = self.high_priority_selection(actions)
-        elif type_selec_method == "Weighted":
+        elif type_selec_method.lower() == "weighted":
             action = self.weighted_selection(actions)
         else:
+            print(f"Error: type_selec_method = {type_selec_method} not recognized")
             raise ValueError("Type must be either Priority or Weighted")
         self.prune_plan_voices(obs)
         if not action.action == self.env.SatSim.ACTION_DO_NOTHING:
@@ -140,8 +153,8 @@ class Arbiter:
         for i in range(ith_voice-1, -1, -1):
             voice = self.Voices[i]
             for a in voice.excuted_plan:
-                pos, _, _, _ = a
-                if pos < action.end_pos+2:
+                pos, ac, img, _ = a
+                if pos < action.end_pos+2 and self.env.SatSim.check_action((ac, img)):
                     return False
         return True
 

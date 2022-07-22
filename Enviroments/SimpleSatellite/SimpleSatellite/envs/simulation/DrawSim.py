@@ -14,6 +14,7 @@ class SatelliteView:
     ORANGE = (255, 128, 0)
     PURPLE_ORANGE = (192, 64, 127)
     WHITE_RED = (168, 132, 130)
+    RED = (255, 0, 0)
 
     # config Main Window
     WIDTH, HEIGHT = 800, 1000
@@ -60,6 +61,7 @@ class SatelliteView:
             start + (end - start) * i / 6.0 + math.pi / 2) for i in range(6, -1, -1)]
 
         pygame.draw.polygon(self.screen, color, [(x, y) for x, y in zip(xpoints, ypoints)])
+        pygame.draw.polygon(self.screen, SatelliteView.BLACK, [(x, y) for x, y in zip(xpoints, ypoints)], width=2)
 
     def drawSim(self, sim: SatelliteSim, reward: float=None):
 
@@ -235,6 +237,20 @@ class SatelliteView:
             # Voice plan
             self.draw_single_plan(v.full_plan, obs, line_w, y)
 
+    #############################
+    ## Draw Percentage of Goal ##
+    #############################
+    def draw_percentage_of_goals_completed(self, goals_completed, goals_total, planner_name, n_p, tot_p):
+        # Draw percentage of goals completed
+        percent_txt = self.font.render(planner_name + ": " + str(round(goals_completed/goals_total*100,2)) + "%", True, SatelliteView.WHITE)
+        self.screen.blit(percent_txt, [SatelliteView.OFFSET/2 + (SatelliteView.OFFSET/2 + SatelliteView.HUD_WIDTH) * (n_p/tot_p), SatelliteView.DIV_AGENT + SatelliteView.GOAL_SIZE*2])
+
+    #############################
+    ## Draw Replanning Signal  ##
+    #############################
+    def draw_Replanning_signal(self, PLanner_name:str):
+        Signal = self.font.render(PLanner_name, True, SatelliteView.RED)
+        self.screen.blit(Signal, [SatelliteView.OFFSET/2, SatelliteView.DIV_AGENT + SatelliteView.GOAL_SIZE*0.5])
 
     ##################
     ## Draw Planner ##

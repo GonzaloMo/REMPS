@@ -32,11 +32,14 @@ class Simple_satellite_Arb_v1(gym.Env):
                             "Analyze":1,
                             "Dump": 2,
                             "Nothing": 3}
-        self.action_list_names = ["Nothing", "Take Picture"]
+        self.action_list_names = ["Nothing"]
         temp_list = []
+        temp_list_a = []
         for i in range(n_targets):
-            self.action_list_names.append("Analyze img"+str(i+1))
+            self.action_list_names.append("Take Picture img"+str(i+1))
+            temp_list_a.append("Analyze img"+str(i+1))
             temp_list.append("Dump img"+str(i+1))
+        self.action_list_names.extend(temp_list_a)
         self.action_list_names.extend(temp_list)
         n_actions = len(self.action_list_names) 
         self.action_space = spaces.Discrete(n_actions)
@@ -63,7 +66,7 @@ class Simple_satellite_Arb_v1(gym.Env):
         self.action = action
         action_name = self.action_list_names[action]
         if "Take Picture" in action_name:
-            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, None)
+            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, int(action_name[16:]))
         elif "Analyze" in action_name:
             action_tuple = (SatelliteSim.ACTION_ANALYSE, int(action_name[11:]))
         elif "Dump" in action_name:
@@ -93,6 +96,16 @@ class Simple_satellite_Arb_v1(gym.Env):
         self.view.drawSim(self.SatSim)
         self.view.draw_arbiter(Voices, self.state)
         self.view.draw_pos(self.state)
+        tot_v = len(Voices)
+        i = 0.5
+        for v in Voices:
+            Initial_goals = np.sum(v.Goal_ref.Initial_goals)
+            Current_goals = np.sum(v.Goal_ref.goals)
+            goals_achieved = Initial_goals - Current_goals
+            self.view.draw_percentage_of_goals_completed(goals_achieved, Initial_goals,v.name, i, tot_v)
+            i+=1
+
+        
         pygame.display.flip()
         if self.action == SatelliteSim.ACTION_DO_NOTHING:
             sleep(.01)

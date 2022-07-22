@@ -13,19 +13,26 @@
 - [x] Fix planner action output when ther is no plan
 - [x] Add a full memory voice to the system
 - [x] Fix goals seeding
-- [ ] Fix image simulation problem (images taken are not the ones planned)
-- [ ] Fix rendering image analysis
+- [x] Fix image simulation problem (images taken are not the ones planned)
+- [x] Fix rendering image analysis
+- [x] Add to render % of goals achieved
+- [ ] Add to render a replanning notice
 
 ## Experiment and Analysis
 - [x] Create a merged problem for a single planner
-- [ ] Create Test Cases
+- [ ] Create seeded Test Cases 200 
+  - [] Generate seeded grid search problems
 - [ ] Multiprocess the planner TestCases
-- [ ] Test the merged problem with a single planner
+- [x] Test the merged problem with a single planner
 - [ ] Run experiments for single planner vs complexity of the problem
 - [ ] Run experiments for Arbiter vs complexity of the problem
 
 ## Paper details
+- [x] Make overleaf
+- [ ] Create structured paper
+- [ ] Paste notes into the paper from boox
 - [ ] Write a Paper
+  - [ ] Bullet point writing 
   - [ ] Abstract
   - [ ] Introduction
   - [ ] Arbiter
@@ -36,3 +43,6 @@
 - [ ] 2nd Review
 
 some of the task can be divided into further sub task
+
+# Remarks and Comments:
+When adding multiple voices the high priority arbiter harms the preformance of the top voice

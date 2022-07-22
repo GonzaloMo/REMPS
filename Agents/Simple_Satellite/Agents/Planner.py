@@ -18,6 +18,7 @@ class Planner(BaseVoice):
         self.excuted_plan = []
         self.goals = goals
         self.Initial_goals = goals
+        self.SatSim = SatSim
         self.Action_doNothing = Action(SatSim.ACTION_DO_NOTHING, name, -100)
         self.replan = True
         self.write_plan_log = True
@@ -46,16 +47,17 @@ class Planner(BaseVoice):
         else:
             return self.Action_doNothing
             
-    def get_plan(self, obs, amount=4):
+    def get_plan(self, obs, timelimit=1800):
         self.current_orbit = obs["Orbit"][0]
         self.current_pos = obs["Pos"][0]
         processed_obs = self.get_obs(obs)
         processed_obs["Orbit"] = obs["Orbit"] - self.current_orbit
+        orbits_to_plan = self.SatSim.MAX_ORBITS - self.current_orbit
         goals = self.goals.copy()
-        self.full_plan, self.replan = self.planner.generatePlan(processed_obs, goals, 9, orbits = self.SatSim.MAX_ORBITS, time_limit=3600)
+        self.full_plan, self.replan = self.planner.generatePlan(processed_obs, goals, 9, orbits = orbits_to_plan, time_limit=timelimit)
         # Correct to general reference frame
         for i in range(len(self.full_plan)):
-            pos = self.full_plan[i][0] + self.current_orbit*360 + self.current_pos
+            pos = self.full_plan[i][0] + self.current_orbit*360 + self.current_pos + 5
             self.full_plan[i] = (pos, self.full_plan[i][1], self.full_plan[i][2], self.full_plan[i][3])
         self.excuted_plan = self.full_plan.copy()
         print(f"{self.name} | {self.full_plan}")

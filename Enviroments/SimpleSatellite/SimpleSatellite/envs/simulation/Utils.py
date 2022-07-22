@@ -9,7 +9,7 @@ class BaseVoice(ABC):
         # self.added_observation_space = []
 
     @abstractmethod
-    def getAction(self, obs) -> int:
+    def getAction(self, obs):
         """
         Only valid for discrete spaces
         """
