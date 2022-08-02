@@ -16,23 +16,38 @@ import numpy as np
 class Simple_satellite_v0(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
-            random: bool = False):
+            random: bool = False,
+            action_space_type: str = "Simple",
+            n_targets: int = 4,):
         super(Simple_satellite_v0, self).__init__()
         
         # set true so initialization is only done once
         self.first_render = True
 
         # save the satelite enviroment
-        self.SatSim = SatelliteSim(random=random)
+        self.SatSim = SatelliteSim()
         
 
         # The actions available are:
-        self.action_dict = {"Take":0 ,
+         # The actions available are:
+        self.action_dict = {"Take Picture":0 ,
                             "Analyze":1,
                             "Dump": 2,
                             "Nothing": 3}
-        self.action_list_names = ["Take","Analyze","Dump","Nothing"]
-        self.action_space = spaces.Discrete(4)
+        self.action_list_names = ["Nothing"]
+        if action_space_type=="Simple":
+            self.action_list_names += ["Take Picture", "Analyze", "Dump"]
+        elif action_space_type=="Advanced":
+            temp_list = []
+            temp_list_a = []
+            for i in range(n_targets):
+                self.action_list_names.append("Take Picture img"+str(i+1))
+                temp_list_a.append("Analyze img"+str(i+1))
+                temp_list.append("Dump img"+str(i+1))
+            self.action_list_names.extend(temp_list_a)
+            self.action_list_names.extend(temp_list)
+            n_actions = len(self.action_list_names) 
+            self.action_space = spaces.Discrete(n_actions)
 
         # Observation space is composed as: 
         # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]
@@ -55,7 +70,7 @@ class Simple_satellite_v0(gym.Env):
     def step(self, action):
         self.action = action
         # Take action 
-        next_state, done = self.SatSim.update(action)
+        next_state, done = self.SatSim.update(self.Number2Tuple_action(action))
         # Action_avaible = self.SatSim.action_is_posible()
         self.next_state = next_state
 
@@ -107,3 +122,23 @@ class Simple_satellite_v0(gym.Env):
             else:
                 print(k+': ',type(v))
         print('---------------------')
+    
+    def Name2number_action(self, action_name):
+        for i, name in enumerate(self.action_list_names):
+            if name == action_name:
+                return i
+
+    def Number2name_action(self, action_number):
+        return self.action_list_names[action_number]
+
+    def Number2Tuple_action(self, action):
+        action_name = self.action_list_names[action]
+        if "Take Picture" in action_name:
+            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, int(action_name[16:]))
+        elif "Analyze" in action_name:
+            action_tuple = (SatelliteSim.ACTION_ANALYSE, int(action_name[11:]))
+        elif "Dump" in action_name:
+            action_tuple = (SatelliteSim.ACTION_DUMP, int(action_name[8:]))
+        else:
+            action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
+        return action_tuple

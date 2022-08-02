@@ -1,0 +1,231 @@
+Simulation 1
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 1
+Amount_of_goals_per_target: 10
+V_0: 2627900213 
+V_1: 2513481647 
+Simulation_Seed: 153277857
+END
+----------------------------------------------------
+
+Simulation 2
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 1
+Amount_of_goals_per_target: 20
+V_0: 2542672111 
+V_1: 3626317683 
+Simulation_Seed: 3757765094
+END
+----------------------------------------------------
+
+Simulation 3
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 1
+Amount_of_goals_per_target: 30
+V_0: 3822928040 
+V_1: 2530547587 
+Simulation_Seed: 3706144784
+END
+----------------------------------------------------
+
+Simulation 4
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 10
+V_0: 379716772 
+V_1: 2993971934 
+Simulation_Seed: 139380144
+END
+----------------------------------------------------
+
+Simulation 5
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 20
+V_0: 1179573319 
+V_1: 1115236189 
+Simulation_Seed: 2509030564
+END
+----------------------------------------------------
+
+Simulation 6
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 30
+V_0: 4189765479 
+V_1: 2220294556 
+Simulation_Seed: 87472596
+END
+----------------------------------------------------
+
+Simulation 7
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 3
+Amount_of_goals_per_target: 10
+V_0: 3360372923 
+V_1: 3341405573 
+Simulation_Seed: 3954372411
+END
+----------------------------------------------------
+
+Simulation 8
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 3
+Amount_of_goals_per_target: 20
+V_0: 4023275263 
+V_1: 2233211910 
+Simulation_Seed: 3157409723
+END
+----------------------------------------------------
+
+Simulation 9
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 3
+Amount_of_goals_per_target: 30
+V_0: 1428378439 
+V_1: 2902207058 
+Simulation_Seed: 376491404
+END
+----------------------------------------------------
+
+Simulation 10
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 10
+V_0: 2233570857 
+V_1: 1690795785 
+Simulation_Seed: 292673523
+END
+----------------------------------------------------
+
+Simulation 11
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 20
+V_0: 1123909132 
+V_1: 2800412700 
+Simulation_Seed: 1135094778
+END
+----------------------------------------------------
+
+Simulation 12
+----------------------------------------------------
+N_targets: 5
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 30
+V_0: 333273668 
+V_1: 173802218 
+Simulation_Seed: 1936453186
+END
+----------------------------------------------------
+
+Simulation 13
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 10
+V_0: 2167006979 
+V_1: 530007972 
+Simulation_Seed: 3282634651
+END
+----------------------------------------------------
+
+Simulation 14
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 20
+V_0: 387591910 
+V_1: 2948262649 
+Simulation_Seed: 1934112902
+END
+----------------------------------------------------
+
+Simulation 15
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 30
+V_0: 153792232 
+V_1: 3006148826 
+Simulation_Seed: 492210538
+END
+----------------------------------------------------
+
+Simulation 16
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 10
+V_0: 2908434635 
+V_1: 4250468846 
+Simulation_Seed: 3387426758
+END
+----------------------------------------------------
+
+Simulation 17
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 20
+V_0: 3165252171 
+V_1: 3174614433 
+Simulation_Seed: 3767742885
+END
+----------------------------------------------------
+
+Simulation 18
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 30
+V_0: 4032686968 
+V_1: 379203759 
+Simulation_Seed: 2055466933
+END
+----------------------------------------------------
+
+Simulation 19
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 10
+V_0: 3163341225 
+V_1: 3451246111 
+Simulation_Seed: 1000110903
+END
+----------------------------------------------------
+
+Simulation 20
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 20
+V_0: 2038541706 
+V_1: 2434765327 
+Simulation_Seed: 2808006309
+END
+----------------------------------------------------
+
+Simulation 21
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 7
+Amount_of_goals_per_target: 30
+V_0: 3050797938 
+V_1: 561465065 
+Simulation_Seed: 266613063
+END
+----------------------------------------------------
+

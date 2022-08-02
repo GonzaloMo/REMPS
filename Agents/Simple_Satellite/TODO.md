@@ -20,16 +20,16 @@
 
 ## Experiment and Analysis
 - [x] Create a merged problem for a single planner
-- [ ] Create seeded Test Cases 200 
-  - [] Generate seeded grid search problems
+- [x] Create seeded Test Cases 200 
+  - [x] Generate seeded grid search problems
 - [ ] Multiprocess the planner TestCases
 - [x] Test the merged problem with a single planner
 - [ ] Run experiments for single planner vs complexity of the problem
-- [ ] Run experiments for Arbiter vs complexity of the problem
+- [x] Run experiments for Arbiter vs complexity of the problem
 
 ## Paper details
 - [x] Make overleaf
-- [ ] Create structured paper
+- [x] Create structured paper
 - [ ] Paste notes into the paper from boox
 - [ ] Write a Paper
   - [ ] Bullet point writing 

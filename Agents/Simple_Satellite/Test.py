@@ -10,7 +10,7 @@ from ArbiterVoices.Planner_voice import Planner_Voice
 from time import sleep
 import datetime
 
-newsim = False
+newsim = True
 log_dir = "./Logs/Simulation/"
 arbite_type = "Priority" # "Priority" or "weighted"
 # Set Seed for reproducibility
@@ -18,10 +18,10 @@ if newsim:
     seed_env = None
     seed_planner = None
     
-    n_planners = 5 # Number of planners (1 through 5)
+    n_planners = 2 # Number of planners (1 through 5)
     total_targets = 10 # Total number of targets (between 5 and 30)
     n_targets_per_planner = 5 # Number of targets per planner (between 25% and total_targets)
-    amount_of_goals_per_target = 5
+    amount_of_goals_per_target = 10
     with open(f"{log_dir}Seed.txt", "a") as f:
         f.write(f"New Simulation run at {datetime.datetime.now()}\n")
         f.write(f"----------------------------------------------------\n")
@@ -29,7 +29,7 @@ if newsim:
         f.write(f"N_targets_per_planner: {n_targets_per_planner}\n")
         f.write(f"Amount_of_goals_per_target: {amount_of_goals_per_target}\n")
 else:
-    date_time = "2022-07-22 15:31:04.596000"
+    date_time = "12"
     seed_dict = read_seed(f"{log_dir}Seed.txt", date_time)
     seed_planner = []
     planner_names = []
@@ -53,17 +53,17 @@ else:
 alpha = list(range(1, n_planners+1))
 
 # Initialize Environment
-env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets)
+env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets, log_dir=log_dir)
 
 # Initialize arbiter
-agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner, n_planners=n_planners,seed_v=seed_planner, amount=amount_of_goals_per_target)
+agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner,
+                                 n_planners=n_planners,seed_v=seed_planner, amount=amount_of_goals_per_target, log_dir=log_dir)
 
 # merge goals from all planners
 Complete_goals = merge_goals(agent)
 merged_planner = Planner(env.SatSim, "MP_", Complete_goals)
 print(f"{merged_planner.name} | Goals: {np.array(Complete_goals)} | Total: {np.sum(Complete_goals)}")
 
-import IPython; IPython.embed()
 # Start Simulation
 episode_reward = 0
 done = False
@@ -100,12 +100,3 @@ print(f"\n----------------------------------------------------\n")
 print(f"{merged_planner.name}")
 print(f"Initial Goals: {np.array(Complete_goals)}")
 import IPython; IPython.embed()
-
-V_0 = np.maximum(agent.Voices[0].Goal_ref.Initial_goals, agent.Voices[1].Goal_ref.Initial_goals)
-V_0 = np.maximum(V_0, agent.Voices[2].Goal_ref.Initial_goals)
-for voice in agent.Voices:
-    # percentage of overlap of initial goals and initial goals of voice 0
-    print(f"{voice.name} | {np.sum(np.maximum(0,np.array(voice.Goal_ref.Initial_goals) - np.array(V_0)))/np.sum(np.array(voice.Goal_ref.Initial_goals))}")
-    print(f"{voice.name} | {np.maximum(0, voice.Goal_ref.Initial_goals - V_0)}")
-    print(f"{voice.name} | {np.sum(np.array(voice.Goal_ref.Initial_goals))}")
-    print("------")
