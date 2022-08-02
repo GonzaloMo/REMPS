@@ -9,7 +9,7 @@ from torch import seed
 from ArbiterVoices.emergencyVoices import Full_memory
 
 class Arbiter:
-    def __init__(self, env: gym.Env, tot_targets:int, n_targets_per_planner :int = 2, n_planners: int = 2, seed_v = None, amount=15):
+    def __init__(self, env: gym.Env, tot_targets:int, n_targets_per_planner :int = 2, n_planners: int = 2, seed_v = None, amount=15, log_dir=None):
         """
         Initialize the Arbiter
         Args:   
@@ -25,7 +25,7 @@ class Arbiter:
                 seed = seed_v
             else:
                 seed = seed_v[i]
-            self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}", seed=seed, amount=amount))
+            self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}", seed=seed, amount=amount, log_dir=log_dir))
         self.emergency_voices = []
         self.emergency_voices.append(Full_memory(env.SatSim))
         self.npp = n_targets_per_planner

@@ -1,76 +1,26 @@
-New Simulation run at 2022-07-22 10:18:52.925305
+New Simulation run at 2022-07-29 10:37:43.243184
 ----------------------------------------------------
-N_targets: 20
-N_targets_per_planner: 10
-Amount_of_goals_per_target: 10
-V_0: 3221884114 
-V_1: 1964122975 
-Simulation_Seed: 4195196120
+N_targets: 2
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 5
+New Simulation run at 2022-07-29 10:38:39.057426
+----------------------------------------------------
+N_targets: 2
+N_targets_per_planner: 2
+Amount_of_goals_per_target: 5
+V_0: 2451933951 
+Simulation_Seed: 2750537714
 END
 ----------------------------------------------------
 
-New Simulation run at 2022-07-22 11:26:17.681287
-----------------------------------------------------
-N_targets: 20
-N_targets_per_planner: 10
-Amount_of_goals_per_target: 10
-V_0: 18092945 
-V_1: 1679023523 
-V_2: 2542535824 
-Simulation_Seed: 1605526660
-END
-----------------------------------------------------
-
-New Simulation run at 2022-07-22 14:36:32.831181
-----------------------------------------------------
-N_targets: 20
-N_targets_per_planner: 5
-Amount_of_goals_per_target: 10
-V_0: 596895077 
-V_1: 3375717513 
-V_2: 596386125 
-V_3: 2886665019 
-V_4: 3614549878 
-Simulation_Seed: 1277714446
-END
-----------------------------------------------------
-
-New Simulation run at 2022-07-22 15:11:43.318421
-----------------------------------------------------
-N_targets: 20
-N_targets_per_planner: 5
-Amount_of_goals_per_target: 10
-V_0: 4169353022 
-V_1: 1838889400 
-V_2: 3313524585 
-V_3: 1943253146 
-V_4: 1029477225 
-Simulation_Seed: 764461853
-ENDNew Simulation run at 2022-07-22 15:30:38.884224
+New Simulation run at 2022-07-29 10:41:22.140596
 ----------------------------------------------------
 N_targets: 10
 N_targets_per_planner: 5
-Amount_of_goals_per_target: 5
-V_0: 2160927151 
-V_1: 662653227 
-V_2: 2297585351 
-V_3: 2702268530 
-V_4: 4023887748 
-Simulation_Seed: 3115224992
-END
-----------------------------------------------------
-
-New Simulation run at 2022-07-22 15:31:04.596000
-----------------------------------------------------
-N_targets: 10
-N_targets_per_planner: 5
-Amount_of_goals_per_target: 5
-V_0: 1501086675 
-V_1: 3265046842 
-V_2: 1303049398 
-V_3: 3989148459 
-V_4: 374241424 
-Simulation_Seed: 4078282166
+Amount_of_goals_per_target: 10
+V_0: 1377956700 
+V_1: 1246149444 
+Simulation_Seed: 2964906796
 END
 ----------------------------------------------------
 

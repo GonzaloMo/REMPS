@@ -17,14 +17,15 @@ class Simple_satellite_Arb_v1(gym.Env):
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             random: bool = False,
             n_targets: int = 4,
-            seed: int = None):
+            seed: int = None,
+            log_dir: str = None):
         super(Simple_satellite_Arb_v1, self).__init__()
         
         # set true so initialization is only done once
         self.first_render = True
 
         # save the satelite enviroment
-        self.SatSim = SatelliteSim(random_tg=random, n_targets=n_targets)
+        self.SatSim = SatelliteSim(random_tg=random, n_targets=n_targets, log_dir=log_dir)
         
 
         # The actions available are:

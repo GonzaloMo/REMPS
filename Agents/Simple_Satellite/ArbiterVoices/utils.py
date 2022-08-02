@@ -57,7 +57,7 @@ def read_seed(seed_file, date_time):
         date = f"{date_time}"
         while True:
             line = f.readline().strip()
-            if "New Simulation" in line and date in line:
+            if "Simulation" in line and date in line:
                 print(f"Loading simulation {line}")
                 while True:
                     line = f.readline().strip()

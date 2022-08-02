@@ -10,7 +10,7 @@ PDDL: http://editor.planning.domains/#read_session=DUrGySABsW
 [![Simple Satellite video](http://img.youtube.com/vi/cAdJuryALuc/0.jpg)](http://www.youtube.com/watch?v=cAdJuryALuc)
 
 
-## Instalation 
+## Installation 
 ```
 git clone https://github.com/GonzaloMo/REMPS.git 
 cd REMPS/Environments/SimpleSatellite
