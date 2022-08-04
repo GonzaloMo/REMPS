@@ -44,7 +44,7 @@ class GoalReferee:
             self.generateSingleGoals(amount=amount-1)
         self.goals = goals
         self.Initial_goals = goals.copy()
-        print(f"{self.planner_name} | Goals: {self.goals}")
+        # print(f"{self.planner_name} | Goals: {self.goals}")
 
     def evaluateDump(self, image, weight:int = 1):
         

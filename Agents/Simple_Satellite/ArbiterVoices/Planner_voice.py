@@ -10,9 +10,9 @@ from ArbiterVoices.Planner_utlis.GoalReferee import GoalReferee
 from ArbiterVoices.utils import Action
 
 class Planner_Voice(BaseVoice):
-    def __init__(self, SatSim: SatelliteSim, n_targets, tot_targets, name="Planner", log_dir="./Logs/Simulation/", seed=None, amount=15):
+    def __init__(self, SatSim: SatelliteSim, n_targets, tot_targets, name="Planner", log_dir="./Logs/Simulation/", seed=None, amount=15, sim_name="",):
         super().__init__(name=name)
-        self.planner = PDDLAgent(SatSim, name)
+        self.planner = PDDLAgent(SatSim, name+"_"+sim_name)
         self.name = name
         self.full_plan = []
         self.excuted_plan = []
@@ -28,7 +28,7 @@ class Planner_Voice(BaseVoice):
         # if len(self.excuted_plan) < 1:
         if np.sum(self.Goal_ref.goals) == 0:
             if self.write_plan_log:
-                print(f"{self.name} | all goals achieved")
+                # print(f"{self.name} | all goals achieved")
                 self.write_plan_log = False
             return self.Action_doNothing
         if self.excuted_plan == [] and self.replan:
@@ -41,12 +41,12 @@ class Planner_Voice(BaseVoice):
                 self.count_to_replan = 0
         elif self.excuted_plan == [] and not self.replan:
             if self.write_plan_log:
-                print(f"{self.name} | Not replanning")
+                # print(f"{self.name} | Not replanning")
                 self.write_plan_log = False
             return self.Action_doNothing
         if self.excuted_plan == []:
-            if self.write_plan_log:
-                print(f"{self.name} | Empty plan")
+            # if self.write_plan_log:
+            #     print(f"{self.name} | Empty plan")
             return self.Action_doNothing
         pos, next_action, image, memory = self.excuted_plan[0]
         obs = self.get_obs(obs)

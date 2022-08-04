@@ -1,0 +1,65 @@
+Number of literals: 563
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(image_score img11) has a finite lower bound: [0.000,inf]
+(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img13) has a finite lower bound: [0.000,inf]
+(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img15) has a finite lower bound: [0.000,inf]
+(image_score img16) has a finite lower bound: [0.000,inf]
+(image_score img17) has a finite lower bound: [0.000,inf]
+(image_score img18) has a finite lower bound: [0.000,inf]
+(image_score img19) has a finite lower bound: [0.000,inf]
+(image_score img20) has a finite lower bound: [0.000,inf]
+(image_score img21) has a finite lower bound: [0.000,inf]
+(image_score img22) has a finite lower bound: [0.000,inf]
+(image_score img23) has a finite lower bound: [0.000,inf]
+(image_score img24) has a finite lower bound: [0.000,inf]
+(image_score img25) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
+- Must be >= -6.000
+Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
+- Must be >= -13.000
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
+- Must be >= -16.000
+Recognised a monotonic-change-induced limit on -1.000*var8(image_score img9)
+- Must be >= -17.000
+Recognised a monotonic-change-induced limit on -1.000*var9(image_score img10)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var11(image_score img12)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var12(image_score img13)
+- Must be >= -6.000
+Recognised a monotonic-change-induced limit on -1.000*var13(image_score img14)
+- Must be >= -17.000
+Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
+- Must be >= -26.000
+Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var19(image_score img20)
+- Must be >= -5.000
+Recognised a monotonic-change-induced limit on -1.000*var23(image_score img24)
+- Must be >= -18.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 72.000, admissible cost estimate nan
+b (71.000 | 1.000)b (70.000 | 5.000)b (69.000 | 19.001)b (68.000 | 51.001)
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (71.000 | 1.000)b (70.000 | 5.000)b (69.000 | 19.001)b (68.000 | 51.001)b (66.000 | 175.001)b (64.000 | 355.001)b (62.000 | 535.001)b (60.000 | 715.001)b (58.000 | 895.001)b (56.000 | 1075.001)b (54.000 | 1255.001)b (52.000 | 1435.001)b (50.000 | 1449.002)
+END
