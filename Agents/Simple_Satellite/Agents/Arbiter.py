@@ -9,7 +9,7 @@ from torch import seed
 from ArbiterVoices.emergencyVoices import Full_memory
 
 class Arbiter:
-    def __init__(self, env: gym.Env, tot_targets:int, n_targets_per_planner :int = 2, n_planners: int = 2, seed_v = None, amount=15, log_dir=None):
+    def __init__(self, env: gym.Env, tot_targets:int, n_targets_per_planner :int = 2, n_planners: int = 2, seed_v = None, amount=15, log_dir=None, sim_name=""):
         """
         Initialize the Arbiter
         Args:   
@@ -25,7 +25,7 @@ class Arbiter:
                 seed = seed_v
             else:
                 seed = seed_v[i]
-            self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}", seed=seed, amount=amount, log_dir=log_dir))
+            self.Voices.append(Planner_Voice(env.SatSim, n_targets_per_planner, tot_targets, name=f"V_{i}", seed=seed, amount=amount, log_dir=log_dir, sim_name=sim_name))
         self.emergency_voices = []
         self.emergency_voices.append(Full_memory(env.SatSim))
         self.npp = n_targets_per_planner
@@ -48,8 +48,8 @@ class Arbiter:
         for e_voice in self.emergency_voices:
             e_action = e_voice.getAction(obs)
             if not (e_action == self.Action_doNothing):
-                print(f"EMERGENCY VOICE !!!!")
-                print(f"Emergency voice {e_voice.name} took action {e_action}")
+                # print(f"EMERGENCY VOICE !!!!")
+                # print(f"Emergency voice {e_voice.name} took action {e_action}")
                 if not e_voice.Engaged:
                     self.reset_voices(obs)
                 return e_action.get_action_from_tuple(self.n_targets)
@@ -71,7 +71,7 @@ class Arbiter:
         self.prune_plan_voices(obs)
         if not action.action == self.env.SatSim.ACTION_DO_NOTHING:
             composed_action = action.get_action_from_tuple(self.n_targets)
-            print(f"Selected Action {str(action)} with priority {action.Value} sugested by {action.voice}")
+            # print(f"Selected Action {str(action)} with priority {action.Value} sugested by {action.voice}")
         
         if action_type == "Action_specific":
             # if not action.action == 0:
