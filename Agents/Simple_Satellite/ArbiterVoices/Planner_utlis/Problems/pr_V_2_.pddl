@@ -136,21 +136,26 @@
 
 )
 (:goal (and
-  (>= (image_score img7) 0)
-  (<= (image_score img7) 2)
+  (>= (image_score img1) 0)
+  (<= (image_score img1) 5)
 
-  (>= (image_score img8) 0)
-  (<= (image_score img8) 1)
+  (>= (image_score img4) 0)
+  (<= (image_score img4) 2)
 
-  (>= (image_score img9) 0)
-  (<= (image_score img9) 6)
+  (>= (image_score img5) 0)
+  (<= (image_score img5) 4)
 
-(>= (total_score) 2)
+  (>= (image_score img10) 0)
+  (<= (image_score img10) 10)
+
+(>= (total_score) 5)
 ))
 (:metric maximize (+
-  (image_score img7)
-    (+ (image_score img8)
-      (image_score img9)
+  (image_score img1)
+    (+ (image_score img4)
+      (+ (image_score img5)
+        (image_score img10)
+      )
     )
   )
 )

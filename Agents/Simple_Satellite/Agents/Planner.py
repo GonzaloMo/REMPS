@@ -27,7 +27,7 @@ class Planner(BaseVoice):
         # if len(self.excuted_plan) < 1:
         if np.sum(self.Goal_ref.goals) == 0:
             if self.write_plan_log:
-                # print(f"{self.name} | all goals achieved")
+                print(f"{self.name} | all goals achieved")
                 self.write_plan_log = False
             return self.Action_doNothing
         if self.excuted_plan == [] and self.replan:
@@ -35,7 +35,7 @@ class Planner(BaseVoice):
             return self.getAction(obs, epsilon=epsilon)
         elif self.excuted_plan == [] and not self.replan:
             if self.write_plan_log:
-                # print(f"{self.name} | Not replanning")
+                print(f"{self.name} | Not replanning")
                 self.write_plan_log = False
             return self.Action_doNothing
         pos, next_action, image, memory = self.excuted_plan[0]

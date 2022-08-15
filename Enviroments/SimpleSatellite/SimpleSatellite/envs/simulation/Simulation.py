@@ -144,9 +144,7 @@ class SatelliteSim:
             action: the action to be taken. 
         """
         if type(action_in) is not int:
-            print(action_in)
             action, img = action_in
-            
         else:
             action = action_in
             img = None

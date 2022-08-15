@@ -5,7 +5,7 @@ from Agents.Planner import Planner
 import gym
 import SimpleSatellite
 import numpy as np
-from ArbiterVoices.utils import read_seed, merge_goals
+from ArbiterVoices.utils import read_seed, merge_goals, alpha_function
 from ArbiterVoices.Planner_voice import Planner_Voice
 from time import sleep
 import datetime
@@ -18,7 +18,7 @@ if newsim:
     seed_env = None
     seed_planner = None
     
-    n_planners = 2 # Number of planners (1 through 5)
+    n_planners = 3 # Number of planners (1 through 5)
     total_targets = 10 # Total number of targets (between 5 and 30)
     n_targets_per_planner = 5 # Number of targets per planner (between 25% and total_targets)
     amount_of_goals_per_target = 10
@@ -48,10 +48,6 @@ else:
     n_planners = len(planner_names)
     print(f"Loadded Simulation: {seed_dict}")
 
-
-
-alpha = list(range(1, n_planners+1))
-
 # Initialize Environment
 env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets, log_dir=log_dir)
 
@@ -79,6 +75,7 @@ if newsim:
 # merged_planner.get_plan(obs)
 agent.reset_voices(obs)
 while not done:
+    alpha = alpha_function(obs, agent)
     action = agent.take_action(obs, alpha, type_selec_method=arbite_type)
     obs, reward, done, info = env.step(action)
     if "Dump" in env.action_list_names[action]:

@@ -150,9 +150,10 @@ def init_pool_processes(the_lock):
     '''
     global lock
     lock = the_lock
+
+# Main Multiprocessing
 from multiprocessing import Pool, Lock
 if __name__ == "__main__":
-    global lock
     l = Lock()
     # Create log directory
     log_dir = "./Logs/Simulation/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+"/"
@@ -160,16 +161,18 @@ if __name__ == "__main__":
         os.makedirs(log_dir)
     i = 0
     iter_Variable = []
-    for n_planners in range(2, 6): # Number of planners (1 through 5)
-        for total_targets in range(5, 30, 5): # Total number of targets (between 5 and 30)
-            n_tpp_list = [int(.25*total_targets), int(.5*total_targets), int(.75*total_targets), total_targets] # Number of targets per planner (between 25% and total_targets)
-            for n_targets_per_planner in n_tpp_list: # Number of targets per planner (between 25% and total_targets)
-                for amount_of_goals_per_target in [10, 20, 30]: # Number of goals per target (between 10 and 30)
-                    i += 1
-                    iter_Variable.append((n_planners, total_targets, n_targets_per_planner, amount_of_goals_per_target, i, log_dir))
+    n_planners = 3
+    for total_targets in range(5, 30, 5): # Total number of targets (between 5 and 30)
+        n_tpp_list = [int(.25*total_targets), int(.5*total_targets), int(.75*total_targets), total_targets] # Number of targets per planner (between 25% and total_targets)
+        for n_targets_per_planner in n_tpp_list: # Number of targets per planner (between 25% and total_targets)
+            for amount_of_goals_per_target in [10, 20, 30]: # Number of goals per target (between 10 and 30)
+                i += 1
+                iter_Variable.append((n_planners, total_targets, n_targets_per_planner, amount_of_goals_per_target, i, log_dir))
 
-
+    
+    print("Run pool")
     # Create Pool of Processes
-    pool = Pool(initializer=init_pool_processes, initargs=(l,))
+    pool = Pool(initializer=init_pool_processes, initargs=(l,), processes=20)
     # Run Simulation
+    print("Run map")
     pool.map(sim_run, iter_Variable)
