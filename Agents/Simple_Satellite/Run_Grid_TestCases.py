@@ -16,6 +16,7 @@ def sim_run(input_tuple):
     arbite_type = "Priority" # "Priority" or "weighted"
     n_planners, total_targets, n_targets_per_planner, amount_of_goals_per_target, i, log_dir = input_tuple
     lock.acquire()
+    print(f"Simulation {i}:\n")
     with open(f"{log_dir}Seed.yaml", "a") as f:
         f.write("---\n")
         f.write(f"Simulation {i}:\n")

@@ -20,24 +20,28 @@ Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
-Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var1(image_score img2)
+- Must be >= -5.000
+Recognised a monotonic-change-induced limit on -1.000*var2(image_score img3)
+- Must be >= -5.000
 Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
+- Must be >= -10.000
+Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
 - Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
-- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
+- Must be >= -7.000
 Recognised a monotonic-change-induced limit on -1.000*var8(image_score img9)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var11(image_score img12)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var12(image_score img13)
-- Must be >= -14.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
 - Must be >= -12.000
+Recognised a monotonic-change-induced limit on -1.000*var10(image_score img11)
+- Must be >= -9.000
+Recognised a monotonic-change-induced limit on -1.000*var11(image_score img12)
+- Must be >= -11.000
+Recognised a monotonic-change-induced limit on -1.000*var13(image_score img14)
+- Must be >= -8.000
 66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 49.000, admissible cost estimate nan
-b (48.000 | 31.000)b (47.000 | 45.001)b (46.000 | 77.002)b (45.000 | 77.002)b (44.000 | 105.000)b (40.000 | 119.001)b (39.000 | 151.002)b (38.000 | 172.001)b (37.000 | 204.002)b (36.000 | 216.000)b (35.000 | 230.001)b (34.000 | 262.002)b (33.000 | 262.002)b (32.000 | 262.002)b (30.000 | 276.003)b (29.000 | 290.003)b (27.000 | 290.004)b (26.000 | 593.001)b (25.000 | 625.002)b (24.000 | 625.002)b (23.000 | 625.002)b (21.000 | 639.003)b (20.000 | 970.001)b (19.000 | 1002.002)b (18.000 | 1002.002)b (17.000 | 1016.002)b (15.000 | 1016.003)b (14.000 | 1332.001)b (13.000 | 1364.002)b (12.000 | 1364.002)b (11.000 | 1378.003)b (9.000 | 1378.003)
+Initial heuristic = 79.000, admissible cost estimate nan
+b (78.000 | 74.000)b (77.000 | 88.001)b (76.000 | 120.002)b (75.000 | 120.002)b (74.000 | 120.002)b (73.000 | 169.002)b (72.000 | 169.002)b (71.000 | 215.001)b (70.000 | 247.002)b (69.000 | 247.002)b (67.000 | 270.001)b (66.000 | 270.001)b (64.000 | 270.001)b (62.000 | 284.001)b (60.000 | 284.002)b (58.000 | 298.003)b (46.000 | 298.003)b (45.000 | 344.005)b (44.000 | 344.005)b (43.000 | 442.000)b (42.000 | 456.001)b (41.000 | 488.001)b (40.000 | 521.001)b (39.000 | 553.002)b (38.000 | 586.000)b (37.000 | 600.001)b (36.000 | 632.002)b (35.000 | 632.002)b (34.000 | 646.002)b (33.000 | 646.002)b (31.000 | 646.003)b (30.000 | 660.004)b (28.000 | 660.004)b (27.000 | 727.002)b (26.000 | 796.000)b (25.000 | 810.001)b (23.000 | 810.001)b (22.000 | 824.002)b (20.000 | 824.002)b (18.000 | 963.000)b (17.000 | 976.000)b (16.000 | 977.000)b (15.000 | 991.001)b (14.000 | 1023.002)b (13.000 | 1023.002)
 Resorting to best-first search
 Running WA* with W = 5.000, not restarting with goal states
-b (48.000 | 31.000)b (47.000 | 45.001)b (46.000 | 77.002)b (45.000 | 77.002)b (44.000 | 105.000)b (43.000 | 119.001)b (42.000 | 151.002)b (41.000 | 172.001)b (40.000 | 204.002)b (39.000 | 216.000)b (38.000 | 230.001)b (38.000 | 219.000)b (37.000 | 230.001)b (36.000 | 262.002)b (35.000 | 262.002)b (33.000 | 276.003)b (32.000 | 290.003)b (30.000 | 290.004)b (29.000 | 304.005)b (27.000 | 304.005)b (26.000 | 593.001)b (25.000 | 625.002)b (24.000 | 625.002)b (23.000 | 625.002)b (21.000 | 639.003)b (20.000 | 970.001)b (19.000 | 1002.002)b (18.000 | 1002.002)b (17.000 | 1016.002)b (15.000 | 1016.003)b (14.000 | 1332.001)b (13.000 | 1364.002)b (12.000 | 1364.002)b (11.000 | 1378.003)b (9.000 | 1378.003)b (8.000 | 1549.003)
+b (78.000 | 74.000)b (77.000 | 88.001)b (77.000 | 76.000)b (76.000 | 88.001)b (59.000 | 82.000)b (58.000 | 96.001)b (57.000 | 128.002)b (56.000 | 142.003)b (55.000 | 174.004)b (54.000 | 174.004)b (53.000 | 215.001)b (52.000 | 247.002)b (51.000 | 247.002)b (50.000 | 270.001)b (50.000 | 257.000)b (49.000 | 270.001)b (47.000 | 270.001)b (46.000 | 284.001)b (44.000 | 284.002)b (43.000 | 298.003)b (42.000 | 330.003)b (41.000 | 450.001)b (39.000 | 450.001)b (38.000 | 521.001)b (37.000 | 553.002)b (36.000 | 586.000)b (35.000 | 600.001)b (34.000 | 632.002)b (33.000 | 632.002)b (32.000 | 646.002)b (32.000 | 632.002)b (31.000 | 646.002)b (29.000 | 646.003)b (28.000 | 660.004)b (26.000 | 660.004)b (25.000 | 706.006)b (24.000 | 706.006)b (23.000 | 810.001)b (21.000 | 810.001)b (20.000 | 977.000)b (19.000 | 991.001)b (18.000 | 1023.002)b (17.000 | 1055.001)b (16.000 | 1087.002)b (15.000 | 1156.000)b (14.000 | 1170.001)b (12.000 | 1170.001)b (11.000 | 1184.002)b (9.000 | 1184.002)
 END

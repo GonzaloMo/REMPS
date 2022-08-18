@@ -32,8 +32,11 @@ class PDDLAgent:
             print("number of goals ",n_goals)
             if set_goals is  not np.ndarray:
                 set_goals = np.array(set_goals)
-            if np.size(set_goals) is not int:
+            if type(np.size(set_goals)) is not int:
                 if len(np.size(set_goals))>1:
+                    print(f"goals: {goals}")
+                    print(f"Set_goals: {set_goals}")
+                    print(f"Size Set_goals: {np.size(set_goals)}")
                     raiseExceptions("len set_goals < 1")
             problem_goals_selected = np.random.choice(set_goals, size=min(n_goals, len(set_goals)))
             goals_problem = np.zeros(len(goals))
@@ -50,6 +53,7 @@ class PDDLAgent:
                 # print(f"({self.name}) planning failed")
                 if n_goals is None:
                     n_goals = len(set_goals)
+                    print("Set Goals: ", set_goals)
                 else:
                     n_goals = max(1, n_goals-1)
                 n_tries -=1

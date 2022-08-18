@@ -1,0 +1,22 @@
+---
+Simulation 8: 
+    V_0:
+        Initial Goals: [15, 0, 0, 9, 0]
+        Goals Left: [12, 0, 0, 6, 0]
+        Total Initial Goals: 24
+        Total Goals Left: 18
+    V_1:
+        Initial Goals: [0, 0, 0, 20, 6]
+        Goals Left: [0, 0, 0, 17, 0]
+        Total Initial Goals: 26
+        Total Goals Left: 17
+    V_2:
+        Initial Goals: [0, 15, 0, 15, 0]
+        Goals Left: [0, 7, 0, 12, 0]
+        Total Initial Goals: 30
+        Total Goals Left: 19
+    MP:
+        Initial Goals: [15, 15, 0, 20, 6]
+        Goals Achieved: [3, 8, 0, 3, 8]
+        Total Initial Goals: 56
+        Total Goals Achieved: 22
