@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from ArbiterVoices.Planner_utlis import PDDLManager 
 import numpy as np
@@ -28,9 +29,16 @@ class PDDLAgent:
         if n_goals is None:
             goals_problem = goals
         else:
-            porblem_goals_selected = np.random.choice(set_goals, size=min(n_goals, len(set_goals)))
+            print("number of goals ",n_goals)
+            if set_goals is  not np.ndarray:
+                set_goals = np.array(set_goals)
+            if np.size(set_goals) is not int:
+                if len(np.size(set_goals))>1:
+                    raiseExceptions("len set_goals < 1")
+            problem_goals_selected = np.random.choice(set_goals, size=min(n_goals, len(set_goals)))
             goals_problem = np.zeros(len(goals))
-            for i in porblem_goals_selected:
+            
+            for i in problem_goals_selected:
                 goals_problem[i] = goals[i]
             print(f"{self.name} |  {goals} ")
             print(f"{self.name} |  {goals_problem}")

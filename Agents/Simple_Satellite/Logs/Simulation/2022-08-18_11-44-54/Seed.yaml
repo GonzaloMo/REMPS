@@ -1,0 +1,720 @@
+---
+Simulation 1:
+    - N_targets: 5
+    - N_targets_per_planner: 1
+    - Amount_of_goals_per_target: 5
+    - V_0: 3152680006 
+    - V_1: 1941269463 
+    - V_2: 4273129872 
+    - Simulation_Seed: 4002326166
+---
+Simulation 3:
+    - N_targets: 5
+    - N_targets_per_planner: 1
+    - Amount_of_goals_per_target: 15
+    - V_0: 3152680006 
+    - V_1: 1941269463 
+    - V_2: 4273129872 
+    - Simulation_Seed: 4002326166
+---
+Simulation 2:
+    - N_targets: 5
+    - N_targets_per_planner: 1
+    - Amount_of_goals_per_target: 10
+    - V_0: 3152680006 
+    - V_1: 1941269463 
+    - V_2: 4273129872 
+    - Simulation_Seed: 4002326166
+---
+Simulation 4:
+    - N_targets: 5
+    - N_targets_per_planner: 1
+    - Amount_of_goals_per_target: 20
+    - V_0: 3152680006 
+    - V_1: 1941269463 
+    - V_2: 4273129872 
+    - Simulation_Seed: 4002326166
+---
+Simulation 5:
+    - N_targets: 5
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 5
+    - V_0: 3152680006 
+    - V_1: 3422734182 
+    - V_2: 969099919 
+    - Simulation_Seed: 2133240802
+---
+Simulation 6:
+    - N_targets: 5
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 10
+    - V_0: 3152680006 
+    - V_1: 3422734182 
+    - V_2: 969099919 
+    - Simulation_Seed: 2133240802
+---
+Simulation 7:
+    - N_targets: 5
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 15
+    - V_0: 3152680006 
+    - V_1: 3422734182 
+    - V_2: 969099919 
+    - Simulation_Seed: 2133240802
+---
+Simulation 8:
+    - N_targets: 5
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 20
+    - V_0: 3152680006 
+    - V_1: 3422734182 
+    - V_2: 969099919 
+    - Simulation_Seed: 2133240802
+---
+Simulation 9:
+    - N_targets: 5
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 5
+    - V_0: 3152680006 
+    - V_1: 3979119173 
+    - V_2: 1681238508 
+    - Simulation_Seed: 3061302889
+---
+Simulation 10:
+    - N_targets: 5
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 10
+    - V_0: 3152680006 
+    - V_1: 3979119173 
+    - V_2: 1681238508 
+    - Simulation_Seed: 3061302889
+---
+Simulation 11:
+    - N_targets: 5
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 15
+    - V_0: 3152680006 
+    - V_1: 3979119173 
+    - V_2: 1681238508 
+    - Simulation_Seed: 3061302889
+---
+Simulation 12:
+    - N_targets: 5
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 20
+    - V_0: 3152680006 
+    - V_1: 3979119173 
+    - V_2: 1681238508 
+    - Simulation_Seed: 3061302889
+---
+Simulation 13:
+    - N_targets: 5
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 5
+    - V_0: 3152680006 
+    - V_1: 1043908873 
+    - V_2: 3814704250 
+    - Simulation_Seed: 3258371272
+---
+Simulation 14:
+    - N_targets: 5
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 10
+    - V_0: 3152680006 
+    - V_1: 1043908873 
+    - V_2: 3814704250 
+    - Simulation_Seed: 3258371272
+---
+Simulation 15:
+    - N_targets: 5
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 15
+    - V_0: 3152680006 
+    - V_1: 1043908873 
+    - V_2: 3814704250 
+    - Simulation_Seed: 3258371272
+---
+Simulation 16:
+    - N_targets: 5
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 20
+    - V_0: 3152680006 
+    - V_1: 1043908873 
+    - V_2: 3814704250 
+    - Simulation_Seed: 3258371272
+---
+Simulation 17:
+    - N_targets: 10
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 5
+    - V_0: 3152680006 
+    - V_1: 373355541 
+    - V_2: 1958311482 
+    - Simulation_Seed: 858815342
+---
+Simulation 19:
+    - N_targets: 10
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 15
+    - V_0: 3152680006 
+    - V_1: 373355541 
+    - V_2: 1958311482 
+    - Simulation_Seed: 858815342
+---
+Simulation 18:
+    - N_targets: 10
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 10
+    - V_0: 3152680006 
+    - V_1: 373355541 
+    - V_2: 1958311482 
+    - Simulation_Seed: 858815342
+---
+Simulation 20:
+    - N_targets: 10
+    - N_targets_per_planner: 2
+    - Amount_of_goals_per_target: 20
+    - V_0: 3152680006 
+    - V_1: 373355541 
+    - V_2: 1958311482 
+    - Simulation_Seed: 858815342
+---
+Simulation 21:
+    - N_targets: 10
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 5
+    - V_0: 4053829398 
+    - V_1: 1444361029 
+    - V_2: 2970513275 
+    - Simulation_Seed: 291650703
+---
+Simulation 22:
+    - N_targets: 10
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 10
+    - V_0: 4053829398 
+    - V_1: 1444361029 
+    - V_2: 2970513275 
+    - Simulation_Seed: 291650703
+---
+Simulation 23:
+    - N_targets: 10
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 15
+    - V_0: 4053829398 
+    - V_1: 1444361029 
+    - V_2: 2970513275 
+    - Simulation_Seed: 291650703
+---
+Simulation 24:
+    - N_targets: 10
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 20
+    - V_0: 1200701425 
+    - V_1: 2975784807 
+    - V_2: 2339616466 
+    - Simulation_Seed: 2839442596
+---
+Simulation 25:
+    - N_targets: 10
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 5
+    - V_0: 3106571775 
+    - V_1: 933024235 
+    - V_2: 4022240249 
+    - Simulation_Seed: 2011059344
+---
+Simulation 26:
+    - N_targets: 10
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 10
+    - V_0: 4053829398 
+    - V_1: 4115468463 
+    - V_2: 2480593857 
+    - Simulation_Seed: 2739081483
+---
+Simulation 27:
+    - N_targets: 10
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 15
+    - V_0: 3945979947 
+    - V_1: 2446940175 
+    - V_2: 3689441123 
+    - Simulation_Seed: 297112298
+---
+Simulation 28:
+    - N_targets: 10
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 20
+    - V_0: 651238901 
+    - V_1: 3716770207 
+    - V_2: 2550465492 
+    - Simulation_Seed: 1615530814
+---
+Simulation 29:
+    - N_targets: 10
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 5
+    - V_0: 980665860 
+    - V_1: 1919005835 
+    - V_2: 1417626161 
+    - Simulation_Seed: 1121983011
+---
+Simulation 30:
+    - N_targets: 10
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 10
+    - V_0: 2109425575 
+    - V_1: 689251715 
+    - V_2: 321135286 
+    - Simulation_Seed: 572666590
+---
+Simulation 31:
+    - N_targets: 10
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 15
+    - V_0: 980665860 
+    - V_1: 1919005835 
+    - V_2: 1417626161 
+    - Simulation_Seed: 1121983011
+---
+Simulation 32:
+    - N_targets: 10
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 20
+    - V_0: 834407267 
+    - V_1: 268521106 
+    - V_2: 948876539 
+    - Simulation_Seed: 2327281576
+---
+Simulation 33:
+    - N_targets: 15
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 5
+    - V_0: 1646985090 
+    - V_1: 2979877559 
+    - V_2: 3223801641 
+    - Simulation_Seed: 3348881900
+---
+Simulation 34:
+    - N_targets: 15
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 10
+    - V_0: 3945979947 
+    - V_1: 2962255554 
+    - V_2: 441576647 
+    - Simulation_Seed: 534699041
+---
+Simulation 35:
+    - N_targets: 15
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 15
+    - V_0: 2341132190 
+    - V_1: 117081245 
+    - V_2: 1825743333 
+    - Simulation_Seed: 1940547277
+---
+Simulation 36:
+    - N_targets: 15
+    - N_targets_per_planner: 3
+    - Amount_of_goals_per_target: 20
+    - V_0: 2344682248 
+    - V_1: 598514976 
+    - V_2: 1552234271 
+    - Simulation_Seed: 1806834919
+---
+Simulation 37:
+    - N_targets: 15
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 5
+    - V_0: 1510102932 
+    - V_1: 1817393481 
+    - V_2: 1383839769 
+    - Simulation_Seed: 1996856909
+---
+Simulation 38:
+    - N_targets: 15
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 10
+    - V_0: 1848107158 
+    - V_1: 4067771178 
+    - V_2: 1126171431 
+    - Simulation_Seed: 2071336882
+---
+Simulation 39:
+    - N_targets: 15
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 15
+    - V_0: 3252724119 
+    - V_1: 1514350825 
+    - V_2: 1027038979 
+    - Simulation_Seed: 2580370400
+---
+Simulation 40:
+    - N_targets: 15
+    - N_targets_per_planner: 7
+    - Amount_of_goals_per_target: 20
+    - V_0: 948278414 
+    - V_1: 302214190 
+    - V_2: 189133784 
+    - Simulation_Seed: 725915938
+---
+Simulation 41:
+    - N_targets: 15
+    - N_targets_per_planner: 11
+    - Amount_of_goals_per_target: 5
+    - V_0: 4222953973 
+    - V_1: 3814722482 
+    - V_2: 2390208253 
+    - Simulation_Seed: 26192345
+---
+Simulation 42:
+    - N_targets: 15
+    - N_targets_per_planner: 11
+    - Amount_of_goals_per_target: 10
+    - V_0: 834407267 
+    - V_1: 421935349 
+    - V_2: 1273542954 
+    - Simulation_Seed: 215006454
+---
+Simulation 43:
+    - N_targets: 15
+    - N_targets_per_planner: 11
+    - Amount_of_goals_per_target: 15
+    - V_0: 3587537474 
+    - V_1: 2084241550 
+    - V_2: 2005722564 
+    - Simulation_Seed: 1655073010
+---
+Simulation 44:
+    - N_targets: 15
+    - N_targets_per_planner: 11
+    - Amount_of_goals_per_target: 20
+    - V_0: 3945979947 
+    - V_1: 295817802 
+    - V_2: 3211258756 
+    - Simulation_Seed: 3442567448
+---
+Simulation 45:
+    - N_targets: 15
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 5
+    - V_0: 980665860 
+    - V_1: 1919005835 
+    - V_2: 1417626161 
+    - Simulation_Seed: 1419636404
+---
+Simulation 46:
+    - N_targets: 15
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 10
+    - V_0: 1277845096 
+    - V_1: 1649871227 
+    - V_2: 2626185372 
+    - Simulation_Seed: 2660896093
+---
+Simulation 47:
+    - N_targets: 15
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 15
+    - V_0: 980665860 
+    - V_1: 1919005835 
+    - V_2: 1417626161 
+    - Simulation_Seed: 1419636404
+---
+Simulation 48:
+    - N_targets: 15
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 20
+    - V_0: 267324138 
+    - V_1: 2093954143 
+    - V_2: 2452237224 
+    - Simulation_Seed: 4174584049
+---
+Simulation 49:
+    - N_targets: 20
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 5
+    - V_0: 3989962280 
+    - V_1: 3115225256 
+    - V_2: 4190779906 
+    - Simulation_Seed: 3635376370
+---
+Simulation 50:
+    - N_targets: 20
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 10
+    - V_0: 4269401312 
+    - V_1: 3215616241 
+    - V_2: 1646291330 
+    - Simulation_Seed: 1600793922
+---
+Simulation 51:
+    - N_targets: 20
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 15
+    - V_0: 3328747882 
+    - V_1: 2579904639 
+    - V_2: 3033650958 
+    - Simulation_Seed: 2752516606
+---
+Simulation 52:
+    - N_targets: 20
+    - N_targets_per_planner: 5
+    - Amount_of_goals_per_target: 20
+    - V_0: 2224390310 
+    - V_1: 1218988447 
+    - V_2: 2177028966 
+    - Simulation_Seed: 4064653830
+---
+Simulation 53:
+    - N_targets: 20
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 5
+    - V_0: 2341132190 
+    - V_1: 455224097 
+    - V_2: 2851653013 
+    - Simulation_Seed: 4110862246
+---
+Simulation 54:
+    - N_targets: 20
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 10
+    - V_0: 3783052939 
+    - V_1: 2566034412 
+    - V_2: 840921560 
+    - Simulation_Seed: 3601209493
+---
+Simulation 55:
+    - N_targets: 20
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 15
+    - V_0: 1738525693 
+    - V_1: 1071240372 
+    - V_2: 1654100597 
+    - Simulation_Seed: 1327416151
+---
+Simulation 56:
+    - N_targets: 20
+    - N_targets_per_planner: 10
+    - Amount_of_goals_per_target: 20
+    - V_0: 49304333 
+    - V_1: 3122848734 
+    - V_2: 1231006013 
+    - Simulation_Seed: 2377510474
+---
+Simulation 57:
+    - N_targets: 20
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 5
+    - V_0: 3121437103 
+    - V_1: 3330684323 
+    - V_2: 2359102124 
+    - Simulation_Seed: 1525002009
+---
+Simulation 58:
+    - N_targets: 20
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 10
+    - V_0: 1436147208 
+    - V_1: 3995368413 
+    - V_2: 1861257403 
+    - Simulation_Seed: 1640156160
+---
+Simulation 59:
+    - N_targets: 20
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 15
+    - V_0: 1200701425 
+    - V_1: 2001563146 
+    - V_2: 595828192 
+    - Simulation_Seed: 1853865033
+---
+Simulation 60:
+    - N_targets: 20
+    - N_targets_per_planner: 15
+    - Amount_of_goals_per_target: 20
+    - V_0: 2047266271 
+    - V_1: 1863727249 
+    - V_2: 2704599360 
+    - Simulation_Seed: 1938169865
+---
+Simulation 61:
+    - N_targets: 20
+    - N_targets_per_planner: 20
+    - Amount_of_goals_per_target: 5
+    - V_0: 946330867 
+    - V_1: 3766058852 
+    - V_2: 2398146580 
+    - Simulation_Seed: 2048661866
+---
+Simulation 62:
+    - N_targets: 20
+    - N_targets_per_planner: 20
+    - Amount_of_goals_per_target: 10
+    - V_0: 2341132190 
+    - V_1: 4247329132 
+    - V_2: 2848734462 
+    - Simulation_Seed: 3274324388
+---
+Simulation 63:
+    - N_targets: 20
+    - N_targets_per_planner: 20
+    - Amount_of_goals_per_target: 15
+    - V_0: 4272591360 
+    - V_1: 1063962888 
+    - V_2: 847439295 
+    - Simulation_Seed: 2181612050
+---
+Simulation 64:
+    - N_targets: 20
+    - N_targets_per_planner: 20
+    - Amount_of_goals_per_target: 20
+    - V_0: 2024090903 
+    - V_1: 3256382229 
+    - V_2: 3491518417 
+    - Simulation_Seed: 2012982590
+---
+Simulation 65:
+    - N_targets: 25
+    - N_targets_per_planner: 6
+    - Amount_of_goals_per_target: 5
+    - V_0: 2701503657 
+    - V_1: 2132715864 
+    - V_2: 2710704047 
+    - Simulation_Seed: 996584069
+---
+Simulation 66:
+    - N_targets: 25
+    - N_targets_per_planner: 6
+    - Amount_of_goals_per_target: 10
+    - V_0: 139223736 
+    - V_1: 648673555 
+    - V_2: 2819723246 
+    - Simulation_Seed: 1699506856
+---
+Simulation 67:
+    - N_targets: 25
+    - N_targets_per_planner: 6
+    - Amount_of_goals_per_target: 15
+    - V_0: 3821196206 
+    - V_1: 914443795 
+    - V_2: 3965710084 
+    - Simulation_Seed: 2320911186
+---
+Simulation 68:
+    - N_targets: 25
+    - N_targets_per_planner: 6
+    - Amount_of_goals_per_target: 20
+    - V_0: 264524401 
+    - V_1: 53716183 
+    - V_2: 340874792 
+    - Simulation_Seed: 4183980085
+---
+Simulation 69:
+    - N_targets: 25
+    - N_targets_per_planner: 12
+    - Amount_of_goals_per_target: 5
+    - V_0: 2867682869 
+    - V_1: 2674671050 
+    - V_2: 4254633403 
+    - Simulation_Seed: 2117456603
+---
+Simulation 70:
+    - N_targets: 25
+    - N_targets_per_planner: 12
+    - Amount_of_goals_per_target: 10
+    - V_0: 4163772889 
+    - V_1: 2491854051 
+    - V_2: 1223954174 
+    - Simulation_Seed: 2707352284
+---
+Simulation 71:
+    - N_targets: 25
+    - N_targets_per_planner: 12
+    - Amount_of_goals_per_target: 15
+    - V_0: 1423316233 
+    - V_1: 632360225 
+    - V_2: 3319723335 
+    - Simulation_Seed: 1273506695
+---
+Simulation 72:
+    - N_targets: 25
+    - N_targets_per_planner: 12
+    - Amount_of_goals_per_target: 20
+    - V_0: 719658844 
+    - V_1: 1320371592 
+    - V_2: 4222231543 
+    - Simulation_Seed: 4275567541
+---
+Simulation 73:
+    - N_targets: 25
+    - N_targets_per_planner: 18
+    - Amount_of_goals_per_target: 5
+    - V_0: 3705634452 
+    - V_1: 301522936 
+    - V_2: 2489638251 
+    - Simulation_Seed: 2199129770
+---
+Simulation 74:
+    - N_targets: 25
+    - N_targets_per_planner: 18
+    - Amount_of_goals_per_target: 10
+    - V_0: 2256925891 
+    - V_1: 503565867 
+    - V_2: 3013237098 
+    - Simulation_Seed: 684738932
+---
+Simulation 75:
+    - N_targets: 25
+    - N_targets_per_planner: 18
+    - Amount_of_goals_per_target: 15
+    - V_0: 267972707 
+    - V_1: 2392418917 
+    - V_2: 1085435061 
+    - Simulation_Seed: 3908922507
+---
+Simulation 76:
+    - N_targets: 25
+    - N_targets_per_planner: 18
+    - Amount_of_goals_per_target: 20
+    - V_0: 1256419008 
+    - V_1: 26515944 
+    - V_2: 270060191 
+    - Simulation_Seed: 2465619775
+---
+Simulation 77:
+    - N_targets: 25
+    - N_targets_per_planner: 25
+    - Amount_of_goals_per_target: 5
+    - V_0: 2853783684 
+    - V_1: 4087321053 
+    - V_2: 3064727608 
+    - Simulation_Seed: 1467617091
+---
+Simulation 78:
+    - N_targets: 25
+    - N_targets_per_planner: 25
+    - Amount_of_goals_per_target: 10
+    - V_0: 1852785225 
+    - V_1: 563935112 
+    - V_2: 691082011 
+    - Simulation_Seed: 2596335888
+---
+Simulation 79:
+    - N_targets: 25
+    - N_targets_per_planner: 25
+    - Amount_of_goals_per_target: 15
+    - V_0: 1722188856 
+    - V_1: 527696979 
+    - V_2: 226383572 
+    - Simulation_Seed: 967832534
+---
+Simulation 80:
+    - N_targets: 25
+    - N_targets_per_planner: 25
+    - Amount_of_goals_per_target: 20
+    - V_0: 2224390310 
+    - V_1: 3231435723 
+    - V_2: 1514983299 
+    - Simulation_Seed: 2751995672

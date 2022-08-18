@@ -1,0 +1,77 @@
+Number of literals: 563
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(image_score img11) has a finite lower bound: [0.000,inf]
+(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img13) has a finite lower bound: [0.000,inf]
+(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img15) has a finite lower bound: [0.000,inf]
+(image_score img16) has a finite lower bound: [0.000,inf]
+(image_score img17) has a finite lower bound: [0.000,inf]
+(image_score img18) has a finite lower bound: [0.000,inf]
+(image_score img19) has a finite lower bound: [0.000,inf]
+(image_score img20) has a finite lower bound: [0.000,inf]
+(image_score img21) has a finite lower bound: [0.000,inf]
+(image_score img22) has a finite lower bound: [0.000,inf]
+(image_score img23) has a finite lower bound: [0.000,inf]
+(image_score img24) has a finite lower bound: [0.000,inf]
+(image_score img25) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var2(image_score img3)
+- Must be >= -1.000
+Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
+- Must be >= -5.000
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var8(image_score img9)
+- Must be >= -3.000
+Recognised a monotonic-change-induced limit on -1.000*var9(image_score img10)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on -1.000*var10(image_score img11)
+- Must be >= -3.000
+Recognised a monotonic-change-induced limit on -1.000*var11(image_score img12)
+- Must be >= -1.000
+Recognised a monotonic-change-induced limit on -1.000*var12(image_score img13)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var13(image_score img14)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on -1.000*var15(image_score img16)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on -1.000*var17(image_score img18)
+- Must be >= -1.000
+Recognised a monotonic-change-induced limit on -1.000*var18(image_score img19)
+- Must be >= -5.000
+Recognised a monotonic-change-induced limit on -1.000*var19(image_score img20)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var20(image_score img21)
+- Must be >= -5.000
+Recognised a monotonic-change-induced limit on -1.000*var23(image_score img24)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on -1.000*var24(image_score img25)
+- Must be >= -2.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 123.000, admissible cost estimate nan
+b (122.000 | 17.000)b (121.000 | 31.001)b (120.000 | 63.001)b (119.000 | 63.001)b (118.000 | 63.001)b (117.000 | 110.002)b (116.000 | 110.002)b (114.000 | 124.003)b (113.000 | 124.003)b (112.000 | 124.003)b (110.000 | 124.003)b (109.000 | 172.002)b (108.000 | 172.002)b (107.000 | 172.002)b (106.000 | 242.002)b (105.000 | 249.000)b (104.000 | 263.001)b (103.000 | 295.002)b (102.000 | 295.002)b (101.000 | 295.002)b (100.000 | 309.003)b (99.000 | 341.004)b (98.000 | 341.004)b (97.000 | 447.001)b (95.000 | 461.003)b (94.000 | 461.003)b (93.000 | 461.003)b (91.000 | 461.003)b (89.000 | 475.003)b (87.000 | 475.004)b (86.000 | 516.001)b (85.000 | 548.002)b (84.000 | 548.002)b (83.000 | 630.001)b (81.000 | 630.001)b (79.000 | 644.002)b (77.000 | 644.002)b (75.000 | 658.002)b (73.000 | 658.003)b (72.000 | 658.003)b (71.000 | 672.003)b (70.000 | 704.004)b (69.000 | 809.002)b (68.000 | 809.002)b (66.000 | 823.002)b (65.000 | 823.002)b (64.000 | 823.002)b (62.000 | 823.003)b (60.000 | 837.003)b (58.000 | 837.004)b (57.000 | 912.002)b (56.000 | 912.002)b (55.000 | 912.002)b (54.000 | 990.001)b (52.000 | 990.001)b (50.000 | 1004.002)b (48.000 | 1004.002)b (46.000 | 1018.002)b (45.000 | 1018.003)b (44.000 | 1072.002)b (43.000 | 1156.000)b (42.000 | 1165.000)b (41.000 | 1179.001)b (40.000 | 1211.002)b (39.000 | 1211.002)b (38.000 | 1211.002)b (37.000 | 1254.001)b (36.000 | 1286.002)b (35.000 | 1350.001)b (34.000 | 1382.002)b (33.000 | 1382.002)
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (122.000 | 17.000)b (121.000 | 31.001)b (120.000 | 63.001)b (119.000 | 63.001)b (118.000 | 63.001)b (117.000 | 110.002)b (107.000 | 142.003)b (106.000 | 142.003)b (97.000 | 274.003)b (96.000 | 274.003)b (95.000 | 274.003)b (92.000 | 302.001)b (86.000 | 298.003)b (85.000 | 298.003)b (84.000 | 312.003)b (83.000 | 344.005)b (82.000 | 447.001)b (81.000 | 461.003)b (81.000 | 447.001)b (80.000 | 461.003)b (80.000 | 448.000)b (79.000 | 461.003)b (77.000 | 461.003)b (76.000 | 475.003)b (75.000 | 507.005)b (74.000 | 521.006)b (74.000 | 507.005)b (73.000 | 521.006)b (72.000 | 553.007)b (71.000 | 553.007)b (70.000 | 623.001)b (69.000 | 637.002)b (67.000 | 637.002)b (66.000 | 651.002)b (64.000 | 651.003)b (63.000 | 683.003)b (62.000 | 683.003)b (62.000 | 665.004)b (62.000 | 665.003)b (61.000 | 697.005)b (60.000 | 729.006)b (59.000 | 809.002)b (58.000 | 809.002)b (57.000 | 823.002)b (57.000 | 809.002)b (56.000 | 823.002)b (56.000 | 809.002)b (55.000 | 823.002)b (53.000 | 823.003)b (52.000 | 837.003)b (50.000 | 837.004)b (49.000 | 912.002)b (48.000 | 912.002)b (47.000 | 912.002)b (45.000 | 990.001)b (44.000 | 1004.002)b (42.000 | 1004.002)b (39.000 | 1018.003)b (38.000 | 1072.002)b (37.000 | 1156.000)b (36.000 | 1165.000)b (35.000 | 1179.001)b (35.000 | 1168.000)b (34.000 | 1179.001)b (33.000 | 1211.002)b (33.000 | 1179.001)b (32.000 | 1211.002)b (32.000 | 1193.002)b (31.000 | 1225.003)b (30.000 | 1257.004)b (29.000 | 1257.004)b (28.000 | 1382.002)b (27.000 | 1382.002)b (27.000 | 1382.001)b (26.000 | 1414.002)b (25.000 | 1446.003)b (24.000 | 1528.000)b (23.000 | 1542.001)b (22.000 | 1574.002)b (21.000 | 1556.002)b (20.000 | 1588.003)b (19.000 | 1604.000)
+END

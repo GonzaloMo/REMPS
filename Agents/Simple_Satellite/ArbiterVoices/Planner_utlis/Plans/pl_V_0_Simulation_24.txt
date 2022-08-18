@@ -1,0 +1,32 @@
+Number of literals: 233
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
+- Must be >= -9.000
+Recognised a monotonic-change-induced limit on -1.000*var1(image_score img2)
+- Must be >= -13.000
+Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
+- Must be >= -20.000
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
+- Must be >= -16.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 48.000, admissible cost estimate nan
+b (47.000 | 12.000)b (46.000 | 26.000)b (45.000 | 58.001)b (44.000 | 76.000)b (42.000 | 90.001)b (31.000 | 93.000)b (30.000 | 130.001)b (29.000 | 162.002)b (28.000 | 168.000)b (27.000 | 182.001)b (26.000 | 214.002)b (25.000 | 256.000)b (24.000 | 270.001)b (23.000 | 270.001)b (21.000 | 270.001)b (19.000 | 287.000)b (18.000 | 290.000)b (17.000 | 304.001)b (16.000 | 336.001)b (14.000 | 598.000)b (13.000 | 616.000)b (12.000 | 617.000)b (11.000 | 631.001)b (10.000 | 663.002)
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (47.000 | 12.000)b (46.000 | 26.000)b (45.000 | 58.001)b (44.000 | 76.000)b (42.000 | 90.001)b (31.000 | 93.000)b (30.000 | 130.001)b (29.000 | 162.002)b (28.000 | 168.000)b (27.000 | 182.001)b (26.000 | 214.002)b (25.000 | 256.000)b (24.000 | 270.001)b (24.000 | 257.000)b (23.000 | 270.001)b (21.000 | 270.001)b (20.000 | 304.001)b (19.000 | 336.001)b (18.000 | 450.001)b (16.000 | 450.001)b (15.000 | 617.000)b (14.000 | 631.001)b (13.000 | 663.002)b (12.000 | 810.001)b (10.000 | 810.001)
+END

@@ -146,9 +146,9 @@ class Arbiter:
             self.Voices[i].prune_plan(obs, action_excuted = act)
         
 
-    def upadte_voices_goals(self):
+    def upadte_voices_goals(self, g_ach):
         for i, voice in enumerate(self.Voices):
-            self.Voices[i].update_goals(self.env.SatSim.Goals_achieved)
+            self.Voices[i].update_goals(g_ach)
         
     def check_interference(self, action, ith_voice):
         for i in range(ith_voice-1, -1, -1):

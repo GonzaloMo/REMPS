@@ -84,6 +84,9 @@ def merge_goals(Arbiter):
 def alpha_function(obs, arbiter):
     n_voices = len(arbiter.Voices)
     return np.array([i for i in range(n_voices)])
+
+
+
                 
             
     

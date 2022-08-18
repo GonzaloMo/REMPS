@@ -1,0 +1,35 @@
+Number of literals: 343
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(image_score img11) has a finite lower bound: [0.000,inf]
+(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img13) has a finite lower bound: [0.000,inf]
+(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img15) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
+- Must be >= -7.000
+Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
+- Must be >= -11.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 18.000, admissible cost estimate nan
+b (17.000 | 32.000)b (16.000 | 32.000)b (15.000 | 46.001)b (13.000 | 46.001)b (12.000 | 202.000)b (11.000 | 252.004)b (10.000 | 284.005)
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (17.000 | 32.000)b (17.000 | 1.000)b (16.000 | 32.000)b (15.000 | 46.001)b (13.000 | 46.001)b (12.000 | 202.000)b (11.000 | 216.001)b (10.000 | 248.002)b (9.000 | 372.001)b (7.000 | 372.001)b (6.000 | 386.002)b (5.000 | 552.001)b (4.000 | 566.002)
+END

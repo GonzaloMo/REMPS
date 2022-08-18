@@ -133,7 +133,7 @@ def writePDDLProblem(obs: dict, file: str, goals, orbits=5):
         space_infront = "  "*(i+1)
         if n_img>0:
             
-            Goals += "  (>= (image_score img"+str(targ+1)+") "+str(0)+")\n"
+            Goals += "  (> (image_score img"+str(targ+1)+") "+str(0)+")\n"
             Goals += "  (<= (image_score img"+str(targ+1)+") "+str(n_img)+")\n\n"
             metrics += space_infront 
             if i == 0:

@@ -23,7 +23,7 @@ class Planner(BaseVoice):
         self.replan = True
         self.write_plan_log = True
         
-    def getAction(self, obs, epsilon=2) -> int:
+    def take_action(self, obs, epsilon=2) -> int:
         # if len(self.excuted_plan) < 1:
         if np.sum(self.Goal_ref.goals) == 0:
             if self.write_plan_log:
@@ -66,11 +66,7 @@ class Planner(BaseVoice):
         state = copy(obs)
         state['Full_Pos'] = 360*obs['Orbit'] + obs['Pos']
         return state
-    
-    def reset_env(self, env):
-        env.SatSim.targets = env.SatSim.initRandomTargets(self.opp_targets)
-        return env
-    
+        
     def prune_plan(self, obs):
         plan = self.excuted_plan.copy()
         pos = 360*obs['Orbit'] + obs['Pos']
@@ -83,9 +79,13 @@ class Planner(BaseVoice):
             if plan[0][0] < pos:    
                 self.excuted_plan = []
 
-    def update_goals(self, goals_achieved, debug=False):
+    def update_goals(self,  debug=False):
         goals = self.goals.copy()
-        for i, g in enumerate(goals_achieved):
+        for i, g in enumerate(self.env.SatSim.Goals_achieved):
             current_g = self.Initial_goals[i] - g
             goals[i] = max(0, current_g)
         self.goals = goals.copy()
+    
+    def update(self, obs):
+        self.prune_plan(obs)
+        self.update_goals()
