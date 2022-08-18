@@ -702,3 +702,25 @@ Simulation 25:
         Goals Achieved: [4, 5, 0, 1, 1, 0, 3, 1, 1, 2]
         Total Initial Goals: 24
         Total Goals Achieved: 18
+---
+Simulation 34: 
+    - V_0:
+        - Initial Goals: [0, 9, 0, 6, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0]
+        - Goals Left: [0, 5, 0, 5, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0]
+        - Total Initial Goals: 22
+        - Total Goals Left: 13
+    - V_1:
+        - Initial Goals: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 6, 0, 0, 0, 0]
+        - Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        - Total Initial Goals: 7
+        - Total Goals Left: 0
+    - V_2:
+        - Initial Goals: [0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 2, 3, 0, 0, 0]
+        - Goals Left: [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]
+        - Total Initial Goals: 11
+        - Total Goals Left: 2
+    - MP:
+        - Initial Goals: [0, 9, 0, 6, 0, 0, 0, 7, 0, 0, 6, 3, 0, 0, 0]
+        - Goals Achieved: [1, 4, 1, 1, 0, 0, 0, 4, 2, 3, 6, 4, 0, 0, 0]
+        - Total Initial Goals: 31
+        - Total Goals Achieved: 26
