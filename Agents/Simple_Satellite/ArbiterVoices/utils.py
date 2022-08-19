@@ -51,24 +51,14 @@ class Action(object):
         else:
             return int((ac-1)*n_targets + img)
 
-def read_seed(seed_file, date_time):
+def read_seed(seed_file, sim_num):
+    import yaml
     with open(seed_file, "r") as f:
-        Seeding_dict = {}
-        date = f"{date_time}"
-        while True:
-            line = f.readline().strip()
-            if "Simulation" in line and date in line:
-                print(f"Loading simulation {line}")
-                while True:
-                    line = f.readline().strip()
-                    if ":" in line:
-                        tokens = line.split()
-                        Seeding_dict[tokens[0][:-1]] = int(tokens[1])
-                    if "END" in line:
-                        break
-                return Seeding_dict
-            if line == None:
-                raiseExceptions(f"Seed file {seed_file} does not contain simulation {date}")
+        docs = yaml.load_all(f, Loader=yaml.FullLoader)
+        for doc in docs:
+            for k,v in doc.items():
+                if sim_num in k:
+                    return v
 
 def merge_goals(Arbiter):
     goals = []

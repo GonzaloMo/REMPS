@@ -325,3 +325,8 @@ Simulation_Seed: 164340449
 END
 ----------------------------------------------------
 
+New Simulation run at 2022-08-19 21:31:50.508873
+----------------------------------------------------
+N_targets: 10
+N_targets_per_planner: 5
+Amount_of_goals_per_target: 10

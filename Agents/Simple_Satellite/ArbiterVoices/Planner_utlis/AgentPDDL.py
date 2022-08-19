@@ -25,19 +25,19 @@ class PDDLAgent:
 
     def generatePlan(self, obs, goals, n_tries, orbits:int = SatelliteSim.MAX_ORBITS, time_limit=120, n_goals=None):
         # print(f"{self.name} | Generating plan")      
-        set_goals = np.where(goals > 0)
+        set_goals = np.where(goals > 0)[0]
+        set_goals.reshape((np.size(set_goals),))
         if n_goals is None:
             goals_problem = goals
         else:
             print("number of goals ",n_goals)
             if set_goals is  not np.ndarray:
                 set_goals = np.array(set_goals)
-            if type(np.size(set_goals)) is not int:
-                if len(np.size(set_goals))>1:
-                    print(f"goals: {goals}")
-                    print(f"Set_goals: {set_goals}")
-                    print(f"Size Set_goals: {np.size(set_goals)}")
-                    raiseExceptions("len set_goals < 1")
+            
+            print((f"---------------\n {self.name}\ngoals: {goals}\nSet_goals: {set_goals}\nSize Set_goals: {np.size(set_goals)}\n"
+            f"n_goals: {n_goals}\n"
+            f"length set goals: {len(set_goals)}\n"
+            f"-----------------------------------"))
             problem_goals_selected = np.random.choice(set_goals, size=min(n_goals, len(set_goals)))
             goals_problem = np.zeros(len(goals))
             

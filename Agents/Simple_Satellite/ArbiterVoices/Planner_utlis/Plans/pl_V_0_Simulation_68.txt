@@ -30,18 +30,22 @@ Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
-Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var1(image_score img2)
+- Must be >= -10.000
 Recognised a monotonic-change-induced limit on -1.000*var2(image_score img3)
-- Must be >= -18.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
+- Must be >= -17.000
+Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
+- Must be >= -15.000
+Recognised a monotonic-change-induced limit on -1.000*var8(image_score img9)
+- Must be >= -9.000
+Recognised a monotonic-change-induced limit on -1.000*var18(image_score img19)
 - Must be >= -6.000
-Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
-- Must be >= -2.000
 66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 36.000, admissible cost estimate nan
-b (35.000 | 31.000)b (34.000 | 45.001)b (33.000 | 77.002)b (32.000 | 77.002)b (30.000 | 91.003)b (29.000 | 101.000)b (24.000 | 101.000)b (23.000 | 115.001)b (22.000 | 147.002)b (20.000 | 294.000)b (19.000 | 303.000)b (18.000 | 317.001)b (17.000 | 349.001)b (16.000 | 349.001)b (15.000 | 502.001)b (14.000 | 534.002)b (13.000 | 616.000)b (12.000 | 630.001)b (10.000 | 630.001)b (8.000 | 654.000)b (7.000 | 685.000)b (6.000 | 699.001)b (5.000 | 731.002)b (4.000 | 796.000)b (3.000 | 810.001)
+Initial heuristic = 64.000, admissible cost estimate nan
+b (63.000 | 1.000)b (62.000 | 15.001)b (61.000 | 47.001)b (60.000 | 76.000)b (58.000 | 90.001)b (43.000 | 165.001)b (42.000 | 197.002)b (41.000 | 197.002)b (40.000 | 211.003)b (39.000 | 243.004)b (38.000 | 243.004)b (37.000 | 270.001)b (35.000 | 270.001)b (34.000 | 271.000)b (33.000 | 285.001)b (32.000 | 317.001)b (31.000 | 317.001)b (30.000 | 396.001)b (29.000 | 436.000)b (28.000 | 450.001)b (26.000 | 450.001)b (25.000 | 464.001)b (23.000 | 464.002)b (22.000 | 573.001)b (21.000 | 605.002)b (20.000 | 616.000)b (19.000 | 630.001)b (17.000 | 630.001)b (16.000 | 650.000)b (13.000 | 650.000)b (12.000 | 664.001)b (11.000 | 696.002)
 Resorting to best-first search
 Running WA* with W = 5.000, not restarting with goal states
-b (35.000 | 31.000)b (34.000 | 45.001)b (33.000 | 77.002)b (32.000 | 77.002)b (30.000 | 91.003)b (25.000 | 91.003)b (24.000 | 101.000)b (23.000 | 115.001)b (22.000 | 147.002)
+b (63.000 | 1.000)b (62.000 | 15.001)b (61.000 | 47.001)b (60.000 | 76.000)b (58.000 | 90.001)b (57.000 | 165.001)b (56.000 | 197.002)b (55.000 | 197.002)b (54.000 | 211.003)b (54.000 | 199.000)b (53.000 | 211.003)b (52.000 | 243.004)b (40.000 | 275.005)b (37.000 | 302.001)b (31.000 | 298.003)b (30.000 | 298.003)b (25.000 | 482.001)b (18.000 | 637.002)b (17.000 | 637.002)b (11.000 | 659.002)b (10.000 | 691.002)
 END

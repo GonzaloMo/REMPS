@@ -1,4 +1,5 @@
 
+from tkinter import FALSE
 from Agents.Arbiter import Arbiter
 from Agents.Planner import Planner
 # Load Environment with random target positions
@@ -10,7 +11,7 @@ from ArbiterVoices.Planner_voice import Planner_Voice
 from time import sleep
 import datetime
 
-newsim = True
+newsim = False
 log_dir = "./Logs/Simulation/"
 arbite_type = "Priority" # "Priority" or "weighted"
 # Set Seed for reproducibility
@@ -29,8 +30,9 @@ if newsim:
         f.write(f"N_targets_per_planner: {n_targets_per_planner}\n")
         f.write(f"Amount_of_goals_per_target: {amount_of_goals_per_target}\n")
 else:
-    date_time = "12"
-    seed_dict = read_seed(f"{log_dir}Seed.txt", date_time)
+    sim = "32"
+    date = "2022-08-19_15-56-51"
+    seed_dict = read_seed(f"{log_dir}{date}/Seed.yaml", sim)
     seed_planner = []
     planner_names = []
     for key in seed_dict:
@@ -55,10 +57,6 @@ env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets,
 agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner,
                                  n_planners=n_planners,seed_v=seed_planner, amount=amount_of_goals_per_target, log_dir=log_dir)
 
-# merge goals from all planners
-Complete_goals = merge_goals(agent)
-merged_planner = Planner(env.SatSim, "MP_", Complete_goals)
-print(f"{merged_planner.name} | Goals: {np.array(Complete_goals)} | Total: {np.sum(Complete_goals)}")
 
 # Start Simulation
 episode_reward = 0
