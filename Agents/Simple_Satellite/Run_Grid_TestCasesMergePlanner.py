@@ -23,7 +23,9 @@ def sim_run(input_tuple):
         n_planners = 3
         seed_v = []
         for i in range(n_planners):
-            seed_v.append(v[f"V_{i}"])
+            name = f"V_{i}"
+            seed_v.append(v[name])
+            print(f"V_{i}-> {v[name]}")
 
     alpha = list(range(1, n_planners+1))
     # Initialize Environment
@@ -95,7 +97,7 @@ if __name__ == "__main__":
             iter_Variable.append((log_dir, doc))
     print("Run pool")
     # Create Pool of Processes
-    pool = Pool(initializer=init_pool_processes, initargs=(l,), processes=20)
+    pool = Pool(initializer=init_pool_processes, initargs=(l,), processes=2)
     # Run Simulation
     print("Run map")
     pool.map(sim_run, iter_Variable)
