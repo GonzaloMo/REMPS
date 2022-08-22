@@ -87,7 +87,8 @@ class Simple_satellite_Arb_v1(gym.Env):
         return observation, reward, done, info
 
     def reset(self, n_targ: int = 4, seed=None):
-        self.state = self.SatSim.reset(n_targets=n_targ, seed=seed)
+        self.SatSim.set_seed(seed=seed)
+        self.state = self.SatSim.reset(n_targets=n_targ,seed=seed)
         self.Total_reward = 0
         observation = self.state
         return observation 

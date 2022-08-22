@@ -9,9 +9,8 @@ from ArbiterVoices.Planner_utlis.AgentPDDL import PDDLAgent
 from ArbiterVoices.Planner_utlis.GoalReferee import GoalReferee
 from ArbiterVoices.utils import Action
 
-class Planner(BaseVoice):
+class Planner:
     def __init__(self, SatSim: SatelliteSim, name: str, goals: list):
-        super().__init__(name=name)
         self.planner = PDDLAgent(SatSim, name)
         self.name = name
         self.full_plan = []

@@ -20,16 +20,12 @@ Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
-Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
-- Must be >= -14.000
-Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
-- Must be >= -13.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
 - Must be >= -9.000
 66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 34.000, admissible cost estimate nan
-b (33.000 | 16.000)b (32.000 | 30.001)b (31.000 | 62.001)b (30.000 | 62.001)b (28.000 | 90.001)b (21.000 | 90.001)b (20.000 | 307.001)b (19.000 | 339.001)b (18.000 | 388.000)b (17.000 | 402.001)b (16.000 | 434.001)b (15.000 | 436.000)b (14.000 | 450.001)b (12.000 | 450.001)b (9.000 | 464.002)
+Initial heuristic = 5.000, admissible cost estimate nan
+b (4.000 | 1.000)b (3.000 | 15.001)b (2.000 | 61.002)
 Resorting to best-first search
 Running WA* with W = 5.000, not restarting with goal states
-b (33.000 | 16.000)b (32.000 | 30.001)b (31.000 | 62.001)b (30.000 | 62.001)b (28.000 | 90.001)b (21.000 | 90.001)b (20.000 | 104.002)b (19.000 | 136.003)b (16.000 | 290.000)b (15.000 | 293.000)b (14.000 | 307.001)b (13.000 | 339.001)b (12.000 | 402.001)b (11.000 | 434.001)b (10.000 | 436.000)b (9.000 | 450.001)b (7.000 | 450.001)b (6.000 | 657.003)
+b (4.000 | 1.000)b (3.000 | 15.001)b (2.000 | 60.002)
 END

@@ -25,20 +25,25 @@ Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
-Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -7.000
+Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
+- Must be >= -1.000
 Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var13(image_score img14)
-- Must be >= -8.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
-- Must be >= -8.000
-Recognised a monotonic-change-induced limit on -1.000*var15(image_score img16)
-- Must be >= -9.000
+- Must be >= -2.000
 66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 34.000, admissible cost estimate nan
-b (33.000 | 45.000)b (32.000 | 59.001)b (31.000 | 91.002)b (30.000 | 91.002)b (28.000 | 232.000)b (27.000 | 233.000)b (26.000 | 247.001)b (25.000 | 279.002)b (24.000 | 279.002)b (22.000 | 294.000)b (21.000 | 340.000)b (20.000 | 354.001)b (19.000 | 386.001)b (18.000 | 386.001)b (17.000 | 386.001)b (16.000 | 654.000)b (15.000 | 703.000)b (14.000 | 717.001)b (13.000 | 749.002)b (12.000 | 749.002)b (11.000 | 990.001)b (10.000 | 1014.000)b (9.000 | 1014.000)b (8.000 | 1064.000)b (7.000 | 1078.001)b (6.000 | 1110.002)b (5.000 | 1156.000)b (4.000 | 1336.000)b (2.000 | 1350.001)
+Initial heuristic = 9.000, admissible cost estimate nan
+b (8.000 | 1.000)b (5.000 | 15.001)b (4.000 | 360.001)b (3.000 | 392.001)b (2.000 | 392.001)(G)
+; LP calculated the cost
+
+; Plan found with metric 2.000
+; States evaluated so far: 51
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 0.14
+1.001: (dump_image img5 mem3)  [14.000]
+346.001: (take_image img4 mem0)  [14.000]
+360.002: (analyse_image img4 mem0)  [32.000]
+392.003: (dump_image img4 mem0)  [14.000]
+
 Resorting to best-first search
 Running WA* with W = 5.000, not restarting with goal states
-b (33.000 | 45.000)b (32.000 | 59.001)b (31.000 | 91.002)b (30.000 | 91.002)b (29.000 | 247.001)b (28.000 | 279.002)b (27.000 | 279.002)b (26.000 | 293.003)b (24.000 | 293.003)b (23.000 | 354.001)b (23.000 | 343.000)b (22.000 | 354.001)b (22.000 | 344.000)b (21.000 | 354.001)b (20.000 | 386.001)b (18.000 | 450.001)
+b (8.000 | 1.000)b (5.000 | 15.001)
 END

@@ -9,7 +9,7 @@ from copy import copy
 
 class SatelliteSim:
 
-    MAX_ORBITS = 10
+    MAX_ORBITS = 20
 
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1

@@ -14,7 +14,7 @@ import os
 def sim_run(input_tuple):
     arbite_type = "Priority" # "Priority" or "weighted"
     log_dir, seed_dict = input_tuple
-    for k, v in seed_dict.items:
+    for k, v in seed_dict.items():
         sim_name = k
         total_targets = v["N_targets"]
         n_targets_per_planner = ["N_targets_per_planner"] 
@@ -31,7 +31,7 @@ def sim_run(input_tuple):
 
     # Initialize arbiter
     agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner,
-                        n_planners=n_planners, seed_v=None, amount=amount_of_goals_per_target, log_dir=log_dir, sim_name=sim_name)
+                        n_planners=n_planners, seed_v=seed_v, amount=amount_of_goals_per_target, log_dir=log_dir, sim_name=sim_name)
 
     # merge goals from all planners
     Complete_goals = merge_goals(agent)
@@ -39,7 +39,7 @@ def sim_run(input_tuple):
 
     # Start Simulation
     done = False
-    obs = env.reset(total_targets, seed=None)
+    obs = env.reset(total_targets, seed=sim_seed)
     # merged_planner.get_plan(obs)
     merged_planner.get_plan(obs)
     while not done:
@@ -56,18 +56,18 @@ def sim_run(input_tuple):
         f.write("---\n")
         tot_f = f"{sim_name}: \n"
         for voice in agent.Voices:
-            tot_f += f"    - {voice.name}:\n"
+            tot_f += f"    {voice.name}:\n"
             goals_left = voice.Goal_ref.goals
             init_goals = voice.Goal_ref.Initial_goals
-            tot_f += f"        - Initial Goals: {list(init_goals)}\n"
-            tot_f += f"        - Goals Achieved: {list(goals_left)}\n"
-            tot_f += f"        - Total Initial Goals: {np.sum(init_goals)}\n"
-            tot_f += f"        - Total Goals Achieved: {np.sum(goals_left)}\n"
-        tot_f += f"    - {merged_planner.name}:\n"
-        tot_f += f"        - Initial Goals: {list(Complete_goals)}\n"
-        tot_f += f"        - Goals Achieved: {list(goals_achieved)}\n"
-        tot_f += f"        - Total Initial Goals: {np.sum(np.array(Complete_goals))}\n"
-        tot_f += f"        - Total Goals Achieved: {np.sum(np.array(goals_achieved))}\n"
+            tot_f += f"        Initial Goals: {list(init_goals)}\n"
+            tot_f += f"        Goals Achieved: {list(goals_left)}\n"
+            tot_f += f"        Total Initial Goals: {np.sum(init_goals)}\n"
+            tot_f += f"        Total Goals Achieved: {np.sum(goals_left)}\n"
+        tot_f += f"    {merged_planner.name}:\n"
+        tot_f += f"        Initial Goals: {list(Complete_goals)}\n"
+        tot_f += f"        Goals Achieved: {list(goals_achieved)}\n"
+        tot_f += f"        Total Initial Goals: {np.sum(np.array(Complete_goals))}\n"
+        tot_f += f"        Total Goals Achieved: {np.sum(np.array(goals_achieved))}\n"
         f.write(tot_f)
     lock.release()
     print(f"n_planners: {n_planners} \ntotal_targets: {total_targets} \nn_targets_per_planner: {n_targets_per_planner} \namount_of_goals_per_target: {amount_of_goals_per_target}")
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     l = Lock()
     i = 0
     iter_Variable = []
-    date_dir = ""
+    date_dir = "2022-08-20_06-40-57"
     log_dir = "./Logs/Simulation/"+date_dir
     import yaml
     with open(f"{log_dir}/Seed.yaml", "r") as f:

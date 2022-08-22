@@ -1,0 +1,75 @@
+Number of literals: 453
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(image_score img11) has a finite lower bound: [0.000,inf]
+(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img13) has a finite lower bound: [0.000,inf]
+(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img15) has a finite lower bound: [0.000,inf]
+(image_score img16) has a finite lower bound: [0.000,inf]
+(image_score img17) has a finite lower bound: [0.000,inf]
+(image_score img18) has a finite lower bound: [0.000,inf]
+(image_score img19) has a finite lower bound: [0.000,inf]
+(image_score img20) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
+- Must be >= -16.000
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
+- Must be >= -3.000
+Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
+- Must be >= -7.000
+Recognised a monotonic-change-induced limit on -1.000*var15(image_score img16)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var18(image_score img19)
+- Must be >= -1.000
+Recognised a monotonic-change-induced limit on -1.000*var19(image_score img20)
+- Must be >= -6.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 47.000, admissible cost estimate nan
+b (46.000 | 1.000)b (44.000 | 15.001)b (36.000 | 85.001)b (35.000 | 117.002)b (34.000 | 137.000)b (33.000 | 151.001)b (32.000 | 183.002)b (31.000 | 183.002)b (30.000 | 197.003)b (29.000 | 199.000)b (27.000 | 199.000)b (26.000 | 213.001)b (25.000 | 245.002)b (24.000 | 245.002)b (22.000 | 372.001)b (20.000 | 505.000)b (19.000 | 507.000)b (18.000 | 521.001)b (17.000 | 553.002)b (16.000 | 553.002)b (15.000 | 594.001)b (14.000 | 626.002)b (13.000 | 626.002)b (12.000 | 732.001)b (10.000 | 732.001)b (9.000 | 792.003)b (7.000 | 912.001)b (5.000 | 957.001)b (4.000 | 989.002)b (3.000 | 1078.000)(G)
+; LP calculated the cost
+
+; Plan found with metric 6.000
+; States evaluated so far: 664
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 1.94
+1.001: (dump_image img17 mem0)  [14.000]
+71.001: (take_image img19 mem0)  [14.000]
+85.002: (analyse_image img19 mem0)  [32.000]
+137.001: (take_image img8 mem1)  [14.000]
+151.002: (analyse_image img8 mem1)  [32.000]
+185.000: (dump_image img8 mem1)  [14.000]
+199.001: (take_image img1 mem1)  [14.000]
+213.002: (analyse_image img1 mem1)  [32.000]
+381.998: (dump_image img1 mem1)  [14.000]
+395.999: (dump_image img19 mem0)  [14.000]
+507.001: (take_image img20 mem0)  [14.000]
+521.002: (analyse_image img20 mem0)  [32.000]
+580.001: (take_image img7 mem1)  [14.000]
+594.002: (analyse_image img7 mem1)  [32.000]
+718.001: (dump_image img7 mem1)  [14.000]
+732.002: (dump_image img20 mem0)  [14.000]
+746.003: (take_image img15 mem1)  [14.000]
+760.004: (analyse_image img15 mem1)  [32.000]
+898.001: (dump_image img15 mem1)  [14.000]
+943.001: (take_image img16 mem0)  [14.000]
+957.002: (analyse_image img16 mem0)  [32.000]
+1078.001: (dump_image img16 mem0)  [14.000]
+
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (46.000 | 1.000)b (44.000 | 15.001)b (43.000 | 85.001)b (42.000 | 117.002)b (41.000 | 137.000)b (40.000 | 151.001)b (39.000 | 183.002)b (35.000 | 183.002)b (32.000 | 215.003)b (31.000 | 215.003)b (30.000 | 229.004)b (30.000 | 211.004)b (28.000 | 225.005)b (24.000 | 225.005)b (23.000 | 225.005)b (21.000 | 386.001)b (20.000 | 521.001)b (19.000 | 553.002)b (16.000 | 585.002)b (16.000 | 567.002)b (15.000 | 585.002)b (14.000 | 567.003)b (12.000 | 581.004)b (11.000 | 581.004)b (10.000 | 581.004)b (9.000 | 732.001)b (7.000 | 732.001)b (5.000 | 746.002)b (4.000 | 919.000)b (3.000 | 933.001)b (2.000 | 965.002)(G)b (0.000 | 1092.001)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)
+END

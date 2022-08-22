@@ -1,0 +1,72 @@
+Number of literals: 563
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(image_score img11) has a finite lower bound: [0.000,inf]
+(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img13) has a finite lower bound: [0.000,inf]
+(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img15) has a finite lower bound: [0.000,inf]
+(image_score img16) has a finite lower bound: [0.000,inf]
+(image_score img17) has a finite lower bound: [0.000,inf]
+(image_score img18) has a finite lower bound: [0.000,inf]
+(image_score img19) has a finite lower bound: [0.000,inf]
+(image_score img20) has a finite lower bound: [0.000,inf]
+(image_score img21) has a finite lower bound: [0.000,inf]
+(image_score img22) has a finite lower bound: [0.000,inf]
+(image_score img23) has a finite lower bound: [0.000,inf]
+(image_score img24) has a finite lower bound: [0.000,inf]
+(image_score img25) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
+- Must be >= -15.000
+Recognised a monotonic-change-induced limit on -1.000*var15(image_score img16)
+- Must be >= -13.000
+Recognised a monotonic-change-induced limit on -1.000*var24(image_score img25)
+- Must be >= -15.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 34.000, admissible cost estimate nan
+b (33.000 | 1.000)b (31.000 | 15.001)b (29.000 | 29.002)b (27.000 | 173.001)b (25.000 | 187.002)b (23.000 | 201.003)b (18.000 | 240.001)b (17.000 | 272.002)b (16.000 | 272.002)b (14.000 | 533.001)b (11.000 | 610.001)b (10.000 | 642.002)b (9.000 | 642.002)b (8.000 | 713.001)b (7.000 | 770.002)b (5.000 | 893.001)b (4.000 | 983.001)b (3.000 | 1015.002)b (2.000 | 1059.000)(G)
+; LP calculated the cost
+
+; Plan found with metric 3.000
+; States evaluated so far: 652
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 2.50
+1.001: (dump_image img1 mem0)  [14.000]
+15.002: (dump_image img3 mem1)  [14.000]
+159.001: (dump_image img20 mem2)  [14.000]
+173.002: (dump_image img6 mem3)  [14.000]
+187.003: (dump_image img23 mem5)  [14.000]
+226.001: (take_image img16 mem0)  [14.000]
+240.002: (analyse_image img16 mem0)  [32.000]
+350.000: (dump_image img16 mem0)  [14.000]
+364.001: (take_image img3 mem0)  [14.000]
+378.002: (analyse_image img3 mem0)  [32.000]
+556.999: (dump_image img3 mem0)  [14.000]
+596.001: (take_image img25 mem0)  [14.000]
+610.002: (analyse_image img25 mem0)  [32.000]
+710.000: (dump_image img25 mem0)  [14.000]
+724.001: (take_image img3 mem0)  [14.000]
+738.002: (analyse_image img3 mem0)  [32.000]
+916.999: (dump_image img3 mem0)  [14.000]
+969.001: (take_image img4 mem0)  [14.000]
+983.002: (analyse_image img4 mem0)  [32.000]
+1059.001: (dump_image img4 mem0)  [14.000]
+
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (33.000 | 1.000)b (31.000 | 15.001)b (29.000 | 29.002)b (27.000 | 173.001)b (25.000 | 187.002)b (23.000 | 201.003)b (22.000 | 270.003)b (21.000 | 302.004)b (20.000 | 339.000)b (18.000 | 353.001)b (16.000 | 353.001)b (14.000 | 367.001)b (12.000 | 533.001)b (11.000 | 600.001)b (10.000 | 632.002)b (9.000 | 632.002)b (7.000 | 713.001)b (5.000 | 727.002)
+END
