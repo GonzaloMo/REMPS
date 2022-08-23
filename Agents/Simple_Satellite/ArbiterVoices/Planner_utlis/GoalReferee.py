@@ -30,7 +30,6 @@ class GoalReferee:
             self.generate_seed()
         else:
             self.set_seed(seed)
-        print(f"{self.planner_name} ---> {self.seed}")
         self.target_planner = np.random.randint(1, tot_targets+1, size=n_targets_planner)
 
 

@@ -17,15 +17,14 @@ def sim_run(input_tuple):
     for k, v in seed_dict.items():
         sim_name = k
         total_targets = v["N_targets"]
-        n_targets_per_planner = ["N_targets_per_planner"] 
-        amount_of_goals_per_target = ["Amount_of_goals_per_target"]
+        n_targets_per_planner = v["N_targets_per_planner"] 
+        amount_of_goals_per_target = v["Amount_of_goals_per_target"]
         sim_seed = v["Simulation_Seed"]
         n_planners = 3
         seed_v = []
         for i in range(n_planners):
             name = f"V_{i}"
             seed_v.append(v[name])
-            print(f"V_{i}-> {v[name]}")
 
     alpha = list(range(1, n_planners+1))
     # Initialize Environment
@@ -37,7 +36,7 @@ def sim_run(input_tuple):
 
     # merge goals from all planners
     Complete_goals = merge_goals(agent)
-    merged_planner = Planner(env, "MP", Complete_goals)
+    merged_planner = Planner(env.SatSim, f"MP_{sim_name}", Complete_goals)
 
     # Start Simulation
     done = False
