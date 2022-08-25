@@ -17,36 +17,45 @@ class Planner:
         self.excuted_plan = []
         self.goals = goals
         self.Initial_goals = goals
+        self.n_targets = len(goals)
         self.SatSim = SatSim
-        self.Action_doNothing = Action(SatSim.ACTION_DO_NOTHING, name, -100)
+        self.Action_doNothing_ac = Action(SatSim.ACTION_DO_NOTHING, name, -100)
+        self.Action_doNothing = self.Action_doNothing_ac.get_action_from_tuple(self.n_targets)
         self.replan = True
         self.write_plan_log = True
         
     def take_action(self, obs, epsilon=2) -> int:
         # if len(self.excuted_plan) < 1:
-        if np.sum(self.Goal_ref.goals) == 0:
-            if self.write_plan_log:
-                print(f"{self.name} | all goals achieved")
-                self.write_plan_log = False
+        if np.sum(self.goals) == 0:
             return self.Action_doNothing
         if self.excuted_plan == [] and self.replan:
             self.get_plan(obs)
             return self.getAction(obs, epsilon=epsilon)
+        elif not self.replan:
+            self.count_to_replan += 1
+            if self.count_to_replan > 10:
+                self.replan = True
+                self.count_to_replan = 0
         elif self.excuted_plan == [] and not self.replan:
             if self.write_plan_log:
-                print(f"{self.name} | Not replanning")
+                # print(f"{self.name} | Not replanning")
                 self.write_plan_log = False
+            return self.Action_doNothing
+        if self.excuted_plan == []:
+            # if self.write_plan_log:
+            #     print(f"{self.name} | Empty plan")
+            self.get_plan(obs)
             return self.Action_doNothing
         pos, next_action, image, memory = self.excuted_plan[0]
         obs = self.get_obs(obs)
         if obs["Full_Pos"] < pos < obs["Full_Pos"]+epsilon:
             action  = Action(next_action, self.name, pos)
             action.set_action_tuple(next_action, image)
-            return action
+            return action.get_action_from_tuple(self.n_targets)
         else:
             return self.Action_doNothing
             
-    def get_plan(self, obs, timelimit=1800):
+    def get_plan(self, obs, timelimit=120):
         self.current_orbit = obs["Orbit"][0]
         self.current_pos = obs["Pos"][0]
         processed_obs = self.get_obs(obs)
