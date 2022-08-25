@@ -53,33 +53,33 @@ def sim_run(input_tuple):
         if "Dump" in env.action_list_names[action]:
             agent.upadte_voices_goals(env.SatSim.Goals_achieved)
             merged_planner.update_goals(env.SatSim.Goals_achieved)
-            merged_planner.prune_plan(obs)
+        merged_planner.prune_plan(obs)
         if render:
-            env.render([merged_planner])
+            env.render([merged_planner], single=True)
     env.close()
     goals_achieved = env.SatSim.Goals_achieved
-
-    lock.acquire()
-    with open(f"{log_dir}/Results_MP.yaml", "a") as f:
-        f.write("---\n")
-        tot_f = f"{sim_name}: \n"
-        for voice in agent.Voices:
-            tot_f += f"    {voice.name}:\n"
-            goals_left = voice.Goal_ref.goals
-            init_goals = voice.Goal_ref.Initial_goals
-            tot_f += f"        Initial Goals: {list(init_goals)}\n"
-            tot_f += f"        Goals Left: {list(goals_left)}\n"
-            tot_f += f"        Total Initial Goals: {np.sum(init_goals)}\n"
-            tot_f += f"        Total Goals Left: {np.sum(goals_left)}\n"
-        tot_f += f"    {merged_planner.name}:\n"
-        tot_f += f"        Initial Goals: {list(Complete_goals)}\n"
-        tot_f += f"        Goals Achieved: {list(goals_achieved)}\n"
-        tot_f += f"        Goals Left mp: {list(merged_planner.goals)}\n"
-        tot_f += f"        Total Initial Goals: {np.sum(np.array(Complete_goals))}\n"
-        tot_f += f"        Total Goals Achieved: {np.sum(np.array(goals_achieved))}\n"
-        tot_f += f"        Total Goals Left: {np.sum(np.array(merged_planner.goals))}\n"
-        f.write(tot_f)
-    lock.release()
+    if not render:
+        lock.acquire()
+        with open(f"{log_dir}/Results_MP.yaml", "a") as f:
+            f.write("---\n")
+            tot_f = f"{sim_name}: \n"
+            for voice in agent.Voices:
+                tot_f += f"    {voice.name}:\n"
+                goals_left = voice.Goal_ref.goals
+                init_goals = voice.Goal_ref.Initial_goals
+                tot_f += f"        Initial Goals: {list(init_goals)}\n"
+                tot_f += f"        Goals Left: {list(goals_left)}\n"
+                tot_f += f"        Total Initial Goals: {np.sum(init_goals)}\n"
+                tot_f += f"        Total Goals Left: {np.sum(goals_left)}\n"
+            tot_f += f"    {merged_planner.name}:\n"
+            tot_f += f"        Initial Goals: {list(Complete_goals)}\n"
+            tot_f += f"        Goals Achieved: {list(goals_achieved)}\n"
+            tot_f += f"        Goals Left mp: {list(merged_planner.goals)}\n"
+            tot_f += f"        Total Initial Goals: {np.sum(np.array(Complete_goals))}\n"
+            tot_f += f"        Total Goals Achieved: {np.sum(np.array(goals_achieved))}\n"
+            tot_f += f"        Total Goals Left: {np.sum(np.array(merged_planner.goals))}\n"
+            f.write(tot_f)
+        lock.release()
     print(f"Finished Simulation {i}")
 
 def init_pool_processes(the_lock):
@@ -108,4 +108,6 @@ if __name__ == "__main__":
     # # Run Simulation
     # print("Run map")
     # pool.map(sim_run, iter_Variable)
-    sim_run(iter_Variable[2])
+    n = 2
+    inp = (iter_Variable[n][0] , iter_Variable[n][1], True)
+    sim_run(inp)
