@@ -56,7 +56,7 @@ class PDDLAgent:
                     print("Set Goals: ", set_goals)
                 else:
                     n_goals = max(1, n_goals-1)
-                n_tries -=1
+                n_tries +=1
                 plan, rpln = self.generatePlan(obs, goals, n_tries, orbits= orbits, time_limit=time_limit, n_goals=n_goals)
                 return plan, rpln
             else:

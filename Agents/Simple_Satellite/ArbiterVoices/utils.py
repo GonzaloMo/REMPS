@@ -41,6 +41,7 @@ class Action(object):
     def set_value(self, Value):
         self.Value = Value
     
+
     def set_action_tuple(self, action, img):
         self.action_tuple = (action, img)
     
@@ -73,7 +74,12 @@ def merge_goals(Arbiter):
 
 def alpha_function(obs, arbiter):
     n_voices = len(arbiter.Voices)
-    return np.array([i for i in range(n_voices)])
+    alpha_g = [0,0,0]
+    for i, v in enumerate(arbiter.Voices):
+        goals = np.sum(v.Goal_ref.goals)/np.sum(v.Goal_ref.Initial_goals)
+        alpha_g[1][i] = goals
+    alpha = np.argsort(alpha_g) + 1
+    return alpha
 
 
 

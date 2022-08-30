@@ -1,0 +1,30 @@
+---
+Simulation 1:
+    N_targets: 5
+    N_targets_per_planner: 3
+    Amount_of_goals_per_target: 5
+---
+Simulation 2:
+    N_targets: 5
+    N_targets_per_planner: 3
+    Amount_of_goals_per_target: 10
+---
+Simulation 3:
+    N_targets: 5
+    N_targets_per_planner: 5
+    Amount_of_goals_per_target: 5
+---
+Simulation 4:
+    N_targets: 5
+    N_targets_per_planner: 5
+    Amount_of_goals_per_target: 10
+---
+Simulation 5:
+    N_targets: 5
+    N_targets_per_planner: 8
+    Amount_of_goals_per_target: 5
+---
+Simulation 6:
+    N_targets: 5
+    N_targets_per_planner: 8
+    Amount_of_goals_per_target: 10

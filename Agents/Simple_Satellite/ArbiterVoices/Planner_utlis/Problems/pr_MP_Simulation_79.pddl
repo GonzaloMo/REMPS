@@ -1129,12 +1129,92 @@
 
 )
 (:goal (and
+  (> (image_score img3) 0)
+  (<= (image_score img3) 10.0)
+
+  (> (image_score img4) 0)
+  (<= (image_score img4) 12.0)
+
+  (> (image_score img6) 0)
+  (<= (image_score img6) 14.0)
+
+  (> (image_score img7) 0)
+  (<= (image_score img7) 9.0)
+
+  (> (image_score img8) 0)
+  (<= (image_score img8) 2.0)
+
+  (> (image_score img9) 0)
+  (<= (image_score img9) 15.0)
+
+  (> (image_score img10) 0)
+  (<= (image_score img10) 9.0)
+
+  (> (image_score img11) 0)
+  (<= (image_score img11) 8.0)
+
+  (> (image_score img12) 0)
+  (<= (image_score img12) 11.0)
+
+  (> (image_score img13) 0)
+  (<= (image_score img13) 7.0)
+
+  (> (image_score img15) 0)
+  (<= (image_score img15) 6.0)
+
+  (> (image_score img16) 0)
+  (<= (image_score img16) 3.0)
+
+  (> (image_score img18) 0)
+  (<= (image_score img18) 9.0)
+
+  (> (image_score img19) 0)
+  (<= (image_score img19) 14.0)
+
   (> (image_score img21) 0)
   (<= (image_score img21) 6.0)
 
-(>= (total_score) 2)
+  (> (image_score img23) 0)
+  (<= (image_score img23) 14.0)
+
+  (> (image_score img25) 0)
+  (<= (image_score img25) 9.0)
+
+(>= (total_score) 32)
 ))
-(:metric maximize 
-  (image_score img21)
+(:metric maximize (+
+  (image_score img3)
+    (+ (image_score img4)
+      (+ (image_score img6)
+        (+ (image_score img7)
+          (+ (image_score img8)
+            (+ (image_score img9)
+              (+ (image_score img10)
+                (+ (image_score img11)
+                  (+ (image_score img12)
+                    (+ (image_score img13)
+                      (+ (image_score img15)
+                        (+ (image_score img16)
+                          (+ (image_score img18)
+                            (+ (image_score img19)
+                              (+ (image_score img21)
+                                (+ (image_score img23)
+                                  (image_score img25)
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 )
 )

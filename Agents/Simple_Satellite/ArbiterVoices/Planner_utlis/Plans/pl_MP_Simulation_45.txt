@@ -1,111 +1,28 @@
-Number of literals: 343
+Number of literals: 57
 Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
 Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
 (image_score img1) has a finite lower bound: [0.000,inf]
-(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img2) has finite bounds: [0.000,0.000]
 (image_score img3) has a finite lower bound: [0.000,inf]
-(image_score img4) has a finite lower bound: [0.000,inf]
-(image_score img5) has a finite lower bound: [0.000,inf]
-(image_score img6) has a finite lower bound: [0.000,inf]
-(image_score img7) has a finite lower bound: [0.000,inf]
-(image_score img8) has a finite lower bound: [0.000,inf]
-(image_score img9) has a finite lower bound: [0.000,inf]
-(image_score img10) has a finite lower bound: [0.000,inf]
-(image_score img11) has a finite lower bound: [0.000,inf]
-(image_score img12) has a finite lower bound: [0.000,inf]
-(image_score img13) has a finite lower bound: [0.000,inf]
-(image_score img14) has a finite lower bound: [0.000,inf]
-(image_score img15) has a finite lower bound: [0.000,inf]
+(image_score img4) has finite bounds: [0.000,0.000]
+(image_score img5) has finite bounds: [0.000,0.000]
+(image_score img6) has finite bounds: [0.000,0.000]
+(image_score img7) has finite bounds: [0.000,0.000]
+(image_score img8) has finite bounds: [0.000,0.000]
+(image_score img9) has finite bounds: [0.000,0.000]
+(image_score img10) has finite bounds: [0.000,0.000]
+(image_score img11) has finite bounds: [0.000,0.000]
+(image_score img12) has finite bounds: [0.000,0.000]
+(image_score img13) has finite bounds: [0.000,0.000]
+(image_score img14) has finite bounds: [0.000,0.000]
+(image_score img15) has finite bounds: [0.000,0.000]
 (total_score) has a finite lower bound: [0.000,inf]
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
-Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var1(image_score img2)
-- Must be >= -2.000
-Recognised a monotonic-change-induced limit on -1.000*var2(image_score img3)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var5(image_score img6)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var8(image_score img9)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var9(image_score img10)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var10(image_score img11)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var11(image_score img12)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var12(image_score img13)
-- Must be >= -4.000
 Recognised a monotonic-change-induced limit on -1.000*var13(image_score img14)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
-- Must be >= -4.000
-66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 89.000, admissible cost estimate nan
-b (88.000 | 21.000)b (87.000 | 35.001)b (86.000 | 67.002)b (85.000 | 67.002)b (84.000 | 81.003)b (83.000 | 113.003)b (82.000 | 113.003)b (81.000 | 127.005)b (80.000 | 127.005)b (78.000 | 127.005)b (77.000 | 188.002)b (76.000 | 188.002)b (75.000 | 188.002)b (74.000 | 188.002)b (73.000 | 253.002)b (72.000 | 267.003)b (71.000 | 299.004)b (70.000 | 299.004)b (69.000 | 299.004)b (68.000 | 313.005)b (67.000 | 345.006)b (66.000 | 397.001)b (65.000 | 429.001)b (64.000 | 429.001)b (63.000 | 450.001)b (62.000 | 450.001)b (60.000 | 450.001)b (59.000 | 464.001)b (57.000 | 464.002)b (56.000 | 478.003)b (54.000 | 478.003)b (53.000 | 545.001)b (52.000 | 577.002)b (51.000 | 577.002)b (50.000 | 630.002)b (49.000 | 630.002)b (48.000 | 644.002)b (46.000 | 644.003)b (45.000 | 658.004)b (43.000 | 658.004)b (42.000 | 658.004)b (41.000 | 722.002)b (40.000 | 764.000)b (39.000 | 778.001)b (38.000 | 810.002)b (37.000 | 810.002)b (36.000 | 824.002)b (35.000 | 824.002)b (33.000 | 824.003)b (32.000 | 838.004)b (30.000 | 838.004)b (29.000 | 907.001)b (28.000 | 939.002)b (27.000 | 990.001)b (25.000 | 990.001)b (24.000 | 1004.002)b (22.000 | 1004.002)b (21.000 | 1018.002)b (19.000 | 1018.003)b (18.000 | 1018.003)b (17.000 | 1170.001)b (15.000 | 1170.001)b (14.000 | 1184.002)b (13.000 | 1216.003)b (12.000 | 1270.001)b (11.000 | 1302.002)b (10.000 | 1336.000)b (9.000 | 1346.000)b (8.000 | 1360.001)b (7.000 | 1392.002)
-Resorting to best-first search
-Running WA* with W = 5.000, not restarting with goal states
-b (88.000 | 21.000)b (87.000 | 35.001)b (87.000 | 23.000)b (86.000 | 35.001)b (85.000 | 67.002)b (84.000 | 81.003)b (83.000 | 113.003)b (82.000 | 113.003)b (81.000 | 127.005)b (81.000 | 113.003)b (80.000 | 127.005)b (78.000 | 127.005)b (77.000 | 188.002)b (76.000 | 188.002)b (75.000 | 188.002)b (74.000 | 188.002)b (73.000 | 253.002)b (72.000 | 267.003)b (72.000 | 256.000)b (71.000 | 267.003)b (70.000 | 281.004)b (70.000 | 281.003)b (68.000 | 281.004)b (67.000 | 295.005)b (65.000 | 295.005)b (64.000 | 327.006)b (63.000 | 327.006)b (63.000 | 309.006)b (62.000 | 341.007)b (61.000 | 373.008)b (60.000 | 397.001)b (59.000 | 429.001)b (58.000 | 429.001)b (57.000 | 450.001)b (57.000 | 450.000)b (56.000 | 450.001)b (54.000 | 450.001)b (53.000 | 464.001)b (51.000 | 464.002)b (50.000 | 478.003)b (48.000 | 478.003)b (47.000 | 545.001)b (47.000 | 536.000)b (46.000 | 545.001)b (45.000 | 577.002)b (44.000 | 630.002)b (43.000 | 630.002)b (42.000 | 644.002)b (40.000 | 644.003)b (39.000 | 658.004)b (37.000 | 658.004)b (36.000 | 658.004)b (35.000 | 722.002)b (34.000 | 764.000)b (33.000 | 778.001)b (32.000 | 810.002)b (31.000 | 810.002)b (30.000 | 824.002)b (30.000 | 810.002)b (29.000 | 824.002)b (27.000 | 824.003)b (26.000 | 838.004)b (24.000 | 838.004)b (23.000 | 907.001)b (22.000 | 939.002)b (21.000 | 990.001)b (19.000 | 990.001)b (18.000 | 1004.002)b (16.000 | 1004.002)b (15.000 | 1004.002)b (14.000 | 1018.003)b (13.000 | 1050.004)b (12.000 | 1170.001)b (11.000 | 1184.002)b (10.000 | 1216.003)b (8.000 | 1198.003)b (7.000 | 1230.004)b (6.000 | 1270.001)b (5.000 | 1302.002)b (4.000 | 1336.000)b (2.000 | 1350.001)(G)
-; LP calculated the cost
+- Must be >= -1.000
+Recognised a monotonic-change-induced limit on var13(image_score img14)
+Internal error - must only have > or >= limits here
 
-; Plan found with metric 15.000
-; States evaluated so far: 4491
-; States pruned based on pre-heuristic cost lower bound: 0
-; Time 16.87
-21.001: (take_image img8 mem0)  [14.000]
-35.002: (analyse_image img8 mem0)  [32.000]
-67.997: (take_image img14 mem1)  [14.000]
-81.998: (analyse_image img14 mem1)  [32.000]
-113.999: (dump_image img14 mem1)  [14.000]
-142.001: (take_image img4 mem1)  [14.000]
-156.002: (analyse_image img4 mem1)  [32.000]
-207.001: (take_image img9 mem2)  [14.000]
-221.002: (analyse_image img9 mem2)  [32.000]
-258.996: (take_image img13 mem3)  [14.000]
-272.997: (dump_image img9 mem2)  [14.000]
-286.998: (dump_image img4 mem1)  [14.000]
-300.999: (take_image img3 mem1)  [14.000]
-326.997: (analyse_image img3 mem1)  [32.000]
-358.998: (analyse_image img13 mem3)  [32.000]
-390.999: (take_image img11 mem2)  [14.000]
-405.000: (analyse_image img11 mem2)  [32.000]
-445.997: (dump_image img13 mem3)  [14.000]
-459.998: (dump_image img11 mem2)  [14.000]
-473.999: (dump_image img3 mem1)  [14.000]
-531.001: (take_image img5 mem1)  [14.000]
-545.002: (analyse_image img5 mem1)  [32.000]
-584.001: (take_image img6 mem2)  [14.000]
-598.002: (analyse_image img6 mem2)  [32.000]
-639.998: (dump_image img6 mem2)  [14.000]
-653.999: (dump_image img5 mem1)  [14.000]
-676.001: (take_image img1 mem1)  [14.000]
-690.002: (analyse_image img1 mem1)  [32.000]
-764.001: (take_image img10 mem2)  [14.000]
-778.002: (analyse_image img10 mem2)  [32.000]
-819.998: (dump_image img10 mem2)  [14.000]
-833.999: (dump_image img1 mem1)  [14.000]
-893.001: (take_image img15 mem1)  [14.000]
-907.002: (analyse_image img15 mem1)  [32.000]
-976.001: (dump_image img15 mem1)  [14.000]
-990.002: (take_image img2 mem2)  [14.000]
-1004.003: (analyse_image img2 mem2)  [32.000]
-1156.001: (dump_image img2 mem2)  [14.000]
-1170.002: (take_image img12 mem1)  [14.000]
-1184.003: (dump_image img8 mem0)  [14.000]
-1224.000: (analyse_image img12 mem1)  [32.000]
-1256.001: (take_image img7 mem0)  [14.000]
-1270.002: (analyse_image img7 mem0)  [32.000]
-1336.001: (dump_image img12 mem1)  [14.000]
-1350.002: (dump_image img7 mem0)  [14.000]
-b (0.000 | 1364.002)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)
 END

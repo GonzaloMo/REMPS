@@ -31,7 +31,7 @@ class Planner:
         if self.excuted_plan == [] and self.replan:
             print("Replanning")
             self.get_plan(obs)
-            return self.getAction(obs, epsilon=epsilon)
+            return self.take_action(obs, epsilon=epsilon)
         elif not self.replan:
             print(f"waiting to replan {self.count_to_replan}")
             self.count_to_replan += 1
