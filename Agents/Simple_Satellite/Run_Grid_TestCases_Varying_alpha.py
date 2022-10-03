@@ -15,34 +15,38 @@ import os
 ############################## MultiProcess #####################################
 def sim_run(input_tuple):
     arbite_type = "Priority" # "Priority" or "weighted"
-    n_planners, total_targets, n_targets_per_planner, amount_of_goals_per_target, i, log_dir = input_tuple
-    lock.acquire()
-    print(f"Simulation {i}:\n")
-    with open(f"{log_dir}Seed_VA.yaml", "a") as f:
-        f.write("---\n")
-        f.write(f"Simulation {i}:\n")
-        f.write(f"    N_targets: {total_targets}\n")
-        f.write(f"    N_targets_per_planner: {n_targets_per_planner}\n")
-        f.write(f"    Amount_of_goals_per_target: {amount_of_goals_per_target}\n")
+    log_dir, seed_dict, render = input_tuple
+    for k, v in seed_dict.items():
+        sim_name_r = k
+        total_targets = v["N_targets"]
+        n_targets_per_planner = v["N_targets_per_planner"] 
+        amount_of_goals_per_target = v["Amount_of_goals_per_target"]
+        sim_seed = v["Simulation_Seed"]
+        n_planners = 3
+        seed_v = []
+        for i in range(n_planners):
+            name = f"V_{i}"
+            seed_v.append(v[name])
+
     alpha = list(range(1, n_planners+1))
     # Initialize Environment
     env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets, log_dir=log_dir)
+    sim_name = sim_name_r.replace(' ', '_')
     # Initialize arbiter
     agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner,
-                        n_planners=n_planners,seed_v=None, amount=amount_of_goals_per_target, log_dir=log_dir, sim_name=f"Simulation_{i}")
+                        n_planners=n_planners, seed_v=seed_v, amount=amount_of_goals_per_target, log_dir=log_dir, sim_name=sim_name)
     # merge goals from all planners
     Complete_goals = merge_goals(agent)
 
     # Start Simulation
     episode_reward = 0
     done = False
-    obs = env.reset(total_targets, seed=None)
-    lock.release()
+    obs = env.reset(total_targets, seed=sim_seed)
     # merged_planner.get_plan(obs)
     agent.reset_voices(obs)
     while not done:
-        if obs["Orbit"]%5 == 0 and obs["Orbit"]>0:
-            alpha = alpha_function(obs, agent)
+        if obs["Orbit"]%2 == 0 and obs["Orbit"]>0:
+            alpha = alpha_function(obs, agent, log_dir=log_dir, sim_name=sim_name)
         action = agent.take_action(obs, alpha, type_selec_method=arbite_type)
         obs, reward, done, info = env.step(action)
         if "Dump" in env.action_list_names[action]:
@@ -55,7 +59,7 @@ def sim_run(input_tuple):
     lock.acquire()
     with open(f"{log_dir}Results_VA.yaml", "a") as f:
         f.write("---\n")
-        tot_f = f"Simulation {i}: \n"
+        tot_f = f"{sim_name_r}: \n"
         for voice in agent.Voices:
             tot_f += f"    {voice.name}:\n"
             goals_left = voice.Goal_ref.goals
@@ -85,18 +89,17 @@ from multiprocessing import Pool, Lock
 if __name__ == "__main__":
     l = Lock()
     # Create log directory
-    log_dir = "./Logs/Simulation/" + "2022-08-20_06-40-57"+"/"
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
+    log_dir = "./Logs/Simulation/" + "2022-08-20_06-40-57"
     i = 0
     iter_Variable = []
-    n_planners = 3
-    for total_targets in range(5, 10, 5): # Total number of targets (between 5 and 10)
-        n_tpp_list = [3, 5, 8] # Number of targets per planner (between 25% and total_targets)
-        for n_targets_per_planner in n_tpp_list: # Number of targets per planner (between 25% and total_targets)
-            for amount_of_goals_per_target in [5,10]: # Number of goals per target (between 10 and 30)
-                i += 1
-                iter_Variable.append((n_planners, total_targets, n_targets_per_planner, amount_of_goals_per_target, i, log_dir))
+    date_dir = "2022-08-20_06-40-57"
+    log_dir = "./Logs/Simulation/"+date_dir
+    import yaml
+    with open(f"{log_dir}/Seed.yaml", "r") as f:
+        docs = yaml.load_all(f, Loader=yaml.FullLoader)
+        inp_lst = [] 
+        for doc in docs:
+            iter_Variable.append((log_dir, doc, False))
     print("Run pool")
     # Create Pool of Processes
     pool = Pool(initializer=init_pool_processes, initargs=(l,), processes=20)

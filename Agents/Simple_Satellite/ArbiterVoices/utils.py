@@ -1,4 +1,5 @@
 from logging import raiseExceptions
+from tkinter import simpledialog
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from pyrsistent import s
 import numpy as np
@@ -72,13 +73,29 @@ def merge_goals(Arbiter):
         goals.append(max_goal)
     return np.array(goals)
 
-def alpha_function(obs, arbiter):
+def alpha_function(obs, arbiter, log_dir='', sim_name=''):
     n_voices = len(arbiter.Voices)
     alpha_g = [0,0,0]
     for i, v in enumerate(arbiter.Voices):
         goals = np.sum(v.Goal_ref.goals)/np.sum(v.Goal_ref.Initial_goals)
-        alpha_g[1][i] = goals
+        alpha_g[i] = goals
     alpha = np.argsort(alpha_g) + 1
+    if not log_dir == '':
+        full_log_dir = log_dir+'/alphaVA/'
+        from os import makedirs
+        from os.path import exists
+
+        if not exists(full_log_dir):
+            makedirs(full_log_dir)
+        
+        path_to_file = full_log_dir+sim_name+'.npy'
+        if exists(path_to_file):
+            alpha_hist = np.load(path_to_file)
+            alpha_sv = alpha.reshape((1, len(alpha))) 
+            alpha_hist = np.concatenate((alpha_hist, alpha_sv))
+        else:
+            alpha_hist = alpha.reshape((1, len(alpha)))
+        np.save(log_dir+sim_name)
     return alpha
 
 

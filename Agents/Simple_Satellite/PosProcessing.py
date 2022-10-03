@@ -42,6 +42,13 @@ if __name__ == "__main__":
         for doc in docs:
             inp_lst_mp.append(doc)
     
+    with open(f"{log_dir}/Results_VA.yaml", "r") as f:
+        docs = yaml.load_all(f, Loader=yaml.FullLoader)
+        inp_lst_va = [] 
+        for doc in docs:
+            inp_lst_va.append(doc)
+    
+    
     print("Run pool")
     # Create Pool of Processes
     pool = Pool(processes=5)
@@ -123,9 +130,37 @@ if __name__ == "__main__":
         mean_dy = np.mean(dy, axis=0).reshape((2,))
         std_dy = np.std(dy, axis=0).reshape((2,))
         for i in range(2):
-            y1 = [mean_val[i], mean_val[i]+mean_dy[i]+std_dy[i]]
-            y2 = [mean_val[i], mean_val[i]+mean_dy[i]-std_dy[i]]
+            y1 = [mean_val[i], mean_val[i+1]+mean_dy[i]]
+            y2 = [mean_val[i], mean_val[i+1]-mean_dy[i]]
             plt.plot([i+1,i+2], y1, "r")
             plt.plot([i+1,i+2], y2, "r")
         plt.savefig("./Logs/Plots/ErrorBar.png", dpi=600)
+
+        # Error bars VA
+        results_va = np.array(pool.map(get_voices, inp_lst_va))
+        mean_val = np.mean(results_va, axis=0).reshape((3,))
+        std_val = np.std(results_va, axis=0).reshape((3,))
+        x = [1,2,3]
+        xerr = [0,0,0]
+        plt.figure("ErrorBar_VA")
+        plt.errorbar(x, mean_val, std_val, xerr, "o--", ecolor="r", capsize=1)
+        plt.xlim([0,4])
+        plt.ylim([0,100])
+        plt.ylabel("$\%$ goals achieved")
+        plt.xticks([1,2,3],["$V_0$", "$V_1$", "$V_2$"])
+        plt.tight_layout()
+        dy=[]
+        for y in results_va:
+            y.reshape((3,))
+            dy.append([y[1]-y[0],y[2]-y[1]])
+        dy = np.array(dy)
+        mean_dy = np.mean(dy, axis=0).reshape((2,))
+        std_dy = np.std(dy, axis=0).reshape((2,))
+        for i in range(2):
+            y1 = [mean_val[i], mean_val[i+1]+ (mean_dy[i])] #  min(min(100,mean_val[i]+std_val[i+1]),
+            y2 = [mean_val[i], mean_val[i+1]-(mean_dy[i])] # max(mean_val[i]-std_val[i+1],
+            plt.plot([i+1,i+2], y1, "r")
+            plt.plot([i+1,i+2], y2, "r")
+        plt.savefig("./Logs/Plots/ErrorBar_VA.png", dpi=600)
         plt.show()
+
