@@ -13,19 +13,21 @@
   (= (image_score img5) 0)
   (= (total_score) 0)
 
-  (memory_free mem0)
   (memory_free mem1)
-  (memory_free mem3)
-  (memory_free mem4)
   (memory_free mem5)
   (memory_free mem6)
   (memory_free mem7)
   (memory_free mem8)
   (memory_free mem9)
 
-   (memory_taken mem2 img3)
+   (memory_taken mem0 img2)
+   (memory_taken mem2 img4)
+   (memory_taken mem3 img3)
+   (memory_taken mem4 img1)
 
-(image_analysed mem2 img3)
+(image_analysed mem0 img2)
+(image_analysed mem2 img4)
+(image_analysed mem3 img3)
 
   (at 75 (image_available img3))
   (at 83 (not (image_available img3)))
@@ -90,12 +92,17 @@
 
 )
 (:goal (and
-  (> (image_score img4) 0)
-  (<= (image_score img4) 1)
+  (> (image_score img3) 0)
+  (<= (image_score img3) 2)
 
-(>= (total_score) 1)
+  (> (image_score img4) 0)
+  (<= (image_score img4) 17)
+
+(>= (total_score) 4)
 ))
-(:metric maximize 
-  (image_score img4)
+(:metric maximize (+
+  (image_score img3)
+    (image_score img4)
+  )
 )
 )

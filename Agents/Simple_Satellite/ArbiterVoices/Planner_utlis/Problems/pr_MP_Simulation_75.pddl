@@ -1132,22 +1132,67 @@
   (> (image_score img2) 0)
   (<= (image_score img2) 7.0)
 
-  (> (image_score img8) 0)
-  (<= (image_score img8) 5.0)
+  (> (image_score img3) 0)
+  (<= (image_score img3) 12.0)
 
-  (> (image_score img9) 0)
-  (<= (image_score img9) 4.0)
+  (> (image_score img5) 0)
+  (<= (image_score img5) 7.0)
+
+  (> (image_score img7) 0)
+  (<= (image_score img7) 14.0)
+
+  (> (image_score img10) 0)
+  (<= (image_score img10) 11.0)
+
+  (> (image_score img12) 0)
+  (<= (image_score img12) 3.0)
 
   (> (image_score img13) 0)
   (<= (image_score img13) 2.0)
 
-(>= (total_score) 4)
+  (> (image_score img14) 0)
+  (<= (image_score img14) 12.0)
+
+  (> (image_score img16) 0)
+  (<= (image_score img16) 6.0)
+
+  (> (image_score img17) 0)
+  (<= (image_score img17) 12.0)
+
+  (> (image_score img20) 0)
+  (<= (image_score img20) 9.0)
+
+  (> (image_score img24) 0)
+  (<= (image_score img24) 14.0)
+
+  (> (image_score img25) 0)
+  (<= (image_score img25) 3.0)
+
+(>= (total_score) 23)
 ))
 (:metric maximize (+
   (image_score img2)
-    (+ (image_score img8)
-      (+ (image_score img9)
-        (image_score img13)
+    (+ (image_score img3)
+      (+ (image_score img5)
+        (+ (image_score img7)
+          (+ (image_score img10)
+            (+ (image_score img12)
+              (+ (image_score img13)
+                (+ (image_score img14)
+                  (+ (image_score img16)
+                    (+ (image_score img17)
+                      (+ (image_score img20)
+                        (+ (image_score img24)
+                          (image_score img25)
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
       )
     )
   )

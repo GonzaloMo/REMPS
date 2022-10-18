@@ -90,7 +90,7 @@
 )
 (:goal (and
   (> (image_score img4) 0)
-  (<= (image_score img4) 1)
+  (<= (image_score img4) 3)
 
 (>= (total_score) 1)
 ))

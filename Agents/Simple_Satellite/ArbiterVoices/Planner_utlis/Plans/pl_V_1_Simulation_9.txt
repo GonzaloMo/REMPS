@@ -25,7 +25,7 @@ b (8.000 | 1.000)b (5.000 | 15.001)b (4.000 | 343.000)b (3.000 | 357.001)b (2.00
 ; Plan found with metric 2.000
 ; States evaluated so far: 621
 ; States pruned based on pre-heuristic cost lower bound: 0
-; Time 0.67
+; Time 0.68
 1.001: (dump_image img2 mem1)  [14.000]
 343.001: (take_image img5 mem0)  [14.000]
 357.002: (analyse_image img5 mem0)  [32.000]

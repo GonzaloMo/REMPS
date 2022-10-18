@@ -31,52 +31,42 @@ Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
 Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -4.000
+- Must be >= -5.000
 Recognised a monotonic-change-induced limit on -1.000*var1(image_score img2)
-- Must be >= -6.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
 - Must be >= -8.000
-Recognised a monotonic-change-induced limit on -1.000*var17(image_score img18)
+Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
 - Must be >= -11.000
-Recognised a monotonic-change-induced limit on -1.000*var18(image_score img19)
-- Must be >= -12.000
-Recognised a monotonic-change-induced limit on -1.000*var20(image_score img21)
-- Must be >= -13.000
 Recognised a monotonic-change-induced limit on -1.000*var23(image_score img24)
-- Must be >= -3.000
+- Must be >= -6.000
 66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 38.000, admissible cost estimate nan
-b (37.000 | 1.000)b (36.000 | 15.001)b (34.000 | 15.001)b (33.000 | 29.002)b (31.000 | 29.002)b (30.000 | 43.003)b (28.000 | 43.003)b (27.000 | 192.001)b (25.000 | 192.001)b (24.000 | 197.000)b (23.000 | 211.001)b (22.000 | 243.002)b (21.000 | 282.001)b (20.000 | 314.001)b (19.000 | 314.001)b (18.000 | 372.001)b (16.000 | 372.001)b (15.000 | 386.001)b (13.000 | 386.002)b (11.000 | 566.002)b (9.000 | 580.002)b (8.000 | 614.000)b (7.000 | 660.000)b (6.000 | 674.001)b (5.000 | 706.002)b (4.000 | 718.000)b (3.000 | 732.001)
-Resorting to best-first search
-Running WA* with W = 5.000, not restarting with goal states
-b (37.000 | 1.000)b (36.000 | 15.001)b (34.000 | 15.001)b (33.000 | 29.002)b (31.000 | 29.002)b (30.000 | 43.003)b (28.000 | 43.003)b (27.000 | 192.001)b (25.000 | 192.001)b (24.000 | 197.000)b (23.000 | 211.001)b (22.000 | 243.002)b (22.000 | 225.002)b (21.000 | 257.003)b (20.000 | 282.001)b (19.000 | 314.001)b (18.000 | 314.001)b (17.000 | 372.001)b (15.000 | 372.001)b (14.000 | 386.001)b (12.000 | 386.002)b (11.000 | 400.003)b (10.000 | 552.001)b (9.000 | 612.003)b (9.000 | 566.002)b (8.000 | 706.002)b (7.000 | 718.000)b (6.000 | 732.001)b (4.000 | 732.001)b (3.000 | 746.002)b (2.000 | 798.002)(G)
+Initial heuristic = 27.000, admissible cost estimate nan
+b (26.000 | 8.000)b (25.000 | 22.000)b (24.000 | 54.001)b (23.000 | 76.000)b (21.000 | 114.000)b (20.000 | 134.000)b (19.000 | 148.001)b (18.000 | 180.002)b (17.000 | 180.002)b (16.000 | 450.001)b (15.000 | 474.000)b (14.000 | 474.000)b (13.000 | 504.000)b (12.000 | 518.001)b (11.000 | 550.002)b (10.000 | 550.002)b (9.000 | 682.002)b (7.000 | 810.001)b (5.000 | 900.001)b (4.000 | 932.002)b (3.000 | 976.000)(G)
 ; LP calculated the cost
 
-; Plan found with metric 8.000
-; States evaluated so far: 9929
+; Plan found with metric 4.000
+; States evaluated so far: 767
 ; States pruned based on pre-heuristic cost lower bound: 0
-; Time 35.90
-1.001: (dump_image img17 mem7)  [14.000]
-15.002: (dump_image img15 mem6)  [14.000]
-29.003: (dump_image img18 mem5)  [14.000]
-178.001: (dump_image img2 mem4)  [14.000]
-197.001: (take_image img21 mem4)  [14.000]
-211.002: (dump_image img20 mem1)  [14.000]
-225.003: (analyse_image img21 mem4)  [32.000]
-268.001: (take_image img24 mem1)  [14.000]
-282.002: (analyse_image img24 mem1)  [32.000]
-367.997: (dump_image img21 mem4)  [14.000]
-381.998: (dump_image img24 mem1)  [14.000]
-395.999: (dump_image img14 mem2)  [14.000]
-538.001: (dump_image img5 mem3)  [14.000]
-660.001: (take_image img19 mem1)  [14.000]
-674.002: (analyse_image img19 mem1)  [32.000]
-724.000: (dump_image img19 mem1)  [14.000]
-738.001: (take_image img8 mem8)  [14.000]
-752.002: (dump_image img1 mem0)  [14.000]
-766.003: (analyse_image img8 mem8)  [32.000]
-898.001: (dump_image img8 mem8)  [14.000]
-b (0.000 | 912.001)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)
+; Time 2.47
+8.001: (take_image img17 mem0)  [14.000]
+22.002: (analyse_image img17 mem0)  [32.000]
+113.999: (dump_image img17 mem0)  [14.000]
+134.001: (take_image img2 mem0)  [14.000]
+148.002: (analyse_image img2 mem0)  [32.000]
+262.000: (dump_image img2 mem0)  [14.000]
+276.001: (take_image img8 mem0)  [14.000]
+290.002: (analyse_image img8 mem0)  [32.000]
+473.999: (dump_image img8 mem0)  [14.000]
+504.001: (take_image img1 mem0)  [14.000]
+518.002: (analyse_image img1 mem0)  [32.000]
+622.000: (dump_image img1 mem0)  [14.000]
+636.001: (take_image img8 mem0)  [14.000]
+650.002: (analyse_image img8 mem0)  [32.000]
+833.999: (dump_image img8 mem0)  [14.000]
+886.001: (take_image img24 mem0)  [14.000]
+900.002: (analyse_image img24 mem0)  [32.000]
+976.001: (dump_image img24 mem0)  [14.000]
+
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (26.000 | 8.000)b (25.000 | 22.000)b (24.000 | 54.001)b (23.000 | 76.000)b (22.000 | 148.001)b (21.000 | 180.002)b (20.000 | 180.002)b (19.000 | 270.001)b (17.000 | 270.001)b (16.000 | 518.001)b (15.000 | 550.002)b (14.000 | 550.002)b (13.000 | 630.001)b (11.000 | 630.001)
 END

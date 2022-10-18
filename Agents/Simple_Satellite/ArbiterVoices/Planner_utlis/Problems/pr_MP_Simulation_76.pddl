@@ -1129,12 +1129,67 @@
 
 )
 (:goal (and
+  (> (image_score img4) 0)
+  (<= (image_score img4) 6.0)
+
+  (> (image_score img8) 0)
+  (<= (image_score img8) 9.0)
+
+  (> (image_score img10) 0)
+  (<= (image_score img10) 6.0)
+
+  (> (image_score img11) 0)
+  (<= (image_score img11) 9.0)
+
+  (> (image_score img13) 0)
+  (<= (image_score img13) 5.0)
+
+  (> (image_score img14) 0)
+  (<= (image_score img14) 20.0)
+
+  (> (image_score img15) 0)
+  (<= (image_score img15) 17.0)
+
+  (> (image_score img17) 0)
+  (<= (image_score img17) 17.0)
+
+  (> (image_score img18) 0)
+  (<= (image_score img18) 11.0)
+
   (> (image_score img20) 0)
   (<= (image_score img20) 11.0)
 
-(>= (total_score) 3)
+  (> (image_score img22) 0)
+  (<= (image_score img22) 12.0)
+
+  (> (image_score img23) 0)
+  (<= (image_score img23) 16.0)
+
+(>= (total_score) 28)
 ))
-(:metric maximize 
-  (image_score img20)
+(:metric maximize (+
+  (image_score img4)
+    (+ (image_score img8)
+      (+ (image_score img10)
+        (+ (image_score img11)
+          (+ (image_score img13)
+            (+ (image_score img14)
+              (+ (image_score img15)
+                (+ (image_score img17)
+                  (+ (image_score img18)
+                    (+ (image_score img20)
+                      (+ (image_score img22)
+                        (image_score img23)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 )
 )

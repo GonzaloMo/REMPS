@@ -924,17 +924,107 @@
 
 )
 (:goal (and
+  (> (image_score img1) 0)
+  (<= (image_score img1) 20)
+
+  (> (image_score img2) 0)
+  (<= (image_score img2) 11)
+
+  (> (image_score img3) 0)
+  (<= (image_score img3) 16)
+
   (> (image_score img4) 0)
-  (<= (image_score img4) 4.0)
+  (<= (image_score img4) 4)
+
+  (> (image_score img5) 0)
+  (<= (image_score img5) 5)
+
+  (> (image_score img6) 0)
+  (<= (image_score img6) 20)
+
+  (> (image_score img7) 0)
+  (<= (image_score img7) 20)
+
+  (> (image_score img8) 0)
+  (<= (image_score img8) 15)
+
+  (> (image_score img9) 0)
+  (<= (image_score img9) 17)
+
+  (> (image_score img10) 0)
+  (<= (image_score img10) 8)
+
+  (> (image_score img11) 0)
+  (<= (image_score img11) 18)
+
+  (> (image_score img12) 0)
+  (<= (image_score img12) 11)
+
+  (> (image_score img13) 0)
+  (<= (image_score img13) 19)
+
+  (> (image_score img14) 0)
+  (<= (image_score img14) 1)
+
+  (> (image_score img15) 0)
+  (<= (image_score img15) 14)
+
+  (> (image_score img16) 0)
+  (<= (image_score img16) 5)
 
   (> (image_score img17) 0)
-  (<= (image_score img17) 14.0)
+  (<= (image_score img17) 14)
 
-(>= (total_score) 4)
+  (> (image_score img18) 0)
+  (<= (image_score img18) 7)
+
+  (> (image_score img19) 0)
+  (<= (image_score img19) 20)
+
+  (> (image_score img20) 0)
+  (<= (image_score img20) 17)
+
+(>= (total_score) 53)
 ))
 (:metric maximize (+
-  (image_score img4)
-    (image_score img17)
+  (image_score img1)
+    (+ (image_score img2)
+      (+ (image_score img3)
+        (+ (image_score img4)
+          (+ (image_score img5)
+            (+ (image_score img6)
+              (+ (image_score img7)
+                (+ (image_score img8)
+                  (+ (image_score img9)
+                    (+ (image_score img10)
+                      (+ (image_score img11)
+                        (+ (image_score img12)
+                          (+ (image_score img13)
+                            (+ (image_score img14)
+                              (+ (image_score img15)
+                                (+ (image_score img16)
+                                  (+ (image_score img17)
+                                    (+ (image_score img18)
+                                      (+ (image_score img19)
+                                        (image_score img20)
+                                      )
+                                    )
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
   )
 )
 )

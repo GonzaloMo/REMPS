@@ -1,151 +1,160 @@
-Number of literals: 563
+Number of literals: 258
 Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
 Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
-(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img1) has finite bounds: [0.000,0.000]
 (image_score img2) has a finite lower bound: [0.000,inf]
 (image_score img3) has a finite lower bound: [0.000,inf]
-(image_score img4) has a finite lower bound: [0.000,inf]
-(image_score img5) has a finite lower bound: [0.000,inf]
-(image_score img6) has a finite lower bound: [0.000,inf]
-(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img4) has finite bounds: [0.000,0.000]
+(image_score img5) has finite bounds: [0.000,0.000]
+(image_score img6) has finite bounds: [0.000,0.000]
+(image_score img7) has finite bounds: [0.000,0.000]
 (image_score img8) has a finite lower bound: [0.000,inf]
-(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img9) has finite bounds: [0.000,0.000]
 (image_score img10) has a finite lower bound: [0.000,inf]
-(image_score img11) has a finite lower bound: [0.000,inf]
-(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img11) has finite bounds: [0.000,0.000]
+(image_score img12) has finite bounds: [0.000,0.000]
 (image_score img13) has a finite lower bound: [0.000,inf]
-(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img14) has finite bounds: [0.000,0.000]
 (image_score img15) has a finite lower bound: [0.000,inf]
 (image_score img16) has a finite lower bound: [0.000,inf]
 (image_score img17) has a finite lower bound: [0.000,inf]
-(image_score img18) has a finite lower bound: [0.000,inf]
+(image_score img18) has finite bounds: [0.000,0.000]
 (image_score img19) has a finite lower bound: [0.000,inf]
-(image_score img20) has a finite lower bound: [0.000,inf]
+(image_score img20) has finite bounds: [0.000,0.000]
 (image_score img21) has a finite lower bound: [0.000,inf]
 (image_score img22) has a finite lower bound: [0.000,inf]
-(image_score img23) has a finite lower bound: [0.000,inf]
+(image_score img23) has finite bounds: [0.000,0.000]
 (image_score img24) has a finite lower bound: [0.000,inf]
-(image_score img25) has a finite lower bound: [0.000,inf]
+(image_score img25) has finite bounds: [0.000,0.000]
 (total_score) has a finite lower bound: [0.000,inf]
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
 Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var1(image_score img2)
 - Must be >= -1.000
-Recognised a monotonic-change-induced limit on -1.000*var2(image_score img3)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var3(image_score img4)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var6(image_score img7)
-- Must be >= -5.000
+Recognised a monotonic-change-induced limit on var0(image_score img1)
+- Must be > 0.000
 Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var8(image_score img9)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var10(image_score img11)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var11(image_score img12)
-- Must be >= -1.000
-Recognised a monotonic-change-induced limit on -1.000*var12(image_score img13)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var13(image_score img14)
-- Must be >= -1.000
-Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
-- Must be >= -4.000
-Recognised a monotonic-change-induced limit on -1.000*var15(image_score img16)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var17(image_score img18)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var19(image_score img20)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var20(image_score img21)
-- Must be >= -3.000
-Recognised a monotonic-change-induced limit on -1.000*var21(image_score img22)
-- Must be >= -5.000
-Recognised a monotonic-change-induced limit on -1.000*var22(image_score img23)
 - Must be >= -2.000
-Recognised a monotonic-change-induced limit on -1.000*var23(image_score img24)
-- Must be >= -4.000
-66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 120.000, admissible cost estimate nan
-b (119.000 | 5.000)b (118.000 | 19.001)b (117.000 | 51.001)b (116.000 | 51.001)b (115.000 | 65.003)b (114.000 | 97.003)b (113.000 | 97.003)b (112.000 | 111.005)b (111.000 | 111.005)b (110.000 | 111.005)b (108.000 | 111.005)b (105.000 | 125.006)b (104.000 | 206.000)b (103.000 | 220.001)b (102.000 | 252.002)b (101.000 | 252.002)b (100.000 | 252.002)b (99.000 | 252.002)b (98.000 | 280.004)b (97.000 | 280.004)b (95.000 | 280.004)b (94.000 | 312.005)b (93.000 | 312.005)b (92.000 | 393.001)b (91.000 | 425.001)b (90.000 | 436.000)b (89.000 | 450.001)b (88.000 | 450.001)b (87.000 | 451.000)b (85.000 | 451.000)b (84.000 | 464.001)b (82.000 | 464.002)b (81.000 | 478.003)b (79.000 | 478.003)b (78.000 | 588.001)b (77.000 | 620.002)b (76.000 | 634.002)b (74.000 | 634.003)b (71.000 | 648.004)b (70.000 | 648.004)b (69.000 | 662.005)b (68.000 | 694.006)b (67.000 | 822.001)b (66.000 | 854.002)b (65.000 | 854.002)b (64.000 | 952.001)b (63.000 | 984.002)b (62.000 | 998.002)b (61.000 | 998.002)b (59.000 | 998.003)b (58.000 | 1012.004)b (56.000 | 1012.004)b (55.000 | 1026.005)b (54.000 | 1058.006)b (53.000 | 1058.006)b (51.000 | 1170.001)b (50.000 | 1171.000)b (49.000 | 1185.001)b (48.000 | 1217.002)b (47.000 | 1217.002)b (46.000 | 1346.002)b (45.000 | 1346.002)b (44.000 | 1360.003)b (43.000 | 1360.003)b (41.000 | 1360.003)b (40.000 | 1374.004)b (38.000 | 1374.004)b (37.000 | 1388.004)b (36.000 | 1420.005)b (35.000 | 1530.001)b (33.000 | 1530.001)b (30.000 | 1544.002)b (29.000 | 1545.000)b (28.000 | 1559.001)b (27.000 | 1591.002)b (26.000 | 1702.000)b (25.000 | 1716.001)b (24.000 | 1748.002)b (23.000 | 1748.002)b (22.000 | 1806.002)b (21.000 | 1876.000)b (19.000 | 1890.001)b (17.000 | 1904.002)b (15.000 | 1918.003)b (14.000 | 2071.000)b (13.000 | 2085.001)b (12.000 | 2117.002)b (11.000 | 2117.002)b (10.000 | 2250.001)b (9.000 | 2439.000)b (8.000 | 2453.001)b (7.000 | 2485.002)b (5.000 | 2610.001)b (4.000 | 2829.001)b (3.000 | 2861.002)b (2.000 | 2956.000)(G)
-; LP calculated the cost
+Recognised a monotonic-change-induced limit on -1.000*var14(image_score img15)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
+- Must be >= -3.000
+Pruning (take_image img10 mem3) - temporal contradiction: start min/max = 9223372036854776.000/6.999; end min/max = 14.000/20.999; duration min/max = 14.000/14.000
+Pruning (take_image img16 mem3) - temporal contradiction: start min/max = 9223372036854776.000/12.999; end min/max = 14.000/26.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem0) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem1) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem2) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem3) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem4) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem5) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem6) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem7) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem8) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img10 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img13 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img19 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img2 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img21 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img22 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img24 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+Pruning (dump_image img8 mem9) - temporal contradiction: start min/max = 9223372036854776.000/36.999; end min/max = 14.000/50.999; duration min/max = 14.000/14.000
+99% of the ground temporal actions in this problem are compression-safe
+; Goals unreachable from the initial state
+;; Problem unsolvable!
+; Time 0.00
 
-; Plan found with metric 21.000
-; States evaluated so far: 670
-; States pruned based on pre-heuristic cost lower bound: 0
-; Time 2.95
-5.001: (take_image img5 mem0)  [14.000]
-19.002: (analyse_image img5 mem0)  [32.000]
-51.003: (take_image img12 mem1)  [14.000]
-65.004: (analyse_image img12 mem1)  [32.000]
-99.998: (dump_image img12 mem1)  [14.000]
-113.999: (dump_image img5 mem0)  [14.000]
-129.001: (take_image img18 mem0)  [14.000]
-143.002: (analyse_image img18 mem0)  [32.000]
-206.001: (take_image img9 mem1)  [14.000]
-220.002: (analyse_image img9 mem1)  [32.000]
-255.999: (take_image img23 mem2)  [14.000]
-281.997: (dump_image img9 mem1)  [14.000]
-295.998: (analyse_image img23 mem2)  [32.000]
-327.999: (take_image img8 mem1)  [14.000]
-347.000: (analyse_image img8 mem1)  [32.000]
-379.001: (take_image img1 mem3)  [14.000]
-393.002: (analyse_image img1 mem3)  [32.000]
-445.997: (dump_image img1 mem3)  [14.000]
-459.998: (dump_image img23 mem2)  [14.000]
-473.999: (dump_image img8 mem1)  [14.000]
-574.001: (take_image img7 mem1)  [14.000]
-588.002: (analyse_image img7 mem1)  [32.000]
-620.003: (dump_image img7 mem1)  [14.000]
-634.004: (dump_image img18 mem0)  [14.000]
-648.005: (take_image img13 mem1)  [14.000]
-662.006: (analyse_image img13 mem1)  [32.000]
-808.001: (take_image img11 mem0)  [14.000]
-822.002: (analyse_image img11 mem0)  [32.000]
-938.001: (take_image img4 mem2)  [14.000]
-952.002: (analyse_image img4 mem2)  [32.000]
-984.003: (dump_image img4 mem2)  [14.000]
-998.004: (dump_image img13 mem1)  [14.000]
-1012.005: (take_image img3 mem2)  [14.000]
-1026.006: (analyse_image img3 mem2)  [32.000]
-1157.000: (dump_image img3 mem2)  [14.000]
-1171.001: (take_image img20 mem1)  [14.000]
-1185.002: (analyse_image img20 mem1)  [32.000]
-1300.001: (take_image img15 mem2)  [14.000]
-1314.002: (analyse_image img15 mem2)  [32.000]
-1353.997: (dump_image img15 mem2)  [14.000]
-1367.998: (dump_image img20 mem1)  [14.000]
-1381.999: (take_image img21 mem1)  [14.000]
-1484.000: (analyse_image img21 mem1)  [32.000]
-1516.001: (dump_image img21 mem1)  [14.000]
-1531.000: (dump_image img11 mem0)  [14.000]
-1545.001: (take_image img14 mem0)  [14.000]
-1670.000: (analyse_image img14 mem0)  [32.000]
-1702.001: (take_image img16 mem1)  [14.000]
-1716.002: (analyse_image img16 mem1)  [32.000]
-1767.999: (take_image img22 mem2)  [14.000]
-1782.000: (analyse_image img22 mem2)  [32.000]
-1885.997: (dump_image img22 mem2)  [14.000]
-1899.998: (dump_image img16 mem1)  [14.000]
-1913.999: (dump_image img14 mem0)  [14.000]
-2071.001: (take_image img17 mem0)  [14.000]
-2085.002: (analyse_image img17 mem0)  [32.000]
-2273.999: (dump_image img17 mem0)  [14.000]
-2439.001: (take_image img24 mem0)  [14.000]
-2453.002: (analyse_image img24 mem0)  [32.000]
-2633.999: (dump_image img24 mem0)  [14.000]
-2815.001: (take_image img2 mem0)  [14.000]
-2829.002: (analyse_image img2 mem0)  [32.000]
-2956.001: (dump_image img2 mem0)  [14.000]
-
-Resorting to best-first search
-Running WA* with W = 5.000, not restarting with goal states
-b (119.000 | 5.000)b (118.000 | 19.001)b (117.000 | 51.001)b (116.000 | 51.001)b (115.000 | 65.003)b (114.000 | 97.003)b (113.000 | 97.003)b (112.000 | 111.005)b (112.000 | 97.003)b (111.000 | 111.005)b (111.000 | 97.003)b (110.000 | 111.005)b (108.000 | 111.005)b (107.000 | 125.006)b (106.000 | 220.001)b (105.000 | 252.002)b (105.000 | 220.001)b (104.000 | 252.002)b (104.000 | 234.002)b (104.000 | 220.001)b (103.000 | 252.002)b (103.000 | 234.002)b (103.000 | 220.001)b (102.000 | 252.002)b (102.000 | 234.002)b (101.000 | 266.003)b (100.000 | 298.004)b (99.000 | 298.004)b (98.000 | 344.006)b (97.000 | 344.006)b (96.000 | 425.001)b (95.000 | 436.000)b (94.000 | 450.001)b (94.000 | 448.000)b (93.000 | 450.001)b (92.000 | 451.000)b (90.000 | 451.000)b (89.000 | 464.001)b (87.000 | 464.002)b (86.000 | 478.003)b (84.000 | 478.003)b (83.000 | 578.000)b (82.000 | 592.001)b (82.000 | 580.000)b (81.000 | 592.001)b (80.000 | 624.002)b (79.000 | 638.002)b (79.000 | 624.002)b (78.000 | 638.002)b (76.000 | 638.003)b (75.000 | 652.004)b (75.000 | 652.003)b (73.000 | 652.004)b (72.000 | 666.005)b (70.000 | 666.005)b (69.000 | 666.005)b (68.000 | 810.001)b (68.000 | 808.000)b (67.000 | 810.001)b (66.000 | 811.000)b (64.000 | 811.000)b (63.000 | 824.002)b (61.000 | 824.002)b (60.000 | 838.003)b (59.000 | 870.003)b (58.000 | 986.002)b (57.000 | 986.002)b (56.000 | 1000.002)b (56.000 | 986.002)b (55.000 | 1000.002)b (53.000 | 1000.003)b (52.000 | 1014.003)b (50.000 | 1014.004)b (49.000 | 1014.004)b (48.000 | 1060.006)b (48.000 | 1060.005)b (47.000 | 1170.001)b (45.000 | 1170.001)b (44.000 | 1171.000)b (43.000 | 1185.001)b (42.000 | 1217.002)b (40.000 | 1199.002)b (39.000 | 1231.003)b (38.000 | 1356.002)b (36.000 | 1356.002)b (35.000 | 1370.003)b (33.000 | 1370.003)b (32.000 | 1402.004)b (31.000 | 1402.004)b (30.000 | 1384.004)b (29.000 | 1416.004)b (28.000 | 1448.005)b (27.000 | 1544.002)b (25.000 | 1558.003)b (24.000 | 1702.000)b (23.000 | 1716.001)b (22.000 | 1748.002)b (21.000 | 1748.002)b (20.000 | 1748.002)
 END

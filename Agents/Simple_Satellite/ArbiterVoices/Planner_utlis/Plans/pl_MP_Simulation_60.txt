@@ -1,60 +1,108 @@
-Number of literals: 453
+Number of literals: 148
 Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
 Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
 (image_score img1) has a finite lower bound: [0.000,inf]
-(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img2) has finite bounds: [0.000,0.000]
 (image_score img3) has a finite lower bound: [0.000,inf]
-(image_score img4) has a finite lower bound: [0.000,inf]
-(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img4) has finite bounds: [0.000,0.000]
+(image_score img5) has finite bounds: [0.000,0.000]
 (image_score img6) has a finite lower bound: [0.000,inf]
 (image_score img7) has a finite lower bound: [0.000,inf]
-(image_score img8) has a finite lower bound: [0.000,inf]
-(image_score img9) has a finite lower bound: [0.000,inf]
-(image_score img10) has a finite lower bound: [0.000,inf]
-(image_score img11) has a finite lower bound: [0.000,inf]
-(image_score img12) has a finite lower bound: [0.000,inf]
-(image_score img13) has a finite lower bound: [0.000,inf]
-(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img8) has finite bounds: [0.000,0.000]
+(image_score img9) has finite bounds: [0.000,0.000]
+(image_score img10) has finite bounds: [0.000,0.000]
+(image_score img11) has finite bounds: [0.000,0.000]
+(image_score img12) has finite bounds: [0.000,0.000]
+(image_score img13) has finite bounds: [0.000,0.000]
+(image_score img14) has finite bounds: [0.000,0.000]
 (image_score img15) has a finite lower bound: [0.000,inf]
 (image_score img16) has a finite lower bound: [0.000,inf]
 (image_score img17) has a finite lower bound: [0.000,inf]
-(image_score img18) has a finite lower bound: [0.000,inf]
-(image_score img19) has a finite lower bound: [0.000,inf]
-(image_score img20) has a finite lower bound: [0.000,inf]
+(image_score img18) has finite bounds: [0.000,0.000]
+(image_score img19) has finite bounds: [0.000,0.000]
+(image_score img20) has finite bounds: [0.000,0.000]
 (total_score) has a finite lower bound: [0.000,inf]
 Have identified that bigger values of (total_score) are preferable
 Seeing if metric is defined in terms of task vars or a minimal value of makespan
 - Yes it is
 Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
-- Must be >= -16.000
-Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
-- Must be >= -9.000
-66% of the ground temporal actions in this problem are compression-safe
-Initial heuristic = 24.000, admissible cost estimate nan
-b (23.000 | 18.000)b (22.000 | 32.001)b (21.000 | 64.001)b (20.000 | 76.000)b (18.000 | 90.001)b (15.000 | 200.000)b (14.000 | 215.000)b (13.000 | 229.001)b (12.000 | 261.002)b (11.000 | 261.002)b (10.000 | 277.000)b (7.000 | 277.000)b (6.000 | 291.001)b (5.000 | 323.001)
-Resorting to best-first search
-Running WA* with W = 5.000, not restarting with goal states
-b (23.000 | 18.000)b (22.000 | 32.001)b (21.000 | 64.001)b (20.000 | 76.000)b (18.000 | 90.001)b (17.000 | 229.001)b (16.000 | 261.002)b (12.000 | 293.003)b (11.000 | 293.003)b (11.000 | 275.003)b (9.000 | 289.003)b (7.000 | 289.004)b (6.000 | 289.004)b (5.000 | 305.002)b (4.000 | 337.003)b (2.000 | 464.001)(G)
-; LP calculated the cost
+- Must be >= -12.000
+Recognised a monotonic-change-induced limit on -1.000*var2(image_score img3)
+- Must be >= -13.000
+Recognised a monotonic-change-induced limit on -1.000*var9(image_score img10)
+- Must be >= -3.000
+Recognised a monotonic-change-induced limit on var9(image_score img10)
+- Must be > 0.000
+Recognised a monotonic-change-induced limit on -1.000*var16(image_score img17)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var19(image_score img20)
+- Must be >= -6.000
+Recognised a monotonic-change-induced limit on var19(image_score img20)
+- Must be > 0.000
+Pruning (take_image img1 mem0) - temporal contradiction: start min/max = 9223372036854776.000/12.999; end min/max = 14.000/26.999; duration min/max = 14.000/14.000
+Pruning (take_image img1 mem1) - temporal contradiction: start min/max = 9223372036854776.000/12.999; end min/max = 14.000/26.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem0) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem0) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem0) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem0) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem0) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem1) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem1) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem1) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem1) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem1) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem1) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem2) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem2) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem2) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem2) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem2) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem2) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem3) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem3) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem3) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem3) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem3) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem3) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem4) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem4) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem4) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem4) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem4) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem4) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem5) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem5) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem5) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem5) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem5) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem5) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem6) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem6) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem6) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem6) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem6) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem6) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem7) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem7) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem7) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem7) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem7) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem7) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem8) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem8) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem8) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem8) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem8) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem8) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img1 mem9) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img16 mem9) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img17 mem9) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img3 mem9) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img6 mem9) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+Pruning (dump_image img7 mem9) - temporal contradiction: start min/max = 9223372036854776.000/21.999; end min/max = 14.000/35.999; duration min/max = 14.000/14.000
+98% of the ground temporal actions in this problem are compression-safe
+; Goals unreachable from the initial state
+;; Problem unsolvable!
+; Time 0.02
 
-; Plan found with metric 2.000
-; States evaluated so far: 9235
-; States pruned based on pre-heuristic cost lower bound: 0
-; Time 25.95
-18.001: (take_image img12 mem0)  [14.000]
-32.002: (analyse_image img12 mem0)  [32.000]
-76.001: (dump_image img12 mem0)  [14.000]
-90.002: (take_image img9 mem0)  [14.000]
-104.003: (analyse_image img9 mem0)  [32.000]
-215.001: (take_image img8 mem1)  [14.000]
-229.002: (analyse_image img8 mem1)  [32.000]
-263.000: (dump_image img8 mem1)  [14.000]
-277.001: (take_image img1 mem1)  [14.000]
-291.002: (analyse_image img1 mem1)  [32.000]
-436.001: (dump_image img1 mem1)  [14.000]
-450.002: (dump_image img9 mem0)  [14.000]
-464.003: (take_image img15 mem0)  [14.000]
-478.004: (analyse_image img15 mem0)  [32.000]
-616.001: (dump_image img15 mem0)  [14.000]
-b (0.000 | 630.001)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)(G)
 END

@@ -71,7 +71,7 @@ def sim_run(input_tuple):
                 tot_f += f"        Goals Left: {list(goals_left)}\n"
                 tot_f += f"        Total Initial Goals: {np.sum(init_goals)}\n"
                 tot_f += f"        Total Goals Left: {np.sum(goals_left)}\n"
-            tot_f += f"    {merged_planner.name}:\n"
+            tot_f += f"    MP:\n"
             tot_f += f"        Initial Goals: {list(Complete_goals)}\n"
             tot_f += f"        Goals Achieved: {list(goals_achieved)}\n"
             tot_f += f"        Goals Left mp: {list(merged_planner.goals)}\n"
@@ -103,11 +103,11 @@ if __name__ == "__main__":
         for doc in docs:
             iter_Variable.append((log_dir, doc, False))
     # print("Run pool")
-    # # Create Pool of Processes
-    # pool = Pool(initializer=init_pool_processes, initargs=(l,), processes=2)
-    # # Run Simulation
-    # print("Run map")
-    # pool.map(sim_run, iter_Variable)
-    n = 2
-    inp = (iter_Variable[n][0] , iter_Variable[n][1], True)
-    sim_run(inp)
+    # Create Pool of Processes
+    pool = Pool(initializer=init_pool_processes, initargs=(l,), processes=20)
+    # Run Simulation
+    print("Run map")
+    pool.map(sim_run, iter_Variable)
+    # n = 2
+    # inp = (iter_Variable[n][0] , iter_Variable[n][1], True)
+    # sim_run(inp)
