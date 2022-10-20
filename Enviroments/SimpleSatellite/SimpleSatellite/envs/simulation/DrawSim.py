@@ -37,7 +37,7 @@ class SatelliteView:
         pygame.font.init()
         self.font = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE / 2))
         self.text_digits = [self.font.render(str(i+1), True, SatelliteView.WHITE) for i in
-                            range(sim.n_tagets)]
+                            range(sim.n_targets)]
         self.text_goals = self.font.render("Open Goals", True, SatelliteView.WHITE)
 
         # Open a Main window

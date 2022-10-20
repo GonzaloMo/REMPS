@@ -1,7 +1,7 @@
 ######################################
 ## Simple Simulation of a Satellite ##
 ######################################
-from SimpleSatellite.envs.simsat_v0 import Simple_satellite_v0
+from SimpleSatellite.envs.simsat_v0 import Simple_satellite as Simple_satellite_v0
 
 ###########################################################
 ## Simple Simulation of a Satellite for an arbiter agent ##

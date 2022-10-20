@@ -9,20 +9,8 @@ def Reward_v1(env, action):
     R = 0
     state = env.state
     new_state = env.next_state
-    if action!=3 and state['Busy']==0:
-        R -= 50
-    else:
-        if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            # Picture were correctly taken
-            if state['Memory Level']<new_state['Memory Level']:
-                R+=0.1
-            else:
-                R-=10            
-
-        if action == SatelliteSim.ACTION_DUMP:
-            # Files have been correctly dumped
-            if state['Memory Level'] > new_state['Memory Level']:
-                R+=10
-            else:
-                R-=10
+    if action == SatelliteSim.ACTION_DUMP:
+        # Files have been correctly dumped
+        if state['Memory Level'] > new_state['Memory Level']:
+            R+=1
     return R

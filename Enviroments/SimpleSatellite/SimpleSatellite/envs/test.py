@@ -1,9 +1,16 @@
-from simsat_v0 import Simple_satellite_v0
-env = Simple_satellite_v0()
+from simsat_v0 import Simple_satellite
+import numpy as np
+from Test_Utils.Planner import Planner
+env = Simple_satellite(action_space_type="Advance")
+goals = np.random.randint(0, high=4, size=(env.SatSim.n_targets), dtype=int)
+print("Goals: ", goals)
+agent = Planner(env.SatSim, "Planner", goals)
 env.reset()
-action = 3 #env.action_space.sample()
-while 0<=action<=3:
+action = env.action_space.sample()
+while True:
     observation, reward, done, info = env.step(action)
     env.render()
-    action = 3
-env.view.quit()
+    action = agent.take_action(observation)
+    if done:
+        break
+env.close()

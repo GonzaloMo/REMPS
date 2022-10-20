@@ -1,8 +1,6 @@
 import math
 from numpy import random
-from SimpleSatellite.envs.simulation.GoalReferee import GoalReferee
 import numpy as np
-import datetime
 import os
 from copy import copy
 
@@ -78,13 +76,13 @@ class SatelliteSim:
 
         # targets
         self.random_targets = random_tg
-        self.n_tagets = n_targets
+        self.n_targets = n_targets
         self.targets = []
         self.target_list = []
         if random_tg:
-            self.n_tagets = 4
+            self.n_targets = 4
             t_c= [6., 72., 144., 216.]
-            for i in range(self.n_tagets):
+            for i in range(self.n_targets):
                 self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
                 self.target_list.append(i)
 
@@ -288,9 +286,9 @@ class SatelliteSim:
         self.busy = 0
         if not self.random_targets:
             # Generate Targets
-            self.targets = self.initRandomTargets(self.n_tagets)
+            self.targets = self.initRandomTargets(self.n_targets)
             self.target_list = []
-            for i in range(self.n_tagets):
+            for i in range(self.n_targets):
                 self.target_list.append(i+1)
                 
             # # Generate Ground Stations
