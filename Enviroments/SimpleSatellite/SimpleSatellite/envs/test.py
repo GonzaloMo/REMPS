@@ -11,6 +11,8 @@ while True:
     observation, reward, done, info = env.step(action)
     env.render()
     action = agent.take_action(observation)
+    agent.prune_plan(observation)
+    agent.update_goals(env.SatSim.Goals_achieved)
     if done:
         break
 env.close()

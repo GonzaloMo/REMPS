@@ -50,7 +50,7 @@ class Planner:
         else:
             print(f"plan to excute\n {self.excuted_plan}")
             return self.Action_doNothing
-            
+    
     def get_plan(self, obs, timelimit=120):
         self.current_orbit = obs["Orbit"][0]
         self.current_pos = obs["Pos"][0]

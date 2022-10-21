@@ -1,6 +1,6 @@
 import os
 from time import sleep
-from typing import Callable
+from typing import Callable, List
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from SimpleSatellite.envs.simulation.Reward_functions import Reward_v1 
@@ -86,14 +86,14 @@ class Simple_satellite_Arb_v1(gym.Env):
         observation = self.state
         return observation, reward, done, info
 
-    def reset(self, n_targ: int = 4, seed=None):
+    def reset(self, n_targ: int = 4, seed: int=None):
         self.SatSim.set_seed(seed=seed)
         self.state = self.SatSim.reset(n_targets=n_targ,seed=seed)
         self.Total_reward = 0
         observation = self.state
         return observation 
 
-    def render(self, Voices, single=False):
+    def render(self, Voices: List, single: bool=False):
         self.view = SatelliteView(self.SatSim)
         self.view.drawSim(self.SatSim)
         self.view.draw_arbiter(Voices, self.state)
