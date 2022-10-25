@@ -14,8 +14,6 @@ from copy import copy
 
 class SatelliteSim:
 
-    MAX_ORBITS = 20
-
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1
 
@@ -35,6 +33,7 @@ class SatelliteSim:
                 DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
                 Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
                 Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
+                ACTION_THRESHOLD: int=1,
                 CoverageFile: str="",
                 Log_dir = "./Logs/Simulation/"):
         """
@@ -142,7 +141,7 @@ class SatelliteSim:
             self.busy = 0
             self.Taking_action = 0
         # Check if simulation ends
-        if self.orbit>=SatelliteSim.MAX_ORBITS:
+        if self.orbit>=self.MAX_ORBITS:
             done = True
 
         # update state
@@ -208,7 +207,7 @@ class SatelliteSim:
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
-            if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
+            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = self.DURATION_DUMP
                 self.busy = 1
                 self.Taking_action = action
@@ -266,7 +265,7 @@ class SatelliteSim:
 
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
-            if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]):
+            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
                 for mem_slot in range(self.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
                         if img == None or self.images[mem_slot] == img:

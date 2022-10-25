@@ -6,7 +6,6 @@ action_space_type: "Advance" # "Simple" or "Advanced"
 MAX_ORBITS: 20
 PERIOD: 600 # in seconds
 
-
 # Satellite parameters
 MEMORY_SIZE: 15 # Memory should be higher than 1 
 
@@ -14,6 +13,7 @@ MEMORY_SIZE: 15 # Memory should be higher than 1
 DURATION_TAKE_IMAGE: 20 # in seconds
 DURATION_DUMP: 20 # in seconds
 DURATION_ANALYSE: 50 # in seconds
+ACTION_THRESHOLD: 0.5 # in seconds
 
 Underterministic_actions:  # Values between 0 and 1
   TP: 0.

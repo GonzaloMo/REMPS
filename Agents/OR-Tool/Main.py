@@ -22,6 +22,7 @@ with open("Logs/Test_1/Target.txt", "w") as f:
 with open("Logs/Test_1/GS.txt", "w") as f:
     for i in state[1]:
         f.write(str(i) + ",")
+
 while True:
     obs, reward, done, info = env.step(env.action_space.sample())
     env.render()
