@@ -8,3 +8,4 @@ print(path)
 # print attributes of the simulation folder
 print(dir(envs))
 envs.test()
+print("Done")
