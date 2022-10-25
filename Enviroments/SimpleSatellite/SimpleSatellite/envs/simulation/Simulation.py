@@ -419,5 +419,5 @@ class SatelliteSim:
             # Create Log folder
             if not os.path.exists(self.log_dir):
                 os.makedirs(self.log_dir)
-            with open(self.log_dir+"Seed.yaml", "a") as f:
+            with open(self.log_dir+"/Seed.yaml", "a") as f:
                 f.write(f"    Simulation_Seed: {self.seed}\n")
