@@ -1,8 +1,13 @@
+"""
+copyright © 2022
+University of Stratclyde
+All rights reserved
+Authors: Gonzalo Montesino Valle, Michael Cashmore
+"""
 import math
 from numpy import random
-from SimpleSatellite.envs.simulation.GoalReferee import GoalReferee
+from typing import Dict, List, Tuple, Any
 import numpy as np
-import datetime
 import os
 from copy import copy
 
@@ -21,81 +26,91 @@ class SatelliteSim:
     ACTION_TAKE_IMAGE = 1
     ACTION_ANALYSE = 2
     ACTION_DUMP = 3
-    
-    
     ACTION_NAMES = ["DN","TP","AN","DP"]
 
-    DURATION_TAKE_IMAGE = 20
-    DURATION_DUMP = 20
-    DURATION_ANALYSE = 50
-    DURATIONS = [DURATION_TAKE_IMAGE,DURATION_DUMP,DURATION_ANALYSE]
-
-    TARGET_HALF_SIZE = 5.
-    GS_HALF_SIZE = 20.
-
-    def __init__(self, period=600, random_tg=False, n_gs=2, n_targets=4, log_dir = "./Logs/Simulation/"):
+    def __init__(self, 
+                MAX_ORBITS: int=20, PERIOD: float=600, 
+                MEMORY_SIZE: int=10,  
+                Underterministic_actions: Dict[str, float]= {"TP": 0., "AN": 0., "DP": 0.}, 
+                DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
+                Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
+                Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
+                CoverageFile: str="",
+                Log_dir = "./Logs/Simulation/"):
         """
         Initialize the satellite simulation.
 
         Args:
-            period: the period of the satellite orbit.
-            seed: the seed for the random number generator.
-            random_tg: if True, the targets are randomly placed.
-            n_gs: the number of ground stations.
-            n_targets: the number of targets.
-        """
-        # initialize logger
-        self.log_dir = log_dir
-        # initialize simulation time
-        self.sim_time = 0
-        self.period = period
-        self.dt = period/SatelliteSim.CIRCUNFERENCE
-        self.velocity = SatelliteSim.CIRCUNFERENCE/period
+            MAX_ORBITS: the maximum number of orbits to be simulated.
+            period: the period of the orbit in seconds.
 
-        # satellite state
+            MEMORY_SIZE: the size of the memory of the satellite.
+
+            Underterministic_actions: the probability of not taking the action.
+            DURATION_TAKE_IMAGE: the duration of the take image action in seconds.
+            DURATION_DUMP: the duration of the dump action in seconds.
+            DURATION_ANALYSE: the duration of the analyse action in seconds.
+
+            Random_Targets: if the targets are generated randomly.
+            Number_of_targets: the number of targets to be generated.
+            TARGET_HALF_SIZE: the half size of the targets.
+
+            Random_GS: if the ground stations are generated randomly.
+            GS_HALF_SIZE: the half size of the ground stations.
+            Number_of_GS: the number of ground stations to be generated.
+
+            CoverageFile: the yaml file with the ground station coverage and targets.
+
+            Log_dir: the directory where the logs are saved.
+        """
+        ############ Initialize the simulation parameters ############
+        ## Satellite parameters ##
+        # Postion variables
         self.pos = 0
         self.orbit = 0
-        self.last_action = 3
-
-        # planet position
-        self.n_gs = n_gs
-        gs_c = [90, 270]
-        self.groundStations = []
-        for i in range(self.n_gs):
-            min_pos = gs_c[i]-SatelliteSim.GS_HALF_SIZE
-            max_pos = gs_c[i]+SatelliteSim.GS_HALF_SIZE
-            if min_pos < 0:
-                min_pos = 0
-                self.groundStations.append([0, max_pos])
-                self.groundStations.append([SatelliteSim.CIRCUNFERENCE + min_pos, SatelliteSim.CIRCUNFERENCE])
-            elif max_pos > SatelliteSim.CIRCUNFERENCE:
-                max_pos = SatelliteSim.CIRCUNFERENCE
-                self.groundStations.append([0, max_pos - SatelliteSim.CIRCUNFERENCE])
-                self.groundStations.append([min_pos, SatelliteSim.CIRCUNFERENCE])
-            else: 
-                self.groundStations.append([gs_c[i]-SatelliteSim.GS_HALF_SIZE, gs_c[i]+SatelliteSim.GS_HALF_SIZE])
-            
-
-        # targets
-        self.random_targets = random_tg
-        self.n_tagets = n_targets
-        self.targets = []
-        self.target_list = []
-        if random_tg:
-            self.n_tagets = 4
-            t_c= [6., 72., 144., 216.]
-            for i in range(self.n_tagets):
-                self.targets.append([t_c[i]-SatelliteSim.TARGET_HALF_SIZE,t_c[i]+SatelliteSim.TARGET_HALF_SIZE])
-                self.target_list.append(i)
 
         # memory state
+        self.MEMORY_SIZE = MEMORY_SIZE
         self.memory_level = 0
-        self.images = [0] * self.MEMORY_SIZE
-        self.analysis = [False] * self.MEMORY_SIZE
+        self.images = [0] * MEMORY_SIZE
+        self.analysis = [False] * MEMORY_SIZE
 
-        # satellite busy time
-        self.satellite_busy_time = 0
+        # Action variables
         self.busy = 0
+        self.satellite_busy_time = 0
+        self.last_action = 0
+        self.DURATIONS = [0, DURATION_TAKE_IMAGE, DURATION_ANALYSE, DURATION_DUMP]
+        self.DURATION_TAKE_IMAGE = DURATION_TAKE_IMAGE
+        self.DURATION_DUMP = DURATION_DUMP
+        self.DURATION_ANALYSE = DURATION_ANALYSE
+        self.Underterministic_actions = Underterministic_actions
+
+        ## Environment parameters ##
+        self.MAX_ORBITS = MAX_ORBITS
+        self.period = PERIOD
+        self.sim_time = 0
+        self.dt = PERIOD/SatelliteSim.CIRCUNFERENCE
+        self.velocity = SatelliteSim.CIRCUNFERENCE/PERIOD
+
+        # initialize logger
+        if not os.path.exists(Log_dir):
+            os.makedirs(Log_dir)
+        self.log_dir = Log_dir
+        
+        
+        # GS parameters
+        self.n_gs = Number_of_GS
+        self.Random_GS = Random_GS
+        self.GS_HALF_SIZE = GS_HALF_SIZE
+        self.groundStations = []
+        
+        # Targets
+        self.random_targets = Random_Targets
+        self.n_targets = Number_of_targets
+        self.TARGET_HALF_SIZE = TARGET_HALF_SIZE
+        self.targets = []
+        self.CoverageFile = CoverageFile
+
 
     def update(self, action):
         """
@@ -165,10 +180,10 @@ class SatelliteSim:
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
                             # print(f"Image {index+1} sent by planner {img}")
                             if img == (index+1) or img == None:
-                                self.satellite_busy_time = SatelliteSim.DURATION_TAKE_IMAGE
+                                self.satellite_busy_time = self.DURATION_TAKE_IMAGE
                                 self.images[ind_mem] = index+1
                                 self.analysis[ind_mem] = False
-                                self.memory_level = min(SatelliteSim.MEMORY_SIZE, self.memory_level+1)
+                                self.memory_level = min(self.MEMORY_SIZE, self.memory_level+1)
                                 self.last_action = action
                                 self.busy = 1
                                 self.Taking_action = action
@@ -177,7 +192,7 @@ class SatelliteSim:
             
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
-            self.satellite_busy_time = SatelliteSim.DURATION_ANALYSE
+            self.satellite_busy_time = self.DURATION_ANALYSE
             self.busy = 1
             self.Taking_action = action
             
@@ -188,19 +203,18 @@ class SatelliteSim:
                         self.analysis[mem_slot] = True
                         self.last_action = action
                         self.last_action_tuple = copy(self.action_tuple)
-                        
                         return
         
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
-                self.satellite_busy_time = SatelliteSim.DURATION_DUMP
+                self.satellite_busy_time = self.DURATION_DUMP
                 self.busy = 1
                 self.Taking_action = action
                 
                 # Check if the image is analysed
-                for mem_slot in range(SatelliteSim.MEMORY_SIZE-1, -1, -1):
+                for mem_slot in range(self.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
                         if img == None:
                             image_dumped = self.images[mem_slot]
@@ -253,13 +267,13 @@ class SatelliteSim:
         if action == SatelliteSim.ACTION_DUMP:
             # check if it is above the ground station and if their is any analysed image
             if any([gs[0]-SatelliteSim.ACTION_THRESHOLD < self.pos < gs[1]+SatelliteSim.ACTION_THRESHOLD for gs in self.groundStations]):
-                for mem_slot in range(SatelliteSim.MEMORY_SIZE-1, -1, -1):
+                for mem_slot in range(self.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
                         if img == None or self.images[mem_slot] == img:
                             return True
         return False
 
-    def reset(self, n_targets: int =4, seed: int =None):
+    def reset(self, n_targets: int =4, seed: int =None) -> np.ndarray:
         """
         Reset the satellite simulation.
 
@@ -286,44 +300,58 @@ class SatelliteSim:
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
         self.busy = 0
-        if not self.random_targets:
-            # Generate Targets
-            self.targets = self.initRandomTargets(self.n_tagets)
-            self.target_list = []
-            for i in range(self.n_tagets):
-                self.target_list.append(i+1)
+
+        # Generate Targets
+        self.targets = self.CoverageGenerator("Target_Coverage")
+        self.target_list = []
+        for i in range(self.n_targets):
+            self.target_list.append(i+1)
                 
-            # # Generate Ground Stations
-            # self.initRandomStations()
+        # Generate Ground Stations
+        self.groundStations = self.CoverageGenerator("GroundStation_Coverage")
+
         return self.get_state()
 
-    def initRandomStations(self):
+    def CoverageGenerator(self, Type_Selection: str) -> List[Tuple[float, float]]:
         """
-        Generate random ground stations.
+        Generate position brackets of sites.
             
         Returns:
-            The list of ground stations.
+            The list of min and max position for each site.
         """
-        self.groundStations = []
-        for i in range(self.n_gs):
-            s = random.random()*(SatelliteSim.CIRCUNFERENCE-SatelliteSim.GS_HALF_SIZE)
-            self.groundStations.append((s, s+SatelliteSim.GS_HALF_SIZE))
-
-    def initRandomTargets(self, amount):
-        """
-        Generate random targets.
-
-        Args:
-            amount: the number of targets to be generated.
-
-        Returns:
-            The list of targets.
-        """
-        targets = []
-        for i in range(amount):
-            s = random.randint(0+SatelliteSim.TARGET_HALF_SIZE, SatelliteSim.CIRCUNFERENCE-SatelliteSim.TARGET_HALF_SIZE)
-            targets.append((s-SatelliteSim.TARGET_HALF_SIZE, s+SatelliteSim.TARGET_HALF_SIZE))
-        return targets
+        CoverageList = []
+        if Type_Selection == "Target_Coverage":
+            amount = self.n_targets
+            random = self.random_targets
+            half = self.TARGET_HALF_SIZE
+        elif Type_Selection == "GroundStation_Coverage":
+            amount = self.n_gs
+            random = self.Random_GS
+            half = self.GS_HALF_SIZE
+        else:
+            raise ValueError("Type_Selection must be either Target_Coverage or GroundStation_Coverage")
+        # Generate the center of the sites
+        if self.CoverageFile == "":
+            centers = np.array([])
+            if random:
+                Centers_po = np.random.rand(amount)*SatelliteSim.CIRCUNFERENCE
+            else: # Equidistant
+                Centers_po = np.linspace(0, SatelliteSim.CIRCUNFERENCE, amount+2)[1:-1]
+            # print("Centers_po", Centers_po)
+            # for orb in range(0, self.MAX_ORBITS+1):
+            #     centers = np.concatenate([centers, Centers_po + orb*SatelliteSim.CIRCUNFERENCE])
+            centers = Centers_po
+        else:
+            import yaml
+            with open(self.CoverageFile, 'r') as f:
+                data = yaml.load(f, Loader=yaml.FullLoader)
+                centers = np.array(data[Type_Selection])
+        # Generate the brackets
+        for Center in centers:
+            min_pos = Center-half
+            max_pos = Center+half
+            CoverageList.append([min_pos, max_pos])
+        return CoverageList
 
     def get_state(self):
         """
