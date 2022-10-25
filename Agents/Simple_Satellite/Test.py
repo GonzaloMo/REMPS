@@ -1,16 +1,17 @@
 
+from tkinter import FALSE
 from Agents.Arbiter import Arbiter
 from Agents.Planner import Planner
 # Load Environment with random target positions
 import gym
 import SimpleSatellite
 import numpy as np
-from ArbiterVoices.utils import read_seed, merge_goals
+from ArbiterVoices.utils import read_seed, merge_goals, alpha_function
 from ArbiterVoices.Planner_voice import Planner_Voice
 from time import sleep
 import datetime
 
-newsim = True
+newsim = False
 log_dir = "./Logs/Simulation/"
 arbite_type = "Priority" # "Priority" or "weighted"
 # Set Seed for reproducibility
@@ -18,7 +19,7 @@ if newsim:
     seed_env = None
     seed_planner = None
     
-    n_planners = 2 # Number of planners (1 through 5)
+    n_planners = 3 # Number of planners (1 through 5)
     total_targets = 10 # Total number of targets (between 5 and 30)
     n_targets_per_planner = 5 # Number of targets per planner (between 25% and total_targets)
     amount_of_goals_per_target = 10
@@ -29,8 +30,9 @@ if newsim:
         f.write(f"N_targets_per_planner: {n_targets_per_planner}\n")
         f.write(f"Amount_of_goals_per_target: {amount_of_goals_per_target}\n")
 else:
-    date_time = "12"
-    seed_dict = read_seed(f"{log_dir}Seed.txt", date_time)
+    sim = "32"
+    date = "2022-08-19_15-56-51"
+    seed_dict = read_seed(f"{log_dir}{date}/Seed.yaml", sim)
     seed_planner = []
     planner_names = []
     for key in seed_dict:
@@ -48,10 +50,6 @@ else:
     n_planners = len(planner_names)
     print(f"Loadded Simulation: {seed_dict}")
 
-
-
-alpha = list(range(1, n_planners+1))
-
 # Initialize Environment
 env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets, log_dir=log_dir)
 
@@ -59,10 +57,6 @@ env = gym.make("SimpleSatelliteArb-v1", random=False, n_targets = total_targets,
 agent = Arbiter(env, total_targets, n_targets_per_planner=n_targets_per_planner,
                                  n_planners=n_planners,seed_v=seed_planner, amount=amount_of_goals_per_target, log_dir=log_dir)
 
-# merge goals from all planners
-Complete_goals = merge_goals(agent)
-merged_planner = Planner(env.SatSim, "MP_", Complete_goals)
-print(f"{merged_planner.name} | Goals: {np.array(Complete_goals)} | Total: {np.sum(Complete_goals)}")
 
 # Start Simulation
 episode_reward = 0
@@ -79,6 +73,7 @@ if newsim:
 # merged_planner.get_plan(obs)
 agent.reset_voices(obs)
 while not done:
+    alpha = alpha_function(obs, agent)
     action = agent.take_action(obs, alpha, type_selec_method=arbite_type)
     obs, reward, done, info = env.step(action)
     if "Dump" in env.action_list_names[action]:

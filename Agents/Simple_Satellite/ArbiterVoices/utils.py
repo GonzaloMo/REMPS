@@ -1,4 +1,5 @@
 from logging import raiseExceptions
+from tkinter import simpledialog
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from pyrsistent import s
 import numpy as np
@@ -41,6 +42,7 @@ class Action(object):
     def set_value(self, Value):
         self.Value = Value
     
+
     def set_action_tuple(self, action, img):
         self.action_tuple = (action, img)
     
@@ -51,24 +53,14 @@ class Action(object):
         else:
             return int((ac-1)*n_targets + img)
 
-def read_seed(seed_file, date_time):
+def read_seed(seed_file, sim_num):
+    import yaml
     with open(seed_file, "r") as f:
-        Seeding_dict = {}
-        date = f"{date_time}"
-        while True:
-            line = f.readline().strip()
-            if "Simulation" in line and date in line:
-                print(f"Loading simulation {line}")
-                while True:
-                    line = f.readline().strip()
-                    if ":" in line:
-                        tokens = line.split()
-                        Seeding_dict[tokens[0][:-1]] = int(tokens[1])
-                    if "END" in line:
-                        break
-                return Seeding_dict
-            if line == None:
-                raiseExceptions(f"Seed file {seed_file} does not contain simulation {date}")
+        docs = yaml.load_all(f, Loader=yaml.FullLoader)
+        for doc in docs:
+            for k,v in doc.items():
+                if sim_num in k:
+                    return v
 
 def merge_goals(Arbiter):
     goals = []
@@ -81,8 +73,33 @@ def merge_goals(Arbiter):
         goals.append(max_goal)
     return np.array(goals)
 
-def alpha_function(n_targets):
-    return np.array([i for i in range(n_targets)])
+def alpha_function(obs, arbiter, log_dir='', sim_name=''):
+    n_voices = len(arbiter.Voices)
+    alpha_g = [0,0,0]
+    for i, v in enumerate(arbiter.Voices):
+        goals = np.sum(v.Goal_ref.goals)/np.sum(v.Goal_ref.Initial_goals)
+        alpha_g[i] = goals
+    alpha = np.argsort(alpha_g) + 1
+    if not log_dir == '':
+        full_log_dir = log_dir+'/alphaVA/'
+        from os import makedirs
+        from os.path import exists
+
+        if not exists(full_log_dir):
+            makedirs(full_log_dir)
+        
+        path_to_file = full_log_dir+sim_name+'.npy'
+        if exists(path_to_file):
+            alpha_hist = np.load(path_to_file)
+            alpha_sv = alpha.reshape((1, len(alpha))) 
+            alpha_hist = np.concatenate((alpha_hist, alpha_sv))
+        else:
+            alpha_hist = alpha.reshape((1, len(alpha)))
+        np.save(log_dir+sim_name)
+    return alpha
+
+
+
                 
             
     

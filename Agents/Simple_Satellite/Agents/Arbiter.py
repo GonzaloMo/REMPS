@@ -56,7 +56,7 @@ class Arbiter:
         # If no emergency action is needed
         actions = [] 
         for i, voice in enumerate(self.Voices):
-            Voice_action = voice.getAction(obs)
+            Voice_action = voice.getAction_2(obs)
             priority = alpha[i]
             Voice_action.set_value(priority)
             actions.append(Voice_action)
@@ -68,7 +68,7 @@ class Arbiter:
         else:
             print(f"Error: type_selec_method = {type_selec_method} not recognized")
             raise ValueError("Type must be either Priority or Weighted")
-        self.prune_plan_voices(obs)
+        self.prune_plan_voices(obs, action)
         if not action.action == self.env.SatSim.ACTION_DO_NOTHING:
             composed_action = action.get_action_from_tuple(self.n_targets)
             # print(f"Selected Action {str(action)} with priority {action.Value} sugested by {action.voice}")
@@ -77,6 +77,7 @@ class Arbiter:
             # if not action.action == 0:
             #     composed_action = action.get_action_from_tuple(self.n_targets)
             #     print(f"{composed_action} -> {self.env.action_list_names[composed_action]} and action tuple is {action.action_tuple}")
+            
             return action.get_action_from_tuple(self.n_targets)
         else: 
             return action.action
@@ -140,14 +141,14 @@ class Arbiter:
     def render(self):
         self.env.render()
 
-    def prune_plan_voices(self, obs):
+    def prune_plan_voices(self, obs, act):
         for i, voice in enumerate(self.Voices):
-            self.Voices[i].prune_plan(obs)
+            self.Voices[i].prune_plan(obs, action_excuted = act)
         
 
-    def upadte_voices_goals(self):
+    def upadte_voices_goals(self, g_ach):
         for i, voice in enumerate(self.Voices):
-            self.Voices[i].update_goals(self.env.SatSim.Goals_achieved)
+            self.Voices[i].update_goals(g_ach)
         
     def check_interference(self, action, ith_voice):
         for i in range(ith_voice-1, -1, -1):

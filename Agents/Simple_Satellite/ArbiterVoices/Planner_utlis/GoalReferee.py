@@ -87,6 +87,6 @@ class GoalReferee:
         np.random.seed(seed)
         random.seed(seed)
         self.seed = seed
-        with open(self.log_dir+"Seed.txt", "a") as f:
-            f.write(f"{self.planner_name}: {self.seed} \n")
+        with open(self.log_dir+"Seed.yaml", "a") as f:
+            f.write(f"    {self.planner_name}: {self.seed} \n")
         

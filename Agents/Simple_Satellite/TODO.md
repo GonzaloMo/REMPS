@@ -22,7 +22,7 @@
 - [x] Create a merged problem for a single planner
 - [x] Create seeded Test Cases 200 
   - [x] Generate seeded grid search problems
-- [ ] Multiprocess the planner TestCases
+- [x] Multiprocess the planner TestCases
 - [x] Test the merged problem with a single planner
 - [ ] Run experiments for single planner vs complexity of the problem
 - [x] Run experiments for Arbiter vs complexity of the problem

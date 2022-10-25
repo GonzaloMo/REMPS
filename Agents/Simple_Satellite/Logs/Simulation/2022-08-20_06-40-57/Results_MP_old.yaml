@@ -1,0 +1,528 @@
+---
+Simulation 1: 
+    V_0:
+        Initial Goals: [0, 0, 1, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [3, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 3
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 0, 1, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [3, 0, 1, 1, 0]
+        Goals Achieved: [3, 0, 1, 1, 0]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 5
+        Total Goals Achieved: 5
+        Total Goals Left: 0
+---
+Simulation 2: 
+    V_0:
+        Initial Goals: [0, 0, 1, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [5, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 5
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 0, 1, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [5, 0, 1, 1, 0]
+        Goals Achieved: [5, 0, 1, 1, 0]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 7
+        Total Goals Achieved: 7
+        Total Goals Left: 0
+---
+Simulation 3: 
+    V_0:
+        Initial Goals: [0, 0, 1, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [5, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 5
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 0, 1, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [5, 0, 1, 1, 0]
+        Goals Achieved: [5, 0, 1, 1, 0]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 7
+        Total Goals Achieved: 7
+        Total Goals Left: 0
+---
+Simulation 9: 
+    V_0:
+        Initial Goals: [0, 0, 1, 5, 4]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 10
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [0, 1, 0, 0, 2]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 3
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 2, 0, 4]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 6
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [0, 1, 2, 5, 4]
+        Goals Achieved: [0, 1, 2, 5, 4]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 12
+        Total Goals Achieved: 12
+        Total Goals Left: 0
+---
+Simulation 17: 
+    V_0:
+        Initial Goals: [0, 0, 1, 5, 0, 0, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 6
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [1, 0, 0, 0, 0, 0, 0, 0, 0, 5]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 6
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [1, 0, 1, 5, 0, 1, 0, 0, 0, 5]
+        Goals Achieved: [1, 0, 1, 5, 0, 1, 0, 0, 1, 5]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 13
+        Total Goals Achieved: 14
+        Total Goals Left: 0
+---
+Simulation 5: 
+    V_0:
+        Initial Goals: [0, 0, 1, 5, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 6
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [4, 0, 0, 0, 4]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 8
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 4, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 4
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [4, 4, 1, 5, 4]
+        Goals Achieved: [4, 4, 1, 5, 4]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 18
+        Total Goals Achieved: 18
+        Total Goals Left: 0
+---
+Simulation 13: 
+    V_0:
+        Initial Goals: [0, 5, 1, 5, 4]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 15
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [2, 2, 0, 0, 3]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 7
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 5, 1, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 6
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [2, 5, 1, 5, 4]
+        Goals Achieved: [2, 5, 1, 5, 4]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 17
+        Total Goals Achieved: 17
+        Total Goals Left: 0
+---
+Simulation 4: 
+    V_0:
+        Initial Goals: [0, 0, 2, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 2
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [10, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 10
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 0, 2, 0]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 2
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [10, 0, 2, 2, 0]
+        Goals Achieved: [10, 1, 2, 2, 0]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 14
+        Total Goals Achieved: 15
+        Total Goals Left: 0
+---
+Simulation 21: 
+    V_0:
+        Initial Goals: [0, 2, 0, 0, 2, 2, 4, 0, 2, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 12
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [5, 0, 0, 0, 0, 0, 1, 4, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 10
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 5, 0, 0, 2, 4, 0, 4, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 15
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [5, 5, 0, 0, 2, 4, 4, 4, 2, 0]
+        Goals Achieved: [5, 5, 0, 0, 2, 4, 4, 4, 2, 0]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 26
+        Total Goals Achieved: 26
+        Total Goals Left: 0
+---
+Simulation 11: 
+    V_0:
+        Initial Goals: [0, 0, 1, 9, 7]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 17
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [0, 2, 0, 0, 3]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 5
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 4, 0, 8]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 12
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [0, 2, 4, 9, 8]
+        Goals Achieved: [2, 2, 4, 9, 8]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 23
+        Total Goals Achieved: 25
+        Total Goals Left: 0
+---
+Simulation 10: 
+    V_0:
+        Initial Goals: [0, 0, 1, 9, 7]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 17
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [0, 2, 0, 0, 3]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 5
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 4, 0, 8]
+        Goals Left: [0, 0, 0, 0, 0]
+        Total Initial Goals: 12
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [0, 2, 4, 9, 8]
+        Goals Achieved: [2, 2, 4, 9, 8]
+        Goals Left mp: [0, 0, 0, 0, 0]
+        Total Initial Goals: 23
+        Total Goals Achieved: 25
+        Total Goals Left: 0
+---
+Simulation 18: 
+    V_0:
+        Initial Goals: [0, 0, 1, 9, 0, 0, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 10
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 1
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [2, 0, 0, 0, 0, 0, 0, 0, 0, 9]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 11
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [2, 0, 1, 9, 0, 1, 0, 0, 0, 9]
+        Goals Achieved: [2, 0, 1, 10, 0, 1, 4, 0, 1, 9]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 22
+        Total Goals Achieved: 28
+        Total Goals Left: 0
+---
+Simulation 25: 
+    V_0:
+        Initial Goals: [0, 2, 2, 0, 2, 2, 4, 0, 2, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 14
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [3, 5, 3, 2, 0, 0, 0, 0, 2, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 15
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [3, 0, 0, 0, 2, 0, 3, 4, 0, 2]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 14
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [3, 5, 3, 2, 2, 2, 4, 4, 2, 2]
+        Goals Achieved: [3, 5, 3, 2, 2, 2, 4, 4, 2, 2]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 29
+        Total Goals Achieved: 29
+        Total Goals Left: 0
+---
+Simulation 33: 
+    V_0:
+        Initial Goals: [5, 0, 0, 0, 0, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 12
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [3, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 10
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 1, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 5
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [5, 0, 0, 0, 0, 4, 3, 4, 0, 1, 1, 3, 0, 0, 0]
+        Goals Achieved: [5, 0, 1, 0, 0, 4, 3, 4, 0, 1, 1, 3, 0, 0, 0]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 21
+        Total Goals Achieved: 22
+        Total Goals Left: 0
+---
+Simulation 29: 
+    V_0:
+        Initial Goals: [4, 2, 3, 0, 3, 0, 4, 2, 3, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 21
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [0, 5, 4, 5, 2, 4, 4, 1, 1, 4]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 30
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [5, 1, 5, 3, 0, 4, 5, 2, 0, 1]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 26
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [5, 5, 5, 5, 3, 4, 5, 2, 3, 4]
+        Goals Achieved: [5, 5, 5, 5, 3, 4, 5, 2, 3, 4]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 41
+        Total Goals Achieved: 41
+        Total Goals Left: 0
+---
+Simulation 37: 
+    V_0:
+        Initial Goals: [0, 2, 0, 0, 2, 2, 4, 0, 2, 0, 2, 0, 3, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 17
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [5, 0, 0, 0, 0, 0, 1, 4, 0, 0, 0, 3, 2, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 15
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 4, 2, 0, 0, 0, 3, 5, 5, 0, 0, 0, 1, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 20
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [5, 2, 4, 2, 2, 2, 4, 4, 5, 5, 2, 3, 3, 1, 0]
+        Goals Achieved: [5, 2, 4, 2, 2, 2, 4, 4, 5, 5, 2, 3, 3, 1, 0]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 44
+        Total Goals Achieved: 44
+        Total Goals Left: 0
+---
+Simulation 41: 
+    V_0:
+        Initial Goals: [0, 3, 0, 0, 4, 0, 0, 1, 0, 4, 5, 0, 2, 3, 4]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 26
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [1, 5, 0, 4, 0, 4, 3, 0, 0, 5, 0, 0, 1, 2, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 25
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [4, 0, 0, 3, 5, 0, 3, 1, 0, 0, 0, 0, 2, 4, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 22
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [4, 5, 0, 4, 5, 4, 3, 1, 0, 5, 5, 0, 2, 4, 4]
+        Goals Achieved: [4, 5, 0, 4, 5, 4, 3, 1, 0, 5, 5, 0, 2, 4, 4]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 46
+        Total Goals Achieved: 46
+        Total Goals Left: 0
+---
+Simulation 31: 
+    V_0:
+        Initial Goals: [7, 0, 0, 0, 0, 1, 9, 12, 0, 12]
+        Goals Left: [5, 0, 0, 0, 0, 0, 7, 10, 0, 11]
+        Total Initial Goals: 41
+        Total Goals Left: 33
+    V_1:
+        Initial Goals: [2, 0, 0, 12, 7, 10, 9, 5, 4, 10]
+        Goals Left: [0, 0, 0, 11, 0, 8, 7, 3, 2, 9]
+        Total Initial Goals: 59
+        Total Goals Left: 40
+    V_2:
+        Initial Goals: [0, 5, 11, 0, 11, 15, 10, 5, 1, 0]
+        Goals Left: [0, 3, 9, 0, 1, 13, 8, 3, 0, 0]
+        Total Initial Goals: 58
+        Total Goals Left: 37
+    MP:
+        Initial Goals: [7, 5, 11, 12, 11, 15, 10, 12, 4, 12]
+        Goals Achieved: [2, 2, 2, 1, 10, 2, 2, 2, 2, 1]
+        Goals Left mp: [5, 3, 9, 11, 1, 13, 8, 10, 2, 11]
+        Total Initial Goals: 99
+        Total Goals Achieved: 26
+        Total Goals Left: 73
+---
+Simulation 42: 
+    V_0:
+        Initial Goals: [7, 0, 0, 0, 0, 0, 9, 5, 0, 8, 5, 9, 0, 5, 7]
+        Goals Left: [5, 0, 0, 0, 0, 0, 5, 4, 0, 6, 3, 3, 0, 3, 5]
+        Total Initial Goals: 55
+        Total Goals Left: 34
+    V_1:
+        Initial Goals: [4, 0, 10, 0, 0, 7, 1, 5, 0, 8, 3, 9, 0, 3, 0]
+        Goals Left: [2, 0, 6, 0, 0, 2, 0, 4, 0, 6, 1, 3, 0, 1, 0]
+        Total Initial Goals: 50
+        Total Goals Left: 25
+    V_2:
+        Initial Goals: [0, 5, 3, 0, 9, 0, 6, 6, 0, 8, 1, 2, 3, 0, 0]
+        Goals Left: [0, 4, 0, 0, 8, 0, 2, 5, 0, 6, 0, 0, 0, 0, 0]
+        Total Initial Goals: 43
+        Total Goals Left: 25
+    MP:
+        Initial Goals: [7, 5, 10, 0, 9, 7, 9, 6, 0, 8, 5, 9, 3, 5, 7]
+        Goals Achieved: [2, 1, 4, 1, 1, 5, 4, 1, 1, 2, 2, 6, 3, 2, 2]
+        Goals Left mp: [5, 4, 6, 0, 8, 2, 5, 5, 0, 6, 3, 3, 0, 3, 5]
+        Total Initial Goals: 90
+        Total Goals Achieved: 37
+        Total Goals Left: 55
+---
+Simulation 49: 
+    V_0:
+        Initial Goals: [0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4, 0, 3, 0, 0, 0, 1]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 13
+        Total Goals Left: 0
+    V_1:
+        Initial Goals: [4, 0, 5, 4, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 15
+        Total Goals Left: 0
+    V_2:
+        Initial Goals: [0, 0, 0, 5, 0, 0, 0, 0, 2, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 5]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 19
+        Total Goals Left: 0
+    MP:
+        Initial Goals: [4, 2, 5, 5, 0, 0, 0, 2, 3, 5, 0, 0, 0, 4, 0, 3, 0, 0, 0, 5]
+        Goals Achieved: [4, 2, 5, 5, 0, 0, 0, 2, 3, 5, 1, 0, 0, 4, 0, 3, 0, 0, 0, 5]
+        Goals Left mp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Total Initial Goals: 38
+        Total Goals Achieved: 39
+        Total Goals Left: 0
+---
+Simulation 52: 
+    V_0:
+        Initial Goals: [0, 0, 0, 0, 0, 0, 0, 15, 7, 0, 0, 0, 15, 19, 3, 0, 0, 0, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 11, 18, 2, 0, 0, 0, 0, 0]
+        Total Initial Goals: 59
+        Total Goals Left: 46
+    V_1:
+        Initial Goals: [0, 0, 3, 0, 0, 14, 3, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0]
+        Goals Left: [0, 0, 0, 0, 0, 11, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0]
+        Total Initial Goals: 52
+        Total Goals Left: 42
+    V_2:
+        Initial Goals: [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 1, 0, 0, 0, 13, 0, 0, 0]
+        Goals Left: [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 9, 0, 0, 0]
+        Total Initial Goals: 37
+        Total Goals Left: 28
+    MP:
+        Initial Goals: [8, 0, 3, 0, 0, 14, 3, 17, 7, 0, 0, 15, 15, 19, 3, 0, 13, 15, 0, 0]
+        Goals Achieved: [3, 0, 3, 1, 0, 3, 3, 0, 12, 0, 0, 1, 4, 1, 1, 0, 4, 1, 12, 0]
+        Goals Left mp: [5, 0, 0, 0, 0, 11, 0, 17, 0, 0, 0, 14, 11, 18, 2, 0, 9, 14, 0, 0]
+        Total Initial Goals: 132
+        Total Goals Achieved: 49
+        Total Goals Left: 101
+---
+Simulation 70: 
+    V_0:
+        Initial Goals: [0, 0, 0, 0, 0, 0, 4, 0, 2, 2, 6, 0, 0, 8, 0, 8, 10, 0, 5, 0, 0, 10, 9, 10, 9]
+        Goals Left: [0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 7, 0, 5, 9, 0, 0, 0, 0, 6, 7, 10, 9]
+        Total Initial Goals: 83
+        Total Goals Left: 59
+    V_1:
+        Initial Goals: [0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 7, 9, 7, 3, 0, 2, 7, 0, 0, 2, 0, 0, 6, 0]
+        Goals Left: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 6, 0, 0, 1, 3, 0, 0, 1, 0, 0, 6, 0]
+        Total Initial Goals: 47
+        Total Goals Left: 26
+    V_2:
+        Initial Goals: [4, 5, 10, 0, 0, 0, 0, 0, 0, 8, 0, 10, 0, 7, 0, 0, 0, 8, 0, 10, 3, 0, 0, 0, 0]
+        Goals Left: [3, 0, 8, 0, 0, 0, 0, 0, 0, 6, 0, 8, 0, 6, 0, 0, 0, 4, 0, 9, 2, 0, 0, 0, 0]
+        Total Initial Goals: 65
+        Total Goals Left: 46
+    MP:
+        Initial Goals: [4, 5, 10, 0, 2, 0, 4, 0, 2, 8, 6, 10, 9, 8, 3, 8, 10, 8, 5, 10, 3, 10, 9, 10, 9]
+        Goals Achieved: [1, 5, 2, 0, 2, 0, 1, 0, 2, 2, 3, 2, 5, 1, 3, 3, 1, 4, 5, 1, 1, 4, 2, 0, 0]
+        Goals Left mp: [3, 0, 8, 0, 0, 0, 3, 0, 0, 6, 3, 8, 4, 7, 0, 5, 9, 4, 0, 9, 2, 6, 7, 10, 9]
+        Total Initial Goals: 153
+        Total Goals Achieved: 50
+        Total Goals Left: 103

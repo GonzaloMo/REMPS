@@ -9,7 +9,7 @@ from copy import copy
 
 class SatelliteSim:
 
-    MAX_ORBITS = 10
+    MAX_ORBITS = 20
 
     CIRCUNFERENCE = 360
     ACTION_THRESHOLD = 1
@@ -144,9 +144,7 @@ class SatelliteSim:
             action: the action to be taken. 
         """
         if type(action_in) is not int:
-            print(action_in)
             action, img = action_in
-            
         else:
             action = action_in
             img = None
@@ -393,5 +391,5 @@ class SatelliteSim:
             # Create Log folder
             if not os.path.exists(self.log_dir):
                 os.makedirs(self.log_dir)
-            with open(self.log_dir+"Seed.txt", "a") as f:
-                f.write(f"Simulation_Seed: {self.seed}\n")
+            with open(self.log_dir+"Seed.yaml", "a") as f:
+                f.write(f"    Simulation_Seed: {self.seed}\n")
