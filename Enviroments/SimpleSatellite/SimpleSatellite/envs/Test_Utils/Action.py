@@ -3,13 +3,12 @@ from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 
 
 class Action(object):
-    DURATIONS = [0, SatelliteSim.DURATION_TAKE_IMAGE, SatelliteSim.DURATION_ANALYSE, SatelliteSim.DURATION_DUMP]
-    def __init__(self, action, voice, Pos, Velocity=0.6) -> None:
+    def __init__(self, action, voice, Pos, sim) -> None:
         self.Value = 0
         self.action = action
         self.voice = voice
         self.Pos = Pos
-        self.end_pos = Pos + self.DURATIONS[action]*Velocity
+        self.end_pos = Pos + sim.DURATIONS[action]*sim.velocity
         self.action_tuple = (action, None)
         self.img = None
     

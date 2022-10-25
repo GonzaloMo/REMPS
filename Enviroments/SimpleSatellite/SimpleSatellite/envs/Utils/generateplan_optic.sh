@@ -12,14 +12,12 @@
 # ---------------------------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 
-cd %s
-
 # Set upper limit on time (-t[sec]) and memory usage (-v[kB]) for the plan.
 ulimit -t %s 
 ulimit -v %s
 
 # Run Optic planner
-chmod 755 optic-cplex
-./optic-cplex %s %s > %s
+chmod 755 %s/optic-cplex
+%s/optic-cplex %s %s > %s
 
 cd ..

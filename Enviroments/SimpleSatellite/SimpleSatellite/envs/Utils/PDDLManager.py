@@ -12,9 +12,9 @@ def generatePlan(loc: str, domain: str, problem: str, plan: str, time_limit: int
     loc = loc.encode('UTF-8')
     time_limit = str(time_limit).encode('UTF-8')
     memory_limit = str(memory_limit).encode('UTF-8')
-    script = script % (loc, time_limit, memory_limit, domain, problem, plan,)
+    script = script % (time_limit, memory_limit, loc, loc, domain, problem, plan,)
     exit_code = subprocess.call(script, shell=True)
-    with open(loc+plan, 'a') as file:
+    with open(plan, 'a') as file:
         script = file.write('\nEND')
     if exit_code:
         return False

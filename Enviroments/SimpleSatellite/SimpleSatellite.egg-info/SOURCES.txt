@@ -10,6 +10,7 @@ SimpleSatellite/envs/__init__.py
 SimpleSatellite/envs/simsatArb_v0.py
 SimpleSatellite/envs/simsatArb_v1.py
 SimpleSatellite/envs/simsat_v0.py
+SimpleSatellite/envs/simsat_v1.py
 SimpleSatellite/envs/simsatplan_v0.py
 SimpleSatellite/envs/test.py
 SimpleSatellite/envs/simulation/DrawSim.py

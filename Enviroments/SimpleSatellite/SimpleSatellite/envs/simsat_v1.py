@@ -1,9 +1,3 @@
-"""
-copyright © 2022
-University of Stratclyde
-All rights reserved
-Authors: Gonzalo Montesino Valle, Michael Cashmore
-"""
 from time import sleep
 from typing import Callable, Dict, Optional, Tuple, Any
 import os
@@ -21,8 +15,11 @@ import numpy as np
 class Simple_satellite(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
+            random_take_picture_failure: bool = False,
+            random_analyze_failure: bool = False,
+            random_dump_failure: bool = False,
             action_space_type: str = "Simple",
-            **kwargs
+            n_targets: int = 4,
             ) -> None:
         """
         Initialize the environment
@@ -31,17 +28,19 @@ class Simple_satellite(gym.Env):
             Reward: Callable[[gym.Env, int], float]
             random: bool
             action_space_type: str
-            **kwargs
+            n_targets: int
         """
         super(Simple_satellite, self).__init__()
         
         # set true so initialization is only done once
         self.first_render = True
 
-        # save the satelite enviroment
-        self.SatSim = SatelliteSim(**kwargs)
+        # Set random failure list
+        random_failure = [random_take_picture_failure, random_analyze_failure, random_dump_failure]
         
-
+        # save the satelite enviroment
+        self.SatSim = SatelliteSim()
+        
         # The actions available are:
         self.action_dict = {"Take Picture":0 ,
                             "Analyze":1,
@@ -55,14 +54,12 @@ class Simple_satellite(gym.Env):
         elif action_space_type=="Advance":
             temp_list = []
             temp_list_a = []
-            for i in range(self.SatSim.n_targets):
+            for i in range(n_targets):
                 self.action_list_names.append("Take Picture img"+str(i+1))
                 temp_list_a.append("Analyze img"+str(i+1))
                 temp_list.append("Dump img"+str(i+1))
             self.action_list_names.extend(temp_list_a)
             self.action_list_names.extend(temp_list)
-        else:
-            raise ValueError("action_space_type must be Simple or Advance")
 
         # Define Discrete action space
         n_actions = len(self.action_list_names) 
@@ -84,7 +81,7 @@ class Simple_satellite(gym.Env):
                                               'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
-        self.Reward = Reward
+        self.Reward = Reward_v1
         
        
     def step(self, action: int) -> Tuple[Dict[str, Any], float, bool, Dict]:

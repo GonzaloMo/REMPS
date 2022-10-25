@@ -1,3 +1,9 @@
+"""
+copyright © 2022
+University of Stratclyde
+All rights reserved
+Authors: Gonzalo Montesino Valle, Michael Cashmore
+"""
 import math
 import pygame
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
@@ -18,21 +24,27 @@ class SatelliteView:
 
     # config Main Window
     WIDTH, HEIGHT = 800, 1000
-    PLANET_CENTER = (WIDTH / 2, 800/ 2)
+    PLANET_CENTER = (WIDTH / 2, WIDTH/ 2)
     PLANET_SIZE = WIDTH / 2
     SAT_SIZE = PLANET_SIZE / 40
-    IMAGE_SIZE = PLANET_SIZE / 10
     GOAL_SIZE = PLANET_SIZE / 15
     ORBIT_DISTANCE = PLANET_SIZE / 10
-    HUD_WIDTH = (SatelliteSim.MEMORY_SIZE - 1) * IMAGE_SIZE * 1.2 + IMAGE_SIZE * 0.8
-    OFFSET = (WIDTH - HUD_WIDTH) / 2
-
+    HUD_WIDTH = 0.8*WIDTH
+    OFFSET = 0.1*WIDTH
+    OFFSET_H = 0.05*WIDTH
+    IMAGE_SIZE = 0.05*WIDTH
     DIV_AGENT = 700
 
     # Config planners windows
 
     def __init__(self, sim: SatelliteSim):
         self.sim = sim
+        self.image_width = min(SatelliteView.HUD_WIDTH / (1.2*sim.MEMORY_SIZE), SatelliteView.IMAGE_SIZE)
+        self.space = (SatelliteView.HUD_WIDTH - self.image_width * (sim.MEMORY_SIZE))/(sim.MEMORY_SIZE-1)
+        # self.Spacecraft = pygame.image.load("SimpleSatellite/envs/simulation/Spacecraft.png")
+        # self.Spacecraft = pygame.transform.scale(self.Spacecraft, (int(SatelliteView.SAT_SIZE), int(SatelliteView.SAT_SIZE)))
+        
+
         # font
         pygame.font.init()
         self.font = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE / 2))
@@ -63,6 +75,14 @@ class SatelliteView:
         pygame.draw.polygon(self.screen, color, [(x, y) for x, y in zip(xpoints, ypoints)])
         pygame.draw.polygon(self.screen, SatelliteView.BLACK, [(x, y) for x, y in zip(xpoints, ypoints)], width=2)
 
+    def drawArcs(self, color, arcs, sim):
+        for arc in arcs:
+            min_pos = max(0, arc[0])
+            min_pos_rad = min_pos / SatelliteSim.CIRCUNFERENCE * 2 * math.pi
+            max_pos = min(SatelliteSim.CIRCUNFERENCE, arc[1])
+            max_pos_rad = max_pos / SatelliteSim.CIRCUNFERENCE * 2 * math.pi 
+            self.drawArc(color, min_pos_rad, max_pos_rad, int(SatelliteView.PLANET_SIZE / 16))
+
     def drawSim(self, sim: SatelliteSim, reward: float=None):
 
         self.screen.fill(SatelliteView.BLACK)
@@ -74,12 +94,10 @@ class SatelliteView:
         pygame.draw.ellipse(self.screen, SatelliteView.WHITE, planetList)
 
         # draw ground station arcs
-        for gs in sim.groundStations:
-            self.drawArc(SatelliteView.PURPLE, 2*math.pi*gs[0]/SatelliteSim.CIRCUNFERENCE, 2*math.pi*gs[1]/SatelliteSim.CIRCUNFERENCE, int(SatelliteView.PLANET_SIZE / 16))
-
+        self.drawArcs(SatelliteView.PURPLE, sim.groundStations, sim)
+        
         # draw target arcs
-        for t in sim.targets:
-            self.drawArc(SatelliteView.ORANGE, 2*math.pi*t[0]/SatelliteSim.CIRCUNFERENCE, 2*math.pi*t[1]/SatelliteSim.CIRCUNFERENCE, int(SatelliteView.PLANET_SIZE / 32))
+        self.drawArcs(SatelliteView.ORANGE, sim.targets, sim)
 
         # draw satellite
         pygame.draw.ellipse(self.screen, SatelliteView.WHITE,
@@ -104,41 +122,41 @@ class SatelliteView:
         # draw images
         
         for index, image in enumerate(sim.images):
-            pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET + index * (SatelliteView.IMAGE_SIZE * 1.2),
-                                                                SatelliteView.IMAGE_SIZE, SatelliteView.IMAGE_SIZE,
+            pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET + index * (self.image_width + self.space),
+                                                                SatelliteView.OFFSET_H, self.image_width,
                                                                 SatelliteView.IMAGE_SIZE])
             if image > 0:
                 panelColor = SatelliteView.BLACK
                 if sim.analysis[index] and sim.satellite_busy_time > 0 \
                         and sim.last_action_tuple[0] == SatelliteSim.ACTION_ANALYSE \
                         and sim.last_action_tuple[1] == sim.images[index]:
-                    panelColor = [o + (p - o)*(sim.satellite_busy_time/SatelliteSim.DURATION_ANALYSE) for p,o in zip(SatelliteView.ORANGE, SatelliteView.PURPLE)]
+                    panelColor = [o + (p - o)*(sim.satellite_busy_time/self.sim.DURATION_ANALYSE) for p,o in zip(SatelliteView.ORANGE, SatelliteView.PURPLE)]
                 elif sim.analysis[index]:
                     panelColor = SatelliteView.PURPLE
                 else:
                     panelColor = SatelliteView.ORANGE
                 pygame.draw.rect(self.screen, panelColor,
-                             [SatelliteView.OFFSET + index * (SatelliteView.IMAGE_SIZE * 1.2) + SatelliteView.IMAGE_SIZE * 0.1,
-                              SatelliteView.IMAGE_SIZE * 1.1, SatelliteView.IMAGE_SIZE * 0.8,
+                             [SatelliteView.OFFSET + index * (self.image_width + self.space) + self.image_width * 0.1,
+                              SatelliteView.OFFSET_H * 1.1, self.image_width * 0.8,
                               SatelliteView.IMAGE_SIZE * 0.8])
                 self.screen.blit(self.text_digits[image-1], (
-                SatelliteView.OFFSET + index * (SatelliteView.IMAGE_SIZE * 1.2) + SatelliteView.IMAGE_SIZE * 0.2,
-                SatelliteView.IMAGE_SIZE * 1.2))
+                SatelliteView.OFFSET + index * (self.image_width + self.space)+ self.image_width * 0.2,
+                SatelliteView.OFFSET_H * 1.2))
 
         # draw satellite recovery time
-        max_time = max(SatelliteSim.DURATION_ANALYSE, SatelliteSim.DURATION_DUMP, SatelliteSim.DURATION_TAKE_IMAGE)
+        max_time = max(self.sim.DURATION_ANALYSE, self.sim.DURATION_DUMP, self.sim.DURATION_TAKE_IMAGE)
         pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET, 2.2 * SatelliteView.IMAGE_SIZE,
-                                                            (len(sim.images) - 1) * SatelliteView.IMAGE_SIZE * 1.2 + SatelliteView.IMAGE_SIZE,
+                                                            SatelliteView.HUD_WIDTH,
                                                             SatelliteView.IMAGE_SIZE])
         barWidth = SatelliteView.HUD_WIDTH * sim.satellite_busy_time / max_time
         pygame.draw.rect(self.screen, SatelliteView.PURPLE, [SatelliteView.OFFSET + SatelliteView.IMAGE_SIZE * 0.1,
                                                              2.3 * SatelliteView.IMAGE_SIZE, barWidth,
                                                              SatelliteView.IMAGE_SIZE * 0.8])
         # Draw action taken
+        OFFSET_y = SatelliteView.PLANET_CENTER[1] -  SatelliteView.IMAGE_SIZE * 2.3 
         for index, act in enumerate(sim.ACTION_NAMES):
-            SatelliteView.OFFSET_y = (3) * (SatelliteView.IMAGE_SIZE * 1.2 * len(sim.ACTION_NAMES)/2)
-            x_a = SatelliteView.OFFSET - (SatelliteView.IMAGE_SIZE * 1.7)
-            y_a = SatelliteView.OFFSET_y + index * SatelliteView.IMAGE_SIZE * 1.2
+            x_a = SatelliteView.OFFSET 
+            y_a = OFFSET_y + index * SatelliteView.IMAGE_SIZE * 1.2
             w_a = h_a = SatelliteView.IMAGE_SIZE
             if act == sim.ACTION_NAMES[sim.Taking_action]:
                 c = SatelliteView.ORANGE
@@ -148,15 +166,6 @@ class SatelliteView:
                                               w_a, h_a])
             name = self.font.render(act, True, SatelliteView.WHITE)
             self.screen.blit(name, (x_a-w_a*.5, y_a+h_a*.4))
-        # # draw score
-        # max_score = max(sim.goalRef.value, 100)
-        # barWidth = SatelliteView.HUD_WIDTH * sim.goalRef.value / max_score
-        # pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET + SatelliteView.GOAL_SIZE * 0.1,
-        #                                                      SatelliteView.HEIGHT - 6.2 * SatelliteView.GOAL_SIZE,
-        #                                                      SatelliteView.HUD_WIDTH, SatelliteView.GOAL_SIZE])
-        # pygame.draw.rect(self.screen, SatelliteView.PURPLE, [SatelliteView.OFFSET + SatelliteView.GOAL_SIZE * 0.1,
-        #                                                      SatelliteView.HEIGHT - 6.1 * SatelliteView.GOAL_SIZE,
-        #                                                      barWidth, SatelliteView.GOAL_SIZE * 0.8])
 
         # # draw single goals
         # if len(sim.goalRef.single_goals) >= 0:
@@ -190,7 +199,7 @@ class SatelliteView:
         #             self.screen.blit(self.text_digits[t[0]], (
         #                         SatelliteView.OFFSET + ti * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.3,
         #                         SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.2-index)))
-        pygame.draw.line(self.screen, SatelliteView.WHITE, [0, SatelliteView.DIV_AGENT],[800, SatelliteView.DIV_AGENT], width=2)
+        pygame.draw.line(self.screen, SatelliteView.WHITE, [0, SatelliteView.DIV_AGENT],[SatelliteView.WIDTH, SatelliteView.DIV_AGENT], width=2)
         
     ############
     ## Reward ##
@@ -336,13 +345,13 @@ class SatelliteView:
         for i in range(len(plan)):
             ac = plan[i][1]
             if ac == SatelliteSim.ACTION_TAKE_IMAGE:
-                act_dur = SatelliteSim.DURATION_TAKE_IMAGE*self.sim.velocity
+                act_dur = self.sim.DURATION_TAKE_IMAGE*self.sim.velocity
                 color = SatelliteView.ORANGE
             elif ac == SatelliteSim.ACTION_ANALYSE:
-                act_dur = SatelliteSim.DURATION_ANALYSE*self.sim.velocity
+                act_dur = self.sim.DURATION_ANALYSE*self.sim.velocity
                 color = SatelliteView.PURPLE_ORANGE
             elif ac == SatelliteSim.ACTION_DUMP:
-                act_dur = SatelliteSim.DURATION_DUMP*self.sim.velocity
+                act_dur = self.sim.DURATION_DUMP*self.sim.velocity
                 color = SatelliteView.PURPLE
             else:
                 raise Exception("Unknown action")
