@@ -32,7 +32,7 @@ class SatelliteSim:
                 Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
                 POWER_OPTION: bool=True,
                 POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
-                ACTION_THRESHOLD: int=1,
+                ACTION_THRESHOLD: float=1,
                 CoverageFile: str="",
                 Log_dir = "./Logs/Simulation/"):
         """
@@ -144,16 +144,26 @@ class SatelliteSim:
             self.busy = 1
         else:
             self.busy = 0
-            
             self.Taking_action = 0
-            if self.POWER_OPTION:
-                self.Power = min(self.Power + self.POWER_CONSUMPTION["PowerGenerationRate"]*self.dt, 100.)
         # Check if simulation ends
         if self.orbit>=self.MAX_ORBITS:
             done = True
 
-        # update state
+        # take action
         self.apply_action_int(action)
+
+        # Power update
+        if self.POWER_OPTION:
+            compMode = SatelliteSim.ACTION_NAMES[self.Taking_action]
+            if compMode == "DN":
+                compMode = "PowerGenerationRate"
+            self.Power += self.POWER_CONSUMPTION[compMode]*self.dt
+            if self.Power > 100.:
+                self.Power = 100.
+            elif self.Power < 0.:
+                self.Power = 0.
+                done = True
+                print("Power depleted")
         state = self.get_state()
         return state, done
         
@@ -179,9 +189,8 @@ class SatelliteSim:
             return
         # Take picture action
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            # check for Power limit
-            if self.POWER_OPTION and self.Power >= self.POWER_CONSUMPTION["TP"]:
-                    return
+            if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["TP"]*self.DURATION_TAKE_IMAGE):
+                return
             # Check free location in the memory
             for ind_mem in range(len(self.images)):
                 if self.images[ind_mem] == 0:
@@ -190,7 +199,8 @@ class SatelliteSim:
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
                             # print(f"Image {index+1} sent by planner {img}")
                             if img == (index+1) or img == None:
-                                if self.Underterministic_actions["TP"] > np.random.rand():
+
+                                if self.Underterministic_actions["TP"] < np.random.rand():
                                     self.satellite_busy_time = self.DURATION_TAKE_IMAGE
                                     self.images[ind_mem] = index+1
                                     self.analysis[ind_mem] = False
@@ -199,18 +209,16 @@ class SatelliteSim:
                                     self.busy = 1
                                     self.Taking_action = action
                                     self.last_action_tuple = copy(self.action_tuple)
-                                    if self.POWER_OPTION:
-                                        self.Power -= self.POWER_CONSUMPTION["TP"]
                                     return
             
         # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
-            if self.POWER_OPTION and self.Power >= self.POWER_CONSUMPTION["AN"]:
+            if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["AN"]*self.DURATION_ANALYSE):
                 return
             self.satellite_busy_time = self.DURATION_ANALYSE
             self.busy = 1
             self.Taking_action = action
-            if self.Underterministic_actions["AN"] > np.random.rand():
+            if self.Underterministic_actions["AN"] < np.random.rand():
                 for mem_slot in range(len(self.analysis)):
                     if not self.analysis[mem_slot] and not(self.images[mem_slot] == 0):
                         if img == self.images[mem_slot] or img == None:
@@ -223,14 +231,13 @@ class SatelliteSim:
         
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
-            if self.POWER_OPTION and self.Power >= self.POWER_CONSUMPTION["DP"]:
+            if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["DP"]*self.DURATION_DUMP):
                 return
             # check if it is above the ground station and if their is any analysed image
             if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
                 self.satellite_busy_time = self.DURATION_DUMP
                 self.busy = 1
                 self.Taking_action = action
-                
                 # Check if the image is analysed
                 for mem_slot in range(self.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
@@ -329,8 +336,7 @@ class SatelliteSim:
                 
         # Generate Ground Stations
         self.groundStations = self.CoverageGenerator("GroundStation_Coverage")
-        if self.POWER_OPTION:
-            self.Power = 100.
+
         return self.get_state()
 
     def CoverageGenerator(self, Type_Selection: str) -> List[Tuple[float, float]]:
@@ -389,8 +395,6 @@ class SatelliteSim:
                 'Analysis': np.array(self.analysis, dtype=np.int8),
                 'Targets': np.array(self.targets, dtype=np.float32),
                 'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
-        if self.POWER_OPTION:
-            obs['Power'] = np.array([self.Power], dtype=np.float32)
         return obs
         
     def time2angle(self, time):

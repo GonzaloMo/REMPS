@@ -129,7 +129,7 @@ class Simple_satellite(gym.Env):
         observation = self.state
         return observation
 
-    def render(self) -> None:
+    def render(self, Plan=None, obs=None) -> None:
         """
         Render the enviroment
         """
@@ -138,6 +138,8 @@ class Simple_satellite(gym.Env):
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
         self.view.drawSim(self.SatSim, self.Total_reward)
+        if Plan is not None:
+            self.view.draw_planner(Plan, obs)
         pygame.display.flip()
         sleep(.01)
 

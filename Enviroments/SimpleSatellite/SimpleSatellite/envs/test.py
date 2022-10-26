@@ -19,7 +19,7 @@ def test():
     while True:
         action = agent.take_action(observation)
         observation, reward, done, info = env.step(action)
-        env.render()
+        env.render(Plan=agent.excuted_plan, obs=observation)
         agent.prune_plan(observation)
         agent.update_goals(env.SatSim.Goals_achieved)
         if done:

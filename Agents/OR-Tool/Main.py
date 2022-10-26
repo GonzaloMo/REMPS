@@ -9,7 +9,7 @@ import gym
 from Utils import ObservtionToState
 
 import yaml
-with open("EnvConfigFiles/Test_1.yaml", "r") as f:
+with open("EnvConfigFiles/Test_2.yaml", "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 env = gym.make("SimpleSatellite-v0", **config)
