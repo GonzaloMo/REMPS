@@ -20,6 +20,8 @@ class SatelliteView:
     ORANGE = (255, 128, 0)
     PURPLE_ORANGE = (192, 64, 127)
     WHITE_RED = (168, 132, 130)
+    GREEN = (0, 255, 0)
+    YELLOW = (255, 255, 0)
     RED = (255, 0, 0)
 
     # config Main Window
@@ -166,6 +168,26 @@ class SatelliteView:
                                               w_a, h_a])
             name = self.font.render(act, True, SatelliteView.WHITE)
             self.screen.blit(name, (x_a-w_a*.5, y_a+h_a*.4))
+        
+        # Draw Power bar
+        OFFSET_y = SatelliteView.PLANET_CENTER[1] -  .5 * SatelliteView.HUD_WIDTH
+        x_a = SatelliteView.WIDTH - SatelliteView.IMAGE_SIZE - SatelliteView.OFFSET
+        y_a = OFFSET_y
+        w_a = SatelliteView.IMAGE_SIZE
+        h_a = SatelliteView.HUD_WIDTH
+        pygame.draw.rect(self.screen, SatelliteView.WHITE, [x_a, y_a,w_a, h_a])
+
+        if sim.Power > 50:
+            color = SatelliteView.GREEN
+        elif sim.Power > 25:
+            color = SatelliteView.YELLOW
+        else:
+            color = SatelliteView.RED
+        x_a = SatelliteView.WIDTH - SatelliteView.IMAGE_SIZE - SatelliteView.OFFSET + SatelliteView.IMAGE_SIZE * 0.05
+        y_a = OFFSET_y + SatelliteView.HUD_WIDTH * sim.Power
+        w_a = SatelliteView.IMAGE_SIZE
+        h_a = SatelliteView.HUD_WIDTH
+        pygame.draw.rect(self.screen, color, [x_a, y_a,w_a, h_a])
 
         # # draw single goals
         # if len(sim.goalRef.single_goals) >= 0:

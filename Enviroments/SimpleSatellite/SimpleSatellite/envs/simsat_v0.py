@@ -82,6 +82,8 @@ class Simple_satellite(gym.Env):
                                               'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), #spaces.MultiBinary(max_memory),
                                               'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
                                               'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
+        if self.SatSim.POWER_OPTION:
+            self.observation_space.spaces['Power'] = spaces.Box(low=0, high=100, shape=(1,), dtype=np.float16)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
