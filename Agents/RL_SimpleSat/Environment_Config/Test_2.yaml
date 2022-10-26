@@ -1,5 +1,5 @@
 # OPEN AI GYM PARAMETERS
-action_space_type: "Advance" # "Simple" or "Advanced"
+action_space_type: "Simple" # "Simple" or "Advanced"
 
 # SIMULATION PARAMETERS
 # General simulation parameters Parameters
@@ -25,7 +25,7 @@ Underterministic_actions:  # Values between 0 and 1
 # Simulation_Seed: 0
 
 # Ground station (GS) parameters
-Random_GS: True
+Random_GS: False
 # If Random GS is True
 Number_of_GS: 2
 GS_HALF_SIZE: 20. # in degrees
@@ -41,12 +41,14 @@ TARGET_HALF_SIZE: 5. # in degrees
 CoverageFile: "" # YAML File with the coverage
 
 # Path to store the results and logs
-Log_dir: "./Logs/Test_2"
+Log_dir: "./Logs/Training_1"
 
 # Power parameters
+POWER_OPTION: False
 POWER_CONSUMPTION: 
-  TP: 10. #  % consumed for take image
-  AN: 10. #  % consumed for analyse image
-  DP: 10. #  % consumed for dump image
-  PowerGenerationRate: 1. # in %/s when not taking actions
+  TP: -0.1 # in %/s when Take Picture
+  AN: -0.1 # in %/s when Analyse
+  DP: -0.1 # in %/s when dumping
+  PowerGenerationRate: .5 # in %/s when not taking actions
+
 

@@ -46,7 +46,7 @@ Log_dir: "./Logs/Simulation/"
 # Power parameters
 POWER_OPTION: True
 POWER_CONSUMPTION: 
-  TP: -3. # in %/s when Take Picture
-  AN: -1. # in %/s when Analyse
-  DP: -1. # in %/s when dumping
+  TP: -0.3 # in %/s when Take Picture
+  AN: -0.1 # in %/s when Analyse
+  DP: -0.1 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
