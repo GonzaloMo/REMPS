@@ -12,7 +12,7 @@ To use the agent, you need to have the [OpenAI Gym](https://gym.openai.com/) lib
 ```
 python3 main.py
 ```
-The agent will be trained on the SimpleSat problem and will be tested on it. The results will be saved in the `results` folder.
+The agent will be trained on the SimpleSat problem and will be tested on it. The results will be saved in the `Logs/Agent/RAY` folder.
 
 ## How to modify
 The agent is composed of 3 files:
