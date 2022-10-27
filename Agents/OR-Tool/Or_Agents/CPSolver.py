@@ -137,9 +137,28 @@ def CP_solver(b, c, day, shifts, image_mem, downlink_data_rate, process_im_mem, 
             print('ERROR: more than one action per time step')
 
     final_list = sorted(final_list, key=lambda x: x[3])
-    final_list.insert(0, final_list1)
+    final_list_change_action = []
+    for i in range(0, len(final_list)):
+        # taking of images
+        if final_list[i][2] == 0 and final_list[i][15] == 'YES':
+            a = 1
+        # process
+        elif final_list[i][2] == 1 and final_list[i][15] == 'YES':
+            a = 2
+        # downlink
+        elif final_list[i][2] == 2 and final_list[i][15] == 'YES':
+            a = 3
+        else:
+            # idle
+            a = 0
+        final_list_change_action.append([final_list[i][0], final_list[i][1], a, final_list[i][3], final_list[i][4],
+                                        final_list[i][5], final_list[i][6], final_list[i][7], final_list[i][8],
+                                        final_list[i][9], final_list[i][10], final_list[i][11], final_list[i][12],
+                                        final_list[i][13], final_list[i][14], final_list[i][15]])
+
+    final_list_change_action.insert(0, final_list1)
     np.set_printoptions(threshold=np.inf)
-    final_list = np.array(final_list)
+    final_list = np.array(final_list_change_action)
 
     with open(filename1, "a+") as file:
         # Move read cursor to the start of file.
