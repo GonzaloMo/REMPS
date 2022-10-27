@@ -41,3 +41,24 @@ def ObservtionToState(observation: Dict[str, Any], n_orbits: int=5) -> List:
     GS_coverage = GS_coverage*n_orbits
     state = [target_coverage, GS_coverage]
     return state
+
+def getActionFromFile(file):
+    """
+    Reads the action from a file.
+    
+    Args:
+        file (str): The file to read the action from.
+    
+    Returns:
+        List[Tuple[int, int]]: The action to be taken.
+    """
+    with open(file, 'r') as f:
+        lines = f.readlines()
+    action = []
+    for line in lines:
+        line = line.strip()
+        if line == '':
+            continue
+        line = line.split(',')
+        action.append((int(line[0]), int(line[1])))
+    return action
