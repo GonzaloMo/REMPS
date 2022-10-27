@@ -1,9 +1,9 @@
 # OPEN AI GYM PARAMETERS
-action_space_type: "Simple" # "Simple" or "Advanced"
+action_space_type: "Simple" # "Simple" or "Advance"
 
 # SIMULATION PARAMETERS
 # General simulation parameters Parameters
-MAX_ORBITS: 20
+MAX_ORBITS: 5
 PERIOD: 600 # in seconds
 
 # Satellite parameters
@@ -28,14 +28,14 @@ Underterministic_actions:  # Values between 0 and 1
 Random_GS: False
 # If Random GS is True
 Number_of_GS: 2
-GS_HALF_SIZE: 20. # in degrees
+GS_HALF_SIZE: 90. # in degrees
 
 
 # Target parameters
-Random_Targets: True
+Random_Targets: False
 # If Random Targets is True
-Number_of_targets: 20
-TARGET_HALF_SIZE: 5. # in degrees
+Number_of_targets: 10
+TARGET_HALF_SIZE: 36. # in degrees
 
 # Coverage file
 CoverageFile: "" # YAML File with the coverage
@@ -51,4 +51,5 @@ POWER_CONSUMPTION:
   DP: -0.1 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
 
-
+# Render Option
+render_reward: True

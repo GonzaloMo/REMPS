@@ -46,25 +46,15 @@ class RAY_agent:
         
         return self.analysis
 
-    def load(self):
+    def load(self, path: str):
         """
         Load a trained RLlib agent from the specified path. Call this before testing a trained agent.
         :param path: Path pointing to the agent's saved checkpoint (only used for RLlib agents)
         """
-        self.agent = PPOTrainer(config=self.config, env=self.env_name)
-        # list of lists: one list per checkpoint; each checkpoint list contains 1st the path, 2nd the metric value
-        checkpoints = self.analysis.get_trial_checkpoints_paths(trial=self.analysis.get_best_trial('episode_reward_mean'),
-                                                        metric='episode_reward_mean')
-        # retriev the checkpoint path; we only have a single checkpoint, so take the first one
-        print ("{:<8} {:<15}".format('Num','Path','Reward'))
-        for i,j in enumerate(checkpoints):
-            print ("{:<2} {:<8}".format(i,round(j[1],2)))
+        loaded_agent = PPOTrainer(config=self.config, env=self.env_name)
+        loaded_agent.restore(path)
+        return loaded_agent
         
-        
-        checkpoint = int(input("Num to be loaded: "))
-        
-        path = checkpoints[0][checkpoint]
-        self.agent.restore(path)
 
     def test(self):
         """Test trained agent for a single episode. Return the episode reward"""

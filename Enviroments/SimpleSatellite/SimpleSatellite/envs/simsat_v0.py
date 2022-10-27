@@ -22,6 +22,7 @@ class Simple_satellite(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             action_space_type: str = "Simple",
+            render_reward: bool = False,
             **kwargs
             ) -> None:
         """
@@ -75,7 +76,7 @@ class Simple_satellite(gym.Env):
         n_targets = self.SatSim.n_targets
         n_gs = self.SatSim.n_gs
         # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
-        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=self.SatSim.MAX_ORBITS+1, shape=(1,), dtype=np.int8), #spaces.Discrete(31), 
+        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=9999, shape=(1,), dtype=np.int8), #spaces.Discrete(31), 
                                               'Pos': spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32),
                                               'Busy': spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),#spaces.Discrete(2),
                                               'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), #spaces.Discrete(max_memory+1),
@@ -88,6 +89,9 @@ class Simple_satellite(gym.Env):
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
+
+        # Render options
+        self.render_reward = render_reward
         
        
     def step(self, action: int) -> Tuple[Dict[str, Any], float, bool, Dict]:
@@ -102,6 +106,7 @@ class Simple_satellite(gym.Env):
             info: Dict
         """
         self.action = action
+        reward = self.Reward(self, action)
         # Take action 
         next_state, done = self.SatSim.update(self.Number2Tuple_action(action))
         
@@ -109,7 +114,7 @@ class Simple_satellite(gym.Env):
         self.next_state = next_state
 
         self.done = done
-        reward = self.Reward(self, action)
+        
         self.state = next_state
         self.Total_reward += reward
         info = {}
@@ -141,6 +146,8 @@ class Simple_satellite(gym.Env):
         self.view.drawSim(self.SatSim, self.Total_reward)
         if Plan is not None:
             self.view.draw_planner(Plan, obs)
+        if self.render_reward:
+            self.view.draw_reward(self.Total_reward)
         pygame.display.flip()
         sleep(.01)
 

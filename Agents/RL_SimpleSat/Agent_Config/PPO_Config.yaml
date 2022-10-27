@@ -19,4 +19,7 @@ num_gpus: 0
 model:
     dim: 42
     vf_share_layers: True
+evaluation_num_workers: 1
+# Only for evaluation runs, render the env.
+render_env: True
 

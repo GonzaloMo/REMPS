@@ -270,36 +270,41 @@ class SatelliteSim:
         if type(action_in) is not int:
             action, img = action_in
         else:
-            action, img = action_in, None
+            action = action_in
+            img = None
+
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["TP"]*self.DURATION_TAKE_IMAGE):
-                return False
+                return
             # Check free location in the memory
             for ind_mem in range(len(self.images)):
                 if self.images[ind_mem] == 0:
-                    # Check if above which target the satellite is
+                    # Check which target the satellite is above 
                     for index in range(len(self.targets)):
                         if self.targets[index][0] < self.pos < self.targets[index][1]:
+                            # print(f"Image {index+1} sent by planner {img}")
                             if img == (index+1) or img == None:
                                 return True
-
+            
+        # Analyse picture
         if action == SatelliteSim.ACTION_ANALYSE:
             if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["AN"]*self.DURATION_ANALYSE):
-                return False
-            for index in range(len(self.analysis)):
-                if not self.analysis[index] and not(self.images[index]== 0):
-                    if img == self.images[index] or img == None:
+                return
+            for mem_slot in range(len(self.analysis)):
+                if not self.analysis[mem_slot] and not(self.images[mem_slot] == 0):
+                    if img == self.images[mem_slot] or img == None:
                         return True
-
+        
+        # Dump picture
         if action == SatelliteSim.ACTION_DUMP:
             if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["DP"]*self.DURATION_DUMP):
-                return False
+                return
             # check if it is above the ground station and if their is any analysed image
-            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
+            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]) and any(self.analysis) :
+                # Check if the image is analysed
                 for mem_slot in range(self.MEMORY_SIZE-1, -1, -1):
                     if self.analysis[mem_slot]:
-                        if img == None or self.images[mem_slot] == img:
-                            return True
+                        return True
         return False
 
     def reset(self, n_targets: int =4, seed: int =None) -> np.ndarray:
