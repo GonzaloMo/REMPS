@@ -1,20 +1,10 @@
 # RL SimpleSat
 This folder contains all the file that compose a RL agent made to solve the SimpleSat problem. The agent is based on the [Proximal Policy Optimization](https://arxiv.org/abs/1707.06347) algorithm.
 
-## Needed packages
-To run the agent you need to install the following packages:
-- [Tensorflow](https://www.tensorflow.org/)
+## Installation
+To install the agent you need to install the following dependencies:
 ```
-pip install tensorflow
-```
-
-- [RLlib](https://ray.readthedocs.io/en/latest/rllib.html)
-```
-pip install ray[rllib]
-```
-- [gym](https://gym.openai.com/)
-```
-pip install gym
+pip install -r requirements.txt
 ```
 
 ## How to use
