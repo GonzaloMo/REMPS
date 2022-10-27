@@ -9,7 +9,7 @@ import gym
 from Utils import ObservtionToState
 
 import yaml
-with open("EnvConfigFiles/Test_1.yaml", "r") as f:
+with open("EnvConfigFiles/Test_2.yaml", "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 env = gym.make("SimpleSatellite-v0", **config)
@@ -22,9 +22,10 @@ with open("Logs/Test_1/Target.txt", "w") as f:
 with open("Logs/Test_1/GS.txt", "w") as f:
     for i in state[1]:
         f.write(str(i) + ",")
-# while True:
-#     obs, reward, done, info = env.step(env.action_space.sample())
-#     env.render()
-#     if done:
-#         break
+
+while True:
+    obs, reward, done, info = env.step(env.action_space.sample())
+    env.render()
+    if done:
+        break
 

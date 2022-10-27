@@ -14,7 +14,17 @@ PDDL: http://editor.planning.domains/#read_session=DUrGySABsW
 ```
 git clone https://github.com/GonzaloMo/REMPS.git 
 cd REMPS/Environments/SimpleSatellite
+```
+For Linux
+
+```
 pip3 install -e .
+```
+
+For Windows
+
+```
+python -m pip install -e .
 ```
 ## Usage
 ```

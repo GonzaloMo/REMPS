@@ -25,7 +25,7 @@ Underterministic_actions:  # Values between 0 and 1
 # Simulation_Seed: 0
 
 # Ground station (GS) parameters
-Random_GS: True
+Random_GS: False
 # If Random GS is True
 Number_of_GS: 2
 GS_HALF_SIZE: 20. # in degrees
@@ -42,3 +42,11 @@ CoverageFile: "" # YAML File with the coverage
 
 # Path to store the results and logs
 Log_dir: "./Logs/Simulation/"
+
+# Power parameters
+POWER_OPTION: True
+POWER_CONSUMPTION: 
+  TP: -0.3 # in %/s when Take Picture
+  AN: -0.1 # in %/s when Analyse
+  DP: -0.1 # in %/s when dumping
+  PowerGenerationRate: .5 # in %/s when not taking actions

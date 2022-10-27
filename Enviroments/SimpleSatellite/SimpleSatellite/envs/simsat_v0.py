@@ -50,6 +50,7 @@ class Simple_satellite(gym.Env):
         self.action_list_names = ["Nothing"]
 
         # Create action name list
+        self.action_space_type = action_space_type
         if action_space_type=="Simple":
             self.action_list_names += ["Take Picture", "Analyze", "Dump"]
         elif action_space_type=="Advance":
@@ -74,14 +75,16 @@ class Simple_satellite(gym.Env):
         n_targets = self.SatSim.n_targets
         n_gs = self.SatSim.n_gs
         # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
-        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=31., shape=(1,), dtype=np.int8), #spaces.Discrete(31), 
-                                              'Pos': spaces.Box(low=0, high=360., shape=(1,)),
+        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=self.SatSim.MAX_ORBITS+1, shape=(1,), dtype=np.int8), #spaces.Discrete(31), 
+                                              'Pos': spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32),
                                               'Busy': spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),#spaces.Discrete(2),
                                               'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), #spaces.Discrete(max_memory+1),
                                               'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),#spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
                                               'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), #spaces.MultiBinary(max_memory),
-                                              'Targets': spaces.Box(low=0, high=360., shape=(n_targets,2)),
-                                              'Ground Stations': spaces.Box(low=0, high=360., shape=(n_gs,2))})
+                                              'Targets': spaces.Box(low=0, high=370., shape=(n_targets,2), dtype=np.float32),
+                                              'Ground Stations': spaces.Box(low=0, high=3700., shape=(n_gs,2), dtype=np.float32)})
+        if self.SatSim.POWER_OPTION:
+            self.observation_space.spaces['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
@@ -124,10 +127,10 @@ class Simple_satellite(gym.Env):
         self.SatSim.reset(n_targ)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
-        observation = self.state
+        observation = self.state.copy()
         return observation
 
-    def render(self) -> None:
+    def render(self, Plan=None, obs=None) -> None:
         """
         Render the enviroment
         """
@@ -136,6 +139,8 @@ class Simple_satellite(gym.Env):
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
         self.view.drawSim(self.SatSim, self.Total_reward)
+        if Plan is not None:
+            self.view.draw_planner(Plan, obs)
         pygame.display.flip()
         sleep(.01)
 
@@ -198,6 +203,8 @@ class Simple_satellite(gym.Env):
         Output:
             action_tuple: Tuple[int, int]
         """
+        if self.action_space_type == "Simple":
+            return (action, None)
         action_name = self.Number2name_action(action)
         if "Take Picture" in action_name:
             action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, int(action_name[16:]))

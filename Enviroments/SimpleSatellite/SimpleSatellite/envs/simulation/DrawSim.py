@@ -20,6 +20,8 @@ class SatelliteView:
     ORANGE = (255, 128, 0)
     PURPLE_ORANGE = (192, 64, 127)
     WHITE_RED = (168, 132, 130)
+    GREEN = (0, 255, 0)
+    YELLOW = (255, 255, 0)
     RED = (255, 0, 0)
 
     # config Main Window
@@ -33,6 +35,7 @@ class SatelliteView:
     OFFSET = 0.1*WIDTH
     OFFSET_H = 0.05*WIDTH
     IMAGE_SIZE = 0.05*WIDTH
+    POWER_BAR_HEIGHT = 0.4*HEIGHT
     DIV_AGENT = 700
 
     # Config planners windows
@@ -120,7 +123,6 @@ class SatelliteView:
                          )
 
         # draw images
-        
         for index, image in enumerate(sim.images):
             pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET + index * (self.image_width + self.space),
                                                                 SatelliteView.OFFSET_H, self.image_width,
@@ -166,6 +168,38 @@ class SatelliteView:
                                               w_a, h_a])
             name = self.font.render(act, True, SatelliteView.WHITE)
             self.screen.blit(name, (x_a-w_a*.5, y_a+h_a*.4))
+        
+        # Draw Power bar
+        if sim.POWER_OPTION:
+            # POwer Bar
+            if sim.Power > 50:
+                color = SatelliteView.GREEN
+            elif sim.Power > 25:
+                color = SatelliteView.YELLOW
+            else:
+                color = SatelliteView.RED
+            OFFSET_y = SatelliteView.PLANET_CENTER[1] -  .5 * SatelliteView.POWER_BAR_HEIGHT
+            x_a = SatelliteView.WIDTH - SatelliteView.IMAGE_SIZE - SatelliteView.OFFSET 
+            y_a = OFFSET_y + SatelliteView.POWER_BAR_HEIGHT * (1 - (sim.Power/100))
+            w_a = SatelliteView.IMAGE_SIZE
+            h_a = SatelliteView.POWER_BAR_HEIGHT * (sim.Power/100)
+            pygame.draw.rect(self.screen, color, [x_a, y_a,w_a, h_a])
+
+            # power box
+            pygame.draw.line(self.screen, SatelliteView.WHITE, (x_a, OFFSET_y), (x_a, OFFSET_y + SatelliteView.POWER_BAR_HEIGHT))
+            pygame.draw.line(self.screen, SatelliteView.WHITE, (x_a + w_a, OFFSET_y), (x_a + w_a, OFFSET_y + SatelliteView.POWER_BAR_HEIGHT))
+
+            # Percentage lines
+            for i in range(0, 101, 25):
+                y_a = OFFSET_y + SatelliteView.POWER_BAR_HEIGHT * (1 - (i/100))
+                pygame.draw.line(self.screen, SatelliteView.WHITE, (x_a, y_a), (x_a + w_a, y_a))
+                name = self.font.render(str(i), True, SatelliteView.WHITE)
+                self.screen.blit(name, (x_a + w_a+2, y_a-1))
+            # Power text
+            name = self.font.render("Power", True, SatelliteView.WHITE)
+            self.screen.blit(name, (x_a, y_a + SatelliteView.POWER_BAR_HEIGHT + 4))
+
+
 
         # # draw single goals
         # if len(sim.goalRef.single_goals) >= 0:
@@ -264,7 +298,7 @@ class SatelliteView:
     ##################
     ## Draw Planner ##
     ##################
-    def draw_planner(self, plan, obs, target_dump):
+    def draw_planner(self, plan, obs, target_dump=None):
         
         self.draw_legend()
         # Draw timeline 
@@ -277,16 +311,16 @@ class SatelliteView:
         # Draw plan
         self.draw_single_plan(plan, obs, line_w, line_y) 
 
-        # Draw Dump images
-        st_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.7
-        pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, st_y, line_w, SatelliteView.GOAL_SIZE*2])
-        Goals = 'Image Dumped = '
-        for k,v in target_dump.items():
-            Goals += str(k)+': '+str(v)+' | '
-        font_Goals = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE))
-        Goals_txt = font_Goals.render(Goals, True, SatelliteView.BLACK, )
-        self.screen.blit(Goals_txt, [SatelliteView.OFFSET/2, st_y+SatelliteView.GOAL_SIZE*0.5,
-                                    .5*line_w, .5*SatelliteView.GOAL_SIZE])
+        # # Draw Dump images
+        # st_y = SatelliteView.DIV_AGENT + (SatelliteView.HEIGHT - SatelliteView.DIV_AGENT) * 0.7
+        # pygame.draw.rect(self.screen, SatelliteView.WHITE, [SatelliteView.OFFSET/2, st_y, line_w, SatelliteView.GOAL_SIZE*2])
+        # Goals = 'Image Dumped = '
+        # for k,v in target_dump.items():
+        #     Goals += str(k)+': '+str(v)+' | '
+        # font_Goals = pygame.font.SysFont(None, int(SatelliteView.IMAGE_SIZE))
+        # Goals_txt = font_Goals.render(Goals, True, SatelliteView.BLACK, )
+        # self.screen.blit(Goals_txt, [SatelliteView.OFFSET/2, st_y+SatelliteView.GOAL_SIZE*0.5,
+        #                             .5*line_w, .5*SatelliteView.GOAL_SIZE])
     ##################
     ## Helpers     ##
     ##################

@@ -47,7 +47,7 @@ class Planner:
             action.set_action_tuple(next_action, image)
             return action.get_action_from_tuple(self.n_targets)
         else:
-            print(f"plan to excute\n {self.excuted_plan}")
+            # print(f"plan to excute\n {self.excuted_plan}")
             return self.Action_doNothing
     
     def get_plan(self, obs, timelimit=120):
@@ -130,7 +130,7 @@ class PDDLAgent:
         PDDLManager.writePDDLDomain(sim, self.domain_file)
 
 
-    def generatePlan(self, obs, goals, n_tries, orbits:int = SatelliteSim.MAX_ORBITS, time_limit=10, n_goals=None):
+    def generatePlan(self, obs, goals, n_tries, orbits:int = 5, time_limit=10, n_goals=None):
         # print(f"{self.name} | Generating plan")      
         set_goals = np.where(goals > 0)[0]
         set_goals.reshape((np.size(set_goals),))
