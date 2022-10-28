@@ -28,20 +28,20 @@ Underterministic_actions:  # Values between 0 and 1
 Random_GS: False
 # If Random GS is True
 Number_of_GS: 2
-GS_HALF_SIZE: 20. # in degrees
+GS_HALF_SIZE: 45. # in degrees
 
 
 # Target parameters
 Random_Targets: False
 # If Random Targets is True
 Number_of_targets: 10
-TARGET_HALF_SIZE: 15. # in degrees
+TARGET_HALF_SIZE: 5. # in degrees
 
 # Coverage file
 CoverageFile: "" # YAML File with the coverage
 
 # Path to store the results and logs
-Log_dir: "./Logs/Training_2"
+Log_dir: "./Logs/Training_3"
 
 # Power parameters
 POWER_OPTION: False

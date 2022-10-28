@@ -3,16 +3,14 @@ import ray
 from ray import tune 
 from ray.rllib.agents.ppo import PPOTrainer
 from ray.rllib.agents.a3c import  A2CTrainer
-from datetime import datetime
-import os
-import tempfile
-from ray.tune.logger import UnifiedLogger
+
 class RAY_agent:
     def __init__(self,
                 run = 'PPO',    
-                save_dir:str = "Logs/Agent/RAY",
+                save_dir:str = "Logs/Agent/",
                 config: Dict = {"framework":"torch",
                     "env": "SimpleSatellite-v0",
+                    "env_config": "Trainning_1",
                     "model": {
                         "fcnet_hiddens": [64, 64],
                         "fcnet_activation": "tanh"
@@ -20,20 +18,21 @@ class RAY_agent:
                     "num_workers": 0,
                     "lr": 1e-5, 
                     "entropy_coeff": 0.0,
-                    "sgd_minibatch_size": 64, }
+                    "sgd_minibatch_size": 64, },
+                num_cpu: int= 4,
                 ):
-        self.type_run = run
-        if run == 'PPO':
-            self.agent = PPOTrainer
-        elif run == 'A2C':
-            self.agent = A2CTrainer
-        ray.init(ignore_reinit_error=True)
         self.save_dir = save_dir
         self.config = config
         self.env_name = config['env']
+        self.Algotrithm = run
+        if run == 'PPO':
+            self.agent = PPOTrainer#(logger_creator=self.custom_log_creator())
+        elif run == 'A2C':
+            self.agent = A2CTrainer
+        ray.init(num_cpus=4, ignore_reinit_error=True)
             
 
-    def train(self, stop_criteria):
+    def train(self, stop_criteria, env_config, Save_path, restore_lc=True):
         """
         Train an RLlib PPO agent using tune until any of the configured stopping criteria is met.
         :param stop_criteria: Dict with stopping criteria.
@@ -41,25 +40,68 @@ class RAY_agent:
         :return: Return the path to the saved agent (checkpoint) and tune's ExperimentAnalysis object
             See https://docs.ray.io/en/latest/tune/api_docs/analysis.html#experimentanalysis-tune-experimentanalysis
         """
+        if restore_lc:
+            restore = self.last_checkpoint
+        else:
+            restore = None
+        self.env_config = env_config["Config"]
+        self.config["env_config"]= env_config
         self.analysis = ray.tune.run(self.agent, config=self.config, local_dir=self.save_dir, stop=stop_criteria,
-                                checkpoint_at_end=True)
-        
-        return self.analysis
+                                checkpoint_at_end=True, name=Save_path, restore=restore)
+        self.last_checkpoint = self.analysis.get_last_checkpoint()
 
-    def load(self, path: str):
+    def save(self, path: str):
+        import os
+        path += '/Model'
+        
+        if not os.path.exists(path):
+            os.makedirs(path)
+        # Save Trainning data 
+        # self.analysis.save(path+'/Model/Analysis')
+        # Save Configuration Variables
+        import yaml
+        Temp_config = {}
+        Temp_config['Algotrithm'] = self.Algotrithm
+        Temp_config['save_dir'] = self.save_dir
+        Temp_config['config'] = self.config
+        Temp_config['env_name'] = self.env_name
+        Temp_config['env_config'] = self.env_config
+        Temp_config['last_checkpoint'] = str(self.last_checkpoint)
+        with open(path+'/Config.yaml', 'w') as outfile:
+            yaml.dump(Temp_config, outfile)
+        print('Agent Saved')
+
+    def load(self, path: str, Partial_load = False):
         """
-        Load a trained RLlib agent from the specified path. Call this before testing a trained agent.
-        :param path: Path pointing to the agent's saved checkpoint (only used for RLlib agents)
+        Agent loading function.
+        :param path: Path to the saved agent
         """
-        loaded_agent = PPOTrainer(config=self.config, env=self.env_name)
-        loaded_agent.restore(path)
-        return loaded_agent
+        # Load Configuration Variables
+        import yaml
+        with open(path+'/Model/Config.yaml') as file:
+            Temp_config = yaml.load(file, Loader=yaml.FullLoader)
+        self.save_dir = Temp_config['save_dir']
+        self.config = Temp_config['config']
+        self.env_name = Temp_config['env_name']
+        self.env_config = Temp_config['env_config']
+        self.Algotrithm = Temp_config['Algotrithm']
+        if self.Algotrithm == 'PPO':
+            self.agent = PPOTrainer(config=self.config)
+        elif self.Algotrithm == 'A2C':
+            self.agent = A2CTrainer
+        last_checkpoint_loc = Temp_config['last_checkpoint']
+
+        # Load Agent
+        if not Partial_load:
+            self.agent.restore(checkpoint_path=last_checkpoint_loc)
         
 
-    def test(self):
-        """Test trained agent for a single episode. Return the episode reward"""
-        # instantiate env class
-        env = self.env_class(self.env_config)
+    def test(self, env, render=False):
+        """
+        Test trained agent for a single episode. Return the episode reward
+        :param env: Environment to test the agent on
+        :return: Episode reward
+        """
 
         # run until episode ends
         episode_reward = 0
@@ -67,7 +109,9 @@ class RAY_agent:
         obs = env.reset()
         while not done:
             action = self.agent.compute_action(obs)
-            obs, reward, done, info = env.step(action, render=True)
+            obs, reward, done, info = env.step(action)
+            if render:
+                env.render()
             episode_reward += reward
         return episode_reward
 
@@ -81,3 +125,5 @@ class RAY_agent:
                     self.config[k][k1] = tune.grid_search(v1)
             else:
                 self.config[k] = tune.grid_search(v)
+    
+    
