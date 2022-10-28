@@ -11,10 +11,14 @@ env_name = "SimpleSatellite-v0"
 def env_creator(env_config):
     from Reward_Functions import Reward_v1 as reward_function
     config_file = "Trainning_2"
-    with open(f"/home/ksb21109/REMPS/Agents/RL_SimpleSat/Environment_Config/{config_file}.yaml", "r") as f:
+    import os
+    ## Get cuurent path
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    print(current_path)
+    with open(f"Environment_Config/{config_file}.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     config["Reward"] = reward_function
-    MyEnv = gym.make("SimpleSatellite-v0", **env_config)
+    MyEnv = gym.make("SimpleSatellite-v0", **config)
     return MyEnv  # return an env instance
 register_env(env_name, env_creator)
 
@@ -25,10 +29,13 @@ with open("Agent_Config/PPO_Config.yaml", "r") as f:
 config["env"] = env_name
 agent = RAY_agent(run = 'PPO', config = config, save_dir="./Logs/Agent/RAY/Trainning_2")
 
+###### Check environment with env_checker ######
+from stable_baselines3.common.env_checker import check_env
+check_env(env_creator({}))
 
 ###### Train Agent ######
 import ray
-ray.init(num_cpus=20, ignore_reinit_error=True)
+ray.init(num_cpus=4, ignore_reinit_error=True)
 if __name__ == "__main__":
     stop_criteria = {"timesteps_total": 1000000}
     analysis = agent.train(stop_criteria)

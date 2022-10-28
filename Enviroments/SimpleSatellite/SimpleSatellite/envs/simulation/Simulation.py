@@ -30,7 +30,7 @@ class SatelliteSim:
                 DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
                 Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
                 Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
-                POWER_OPTION: bool=True,
+                POWER_OPTION: bool=False,
                 POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
                 ACTION_THRESHOLD: float=1,
                 CoverageFile: str="",
@@ -404,6 +404,7 @@ class SatelliteSim:
                 'Targets': np.array(self.targets, dtype=np.float32),
                 'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
         if self.POWER_OPTION:
+            # print(self.Power)
             obs['Power'] = np.array([self.Power], dtype=np.float32)
         return obs
         
