@@ -11,15 +11,15 @@ train_batch_size: 5000
 rollout_fragment_length: 20
 sgd_minibatch_size: 500
 num_sgd_iter: 10
-num_workers: 1
-num_envs_per_worker: 1
+num_workers: 20
+num_envs_per_worker: 10
 batch_mode: truncate_episodes
 observation_filter: NoFilter
 num_gpus: 0
 model:
     dim: 42
     vf_share_layers: True
-evaluation_num_workers: 1
 # Only for evaluation runs, render the env.
-render_env: True
+# evaluation_interval: 100000
+# evaluation_duration: 20
 

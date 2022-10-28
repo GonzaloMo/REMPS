@@ -36,6 +36,8 @@ def Reward_v1(env: SatelliteSim, action_in: int):
     if env.SatSim.check_action((action,img)):
         if action == SatelliteSim.ACTION_DUMP :
             reward += 100
+        elif action == SatelliteSim.ACTION_DO_NOTHING:
+            reward -=.1
     
     
     
@@ -45,9 +47,7 @@ def Reward_v1(env: SatelliteSim, action_in: int):
             reward -= 10
         # Penalize for more than 99% of power
         elif obs["Power"] > 99.:
-            reward -= .1
-        else:
-            reward += .001
+            reward -= .01
 
     return reward
 
