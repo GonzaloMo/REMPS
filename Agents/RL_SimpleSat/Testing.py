@@ -2,7 +2,12 @@ import os
 from typing import Dict
 import yaml
 
-
+import ray
+print("RAY VERSION: ", ray.__version__)
+import gym
+print("Gym version: ", gym.__version__)
+import tensorflow
+print("Tensorflow version: ", tensorflow.__version__)
 ###### Arguments #############
 env_name = "SimpleSatellite-v0"
 

@@ -29,5 +29,5 @@ config:
   vf_clip_param: 10.0
 env_config: Trainning_1
 env_name: SimpleSatellite-v0
-last_checkpoint: Checkpoint(local_path=/home/ksb21109/REMPS/Agents/RL_SimpleSat/Logs/Agent/SimpleSatellite-v0/PPO_Trainning_1/PPO_SimpleSatellite-v0_e1e67_00000_0_2022-10-28_22-17-09/checkpoint_001933/)
+last_checkpoint: /home/ksb21109/REMPS/Agents/RL_SimpleSat/Logs/Agent/SimpleSatellite-v0/PPO_Trainning_1/PPO_SimpleSatellite-v0_e1e67_00000_0_2022-10-28_22-17-09/checkpoint_001933/
 save_dir: /home/ksb21109/REMPS/Agents/RL_SimpleSat/Logs/Agent/

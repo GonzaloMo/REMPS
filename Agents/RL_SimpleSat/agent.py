@@ -65,7 +65,7 @@ class RAY_agent:
         Temp_config['config'] = self.config
         Temp_config['env_name'] = self.env_name
         Temp_config['env_config'] = self.env_config
-        Temp_config['last_checkpoint'] = str(self.last_checkpoint)
+        Temp_config['last_checkpoint'] = str(self.last_checkpoint.to_directory())
         with open(path+'/Config.yaml', 'w') as outfile:
             yaml.dump(Temp_config, outfile)
         print('Agent Saved')
@@ -88,7 +88,7 @@ class RAY_agent:
             self.agent = PPOTrainer(config=self.config)
         elif self.Algotrithm == 'A2C':
             self.agent = A2CTrainer
-        last_checkpoint_loc = Temp_config['last_checkpoint']
+        last_checkpoint_loc = Temp_config['last_checkpoint'].replace(self.save_dir, "./Logs/Agent/")
 
         # Load Agent
         if not Partial_load:
