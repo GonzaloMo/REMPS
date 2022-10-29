@@ -15,7 +15,7 @@ conda env create --prefix ./REMPS_Env --file REMPS_Virtual_Env.yml
 ```
 ##### (Optional) Change disiplayed name of Conda Environment
 ```
-conda config --env --add env_prompt '({name})'
+conda config --set env_prompt '({name})'
 ```
 ##### Activate the Conda Environment
 ```
