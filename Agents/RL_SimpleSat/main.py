@@ -46,13 +46,13 @@ if __name__ == "__main__":
     configFiles.sort()
     print(configFiles)
     i = 0
-    for env_config_file in configFiles:
-        Save_path = f"{save_dir}/{env_name}/{ALGORITHM}_{env_config_file}/"
+    for env_config_file in configFiles[1:]:
+        Save_path = f"{save_dir}{env_name}/{ALGORITHM}_{env_config_file}/"
         if i == 0:
             restore_lc = False
         else:
             restore_lc = True
-        stop_criteria = {"timesteps_total": 1000}
+        stop_criteria = {"timesteps_total": 10000000}
         env_config: Dict={"Config": env_config_file, "Reward_function": Reward_type}
         agent.train(stop_criteria, env_config, Save_path, restore_lc=restore_lc)
         i+=1

@@ -19,7 +19,6 @@ class RAY_agent:
                     "lr": 1e-5, 
                     "entropy_coeff": 0.0,
                     "sgd_minibatch_size": 64, },
-                num_cpu: int= 4,
                 ):
         self.save_dir = save_dir
         self.config = config
@@ -29,7 +28,7 @@ class RAY_agent:
             self.agent = PPOTrainer#(logger_creator=self.custom_log_creator())
         elif run == 'A2C':
             self.agent = A2CTrainer
-        ray.init(num_cpus=4, ignore_reinit_error=True)
+        ray.init(ignore_reinit_error=True)
             
 
     def train(self, stop_criteria, env_config, Save_path, restore_lc=True):
@@ -41,7 +40,7 @@ class RAY_agent:
             See https://docs.ray.io/en/latest/tune/api_docs/analysis.html#experimentanalysis-tune-experimentanalysis
         """
         if restore_lc:
-            restore = self.last_checkpoint
+            restore = self.last_checkpoint.to_directory()
         else:
             restore = None
         self.env_config = env_config["Config"]
