@@ -6,7 +6,7 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
 Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 
 # RL SimpleSat
-Agents/RL_SimpleSat/Logs
+Agents/RL/Logs
 
 # OR Tools
 Agents/OR-Tool/Logs
