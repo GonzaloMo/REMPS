@@ -1,0 +1,9 @@
+name: REMPS_Virtual_Env
+channels:
+  - defaults
+dependencies:
+  - python=3.8.10
+  - pip
+  - pip:
+    - -r requirements.txt
+  

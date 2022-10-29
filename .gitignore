@@ -12,4 +12,5 @@ Agents/RL_SimpleSat/Logs
 Agents/OR-Tool/Logs
 
 
-###### Environments
+### Ignore Built Env
+/REMPS_Env

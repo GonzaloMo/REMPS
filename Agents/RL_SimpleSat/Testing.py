@@ -44,5 +44,5 @@ agent.load(Save_path)
 ###### Test Agent ######
 reward = 0
 for i in range(10):
-    reward += agent.test(env_creator(env_config))
+    reward += agent.test(env_creator(env_config), render=True)
 print(f"Average reward: {reward/10}")
