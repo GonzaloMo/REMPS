@@ -27,6 +27,7 @@ Reward_module = args.reward_module
 ###### Make Environment ######
 import SimpleSatellite
 import gym
+import importlib
 Rewards = importlib.import_module(Reward_module, package=None)
 with open(f"{current_path}/Environment_Config/{env_config}.yaml", "r") as f:
      config = yaml.load(f, Loader=yaml.FullLoader)
@@ -36,7 +37,7 @@ env = gym.make("SimpleSatellite-v0", **config)
 ###### Load Agent ######
 from agent import RAY_agent
 agent = RAY_agent()
-Save_path = f"Logs/Agent/{env_name}/{ALGORITHM}_{env_config}"
+Save_path = f"{current_path}Logs/Agent/{env_name}/{ALGORITHM}_{env_config}"
 agent.load(Save_path)
     
 ###### Test Agent ######
