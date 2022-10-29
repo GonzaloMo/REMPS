@@ -11,6 +11,11 @@ Agents/RL_SimpleSat/Logs
 # OR Tools
 Agents/OR-Tool/Logs
 
+# Architecture
+Agents/Architecture/Logs
+Agents/Architecture/ArbiterVoices/Planner_utlis/Plans
+Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
+Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 
 ### Ignore Built Env
 /REMPS_Env

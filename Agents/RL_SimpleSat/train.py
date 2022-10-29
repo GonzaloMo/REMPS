@@ -6,13 +6,20 @@ from typing import Dict
 
 
 ###### Arguments #############
-env_name = "SimpleSatellite-v0"
-
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--env_name", type=str, default="SimpleSatellite-v0")
+parser.add_argument("--save_dir", type=str, default=f"/Logs/Agent/")
+parser.add_argument("--algo", type=str, default="PPO")
+parser.add_argument("--reward_type", type=str, default="Reward_v1")
+args = parser.parse_args()
+env_name = args.env_name
 current_path = os.path.dirname(os.path.abspath(__file__))
-save_dir = f"{current_path}/Logs/Agent/"
-ALGORITHM = "PPO"
+save_dir = current_path + args.save_dir
+ALGORITHM = args.algo
 Env_directory = f"Environment_Config/"
-Reward_type = "Reward_v1"
+Reward_type = args.reward_type
+
 ###### Make Environment ######
 import SimpleSatellite
 import gym
@@ -59,17 +66,3 @@ if __name__ == "__main__":
 
         ###### Save Agent ######
         agent.save(Save_path)
-        # agent.load(Save_path, Partial_load=True)
-
-###### Delete Agent ######
-del agent
-
-###### Load Agent ######
-agent = RAY_agent()
-agent.load(Save_path)
-    
-###### Test Agent ######
-reward = 0
-for i in range(100):
-    reward += agent.test(env_creator(env_config))
-print(f"Average reward: {reward/100}")
