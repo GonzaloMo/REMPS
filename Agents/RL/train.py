@@ -53,7 +53,7 @@ if __name__ == "__main__":
     configFiles.sort()
     print(configFiles)
     i = 0
-    for env_config_file in configFiles[1:]:
+    for env_config_file in configFiles:
         Save_path = f"{save_dir}{env_name}/{ALGORITHM}_{env_config_file}/"
         if i == 0:
             restore_lc = False
