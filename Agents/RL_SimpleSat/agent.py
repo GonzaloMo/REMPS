@@ -1,4 +1,6 @@
 from typing import Dict
+from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+import gym
 import ray
 from ray import tune 
 from ray.rllib.agents.ppo import PPOTrainer
@@ -95,7 +97,7 @@ class RAY_agent:
             self.agent.restore(checkpoint_path=last_checkpoint_loc)
         
 
-    def test(self, env, render=False):
+    def test(self, env: gym.Env, render=False):
         """
         Test trained agent for a single episode. Return the episode reward
         :param env: Environment to test the agent on

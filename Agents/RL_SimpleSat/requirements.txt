@@ -1,8 +1,5 @@
-matplotlib>=2.2
-numpy>=1.15.0, <1.21.0
-pandas
-ray>=2.0.1
-ray[rllib]>=1.0.0
-ray[tune]>=1.0.0
-tensorflow>=2.10.0
-gym>=0.23.1
+gym==0.23.1
+numpy==1.17.4
+PyYAML==6.0
+ray==2.0.1
+tensorflow==2.10.0
