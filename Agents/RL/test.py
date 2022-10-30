@@ -6,7 +6,7 @@ import yaml
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--env_name", type=str, default="SimpleSatellite-v0")
-parser.add_argument("--save_dir", type=str, default=f"/Logs/Agent/")
+parser.add_argument("--save_dir", type=str, default=f"/Results/Agent/")
 parser.add_argument("--algo", type=str, default="PPO")
 parser.add_argument("--reward_module", type=str, default="Reward_functions.SimpleSat")
 parser.add_argument("--reward_type", type=str, default="Reward_v1")

@@ -1,0 +1,33 @@
+Algotrithm: PPO
+config:
+  batch_mode: truncate_episodes
+  clip_param: 0.1
+  clip_rewards: true
+  entropy_coeff: 0.01
+  env: SimpleSatellite-v0
+  env_config:
+    Config: Trainning_1
+    Reward_function: Reward_v1
+  evaluation_config:
+    render_env: false
+  evaluation_duration: 100
+  evaluation_interval: 100000
+  framework: tf
+  kl_coeff: 0.5
+  lambda: 0.95
+  model:
+    dim: 42
+    vf_share_layers: true
+  num_envs_per_worker: 5
+  num_gpus: 0
+  num_sgd_iter: 10
+  num_workers: 5
+  observation_filter: NoFilter
+  rollout_fragment_length: 20
+  sgd_minibatch_size: 500
+  train_batch_size: 5000
+  vf_clip_param: 10.0
+env_config: Trainning_1
+env_name: SimpleSatellite-v0
+last_checkpoint: /tmp/checkpoint_tmp_atplyq3o
+save_dir: /home/ksb21109/REMPS/Agents/RL/Logs/Agent/
