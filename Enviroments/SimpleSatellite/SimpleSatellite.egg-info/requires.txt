@@ -1,4 +1,4 @@
-gym==0.20.0
+gym>=0.20.0
 pygame
 numpy
 pyyaml

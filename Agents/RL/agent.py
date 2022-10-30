@@ -67,7 +67,7 @@ class RAY_agent:
         Temp_config['config'] = self.config
         Temp_config['env_name'] = self.env_name
         Temp_config['env_config'] = self.env_config
-        Temp_config['last_checkpoint'] = str(self.last_checkpoint.to_directory())
+        Temp_config['last_checkpoint'] = str(self.last_checkpoint.to_directory()).replace(self.save_dir, './')
         with open(path+'/Config.yaml', 'w') as outfile:
             yaml.dump(Temp_config, outfile)
         print('Agent Saved')
@@ -90,8 +90,8 @@ class RAY_agent:
             self.agent = PPOTrainer(config=self.config)
         elif self.Algotrithm == 'A2C':
             self.agent = A2CTrainer
-        last_checkpoint_loc = Temp_config['last_checkpoint'].replace(self.save_dir, "./Logs/Agent/")
-
+        last_checkpoint_loc = path + "/" +Temp_config['last_checkpoint']
+   
         # Load Agent
         if not Partial_load:
             self.agent.restore(checkpoint_path=last_checkpoint_loc)
@@ -112,6 +112,7 @@ class RAY_agent:
             action = self.agent.compute_action(obs)
             obs, reward, done, info = env.step(action)
             if render:
+                print("Action", SatelliteSim.ACTION_NAMES[action])
                 env.render()
             episode_reward += reward
         return episode_reward
