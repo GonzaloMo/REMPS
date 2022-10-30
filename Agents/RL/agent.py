@@ -48,7 +48,7 @@ class RAY_agent:
         self.env_config = env_config["Config"]
         self.config["env_config"]= env_config
         self.analysis = ray.tune.run(self.agent, config=self.config, local_dir=self.save_dir, stop=stop_criteria,
-                                checkpoint_at_end=True, name=Save_path, restore=restore)
+                                checkpoint_at_end=True, name=Save_path, restore=restore, checkpoint_freq=)
         self.last_checkpoint = self.analysis.get_last_checkpoint()
 
     def save(self, path: str):
