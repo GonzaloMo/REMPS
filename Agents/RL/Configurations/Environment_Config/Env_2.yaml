@@ -1,0 +1,53 @@
+# OPEN AI GYM PARAMETERS
+action_space_type: "Simple" # "Simple" or "Advance"
+
+# SIMULATION PARAMETERS
+# General simulation parameters Parameters
+MAX_ORBITS: 10
+PERIOD: 600 # in seconds
+
+# Satellite parameters
+MEMORY_SIZE: 15 # Memory should be higher than 1 
+
+# Action parameters
+DURATION_TAKE_IMAGE: 20 # in seconds
+DURATION_DUMP: 20 # in seconds
+DURATION_ANALYSE: 50 # in seconds
+ACTION_THRESHOLD: 0.5 # in seconds
+
+Underterministic_actions:  # Values between 0 and 1
+  TP: 0.
+  AN: 0.
+  DP: 0.
+# ACTION_SEED: 0
+
+## SET A SEED ENVIRONMENT
+# Simulation_Seed: 0
+
+# Ground station (GS) parameters
+Random_GS: False
+# If Random GS is True
+Number_of_GS: 2
+GS_HALF_SIZE: 20. # in degrees
+
+
+# Target parameters
+Random_Targets: False
+# If Random Targets is True
+Number_of_targets: 10
+TARGET_HALF_SIZE: 15. # in degrees
+
+# Coverage file
+CoverageFile: "" # YAML File with the coverage
+
+
+# Power parameters
+POWER_OPTION: False
+POWER_CONSUMPTION: 
+  TP: -0.1 # in %/s when Take Picture
+  AN: -0.1 # in %/s when Analyse
+  DP: -0.1 # in %/s when dumping
+  PowerGenerationRate: .5 # in %/s when not taking actions
+
+# Render Option
+render_reward: True

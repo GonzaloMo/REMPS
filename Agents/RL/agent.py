@@ -1,100 +1,101 @@
-from typing import Dict
+from typing import Dict, List, Tuple, Union
+from datetime import datetime
+import yaml
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 import gym
 import ray
+import os
 from ray import tune 
 from ray.rllib.agents.ppo import PPOTrainer
-from ray.rllib.agents.a3c import  A2CTrainer
+from pathlib import Path as file_name_function
+
+
 
 class RAY_agent:
-    def __init__(self,
-                run = 'PPO',    
-                save_dir:str = "Logs/Agent/",
-                config: Dict = {"framework":"torch",
-                    "env": "SimpleSatellite-v0",
-                    "env_config": "Trainning_1",
-                    "model": {
-                        "fcnet_hiddens": [64, 64],
-                        "fcnet_activation": "tanh"
-                        },
-                    "num_workers": 0,
-                    "lr": 1e-5, 
-                    "entropy_coeff": 0.0,
-                    "sgd_minibatch_size": 64, },
-                ):
-        self.save_dir = save_dir
-        self.config = config
-        self.env_name = config['env']
-        self.Algotrithm = run
-        if run == 'PPO':
-            self.agent = PPOTrainer#(logger_creator=self.custom_log_creator())
-        elif run == 'A2C':
-            self.agent = A2CTrainer
-        ray.init(ignore_reinit_error=True)
-            
+    def __init__(self):
+        self.config = {}
 
-    def train(self, stop_criteria, env_config, Save_path, restore_lc=True):
-        """
-        Train an RLlib PPO agent using tune until any of the configured stopping criteria is met.
-        :param stop_criteria: Dict with stopping criteria.
-            See https://docs.ray.io/en/latest/tune/api_docs/execution.html#tune-run
-        :return: Return the path to the saved agent (checkpoint) and tune's ExperimentAnalysis object
-            See https://docs.ray.io/en/latest/tune/api_docs/analysis.html#experimentanalysis-tune-experimentanalysis
-        """
-        if restore_lc:
-            restore = self.last_checkpoint.to_directory()
-        else:
-            restore = None
-        self.env_config = env_config["Config"]
-        self.config["env_config"]= env_config
-        self.analysis = ray.tune.run(self.agent, config=self.config, local_dir=self.save_dir, stop=stop_criteria,
-                                checkpoint_at_end=True, name=Save_path, restore=restore, checkpoint_freq=)
-        self.last_checkpoint = self.analysis.get_last_checkpoint()
+    def train(self, Training: Dict, Agent: Dict, Environment: Dict):
+        local_dir = Training["local_dir"]
+        # Load Agent Configuration Files
+        algo_name = Agent["Algorithm"]
+        if algo_name == "PPO":
+            from ray.rllib.agents.ppo import PPOTrainer
+            self.agent = PPOTrainer
+        agent_files = Agent["Agent_Config"]
+        config = {}
+        for fileloc in agent_files:
+            with open(fileloc, "r") as f:
+                temp_config = yaml.load(f, Loader=yaml.FullLoader)
+            config = {**config, **temp_config}
 
-    def save(self, path: str):
+        # Load Environment Configuration Files
+        Trianing_Envs = Environment["Trianing_Envs"]
+        env_config = Environment["env_config"]
+        reward = env_config["Reward_Function"]
+        env_name = env_config["env"]
+
+        restore = None
+        for env_file in Trianing_Envs:
+            # Set Experiment config file
+            Exp_name = file_name_function(env_file).stem
+            env_config["Log_dir"] = f"./Simulation/"
+            env_config["Training_Env"] = env_file
+            config["env_config"] = env_config
+            config["env"] = env_name
+
+            # Set Trainning configuration dict
+            Training["config"] = config
+            Training["restore"] = restore
+            Training["name"] = Exp_name
+            # Train on set envirnment
+            self.analysis = ray.tune.run(self.agent, **Training)
+            self.last_checkpoint = self.analysis.get_last_checkpoint()
+            # Save Agent
+            restore = self.last_checkpoint._local_path
+            # Store the configuration Dict
+            save_dir = "/".join(restore.split("/")[:-2])
+            self.save(save_dir, Training, Agent, Environment)
+
+    def save(self, path: str, Training: Dict, Agent: Dict, Environment: Dict):
         import os
-        path += '/Model'
         
-        if not os.path.exists(path):
-            os.makedirs(path)
         # Save Trainning data 
         # self.analysis.save(path+'/Model/Analysis')
         # Save Configuration Variables
-        import yaml
+        import json
         Temp_config = {}
-        Temp_config['Algotrithm'] = self.Algotrithm
-        Temp_config['save_dir'] = self.save_dir
-        Temp_config['config'] = self.config
-        Temp_config['env_name'] = self.env_name
-        Temp_config['env_config'] = self.env_config
-        Temp_config['last_checkpoint'] = str(self.last_checkpoint.to_directory()).replace(self.save_dir, './')
-        with open(path+'/Config.yaml', 'w') as outfile:
-            yaml.dump(Temp_config, outfile)
+        Temp_config["Training"] = Training
+        Temp_config["Agent"] = Agent
+        Temp_config["Environment"] = Environment
+        Temp_config["save_dir"] = path
+        Temp_config["last_checkpoint"] = self.last_checkpoint._local_path
+        path += f"/Model/"
+        if not os.path.exists(path):
+            os.makedirs(path)
+        with open(path+'Config.json', 'w') as outfile:
+            json.dump(Temp_config, outfile)
         print('Agent Saved')
 
-    def load(self, path: str, Partial_load = False):
+    def load(self, path: str, specific_checkpoint: str = None):
         """
         Agent loading function.
         :param path: Path to the saved agent
         """
         # Load Configuration Variables
-        import yaml
-        with open(path+'/Model/Config.yaml') as file:
-            Temp_config = yaml.load(file, Loader=yaml.FullLoader)
-        self.save_dir = Temp_config['save_dir']
-        self.config = Temp_config['config']
-        self.env_name = Temp_config['env_name']
-        self.env_config = Temp_config['env_config']
-        self.Algotrithm = Temp_config['Algotrithm']
-        if self.Algotrithm == 'PPO':
-            self.agent = PPOTrainer(config=self.config)
-        elif self.Algotrithm == 'A2C':
-            self.agent = A2CTrainer
-        last_checkpoint_loc = path + "/" +Temp_config['last_checkpoint']
+        import json
+        with open(path+'/Model/Config.json') as file:
+            Temp_config = json.load(file)
+        Training = Temp_config["Training"]
+        Agent = Temp_config["Agent"]
+        Environment = Temp_config["Environment"]
+        if specific_checkpoint is not None:
+            checkpoint_path = Temp_config["save_dir"] + specific_checkpoint
+        else:
+            last_checkpoint_loc = Temp_config["last_checkpoint"]
    
         # Load Agent
-        if not Partial_load:
-            self.agent.restore(checkpoint_path=last_checkpoint_loc)
+        self.agent.restore(checkpoint_path=checkpoint_path)
         
 
     def test(self, env: gym.Env, render=False):
@@ -109,11 +110,13 @@ class RAY_agent:
         done = False
         obs = env.reset()
         while not done:
-            action = self.agent.compute_action(obs)
-            obs, reward, done, info = env.step(action)
+            action = self.agent.compute_single_action(obs)
+            observation, reward, terminated, truncated, info = env.step(action)
             if render:
                 print("Action", SatelliteSim.ACTION_NAMES[action])
                 env.render()
+            if terminated or truncated:
+                done = True
             episode_reward += reward
         return episode_reward
 
@@ -127,5 +130,4 @@ class RAY_agent:
                     self.config[k][k1] = tune.grid_search(v1)
             else:
                 self.config[k] = tune.grid_search(v)
-    
     

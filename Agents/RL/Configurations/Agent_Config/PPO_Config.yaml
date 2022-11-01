@@ -1,6 +1,5 @@
-
 # Works for both torch and tf.
-framework: tf
+framework: torch
 lambda: 0.95
 kl_coeff: 0.5
 clip_rewards: True
@@ -11,8 +10,8 @@ train_batch_size: 5000
 rollout_fragment_length: 20
 sgd_minibatch_size: 500
 num_sgd_iter: 10
-num_workers: 5
-num_envs_per_worker: 5
+num_workers: 0
+num_envs_per_worker: 1
 batch_mode: truncate_episodes
 observation_filter: NoFilter
 num_gpus: 0

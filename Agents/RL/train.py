@@ -8,36 +8,17 @@ from typing import Dict
 ###### Arguments #############
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--env_name", type=str, default="SimpleSatellite-v0")
-parser.add_argument("--save_dir", type=str, default=f"/Logs/Agent/")
-parser.add_argument("--algo", type=str, default="PPO")
-parser.add_argument("--reward_type", type=str, default="Reward_v1")
+parser.add_argument("--trainConfig", type=str, default=f"./TrainningConfigurations/Trainning_config.yml")
 args = parser.parse_args()
-env_name = args.env_name
-current_path = os.path.dirname(os.path.abspath(__file__))
-save_dir = current_path + args.save_dir
-ALGORITHM = args.algo
-Env_directory = f"Environment_Config/"
-Reward_type = args.reward_type
+trainConfig = args.trainConfig
+
+with open(trainConfig, "r") as f:
+    trainConfig = yaml.load(f, Loader=yaml.FullLoader)
+env_config = trainConfig["Environment"]["env_config"]
 
 ###### Make Environment ######
-import SimpleSatellite
-import gym
-from ray.tune.registry import register_env
+register_env_in_ray(env_config)
 
-
-def env_creator(env_config: Dict={"Config": "Trainning_1", "Reward_function": "Reward_v1"}):
-    # Import Reward function
-    import importlib
-    module_name = "Reward_functions.SimpleSat"
-    Rewards = importlib.import_module(module_name, package=None)
-    name = env_config["Config"]
-    with open(f"{current_path}/Environment_Config/{name}.yaml", "r") as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-    config["Reward"] = getattr(Rewards, env_config["Reward_function"])
-    MyEnv = gym.make("SimpleSatellite-v0", **config)
-    return MyEnv  # return an env instance
-register_env(env_name, env_creator)
 ###### Make Agent ######
 from agent import RAY_agent
 with open("Agent_Config/PPO_Config.yaml", "r") as f:

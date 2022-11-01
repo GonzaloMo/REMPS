@@ -82,8 +82,8 @@ class Simple_satellite(gym.Env):
                                               'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), #spaces.Discrete(max_memory+1),
                                               'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),#spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
                                               'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), #spaces.MultiBinary(max_memory),
-                                              'Targets': spaces.Box(low=0, high=370., shape=(n_targets,2), dtype=np.float32),
-                                              'Ground Stations': spaces.Box(low=0, high=3700., shape=(n_gs,2), dtype=np.float32)})
+                                              'Targets': spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32),
+                                              'Ground Stations': spaces.Box(low=0, high=3700., shape=(n_gs*2,), dtype=np.float32)})
         if self.SatSim.POWER_OPTION:
             self.observation_space.spaces['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.state = self.SatSim.get_state()
@@ -118,10 +118,11 @@ class Simple_satellite(gym.Env):
         self.state = next_state
         self.Total_reward += reward
         info = {}
-        observation = self.state
-        return (observation, reward, done, info)
+        observation = self.get_ob_from_state(self.state)
+        done = self.done
+        return observation, reward, done, info
 
-    def reset(self, n_targ: int = 4) -> Dict[str, Any]:
+    def reset(self, seed: int =None, options: Dict = {"n_targ": 4}) -> Dict[str, Any]:
         """
         Reset the enviroment to the start state
         Input:
@@ -129,11 +130,14 @@ class Simple_satellite(gym.Env):
         Output:
             observation: Dict[str, Any]
         """
+        n_targ = options["n_targ"]
         self.SatSim.reset(n_targ)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
-        observation = self.state.copy()
+        observation = self.get_ob_from_state(self.state)
+        info = {}
         return observation
+        
 
     def render(self) -> None:
         """
@@ -154,6 +158,12 @@ class Simple_satellite(gym.Env):
         Close the enviroment
         """
         pygame.quit()
+
+    def get_ob_from_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        observation = state.copy()
+        observation["Targets"] = observation["Targets"].flatten()
+        observation["Ground Stations"] = observation["Ground Stations"].flatten()
+        return observation
 
     def print_obs(self, obs: Dict[str, Any]):
         """

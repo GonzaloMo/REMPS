@@ -1,16 +1,22 @@
+import SimpleSatellite
+from typing import Dict, List, Tuple, Union
+import gym
+import os
+current_dir = os.getcwd()
+def env_creator(env_config: Dict={"env": "SimpleSatellite-v0", "Training_Env": "./Configurations/Environment_Config/Env_1.yaml", 
+            "Reward_Module": "Reward_functions.SimpleSat", "Reward_Function": "Reward_v1", "Log_dir": "./Results/Sim/"}):
+    # Import Reward function
+    import importlib
+    module_name = env_config["Reward_Module"]
+    Rewards = importlib.import_module(module_name, package=None)
+    enc_config_file = env_config["Training_Env"].replace("./", f"{current_dir}/")
+    import yaml
+    with open(enc_config_file, "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    config["Reward"] = getattr(Rewards, env_config["Reward_Function"])
+    config["Log_dir"] = env_config["Log_dir"]
+    MyEnv = gym.make("SimpleSatellite-v0", **config)
+    return MyEnv  # return an env instance
+        
 
 
-def custom_log_creator():
-    import os
-    import tempfile
-    from ray.tune.logger import UnifiedLogger
-    logdir_prefix = custom_str
-
-    def logger_creator(config):
-
-        if not os.path.exists(custom_path):
-            os.makedirs(custom_path)
-        logdir = tempfile.mkdtemp(prefix=logdir_prefix, dir=custom_path)
-        return UnifiedLogger(config, logdir, loggers=None)
-
-    return logger_creator

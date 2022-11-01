@@ -7,6 +7,7 @@ Authors: Gonzalo Montesino Valle, Michael Cashmore
 import math
 from numpy import random
 from typing import Dict, List, Tuple, Any
+from datetime import datetime
 import numpy as np
 import os
 from copy import copy
@@ -456,5 +457,7 @@ class SatelliteSim:
             # Create Log folder
             if not os.path.exists(self.log_dir):
                 os.makedirs(self.log_dir)
-            with open(self.log_dir+"/Seed.yaml", "a") as f:
-                f.write(f"    Simulation_Seed: {self.seed}\n")
+            
+            date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+            with open(self.log_dir+f"/Seed.yaml", "a") as f:
+                f.write(f"    Simulation_{date}: {self.seed}\n")
