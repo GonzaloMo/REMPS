@@ -320,6 +320,8 @@ class SatelliteSim:
         """
         
         # Reset the random seed
+        date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        self.Sim_name = f"Sim_{date}"
         self.set_seed(seed=seed)
 
         # satellite state
@@ -396,17 +398,17 @@ class SatelliteSim:
         Returns:
             The current state of the satellite.
         """
-        obs = {'Orbit': np.array([self.orbit], dtype=np.int8), 
-                'Pos': np.array([self.pos], dtype=np.float32),
-                'Busy': np.array([self.busy], dtype=np.int8),
-                'Memory Level': np.array([self.memory_level], dtype=np.int8),
-                'Images': np.array(self.images, dtype=np.int8),
-                'Analysis': np.array(self.analysis, dtype=np.int8),
-                'Targets': np.array(self.targets, dtype=np.float32),
-                'Ground Stations': np.array(self.groundStations, dtype=np.float32)}
+        obs = {'Orbit': self.orbit, 
+                'Pos': self.pos,
+                'Busy': self.busy,
+                'Memory Level': self.memory_level,
+                'Images': self.images,
+                'Analysis': self.analysis,
+                'Targets': self.targets,
+                'Ground Stations': self.groundStations}
         if self.POWER_OPTION:
             # print(self.Power)
-            obs['Power'] = np.array([self.Power], dtype=np.float32)
+            obs['Power'] = self.Power
         return obs
         
     def time2angle(self, time):
@@ -457,7 +459,5 @@ class SatelliteSim:
             # Create Log folder
             if not os.path.exists(self.log_dir):
                 os.makedirs(self.log_dir)
-            
-            date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
             with open(self.log_dir+f"/Seed.yaml", "a") as f:
-                f.write(f"    Simulation_{date}: {self.seed}\n")
+                f.write(f"    {self.Sim_name}: {self.seed}\n")

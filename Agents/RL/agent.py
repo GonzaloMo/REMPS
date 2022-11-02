@@ -16,7 +16,7 @@ class RAY_agent:
         self.config = {}
 
     def train(self, Training: Dict, Agent: Dict, Environment: Dict):
-        local_dir = Training["local_dir"]
+        Training["local_dir"] = Training["local_dir"]+ Environment["env_config"]["env"]
         # Load Agent Configuration Files
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
@@ -40,7 +40,7 @@ class RAY_agent:
             # Set Experiment config file
             Exp_name = file_name_function(env_file).stem
             env_config["Log_dir"] = f"./Simulation/"
-            env_config["Training_Env"] = env_file
+            env_config["Env_setup"] = env_file
             config["env_config"] = env_config
             config["env"] = env_name
 

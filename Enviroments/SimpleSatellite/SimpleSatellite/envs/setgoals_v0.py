@@ -5,13 +5,15 @@ All rights reserved
 Authors: Gonzalo Montesino Valle, Michael Cashmore
 """
 from time import sleep
-from typing import Callable, Dict, Optional, List, Tuple, Any
+from typing import List, Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from SimpleSatellite.envs.simulation.Reward_functions import Reward_v1 
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
+import random
+from datetime import datetime
 
 # import the gym class and spaces
 import gym
@@ -22,7 +24,7 @@ class Simple_satellite(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             action_space_type: str = "Simple",
-            render_reward: bool = False,
+            Log_dir: str = "./Logs/Simulation/",
             **kwargs
             ) -> None:
         """
@@ -38,8 +40,10 @@ class Simple_satellite(gym.Env):
         
         # set true so initialization is only done once
         self.first_render = True
+        self.Log_dir = Log_dir
 
         # save the satelite enviroment
+        kwargs["Log_dir"] = Log_dir
         self.SatSim = SatelliteSim(**kwargs)
         
 
@@ -71,27 +75,24 @@ class Simple_satellite(gym.Env):
         self.action_space = spaces.Discrete(n_actions)
 
         # Observation space is composed as: 
-        # state = [time(continous), theta(continous), busy(binary), memory_picture(discrete), memory_analyze_pic(discrete), locations of targets, locations of ground station]
-        max_memory = self.SatSim.MEMORY_SIZE
         n_targets = self.SatSim.n_targets
         n_gs = self.SatSim.n_gs
+        max_inf = 9999999999
         # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
-        self.observation_space = spaces.Dict({'Orbit': spaces.Box(low=0, high=9999, shape=(1,), dtype=np.int8), #spaces.Discrete(31), 
-                                              'Pos': spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32),
-                                              'Busy': spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),#spaces.Discrete(2),
-                                              'Memory Level': spaces.Box(low=0, high=max_memory+1, shape=(1,), dtype=np.int8), #spaces.Discrete(max_memory+1),
-                                              'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),#spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
-                                              'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), #spaces.MultiBinary(max_memory),
-                                              'Targets': spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32),
-                                              'Ground Stations': spaces.Box(low=0, high=3700., shape=(n_gs*2,), dtype=np.float32)})
+        self.observation_space = spaces.Dict({'Orbit':           spaces.Box(low=0, high=max_inf, shape=(1,), dtype=np.int32), # current orbit
+                                              'Pos':             spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32), # current angular position
+                                              'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
+                                              'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
+                                              'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
+                                              'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
+                                              'Targets':         spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32), # target initial and final position
+                                              'Ground Stations': spaces.Box(low=0, high=370., shape=(n_gs*2,), dtype=np.float32), # ground station initial and final position
+                                              'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32)}) # goals to be achieved
         if self.SatSim.POWER_OPTION:
             self.observation_space.spaces['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
-
-        # Render options
-        self.render_reward = render_reward
         
        
     def step(self, action: int) -> Tuple[Dict[str, Any], float, bool, Dict]:
@@ -105,21 +106,32 @@ class Simple_satellite(gym.Env):
             done: bool
             info: Dict
         """
-        self.action = action
-        reward = self.Reward(self, action)
+        action_tuple = self.Number2Tuple_action(action)
+        # Get Reward
+        reward = self.Reward(self, action_tuple)
         # Take action 
-        next_state, done = self.SatSim.update(self.Number2Tuple_action(action))
+        if self.SatSim.check_action(action_tuple):
+            action_name = self.Number2name_action(action)
+            if "Dump" in action_name:
+                action_t, img = action_tuple
+                self.goals[img-1] = max(0, self.goals[img-1]-1)
+        next_state, truncated = self.SatSim.update(action_tuple)
+        
         
         # Action_avaible = self.SatSim.action_is_posible()
-        self.next_state = next_state
-
-        self.done = done
-        
-        self.state = next_state
+        terminated = True
+        for g in self.goals:
+            if g>0:
+                terminated = False
+                break
         self.Total_reward += reward
         info = {}
-        observation = self.get_ob_from_state(self.state)
-        done = self.done
+        observation = self.get_ob_from_state()
+        if terminated or truncated:
+            done = True
+        else:
+            done = False
+        self.done = done
         return observation, reward, done, info
 
     def reset(self, seed: int =None, options: Dict = {"n_targ": 4}) -> Dict[str, Any]:
@@ -132,10 +144,10 @@ class Simple_satellite(gym.Env):
         """
         n_targ = options["n_targ"]
         self.SatSim.reset(n_targ)
-        self.state = self.SatSim.get_state()
         self.Total_reward = 0
-        observation = self.get_ob_from_state(self.state)
-        info = {}
+        self.goals = self.generate_goals()
+        self.initial_goals = self.goals.copy()
+        observation = self.get_ob_from_state()
         return observation
         
 
@@ -149,6 +161,8 @@ class Simple_satellite(gym.Env):
             self.first_render = False
         self.view.drawSim(self.SatSim, self.Total_reward)
         self.view.draw_reward(self.Total_reward)
+        goals = self.goals.copy()
+        self.render_goals(goals)
         pygame.display.flip()
         sleep(.01)
 
@@ -158,16 +172,31 @@ class Simple_satellite(gym.Env):
         """
         pygame.quit()
 
-    def get_ob_from_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
-        observation = state.copy()
-        observation["Orbit"] = np.array([state["Orbit"]], dtype=np.int8)
+    def get_ob_from_state(self) -> Dict[str, Any]:
+        """
+        Get the observation from the state
+        Input:
+            state: Dict[str, Any]
+        Output:
+            observation: Dict[str, Any]
+        """
+        state = self.SatSim.get_state()
+        observation = {}
+        observation["Orbit"] = np.array([state["Orbit"]], dtype=np.int32)
         observation["Pos"] = np.array([state["Pos"]], dtype=np.float32)
         observation["Busy"] = np.array([state["Busy"]], dtype=np.int8)
-        observation["Memory Level"] = np.array([state["Memory Level"]], dtype=np.int8)
-        observation["Images"] = np.array(state["Images"], dtype=np.int8)
-        observation["Analysis"] = np.array(state["Analysis"], dtype=np.int8)
+        observation["Memory Level"] = np.array([state["Memory Level"]/self.SatSim.MEMORY_SIZE], dtype=np.float32)
+        observation["Analysis"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
+        observation["Images"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
+        for i in range(self.SatSim.MEMORY_SIZE):
+            img = state["Images"][i]
+            if img > 0:
+                observation["Images"][img-1] += 1
+                if state["Analysis"][i]:
+                    observation["Analysis"][img-1] += 1
         observation["Targets"] = np.array(state["Targets"], dtype=np.float32).flatten()
         observation["Ground Stations"] = np.array(state["Ground Stations"], dtype=np.float32).flatten()
+        observation["Goals"] = np.array(self.goals, dtype=np.int32)
         if self.SatSim.POWER_OPTION:
             observation["Power"] = np.array([state["Power"]], dtype=np.float32)
         return observation
@@ -237,4 +266,60 @@ class Simple_satellite(gym.Env):
         else:
             action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
         return action_tuple
+
+    def generate_goals(self, Seed: int = None) -> List[int]:
+        """
+        Generate the goals
+        """
+        if Seed is None:
+            Seed = np.random.randint(0, 2**32)
+        goals = []
+        Max_goals = int(self.SatSim.MAX_ORBITS*.75)
+        for i in range(self.SatSim.n_targets):
+            random.seed(Seed+i)
+            n = random.randint(0, Max_goals)
+            goals.append(n)
+        
+        # Create Log folder
+        if not os.path.exists(self.Log_dir):
+            os.makedirs(self.Log_dir)
+        with open(self.Log_dir+f"/Seed.yaml", "a") as f:
+            f.write(f"    Goals_{self.SatSim.Sim_name}: {Seed}\n")
+        return goals
     
+    def render_goals(self, goals: List[int]) -> None:
+        """
+        Render the goals
+        """
+        screen = self.view.screen
+        OFFSET_x = self.view.WIDTH*0.1
+        hudwidth = self.view.WIDTH*0.8
+        hudheight = self.view.IMAGE_SIZE*4
+        Height = self.view.HEIGHT
+        OFFSET_y = Height - self.view.IMAGE_SIZE
+        # Percentage lines
+        for i in range(0, 101, 25):
+            y_a = OFFSET_y - hudheight * (i/100)
+            pygame.draw.line(screen, SatelliteView.WHITE, (OFFSET_x, y_a), (OFFSET_x + hudwidth, y_a))
+            name = self.view.font.render(str(i), True, SatelliteView.WHITE)
+            screen.blit(name, (OFFSET_x-30, y_a-5))
+        
+        # Goals
+        bar_width = hudwidth / (self.SatSim.n_targets+1)
+        separation = bar_width/self.SatSim.n_targets
+        for i in range(self.SatSim.n_targets):
+            x_a = OFFSET_x + (bar_width+separation) * i
+            init_goals = self.initial_goals[i]
+            if init_goals > 0:
+                g_per = 1 - (goals[i]/init_goals)
+                y_a = OFFSET_y - hudheight * g_per
+                pygame.draw.rect(screen, SatelliteView.GREEN, (x_a, y_a, bar_width, hudheight * g_per))
+                if g_per < 0.01:
+                    pygame.draw.line(screen, SatelliteView.GREEN, (x_a, y_a), (x_a + bar_width, y_a))
+            else:
+                pygame.draw.rect(screen, SatelliteView.GREY, (x_a, OFFSET_y-hudheight, bar_width, hudheight))
+            name = self.view.font.render(f"T_{i+1}", True, SatelliteView.WHITE)
+            screen.blit(name, (x_a+bar_width/2-10, OFFSET_y+10))
+
+            init_goal_str = self.view.font.render(f"{init_goals}", True, SatelliteView.WHITE)
+            screen.blit(init_goal_str, (x_a+bar_width/2-10, OFFSET_y-hudheight-20))

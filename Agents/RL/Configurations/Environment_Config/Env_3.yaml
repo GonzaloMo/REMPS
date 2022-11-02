@@ -1,9 +1,9 @@
 # OPEN AI GYM PARAMETERS
-action_space_type: "Simple" # "Simple" or "Advance"
+action_space_type: "Advance" # "Simple" or "Advance"
 
 # SIMULATION PARAMETERS
 # General simulation parameters Parameters
-MAX_ORBITS: 10
+MAX_ORBITS: 20
 PERIOD: 600 # in seconds
 
 # Satellite parameters
@@ -48,6 +48,3 @@ POWER_CONSUMPTION:
   AN: -0.1 # in %/s when Analyse
   DP: -0.1 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
-
-# Render Option
-render_reward: True

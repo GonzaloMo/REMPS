@@ -5,7 +5,7 @@ All rights reserved
 Authors: Gonzalo Montesino Valle, Michael Cashmore
 """
 from time import sleep
-from typing import Callable, Dict, Optional, List, Tuple, Any
+from typing import Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
@@ -23,6 +23,7 @@ class Simple_satellite(gym.Env):
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             action_space_type: str = "Simple",
             render_reward: bool = False,
+            visible_plan_states: bool = False,
             **kwargs
             ) -> None:
         """
@@ -83,7 +84,8 @@ class Simple_satellite(gym.Env):
                                               'Images': spaces.Box(low=0, high=n_targets, shape=(max_memory,), dtype=np.int8),#spaces.MultiDiscrete([n_targets+1 for i in range(max_memory)]),
                                               'Analysis': spaces.Box(low=0, high=1, shape=(max_memory,), dtype=np.int8), #spaces.MultiBinary(max_memory),
                                               'Targets': spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32),
-                                              'Ground Stations': spaces.Box(low=0, high=3700., shape=(n_gs*2,), dtype=np.float32)})
+                                              'Ground Stations': spaces.Box(low=0, high=3700., shape=(n_gs*2,), dtype=np.float32),
+                                              'Plan': spaces.Box(low=0, high=1, shape=(n_targets,), dtype=np.int8), })
         if self.SatSim.POWER_OPTION:
             self.observation_space.spaces['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.state = self.SatSim.get_state()
@@ -148,7 +150,8 @@ class Simple_satellite(gym.Env):
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
         self.view.drawSim(self.SatSim, self.Total_reward)
-        self.view.draw_reward(self.Total_reward)
+        if self.render_reward:
+            self.view.draw_reward(self.Total_reward)
         pygame.display.flip()
         sleep(.01)
 
@@ -160,16 +163,8 @@ class Simple_satellite(gym.Env):
 
     def get_ob_from_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
         observation = state.copy()
-        observation["Orbit"] = np.array([state["Orbit"]], dtype=np.int8)
-        observation["Pos"] = np.array([state["Pos"]], dtype=np.float32)
-        observation["Busy"] = np.array([state["Busy"]], dtype=np.int8)
-        observation["Memory Level"] = np.array([state["Memory Level"]], dtype=np.int8)
-        observation["Images"] = np.array(state["Images"], dtype=np.int8)
-        observation["Analysis"] = np.array(state["Analysis"], dtype=np.int8)
-        observation["Targets"] = np.array(state["Targets"], dtype=np.float32).flatten()
-        observation["Ground Stations"] = np.array(state["Ground Stations"], dtype=np.float32).flatten()
-        if self.SatSim.POWER_OPTION:
-            observation["Power"] = np.array([state["Power"]], dtype=np.float32)
+        observation["Targets"] = observation["Targets"].flatten()
+        observation["Ground Stations"] = observation["Ground Stations"].flatten()
         return observation
 
     def print_obs(self, obs: Dict[str, Any]):
@@ -237,4 +232,3 @@ class Simple_satellite(gym.Env):
         else:
             action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
         return action_tuple
-    

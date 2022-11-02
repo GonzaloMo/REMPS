@@ -1,6 +1,6 @@
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-
-def Reward_v0(env: SatelliteSim, action_in: int):
+import gym
+def Reward_v0(env: gym.Env, action_in: int):
     # Get action and observation
     obs = env.state
     action, img = env.Number2Tuple_action(action_in)
@@ -27,7 +27,7 @@ def Reward_v0(env: SatelliteSim, action_in: int):
 
     return reward
 
-def Reward_v1(env: SatelliteSim, action_in: int):
+def Reward_v1(env: gym.Env, action_in: int):
     # Get action and observation
     obs = env.state
     action, img = env.Number2Tuple_action(action_in)
@@ -51,7 +51,7 @@ def Reward_v1(env: SatelliteSim, action_in: int):
 
     return reward
 
-def Reward_v2(env: SatelliteSim, action_in: int):
+def Reward_v2(env: gym.Env, action_in: int):
     # Get action and observation
     obs = env.state
     action, img = env.Number2Tuple_action(action_in)

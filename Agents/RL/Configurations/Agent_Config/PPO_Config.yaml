@@ -18,6 +18,7 @@ num_gpus: 0
 model:
     dim: 42
     vf_share_layers: True
+render_env: True
 # Only for evaluation runs, render the env.
 evaluation_interval: 100000
 evaluation_duration: 100
