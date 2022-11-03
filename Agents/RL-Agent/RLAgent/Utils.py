@@ -1,5 +1,5 @@
 import SimpleSatellite
-from typing import Dict, List, Tuple, Union
+from typing import Dict
 import gym
 import os
 current_dir = os.getcwd()

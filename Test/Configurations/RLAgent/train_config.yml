@@ -5,13 +5,13 @@ Training:
   # (True if trial should be stopped, False otherwise). This can also be a subclass of ray.tune.Stopper, 
   # which allows users to implement custom experiment-wide stopping (i.e., stopping an entire Tune run based on some time constraint).
   stop: 
-    timesteps_total: 100000 #1000000
+    timesteps_total: 10000000 
 
   # (str) – Local dir to save training results to. Defaults to ~/ray_results.
   local_dir: "./Logs/RLAgent/"
 
   # (int) – How many training iterations between checkpoints. A value of 0 (default) disables checkpointing.
-  checkpoint_freq: 1000 # 10000
+  checkpoint_freq: 100000
 
   # (bool) – Whether to checkpoint at the end of the experiment regardless of the checkpoint_freq. Default is False.
   checkpoint_at_end: True
@@ -37,14 +37,14 @@ Environment:
                   "./Configurations/RLAgent/Environment_Config/Env_2.yaml", 
                   "./Configurations/RLAgent/Environment_Config/Env_3.yaml", 
                   "./Configurations/RLAgent/Environment_Config/Env_4.yaml"]
-  render_env: True
+  render_env: False
 
   env_config: 
     # (str) – The gym environment to use. This can also be a callable that returns a gym environment when called.
     env: "SimpleSatellite-setgoals-v0"
 
     # (str) – Module name of the Reward Function. Default set to "Reward_Function"
-    Reward_Module: "Reward_functions.SimpleSatSetGoals"
+    Reward_Module: "Configurations.RLAgent.Reward_functions.SimpleSatSetGoals"
 
     # (str) – Reward function to be used. Default set to "Reward_1"
     Reward_Function: "Reward_v0"

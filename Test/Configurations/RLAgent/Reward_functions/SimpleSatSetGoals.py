@@ -18,11 +18,10 @@ def Reward_v0(env: gym.Env, action_in: Tuple[int,int]):
             for img in range(len(env.SatSim.analysis), 0, -1):
                 if env.SatSim.analysis[img-1]:
                     break
-        if action == SatelliteSim.ACTION_DUMP and obs["Goals"][img-1] > 1:
+        if action == SatelliteSim.ACTION_DUMP and goals[img-1] > 1:
             reward += 10
-            goals = obs["Goals"][img-1]
             all_complete = False
-            for obs_goal in obs["Goals"]:
+            for obs_goal in goals:
                 if obs_goal < 0:
                     all_complete = True
                     break

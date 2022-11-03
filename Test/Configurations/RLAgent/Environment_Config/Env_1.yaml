@@ -1,5 +1,6 @@
-# OPEN AI GYM PARAMETERS
+# GYM ENVIRONMENT PARAMETERS
 action_space_type: "Advance" # "Simple" or "Advance"
+Max_image_goals_per_target: 10
 
 # SIMULATION PARAMETERS
 # General simulation parameters Parameters

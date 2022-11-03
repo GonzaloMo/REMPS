@@ -1,12 +1,8 @@
-from typing import Dict, List, Tuple, Union
-from datetime import datetime
+from typing import Dict
 import yaml
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 import gym
 import ray
-import os
 from ray import tune 
-from ray.rllib.agents.ppo import PPOTrainer
 from pathlib import Path as file_name_function
 
 
@@ -114,7 +110,6 @@ class RAY_agent:
             action = self.agent.compute_single_action(obs)
             observation, reward, terminated, truncated, info = env.step(action)
             if render:
-                print("Action", SatelliteSim.ACTION_NAMES[action])
                 env.render()
             if terminated or truncated:
                 done = True

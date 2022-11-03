@@ -25,6 +25,7 @@ class Simple_satellite(gym.Env):
             Reward: Callable[[gym.Env, int], float] = Reward_v1,
             action_space_type: str = "Simple",
             Log_dir: str = "./Logs/Simulation/",
+            Max_image_goals_per_target: int = 10,
             **kwargs
             ) -> None:
         """
@@ -41,6 +42,7 @@ class Simple_satellite(gym.Env):
         # set true so initialization is only done once
         self.first_render = True
         self.Log_dir = Log_dir
+        self.Max_goals = Max_image_goals_per_target
 
         # save the satelite enviroment
         kwargs["Log_dir"] = Log_dir
@@ -259,6 +261,7 @@ class Simple_satellite(gym.Env):
         action_name = self.Number2name_action(action)
         action_tuple = self.Name2Tuple_action(action_name)
         return action_tuple
+
     def Name2Tuple_action(self, action_name: str) -> Tuple[int, int]:
         """
         Convert action name to action tuple
@@ -272,19 +275,19 @@ class Simple_satellite(gym.Env):
                 img = None
             else:
                 img = int(action_name[16:])
-            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, )
+            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, img)
         elif "analyze" in action_name:
             if self.action_space_type == "Simple":
                 img = None
             else:
                 img = int(action_name[11:])
-            action_tuple = (SatelliteSim.ACTION_ANALYSE, int(action_name[11:]))
+            action_tuple = (SatelliteSim.ACTION_ANALYSE, img)
         elif "dump" in action_name:
             if self.action_space_type == "Simple":
                 img = None
             else:
                 img = int(action_name[8:])
-            action_tuple = (SatelliteSim.ACTION_DUMP, int(action_name[8:]))
+            action_tuple = (SatelliteSim.ACTION_DUMP, img)
         else:
             action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
         return action_tuple
@@ -296,7 +299,7 @@ class Simple_satellite(gym.Env):
         if Seed is None:
             Seed = np.random.randint(0, 2**32)
         goals = []
-        Max_goals = int(self.SatSim.MAX_ORBITS*.75)
+        Max_goals = self.Max_goals
         for i in range(self.SatSim.n_targets):
             random.seed(Seed+i)
             n = random.randint(0, Max_goals)
