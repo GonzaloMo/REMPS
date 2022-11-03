@@ -1,4 +1,6 @@
 gym>=0.20.0
-pygame
-numpy
-pyyaml
+matplotlib==3.1.2
+numpy>=1.17.4
+pygame==2.1.2
+PyYAML==6.0
+setuptools>=45.2.

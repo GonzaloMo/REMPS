@@ -25,12 +25,16 @@ def ObservtionToState(observation: Dict[str, Any], n_orbits: int=5) -> List:
     GS_coverage = []
     for j in range(0, 360): # angular positio of orbit
         vis_t = 0
-        for init_loc_t, end_loc_t in target_loc:
+        for i in range(0,len(target_loc),2):
+            init_loc_t = target_loc[i]
+            end_loc_t = target_loc[i+1]
             if init_loc_t <= j <= end_loc_t:
                 vis_t = 1
                 break
         vis_gs = 0
-        for init_loc_gs, end_loc_gs in GS_loc:
+        for i in range(0,len(GS_loc),2):
+            init_loc_gs = GS_loc[i]
+            end_loc_gs = GS_loc[i+1]
             if init_loc_gs <= j <= end_loc_gs:
                 vis_gs = 1
                 break

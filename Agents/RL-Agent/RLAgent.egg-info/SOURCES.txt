@@ -1,3 +1,4 @@
+README.md
 setup.py
 RLAgent/Utils.py
 RLAgent/__init__.py
