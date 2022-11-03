@@ -7,18 +7,18 @@ To install the agent you need to install the following dependencies:
 ```
 pip install -r requirements.txt
 ```
-# Next part is an example of how to write a README.md file for an agent. Please remove it and write your own README.md file.
-## How to use
-
-To use the agent, you need to have the [OpenAI Gym](https://gym.openai.com/) library installed. Then, you can run the agent with the following command:
+cd REMPS/Agents/OR-Tool
 ```
-python3 main.py
+For Linux
+
 ```
-The agent will be trained on the SimpleSat problem and will be tested on it. The results will be saved in the `Logs/Agent/RAY` folder.
+pip3 install -e .
+```
 
+For Windows
 
-## How to modify
-The agent is composed of 3 files:
-- `main.py`: this file contains the main function. It is used to train and test the agent.
-- `agent.py`: this file contains the agent class. It is used to create the agent and to train it.
+```
+python -m pip install -e .
+```
+
 - `Reward.py`: this file contains the reward function. It is used to compute the reward of the agent.

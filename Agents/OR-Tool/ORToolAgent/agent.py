@@ -14,7 +14,7 @@ from OR_Utils.CPSolver import CP_solver
 from OR_Utils.Load_files import load_file
 
 
-class OR_Agent:
+class ORAgent:
     def __init__(self,
     log_dir: str="./Logs/Agent",
     timestep: float=1,
