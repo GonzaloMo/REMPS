@@ -48,23 +48,23 @@ class Simple_satellite(gym.Env):
         
 
         # The actions available are:
-        self.action_dict = {"Take Picture":0 ,
-                            "Analyze":1,
-                            "Dump": 2,
-                            "Nothing": 3}
-        self.action_list_names = ["Nothing"]
+        self.action_dict = {"take_picture":SatelliteSim.ACTION_TAKE_IMAGE,
+                            "analyze":SatelliteSim.ACTION_ANALYSE,
+                            "dump": SatelliteSim.ACTION_DUMP,
+                            "idle": SatelliteSim.ACTION_DO_NOTHING}
+        self.action_list_names = ["idle"]
 
         # Create action name list
         self.action_space_type = action_space_type
         if action_space_type=="Simple":
-            self.action_list_names += ["Take Picture", "Analyze", "Dump"]
+            self.action_list_names += ["take_picture", "analyze", "dump"]
         elif action_space_type=="Advance":
             temp_list = []
             temp_list_a = []
             for i in range(self.SatSim.n_targets):
-                self.action_list_names.append("Take Picture img"+str(i+1))
-                temp_list_a.append("Analyze img"+str(i+1))
-                temp_list.append("Dump img"+str(i+1))
+                self.action_list_names.append("take_picture img"+str(i+1))
+                temp_list_a.append("analyze img"+str(i+1))
+                temp_list.append("dump img"+str(i+1))
             self.action_list_names.extend(temp_list_a)
             self.action_list_names.extend(temp_list)
         else:
@@ -126,7 +126,7 @@ class Simple_satellite(gym.Env):
                 break
         self.Total_reward += reward
         info = {}
-        observation = self.get_ob_from_state()
+        observation = self.get_obs()
         if terminated or truncated:
             done = True
         else:
@@ -147,7 +147,7 @@ class Simple_satellite(gym.Env):
         self.Total_reward = 0
         self.goals = self.generate_goals()
         self.initial_goals = self.goals.copy()
-        observation = self.get_ob_from_state()
+        observation = self.get_obs()
         return observation
         
 
@@ -172,7 +172,7 @@ class Simple_satellite(gym.Env):
         """
         pygame.quit()
 
-    def get_ob_from_state(self) -> Dict[str, Any]:
+    def get_obs(self) -> Dict[str, Any]:
         """
         Get the observation from the state
         Input:
@@ -257,11 +257,33 @@ class Simple_satellite(gym.Env):
         if self.action_space_type == "Simple":
             return (action, None)
         action_name = self.Number2name_action(action)
-        if "Take Picture" in action_name:
-            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, int(action_name[16:]))
+        action_tuple = self.Name2Tuple_action(action_name)
+        return action_tuple
+    def Name2Tuple_action(self, action_name: str) -> Tuple[int, int]:
+        """
+        Convert action name to action tuple
+        Input:
+            action_name: str
+        Output:
+            action_tuple: Tuple[int, int]
+        """
+        if "Take_Picture" in action_name:
+            if self.action_space_type == "Simple":
+                img = None
+            else:
+                img = int(action_name[16:])
+            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, )
         elif "Analyze" in action_name:
+            if self.action_space_type == "Simple":
+                img = None
+            else:
+                img = int(action_name[11:])
             action_tuple = (SatelliteSim.ACTION_ANALYSE, int(action_name[11:]))
         elif "Dump" in action_name:
+            if self.action_space_type == "Simple":
+                img = None
+            else:
+                img = int(action_name[8:])
             action_tuple = (SatelliteSim.ACTION_DUMP, int(action_name[8:]))
         else:
             action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)

@@ -11,6 +11,9 @@ Agents/RL/Logs
 # OR Tools
 Agents/OR-Tool/Logs
 
+# PDDL Planner
+Agents/PDDL-Planner/Logs
+
 # Architecture
 Agents/Architecture/Logs
 Agents/Architecture/ArbiterVoices/Planner_utlis/Plans
@@ -19,3 +22,6 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 
 ### Ignore Built Env
 /REMPS_Env
+
+### Ignore Packeges_tester
+/Packages_tester
