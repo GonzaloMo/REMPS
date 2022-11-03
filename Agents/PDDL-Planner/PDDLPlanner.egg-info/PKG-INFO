@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: PDDLPlanner
+Version: 0.0.1
+Summary: simple PDDL planner for OpenAI Gym
+Author: Gonzalo Montesino Valle
+Author-email: gonzalo.montesino-valle@strath.ac.uk

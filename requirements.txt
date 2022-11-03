@@ -1,0 +1,15 @@
+gym==0.26.2
+ifaddr==0.1.6
+ipython==8.5.0
+matplotlib==3.1.2
+numpy>=1.17.4
+ortools==9.4.1874
+pandas==1.5.1
+pyrsistent==0.18.1
+PyYAML==6.0
+ray==2.0.1
+torch==1.11.0
+Agents==1.4.0
+pygame==2.1.2
+setuptools>=45.2.0
+scikit-image==0.19.2

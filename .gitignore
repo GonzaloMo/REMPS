@@ -1,0 +1,27 @@
+###### Agents
+# Architecture
+Agents/Architecture/Logs
+Agents/Architecture/ArbiterVoices/Planner_utlis/Plans
+Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
+Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
+
+# RL SimpleSat
+Agents/RL-Agent/RLAgent/Logs
+
+# OR Tools
+Agents/OR-Tool/Logs
+
+# PDDL Planner
+Agents/PDDL-Planner/PDDLPlanner/Logs
+
+# Architecture
+Agents/Architecture/Logs
+Agents/Architecture/ArbiterVoices/Planner_utlis/Plans
+Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
+Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
+
+### Ignore Built Env
+/REMPS_Env
+
+### Ignore Packeges_tester
+/Test

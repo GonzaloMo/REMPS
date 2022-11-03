@@ -1,0 +1,101 @@
+Number of literals: 13
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(total_score) has a finite lower bound: [0.000,inf]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Have identified that bigger values of (image_analysed img1) are preferable
+Have identified that bigger values of (image_unanalysed img1) are preferable
+Have identified that bigger values of (image_analysed img2) are preferable
+Have identified that bigger values of (image_unanalysed img2) are preferable
+Have identified that bigger values of (image_analysed img3) are preferable
+Have identified that bigger values of (image_unanalysed img3) are preferable
+Have identified that bigger values of (image_analysed img4) are preferable
+Have identified that bigger values of (image_unanalysed img4) are preferable
+Have identified that bigger values of (image_analysed img5) are preferable
+Have identified that bigger values of (image_unanalysed img5) are preferable
+Have identified that bigger values of (image_analysed img6) are preferable
+Have identified that bigger values of (image_unanalysed img6) are preferable
+Have identified that bigger values of (image_analysed img7) are preferable
+Have identified that bigger values of (image_unanalysed img7) are preferable
+Have identified that bigger values of (image_analysed img8) are preferable
+Have identified that bigger values of (image_unanalysed img8) are preferable
+Have identified that bigger values of (image_analysed img9) are preferable
+Have identified that bigger values of (image_unanalysed img9) are preferable
+Have identified that bigger values of (image_analysed img10) are preferable
+Have identified that bigger values of (image_unanalysed img10) are preferable
+Have identified that smaller values of (memory_level) are preferable
+Recognised a monotonic-change-induced limit on -1.000*var3(image_score img1)
+- Must be >= -10.000
+Recognised a monotonic-change-induced limit on -1.000*var6(image_score img2)
+- Must be >= -14.000
+Recognised a monotonic-change-induced limit on -1.000*var9(image_score img3)
+- Must be >= -11.000
+Recognised a monotonic-change-induced limit on -1.000*var12(image_score img4)
+- Must be >= -10.000
+Recognised a monotonic-change-induced limit on -1.000*var15(image_score img5)
+- Must be >= -4.000
+Recognised a monotonic-change-induced limit on -1.000*var18(image_score img6)
+- Must be >= -6.000
+Recognised a monotonic-change-induced limit on -1.000*var21(image_score img7)
+- Must be >= -10.000
+Recognised a monotonic-change-induced limit on -1.000*var24(image_score img8)
+- Must be >= -7.000
+Recognised a monotonic-change-induced limit on -1.000*var27(image_score img9)
+- Must be >= -6.000
+Recognised a monotonic-change-induced limit on -1.000*var30(image_score img10)
+- Must be >= -9.000
+None of the ground temporal actions in this problem have been recognised as compression-safe
+Initial heuristic = 85.000, admissible cost estimate 0.000
+b (84.000 | 1.000)b (82.000 | 80.001)b (81.000 | 80.001)b (80.000 | 103.000)b (78.000 | 112.002)b (76.000 | 126.003)b (74.000 | 126.003)b (72.000 | 140.004)b (70.000 | 172.005)b (68.000 | 226.001)b (67.000 | 226.001)b (65.000 | 240.002)b (64.000 | 240.002)b (62.000 | 254.003)b (61.000 | 275.000)b (60.000 | 276.000)b (58.000 | 286.004)b (56.000 | 318.005)b (54.000 | 350.006)b (52.000 | 364.006)b (50.000 | 364.007)b (48.000 | 378.008)b (46.000 | 378.008)b (44.000 | 392.008)b (42.000 | 392.009)b (40.000 | 406.010)b (38.000 | 406.010)b (36.000 | 477.001)b (34.000 | 509.002)b (33.000 | 523.002)b (31.000 | 608.000)b (30.000 | 635.000)b (29.000 | 636.000)b (27.000 | 649.001)b (25.000 | 681.002)b (24.000 | 681.002)b (23.000 | 695.002)b (21.000 | 695.003)b (20.000 | 1010.001)b (18.000 | 1042.002)b (17.000 | 1042.002)b (16.000 | 1042.002)b (13.000 | 1056.003)b (12.000 | 1391.001)b (11.000 | 1393.000)b (10.000 | 1397.000)b (8.000 | 1407.001)b (6.000 | 1439.002)b (4.000 | 1453.003)b (2.000 | 1485.004)
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (84.000 | 1.000)b (82.000 | 80.001)b (81.000 | 80.001)b (80.000 | 103.000)b (78.000 | 112.002)b (76.000 | 126.003)b (74.000 | 126.003)b (72.000 | 140.004)b (70.000 | 172.005)b (68.000 | 226.001)b (67.000 | 226.001)b (65.000 | 258.002)b (64.000 | 276.000)b (62.000 | 289.001)b (60.000 | 321.002)b (59.000 | 321.002)b (57.000 | 335.003)b (55.000 | 335.003)b (53.000 | 349.003)b (51.000 | 349.004)b (49.000 | 363.005)b (47.000 | 363.005)b (45.000 | 477.001)b (43.000 | 509.002)b (41.000 | 523.002)b (40.000 | 525.000)b (39.000 | 581.000)b (37.000 | 595.001)b (36.000 | 600.000)b (34.000 | 627.002)b (32.000 | 650.001)b (31.000 | 657.000)b (29.000 | 682.002)b (28.000 | 682.002)b (26.000 | 696.002)b (24.000 | 696.003)b (23.000 | 710.003)b (21.000 | 710.004)b (20.000 | 974.001)b (19.000 | 1017.000)b (17.000 | 1017.000)b (15.000 | 1031.001)b (14.000 | 1033.000)b (13.000 | 1037.000)b (11.000 | 1063.002)b (8.000 | 1077.003)b (6.000 | 1091.004)b (4.000 | 1407.001)b (2.000 | 1439.002)(G)
+; No metric specified - using makespan
+
+; Plan found with metric 1453.003
+; States evaluated so far: 1037
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 1.19
+66.001: (take_picture img6)  [14.000]
+80.002: (analyze img6)  [32.000]
+112.003: (dump img6)  [14.000]
+126.004: (take_picture img9)  [14.000]
+140.005: (analyze img9)  [32.000]
+212.001: (take_picture img8)  [14.000]
+226.002: (analyze img8)  [32.000]
+275.001: (take_picture img7)  [14.000]
+289.002: (analyze img7)  [32.000]
+321.003: (dump img9)  [14.000]
+335.004: (dump img8)  [14.000]
+404.999: (dump img7)  [14.000]
+463.001: (take_picture img4)  [14.000]
+477.002: (analyze img4)  [32.000]
+509.003: (dump img4)  [14.000]
+581.001: (take_picture img3)  [14.000]
+595.002: (analyze img3)  [32.000]
+636.001: (take_picture img1)  [14.000]
+650.002: (analyze img1)  [32.000]
+682.003: (dump img3)  [14.000]
+764.999: (dump img1)  [14.000]
+960.001: (take_picture img10)  [14.000]
+974.002: (analyze img10)  [32.000]
+1017.001: (take_picture img2)  [14.000]
+1031.002: (analyze img2)  [32.000]
+1063.003: (dump img2)  [14.000]
+1077.004: (dump img10)  [14.000]
+1393.001: (take_picture img5)  [14.000]
+1407.002: (analyze img5)  [32.000]
+1439.003: (dump img5)  [14.000]
+
+ * All goal deadlines now no later than 1453.003
+b (0.000 | 1453.003)

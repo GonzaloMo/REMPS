@@ -1,0 +1,25 @@
+Number of literals: 16
+Constructing lookup tables:
+Post filtering unreachable actions: 
+(image_score img1) has finite bounds: [0.000,0.000]
+(image_score img2) has finite bounds: [0.000,0.000]
+(image_score img3) has finite bounds: [0.000,0.000]
+(image_score img4) has finite bounds: [0.000,0.000]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var4(image_score img5)
+- Must be >= -7.000
+50% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 5.000, admissible cost estimate nan
+b (4.000 | 1.000)b (3.000 | 15.001)
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (4.000 | 1.000)b (3.000 | 15.001)
+Problem Unsolvable
+;; Problem unsolvable!
+; Time 0.02
+
+END

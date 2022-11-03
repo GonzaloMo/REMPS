@@ -1,0 +1,6 @@
+gym==0.26.2
+numpy>=1.17.4
+ortools==9.4.1874
+pandas==1.5.1
+PyYAML==6.0
+setuptools==45.2.0
