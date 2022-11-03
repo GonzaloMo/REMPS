@@ -6,13 +6,13 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
 Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 
 # RL SimpleSat
-Agents/RL/Logs
+Agents/RL-Agent/RLAgent/Logs
 
 # OR Tools
 Agents/OR-Tool/Logs
 
 # PDDL Planner
-Agents/PDDL-Planner/Logs
+Agents/PDDL-Planner/PDDLPlanner/Logs
 
 # Architecture
 Agents/Architecture/Logs
@@ -24,4 +24,4 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 /REMPS_Env
 
 ### Ignore Packeges_tester
-/Packages_tester
+/Test
