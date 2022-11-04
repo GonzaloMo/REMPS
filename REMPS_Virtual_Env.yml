@@ -10,6 +10,4 @@ dependencies:
     - -e ./Environments/SimpleSatellite
     # Agents
     - -e ./Agents/PDDL-Planner
-    - -e ./Agents/RL-Agent
-    
-  
+    - -e ./Agents/RL-Agent  
