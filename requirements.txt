@@ -13,3 +13,4 @@ Agents==1.4.0
 pygame==2.1.2
 setuptools>=45.2.0
 scikit-image==0.19.2
+transformers==4.24.0
