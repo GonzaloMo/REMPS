@@ -5,13 +5,13 @@ Training:
   # (True if trial should be stopped, False otherwise). This can also be a subclass of ray.tune.Stopper, 
   # which allows users to implement custom experiment-wide stopping (i.e., stopping an entire Tune run based on some time constraint).
   stop: 
-    timesteps_total: 10000000 
+    timesteps_total: 100000000 
 
   # (str) – Local dir to save training results to. Defaults to ~/ray_results.
-  local_dir: "./Logs/RLAgent/"
+  local_dir: "./Logs/RLAgent_2/"
 
   # (int) – How many training iterations between checkpoints. A value of 0 (default) disables checkpointing.
-  checkpoint_freq: 100000
+  checkpoint_freq: 1000000
 
   # (bool) – Whether to checkpoint at the end of the experiment regardless of the checkpoint_freq. Default is False.
   checkpoint_at_end: True
