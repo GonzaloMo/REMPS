@@ -87,34 +87,23 @@ class RAY_agent:
         Agent = Temp_config["Agent"]
         Environment = Temp_config["Environment"]
         if specific_checkpoint is not None:
-            checkpoint_path = Temp_config["save_dir"] + specific_checkpoint
+            checkpoint_path = Temp_config["save_dir"] +"/"+ specific_checkpoint
         else:
-            last_checkpoint_loc = Temp_config["last_checkpoint"]
+            checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
+        algo_name = Agent["Algorithm"]
+        config = Training["config"]
+
+        if algo_name == "PPO":
+            from ray.rllib.agents.ppo import PPOTrainer
+            self.agent = PPOTrainer(config=config)
    
         # Load Agent
         self.agent.restore(checkpoint_path=checkpoint_path)
+        return Training, Agent, Environment
         
 
-    def test(self, env: gym.Env, render=False):
-        """
-        Test trained agent for a single episode. Return the episode reward
-        :param env: Environment to test the agent on
-        :return: Episode reward
-        """
-
-        # run until episode ends
-        episode_reward = 0
-        done = False
-        obs = env.reset()
-        while not done:
-            action = self.agent.compute_single_action(obs)
-            observation, reward, terminated, truncated, info = env.step(action)
-            if render:
-                env.render()
-            if terminated or truncated:
-                done = True
-            episode_reward += reward
-        return episode_reward
+    def get_action(self, observation):
+        return self.agent.compute_action(observation)
 
     def add_to_config(self, config: Dict):
         self.config = {**self.config, **config}

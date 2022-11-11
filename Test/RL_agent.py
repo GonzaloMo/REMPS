@@ -50,10 +50,11 @@ if __name__=="__main__":
     elif mode == "test":
         # Create environment
         env_config = MainConfig["Environment"]
+        agent.load(MainConfig["Agent_path"])
         env = env_creator(env_config)
         obs = env.reset()
         while True:
-            action = env.action_space.sample()
+            action = agent.get_action(obs)
             print(env.Number2name_action(action))
             obs, reward, done, info = env.step(action)
             env.render()
