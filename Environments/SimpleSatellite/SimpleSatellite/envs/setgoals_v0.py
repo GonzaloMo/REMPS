@@ -81,18 +81,19 @@ class Simple_satellite(gym.Env):
         n_gs = self.SatSim.n_gs
         max_inf = 9999999999
         # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
-        self.observation_space = spaces.Dict({'Orbit':           spaces.Box(low=0, high=max_inf, shape=(1,), dtype=np.int32), # current orbit
-                                              'Pos':             spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32), # current angular position
-                                              'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
-                                              'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
-                                              'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
-                                              'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
-                                              'Targets':         spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32), # target initial and final position
-                                              'Ground Stations': spaces.Box(low=0, high=370., shape=(n_gs*2,), dtype=np.float32), # ground station initial and final position
-                                              'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32)}) # goals to be achieved
+        spaces_dict = {'Orbit': spaces.Box(low=0, high=max_inf, shape=(1,), dtype=np.int32), # current orbit
+                  'Pos':             spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32), # current angular position
+                  'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
+                  'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
+                  'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
+                  'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
+                  'Targets':         spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32), # target initial and final position
+                  'Ground Stations': spaces.Box(low=0, high=370., shape=(n_gs*2,), dtype=np.float32), # ground station initial and final position
+                  'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32)}
         if self.SatSim.POWER_OPTION:
-            self.observation_space.spaces['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
-        self.state = self.SatSim.get_state()
+            spaces_dict['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
+        self.observation_space = spaces.Dict(spaces_dict) # goals to be achieved
+        
         self.Total_reward = 0
         self.Reward = Reward
         
@@ -203,30 +204,34 @@ class Simple_satellite(gym.Env):
             observation["Power"] = np.array([state["Power"]], dtype=np.float32)
         return observation
 
-    def print_obs(self, obs: Dict[str, Any]):
+    def write_obs(self, obs: Dict[str, Any]):
         """
         Print the observation
         Input:
             obs: Dict[str, Any]
         """
-        print('----------State-----------')
+        obs_str = '\n----------State-----------\n'
         for k, v in obs.items():
-            print(k+': ',v)
-        print('---------------------')
+            obs_str += f"{k}: {v}\n"
+        obs_str += '---------------------\n'
+        return obs_str
 
-    def print_obs_shape(self, obs: Dict[str, Any]):
+    def write_obs_shape(self, obs: Dict[str, Any]):
         """
         Print the shape of the observation
         Input:
             obs: Dict[str, Any]
         """
-        print('----------State-----------')
+        obs_str = '\n----------State Shape-----------\n'
+        import collections
+        # obs = collections.OrderedDict(sorted(obs.items()))
         for k, v in obs.items():
-            if isinstance(v, np.ndarray):
-                print(k+': ',np.shape(v))
+            if isinstance(v, np.ndarray) or isinstance(v, gym.spaces.box.Box):
+                obs_str += f"{k}: {np.shape(v)}\n"
             else:
-                print(k+': ',type(v))
-        print('---------------------')
+                obs_str += f"{k}: {type(v)}\n"
+        obs_str += '---------------------\n'
+        return obs_str
     
     def Name2number_action(self, action_name: str) -> int:
         """

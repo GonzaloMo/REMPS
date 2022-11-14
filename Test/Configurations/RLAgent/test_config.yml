@@ -1,7 +1,7 @@
 Environment:
 
   # (List[str]) – List of environments to be trainned in sequence carrying the weights. [""./Configurations/Environment_Config/Env_1.yaml""]
-  Env_setup: "./Configurations/RLAgent/Environment_Config/Env_2.yaml" 
+  Env_setup: "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml" 
 
   # (str) – The gym environment to use. This can also be a callable that returns a gym environment when called.
   env: "SimpleSatellite-setgoals-v0"
@@ -16,4 +16,4 @@ Environment:
   Log_dir: "./Results"
 
 
-Agent_path: "./Results/RLAgent_2/SimpleSatellite-setgoals-v0/Env_4/PPO_SimpleSatellite-setgoals-v0_409a4_00000_0_2022-11-04_21-40-08"
+Agent_path: "./Results/PPO_SimpleSatellite-setgoals-v0_f68c3_00002_2_lr=0.0010_2022-11-11_13-44-42"

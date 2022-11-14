@@ -41,8 +41,10 @@ register_env(env_name, env_creator)
 ###### Start Ray ######
 ray.init(ignore_reinit_error=True)
 agent = RAY_agent()
-if recover is not None:
-    agent.load(recover)
+if recover is not None or mode == "test":
+    if recover is None:
+        recover = MainConfig["Agent_path"]
+    agent.load(recover, mode=mode)
     print(f"Recovering from {recover}")
 
 ###### Main #############
@@ -58,9 +60,11 @@ if __name__=="__main__":
         env_config = MainConfig["Environment"]
         env = env_creator(env_config)
         obs = env.reset()
+        import IPython; IPython.embed()
         while True:
-            action = agent.get_action(obs)
-            print(env.Number2name_action(action))
+            # action = agent.get_action(obs)
+            # print(env.Number2name_action(action))
+            action = env.action_space.sample()
             obs, reward, done, info = env.step(action)
             env.render()
             if done:

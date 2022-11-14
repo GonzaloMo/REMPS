@@ -76,7 +76,7 @@ class RAY_agent:
             json.dump(Temp_config, outfile)
         print('Agent Saved')
 
-    def load(self, path: str, specific_checkpoint: str = None):
+    def load(self, path: str, mode: str="train", specific_checkpoint: str = None):
         """
         Agent loading function.
         :param path: Path to the saved agent
@@ -96,6 +96,9 @@ class RAY_agent:
         config = Training["config"]
 
         if algo_name == "PPO":
+            if mode == "test":
+                config["num_workers"] = 0
+                config["num_envs_per_worker"] = 1
             from ray.rllib.agents.ppo import PPOTrainer
             self.agent = PPOTrainer(config=config)
    
