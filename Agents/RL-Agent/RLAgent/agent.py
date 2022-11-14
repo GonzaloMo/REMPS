@@ -33,6 +33,8 @@ class RAY_agent:
         config["render_env"] = Environment["render_env"]
 
         restore = None
+        config = self.check_config(config)
+        # import IPython; IPython.embed()
         for env_file in Trianing_Envs:
             # Set Experiment config file
             Exp_name = file_name_function(env_file).stem
@@ -115,4 +117,10 @@ class RAY_agent:
                     self.config[k][k1] = tune.grid_search(v1)
             else:
                 self.config[k] = tune.grid_search(v)
-    
+    def check_config(self, config: Dict):
+        for item, value in config.items():
+            if type(value) == Dict:
+                config[item] = self.check_config(value)
+            elif type(value) == list:
+                config[item] = tune.grid_search(value)
+        return config
