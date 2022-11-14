@@ -33,7 +33,7 @@ GS_HALF_SIZE: 45. # in degrees
 
 
 # Target parameters
-Random_Targets: True
+Random_Targets: False
 # If Random Targets is True
 Number_of_targets: 10
 TARGET_HALF_SIZE: 5. # in degrees
@@ -41,8 +41,9 @@ TARGET_HALF_SIZE: 5. # in degrees
 # Coverage file
 CoverageFile: "" # YAML File with the coverage
 
+
 # Power parameters
-POWER_OPTION: False
+POWER_OPTION: True
 POWER_CONSUMPTION: 
   TP: -0.1 # in %/s when Take Picture
   AN: -0.1 # in %/s when Analyse

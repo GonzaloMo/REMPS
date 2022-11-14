@@ -8,7 +8,7 @@ Training:
     timesteps_total: 100000000 
 
   # (str) – Local dir to save training results to. Defaults to ~/ray_results.
-  local_dir: "./Logs/RLAgent_3/"
+  local_dir: "./Logs/PowerAgent/"
 
   # (int) – How many training iterations between checkpoints. A value of 0 (default) disables checkpointing.
   checkpoint_freq: 1000000
@@ -33,7 +33,10 @@ Training:
 Environment:
 
   # (List[str]) – List of environments to be trainned in sequence carrying the weights. [""./Configurations/Environment_Config/Env_1.yaml""]
-  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/Env_4.yaml"]
+  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
   render_env: False
 
   env_config: 
@@ -50,4 +53,4 @@ Agent:
   # (str) – Name of the algorithm to be used. Default set to "PPO". ["PPO", "DQN", "DDPG", "TD3", "SAC"]
   Algorithm: "PPO"
   # (List[str]) – List of combinable agent Configuration files. Default ["./Configurations/Agent_Config/PPO_Config.yaml"]
-  Agent_Config: ["./Configurations/RLAgent/Agent_Config/PPO_Config_search.yaml"]
+  Agent_Config: ["./Configurations/RLAgent/Agent_Config/PPO_Config.yaml"]
