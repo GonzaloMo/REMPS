@@ -60,9 +60,11 @@ if __name__=="__main__":
         env_config = MainConfig["Environment"]
         env = env_creator(env_config)
         obs = env.reset()
+        import IPython; IPython.embed()
         while True:
-            action = agent.get_action(obs)
-            print(env.Number2name_action(action))
+            # action = agent.get_action(obs)
+            # print(env.Number2name_action(action))
+            action = env.action_space.sample()
             obs, reward, done, info = env.step(action)
             env.render()
             if done:
