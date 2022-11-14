@@ -41,8 +41,10 @@ register_env(env_name, env_creator)
 ###### Start Ray ######
 ray.init(ignore_reinit_error=True)
 agent = RAY_agent()
-if recover is not None:
-    agent.load(recover)
+if recover is not None or mode == "test":
+    if recover is None:
+        recover = MainConfig["Agent_path"]
+    agent.load(recover, mode=mode)
     print(f"Recovering from {recover}")
 
 ###### Main #############
