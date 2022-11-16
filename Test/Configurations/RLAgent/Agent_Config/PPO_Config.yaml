@@ -18,7 +18,8 @@ batch_mode: truncate_episodes
 observation_filter: NoFilter
 num_gpus: 0
 model:
-    dim: 42
+    use_lstm: True
+    fcnet_hiddens: [256, 256, 256]
     vf_share_layers: True
 # Only for evaluation runs, render the env.
 evaluation_interval: 100000
