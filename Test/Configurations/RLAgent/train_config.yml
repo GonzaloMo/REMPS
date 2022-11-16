@@ -17,7 +17,10 @@ Training:
   checkpoint_at_end: True
 
   # (int) – Number of checkpoints to keep. A value of None keeps all checkpoints. Defaults to None. If set, need to provide checkpoint_score_attr.
-  # keep_checkpoints_num: None 
+  keep_checkpoints_num: 10
+
+  # (str) – The attribute on the result object to use for checkpoint scoring. This is used in conjunction with checkpoint_score_attr to determine the best checkpoint to keep. Defaults to None.
+  checkpoint_score_attr: "episode_reward_mean"
 
   # (str) – Specifies by which attribute to rank the best checkpoint. Default is increasing order. If attribute starts with min- it will rank attribute in decreasing order, i.e. min-validation_loss.
   # ['custom_metrics', 'episode_media', 'num_recreated_workers', 'info', 'sampler_results', 'episode_reward_max', 'episode_reward_min', 'episode_reward_mean', 'episode_len_mean', 

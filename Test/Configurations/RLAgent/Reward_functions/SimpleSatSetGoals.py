@@ -34,7 +34,7 @@ def Reward_v0(env: gym.Env, action_in: Tuple[int,int]):
             reward -= 10
         # Penalize for more than 99% of power
         elif obs["Power"] > 99.:
-            reward -= .1
+            reward -= .01
         elif obs["Power"] < 0.1:
             reward -= 1000000000
         else:
