@@ -5,7 +5,7 @@ import ray
 from ray import tune 
 from pathlib import Path as file_name_function
 
-
+from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
 
 class RAY_agent:
     def __init__(self):
@@ -16,8 +16,8 @@ class RAY_agent:
         # Load Agent Configuration Files
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
-            from ray.rllib.agents.ppo import PPOTrainer
-            self.agent = PPOTrainer
+            from RLAgent.Utils.ray import PPO as agent
+        self.agent = agent
         agent_files = Agent["Agent_Config"]
         config = {}
         for fileloc in agent_files:
@@ -35,6 +35,7 @@ class RAY_agent:
         restore = None
         config = self.check_config(config)
         # import IPython; IPython.embed()
+        
         for env_file in Trianing_Envs:
             # Set Experiment config file
             Exp_name = file_name_function(env_file).stem
@@ -42,13 +43,13 @@ class RAY_agent:
             env_config["Env_setup"] = env_file
             config["env_config"] = env_config
             config["env"] = env_name
-
+            callback = [Custom_TBXLoggerCallback(env_creator(env_config))]
             # Set Trainning configuration dict
             Training["config"] = config
             Training["restore"] = restore
             Training["name"] = Exp_name
             # Train on set envirnment
-            self.analysis = ray.tune.run(self.agent, **Training)
+            self.analysis = ray.tune.run(self.agent, **Training, callbacks=callback)
             self.last_checkpoint = self.analysis.get_last_checkpoint()
             # Save Agent
             restore = self.last_checkpoint._local_path
@@ -99,8 +100,8 @@ class RAY_agent:
             if mode == "test":
                 config["num_workers"] = 0
                 config["num_envs_per_worker"] = 1
-            from ray.rllib.agents.ppo import PPOTrainer
-            self.agent = PPOTrainer(config=config)
+            from RLAgent.Utils.ray import PPO
+            self.agent = PPO(config=config)
    
         # Load Agent
         self.agent.restore(checkpoint_path=checkpoint_path)

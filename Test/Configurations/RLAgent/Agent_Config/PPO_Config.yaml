@@ -19,7 +19,7 @@ observation_filter: NoFilter
 num_gpus: 0
 model:
     use_lstm: True
-    fcnet_hiddens: [64,64,64]
+    fcnet_hiddens: [64, 64, 64]
     vf_share_layers: True
 # Only for evaluation runs, render the env.
 evaluation_interval: 100000

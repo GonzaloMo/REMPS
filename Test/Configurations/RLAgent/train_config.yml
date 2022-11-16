@@ -5,13 +5,13 @@ Training:
   # (True if trial should be stopped, False otherwise). This can also be a subclass of ray.tune.Stopper, 
   # which allows users to implement custom experiment-wide stopping (i.e., stopping an entire Tune run based on some time constraint).
   stop: 
-    timesteps_total: 100000000 
+    timesteps_total: 1000 #100000000 
 
   # (str) – Local dir to save training results to. Defaults to ~/ray_results.
   local_dir: "./Logs/PowerAgent/"
 
   # (int) – How many training iterations between checkpoints. A value of 0 (default) disables checkpointing.
-  checkpoint_freq: 1000000
+  checkpoint_freq: 1000 #1000000
 
   # (bool) – Whether to checkpoint at the end of the experiment regardless of the checkpoint_freq. Default is False.
   checkpoint_at_end: True
@@ -36,10 +36,10 @@ Training:
 Environment:
 
   # (List[str]) – List of environments to be trainned in sequence carrying the weights. [""./Configurations/Environment_Config/Env_1.yaml""]
-  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml",
-                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
-                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
-                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
+  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml"] #,
+                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
+                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
+                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
   render_env: False
 
   env_config: 

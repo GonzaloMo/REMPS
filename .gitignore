@@ -7,6 +7,7 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 
 # RL SimpleSat
 Agents/RL-Agent/RLAgent/Logs
+Agents/RL-Agent/RLAgent/__pycache__
 
 # OR Tools
 Agents/OR-Tool/Logs
