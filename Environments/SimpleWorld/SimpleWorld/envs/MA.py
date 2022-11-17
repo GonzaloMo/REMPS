@@ -3,9 +3,9 @@ from typing import Dict
 import gym
 import math
 from gym import spaces
-from Agents.AgentPDDL import PDDLAgent
+from SimpleWorld.envs.Utils.AgentPDDL import PDDLAgent
+from SimpleWorld.envs.Utils.GridWorld import Gridworld
 from time import sleep
-from Plan_env.GridWorld import Gridworld
 from copy import copy
 import numpy as np
 import random
