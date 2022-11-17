@@ -1,0 +1,2 @@
+# OPEN AI GYM PARAMETERS
+action_space_type: "Advance" # "Simple" or "Advanced"

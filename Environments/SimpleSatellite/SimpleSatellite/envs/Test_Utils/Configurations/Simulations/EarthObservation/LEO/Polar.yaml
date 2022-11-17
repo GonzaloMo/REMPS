@@ -1,7 +1,4 @@
-# OPEN AI GYM PARAMETERS
-action_space_type: "Advance" # "Simple" or "Advanced"
-
-# SIMULATION PARAMETERS
+# SIMULATION PARAMETERS of a Polar orbit
 # General simulation parameters Parameters
 MAX_ORBITS: 20
 PERIOD: 600 # in seconds
@@ -52,6 +49,6 @@ POWER_CONSUMPTION:
   PowerGenerationRate: .5 # in %/s when not taking actions
 
 # Eclipse parameters
-Umbra: 
-Penumbra
-Light
+Umbra: 0.4
+Penumbra: 0.08
+Light: .44
