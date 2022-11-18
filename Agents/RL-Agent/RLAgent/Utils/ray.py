@@ -206,6 +206,7 @@ class Custom_TBXLoggerCallback(LoggerCallback):
                 "This may be due to an unsupported type "
                 "in the hyperparameter values."
             )
-    # def on_step_begin(self, iteration, trials, **info):
-    #     # import IPython; IPython.embed()
-    #     pass
+            
+    def on_step_begin(self, iteration, trials, **info):
+        if  len(trials) > 2:
+            import IPython; IPython.embed()

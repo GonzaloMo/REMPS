@@ -48,3 +48,4 @@ POWER_CONSUMPTION:
   AN: -0.1 # in %/s when Analyse
   DP: -0.1 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
+
