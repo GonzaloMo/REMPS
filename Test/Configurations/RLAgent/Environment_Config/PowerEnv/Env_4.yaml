@@ -46,13 +46,10 @@ POWER_CONSUMPTION:
   TP: -0.3 # in %/s when Take Picture
   AN: -0.1 # in %/s when Analyse
   DP: -0.1 # in %/s when dumping
-<<<<<<< HEAD:Test/Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml
-  PowerGenerationRate: .5 # in %/s when not taking actions
-=======
+
   PowerGenerationRate: .5 # in %/s when not taking actions
 
 # Eclipse parameters
 Umbra: 0.34
 Penumbra: 0.08
 Light: 0.5
->>>>>>> simple_satellite:Environments/SimpleSatellite/SimpleSatellite/envs/Test_Utils/Configurations/Simulations/EarthObservation/LEO/Polar.yaml
