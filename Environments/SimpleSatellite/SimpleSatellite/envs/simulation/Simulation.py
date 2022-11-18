@@ -34,7 +34,7 @@ class SatelliteSim:
                 POWER_OPTION: bool=False,
                 POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
                 ACTION_THRESHOLD: float=1,
-                Umbra: float=0., Penumbra: float=0., Light: float=1.,
+                Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=False,
                 CoverageFile: str="",
                 Log_dir = "./Logs/Simulation/"):
         """
@@ -96,6 +96,7 @@ class SatelliteSim:
         self.velocity = SatelliteSim.CIRCUNFERENCE/PERIOD
 
         # Eclipse variables
+        self.ECLIPSE_OPTION = ECLIPSE_OPTION
         self.Umbra_percentage = Umbra
         self.Penumbra_percentage = Penumbra
         self.light_percentage = Light
@@ -293,7 +294,7 @@ class SatelliteSim:
                 return False, "Memory full"
 
             # Check if the satellite is in light
-            if not(self.light_range[0] < self.pos < self.light_range[1]):
+            if not(self.light_range[0] < self.pos < self.light_range[1]) and self.ECLIPSE_OPTION:
                 return False, "Not in light"
             
             # return True if all the conditions are met
