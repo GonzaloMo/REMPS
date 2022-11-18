@@ -21,8 +21,10 @@ model:
     use_lstm: True
     fcnet_hiddens: [64, 64, 64]
     vf_share_layers: True
+    
+render_env: True
 # Only for evaluation runs, render the env.
 evaluation_interval: 100000
 evaluation_duration: 100
 evaluation_config:
-    render_env: False
+    render_env: True

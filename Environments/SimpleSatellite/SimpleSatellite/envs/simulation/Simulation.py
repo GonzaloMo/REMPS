@@ -232,8 +232,8 @@ class SatelliteSim:
             if action == SatelliteSim.ACTION_TAKE_IMAGE:
                 # Check free location in the memory
                 if self.Underterministic_actions["TP"] < np.random.rand():
-                    self.images[add_info] = add_info+1
-                    self.analysis[add_info] = False
+                    self.images[add_info-1] = add_info
+                    self.analysis[add_info-1] = False
                     self.memory_level = self.memory_level+1
                     return
                 

@@ -49,3 +49,8 @@ POWER_CONSUMPTION:
   AN: -0.1 # in %/s when Analyse
   DP: -0.1 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
+
+# Eclipse parameters
+Umbra: 0.34
+Penumbra: 0.08
+Light: 0.5

@@ -7,6 +7,7 @@ Max_image_goals_per_target: 10
 MAX_ORBITS: 20
 PERIOD: 600 # in seconds
 
+
 # Satellite parameters
 MEMORY_SIZE: 15 # Memory should be higher than 1 
 
@@ -14,7 +15,6 @@ MEMORY_SIZE: 15 # Memory should be higher than 1
 DURATION_TAKE_IMAGE: 20 # in seconds
 DURATION_DUMP: 20 # in seconds
 DURATION_ANALYSE: 50 # in seconds
-ACTION_THRESHOLD: 0.5 # in seconds
 
 Underterministic_actions:  # Values between 0 and 1
   TP: 0.
@@ -29,23 +29,30 @@ Underterministic_actions:  # Values between 0 and 1
 Random_GS: False
 # If Random GS is True
 Number_of_GS: 2
-GS_HALF_SIZE: 90. # in degrees
+GS_HALF_SIZE: 20. # in degrees
 
 
 # Target parameters
 Random_Targets: False
 # If Random Targets is True
-Number_of_targets: 10
-TARGET_HALF_SIZE: 36. # in degrees
+Number_of_targets: 4
+TARGET_HALF_SIZE: 5. # in degrees
 
 # Coverage file
-CoverageFile: "" # YAML File with the coverages
+CoverageFile: "" # YAML File with the coverage
+
+# Path to store the results and logs
+Log_dir: "./Logs/Simulation/"
 
 # Power parameters
 POWER_OPTION: True
 POWER_CONSUMPTION: 
-  TP: -0.1 # in %/s when Take Picture
+  TP: -0.3 # in %/s when Take Picture
   AN: -0.1 # in %/s when Analyse
   DP: -0.1 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
 
+# Eclipse parameters
+Umbra: 0.34
+Penumbra: 0.08
+Light: 0.5

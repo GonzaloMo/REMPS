@@ -195,6 +195,12 @@ class Simple_satellite(gym.Env):
         observation["Images"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
         for i in range(self.SatSim.MEMORY_SIZE):
             img = state["Images"][i]
+            if img > 10:
+                print(i)
+                print(self.SatSim.n_targets)
+                print(state["Images"])
+                print(state["Images"][i])
+                print(img)
             if img > 0:
                 observation["Images"][img-1] += 1
                 if state["Analysis"][i]:
