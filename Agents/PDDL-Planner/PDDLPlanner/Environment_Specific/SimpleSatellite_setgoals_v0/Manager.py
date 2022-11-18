@@ -83,7 +83,13 @@ def writePDDLProblem(obs: dict, file: str, orbits=5) -> None:
             # Set end
             if end > 0:
                    gs += "  (at " + str(round(end, 3)-1) + " (not (dump_available)))\n"
-            
+        
+        # Eclipse conditions
+        st_eclipse = obs['Eclipse'][0] + 360 * o - obs['Pos'][0]
+        end_eclipse = obs['Eclipse'][1] + 360 * o - obs['Pos'][0]
+        eclipse = f"  (at " + str(round(st_eclipse, 3)-1) + " (sat_in_Light))\n"
+        eclipse += f"  (at " + str(round(end_eclipse, 3)-1) + " (not (sat_in_Light)))\n"
+
     initC += tg
     initC += gs
     initC +="\n"
@@ -173,7 +179,10 @@ def writePDDLDomain(env: gym.Env, file: str, Conservative_add:float=2):
     (:predicates
         (image_available ?i  - image)
         (dump_available)
-        
+
+        (sat_in_Light)
+        (sat_in_Penumbra)
+        (sat_in_Umbra)
         (sat_busy)
         (sat_free)
     )
