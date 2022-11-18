@@ -131,13 +131,15 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
             reward -= 100
         elif add_info == "Satellite busy":
             reward -= 100
-        
+          
     # Power 
     if env.SatSim.POWER_OPTION:
         if obs["Power"] < 25.:
-            reward -= 10
+            reward -= 100
         elif obs["Power"] > 99.:
-            reward -= .1
+            reward -= .01
+        elif obs["Power"] < 0.01:
+            reward -= 1000000000
         else:
-            reward += .001
+            reward += 1
     return reward
