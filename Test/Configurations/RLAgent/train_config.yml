@@ -50,7 +50,7 @@ Environment:
     Reward_Module: "Configurations.RLAgent.Reward_functions.SimpleSatSetGoals"
 
     # (str) – Reward function to be used. Default set to "Reward_1"
-    Reward_Function: "Reward_v0"
+    Reward_Function: "Reward_v2"
 
 Agent:
   # (str) – Name of the algorithm to be used. Default set to "PPO". ["PPO", "DQN", "DDPG", "TD3", "SAC"]
