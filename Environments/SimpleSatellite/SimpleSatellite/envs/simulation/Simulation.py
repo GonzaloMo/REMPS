@@ -170,7 +170,7 @@ class SatelliteSim:
             self.busy = 1
         else:
             if self.Taking_action != SatelliteSim.ACTION_DO_NOTHING: 
-                self.apply_effect(action)
+                self.apply_effect()
             self.busy = 0
             self.Taking_action = 0
         # Check if simulation ends
@@ -227,24 +227,25 @@ class SatelliteSim:
             
     def apply_effect(self):
         action, add_info = self.last_action
-        # Take picture action
-        if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            # Check free location in the memory
-            if self.Underterministic_actions["TP"] < np.random.rand():
-                self.images[add_info] = add_info+1
-                self.analysis[add_info] = False
-                self.memory_level = self.memory_level+1
-                return
+        if not isinstance(add_info,str): 
+            # Take picture action
+            if action == SatelliteSim.ACTION_TAKE_IMAGE:
+                # Check free location in the memory
+                if self.Underterministic_actions["TP"] < np.random.rand():
+                    self.images[add_info] = add_info+1
+                    self.analysis[add_info] = False
+                    self.memory_level = self.memory_level+1
+                    return
+                
+            # Analyse picture
+            if action == SatelliteSim.ACTION_ANALYSE:
+                if self.Underterministic_actions["AN"] < np.random.rand():
+                    self.analysis[add_info] = True
+                    self.last_action = action
+                    return
             
-        # Analyse picture
-        if action == SatelliteSim.ACTION_ANALYSE:
-            if self.Underterministic_actions["AN"] < np.random.rand():
-                self.analysis[add_info] = True
-                self.last_action = action
-                return
-        
-        # Dump picture
-        if action == SatelliteSim.ACTION_DUMP:
+            # Dump picture
+            if action == SatelliteSim.ACTION_DUMP:
                 self.n_images_dumped[self.images[add_info]-1] += 1
                 self.images[add_info] = 0
                 self.analysis[add_info] = False
@@ -311,11 +312,11 @@ class SatelliteSim:
                     return False, "No image to analyse"
             else:
                 mem_slot = None
-                for i in range(self.images):
+                for i in range(len(self.images)):
                     if self.images[i] == img and not self.analysis[i]:
                         mem_slot = i
                         break
-                if first_analize == None:
+                if mem_slot == None:
                     return False, "No image to analyse"
             
             # return True if all the conditions are met
@@ -332,12 +333,12 @@ class SatelliteSim:
             # Check if the image is analysed
             if img == None:
                 try:
-                    first_analize = self.analysis.index(True)
+                    mem_slot = self.analysis.index(True)
                 except:
                     return False, "No image to dump"
             else:
                 mem_slot = None
-                for i in range(self.images):
+                for i in range(len(self.images)):
                     if self.images[i] == img and self.analysis[i]:
                         mem_slot = i
                         break

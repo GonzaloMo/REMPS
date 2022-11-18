@@ -112,7 +112,9 @@ class Simple_satellite(gym.Env):
         # Get Reward
         reward = self.Reward(self, action_tuple)
         # Take action 
-        if self.SatSim.check_action(action_tuple):
+        a, img = action_tuple
+        check, _ = self.SatSim.check_action(a, img)
+        if check:
             action_name = self.Number2name_action(action)
             if "dump" in action_name:
                 action_t, img = action_tuple

@@ -183,8 +183,6 @@ class SatelliteView:
             name = self.font.render(act, True, SatelliteView.WHITE)
             self.screen.blit(name, (x_a-w_a*.5, y_a+h_a*.4))
         
-        
-
         # Draw Power bar
         if sim.POWER_OPTION:
             # POwer Bar
@@ -214,41 +212,6 @@ class SatelliteView:
             # Power text
             name = self.font.render("Power", True, SatelliteView.WHITE)
             self.screen.blit(name, (x_a, y_a + SatelliteView.POWER_BAR_HEIGHT + 4))
-
-
-
-        # # draw single goals
-        # if len(sim.goalRef.single_goals) >= 0:
-        #     for index, target in enumerate(sim.goalRef.single_goals):
-        #         pygame.draw.rect(self.screen, SatelliteView.ORANGE,
-        #                      [SatelliteView.OFFSET + index * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.1,
-        #                       SatelliteView.HEIGHT - SatelliteView.GOAL_SIZE * 5.1,
-        #                       SatelliteView.GOAL_SIZE * 0.8, SatelliteView.GOAL_SIZE * 0.8])
-        #         self.screen.blit(self.text_digits[target], (
-        #                     SatelliteView.OFFSET + index * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.2,
-        #                     SatelliteView.HEIGHT - SatelliteView.GOAL_SIZE * 5.0))
-
-        # # draw campaigns
-        # orbit = math.floor(sim.sim_time / self.sim.PERIOD)
-        # if len(sim.goalRef.campaigns) >= 0:
-        #     for index, c in enumerate(sim.goalRef.campaigns):
-        #         pygame.draw.rect(self.screen, SatelliteView.WHITE,
-        #                          [SatelliteView.OFFSET + SatelliteView.GOAL_SIZE * 0.1,
-        #                           SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.4 - index),
-        #                           len(c.targets) * (1.1*SatelliteView.GOAL_SIZE), SatelliteView.GOAL_SIZE])
-        #         for ti, t in enumerate(c.targets):
-        #             color = SatelliteView.ORANGE
-        #             if not c.campaign_started or t[1]+c.campaign_start_orbit > orbit:
-        #                 color = SatelliteView.BLACK
-        #             if c.targets_completed[ti]:
-        #                 color = SatelliteView.PURPLE
-        #             pygame.draw.rect(self.screen, color,
-        #                          [SatelliteView.OFFSET + ti * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.2,
-        #                           SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.3-index),
-        #                           SatelliteView.GOAL_SIZE * 0.8, SatelliteView.GOAL_SIZE * 0.8])
-        #             self.screen.blit(self.text_digits[t[0]], (
-        #                         SatelliteView.OFFSET + ti * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.3,
-        #                         SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.2-index)))
         pygame.draw.line(self.screen, SatelliteView.WHITE, [0, SatelliteView.DIV_AGENT],[SatelliteView.WIDTH, SatelliteView.DIV_AGENT], width=2)
         pygame.draw.arc(self.screen, SatelliteView.BLACK, planetList, 0, 2 * math.pi, width=2)
         

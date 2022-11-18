@@ -28,7 +28,8 @@ def Reward_example_SS_setGolas_v0(env: gym.Env, action_tuple: int):
     action, img = action_tuple
     reward = 0
     # Reward for dumping a picture
-    if env.SatSim.check_action((action,img)):
+    check, _ = env.SatSim.check_action(action,img)
+    if check:
         if action == env.SatSim.ACTION_DUMP :
             reward += 100
 
