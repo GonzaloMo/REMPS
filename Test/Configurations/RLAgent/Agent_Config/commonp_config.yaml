@@ -45,7 +45,7 @@
 # Discount factor of the MDP.
 "gamma": 0.99,
 # The default learning rate.
-"lr": 0.0001,
+"lr": 0.001,
 # Training batch size, if applicable. Should be >= rollout_fragment_length.
 # Samples batches will be concatenated together to a batch of this size,
 # which is then passed to SGD.

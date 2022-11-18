@@ -1,7 +1,7 @@
 Environment:
 
   # (List[str]) – List of environments to be trainned in sequence carrying the weights. [""./Configurations/Environment_Config/Env_1.yaml""]
-  Env_setup: "./Configurations/RLAgent/Environment_Config/Env_1.yaml" 
+  Env_setup: "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml" 
 
   # (str) – The gym environment to use. This can also be a callable that returns a gym environment when called.
   env: "SimpleSatellite-setgoals-v0"
@@ -13,10 +13,7 @@ Environment:
   Reward_Function: "Reward_v0"
 
   # (str) – Directory to save the results. Default set to "./Results"
-  Log_dir: "./Results/RLAgent/Env_1"
+  Log_dir: "./Results"
 
-Agent:
-  # (str) – Name of the algorithm to be used. Default set to "PPO". ["PPO", "DQN", "DDPG", "TD3", "SAC"]
-  Algorithm: "PPO"
-  # (List[str]) – List of combinable agent Configuration files. Default ["./Configurations/Agent_Config/PPO_Config.yaml"]
-  Agent_Config: ["./Configurations/RLAgent/Agent_Config/PPO_Config.yaml"]
+
+Agent_path: "./Results/PPO_SimpleSatellite-setgoals-v0_f68c3_00002_2_lr=0.0010_2022-11-11_13-44-42"

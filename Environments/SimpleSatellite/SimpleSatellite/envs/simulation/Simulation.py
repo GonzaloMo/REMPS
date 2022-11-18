@@ -192,7 +192,6 @@ class SatelliteSim:
             elif self.Power < 0.:
                 self.Power = 0.
                 done = True
-                print("Power depleted")
         state = self.get_state()
         return state, done
         
@@ -456,7 +455,6 @@ class SatelliteSim:
                 'Ground Stations': self.groundStations,
                 'Eclipse': self.light_range + self.umbra_range}
         if self.POWER_OPTION:
-            # print(self.Power)
             obs['Power'] = self.Power
         return obs
         

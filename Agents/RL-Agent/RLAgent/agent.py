@@ -5,7 +5,7 @@ import ray
 from ray import tune 
 from pathlib import Path as file_name_function
 
-
+from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
 
 class RAY_agent:
     def __init__(self):
@@ -16,8 +16,8 @@ class RAY_agent:
         # Load Agent Configuration Files
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
-            from ray.rllib.agents.ppo import PPOTrainer
-            self.agent = PPOTrainer
+            from RLAgent.Utils.ray import PPO as agent
+        self.agent = agent
         agent_files = Agent["Agent_Config"]
         config = {}
         for fileloc in agent_files:
@@ -33,6 +33,9 @@ class RAY_agent:
         config["render_env"] = Environment["render_env"]
 
         restore = None
+        config = self.check_config(config)
+        # import IPython; IPython.embed()
+        
         for env_file in Trianing_Envs:
             # Set Experiment config file
             Exp_name = file_name_function(env_file).stem
@@ -40,13 +43,13 @@ class RAY_agent:
             env_config["Env_setup"] = env_file
             config["env_config"] = env_config
             config["env"] = env_name
-
+            callback = [Custom_TBXLoggerCallback(env_creator(env_config))]
             # Set Trainning configuration dict
             Training["config"] = config
             Training["restore"] = restore
             Training["name"] = Exp_name
             # Train on set envirnment
-            self.analysis = ray.tune.run(self.agent, **Training)
+            self.analysis = ray.tune.run(self.agent, **Training, callbacks=callback)
             self.last_checkpoint = self.analysis.get_last_checkpoint()
             # Save Agent
             restore = self.last_checkpoint._local_path
@@ -74,7 +77,7 @@ class RAY_agent:
             json.dump(Temp_config, outfile)
         print('Agent Saved')
 
-    def load(self, path: str, specific_checkpoint: str = None):
+    def load(self, path: str, mode: str="train", specific_checkpoint: str = None):
         """
         Agent loading function.
         :param path: Path to the saved agent
@@ -87,34 +90,26 @@ class RAY_agent:
         Agent = Temp_config["Agent"]
         Environment = Temp_config["Environment"]
         if specific_checkpoint is not None:
-            checkpoint_path = Temp_config["save_dir"] + specific_checkpoint
+            checkpoint_path = Temp_config["save_dir"] +"/"+ specific_checkpoint
         else:
-            last_checkpoint_loc = Temp_config["last_checkpoint"]
+            checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
+        algo_name = Agent["Algorithm"]
+        config = Training["config"]
+
+        if algo_name == "PPO":
+            if mode == "test":
+                config["num_workers"] = 0
+                config["num_envs_per_worker"] = 1
+            from RLAgent.Utils.ray import PPO
+            self.agent = PPO(config=config)
    
         # Load Agent
         self.agent.restore(checkpoint_path=checkpoint_path)
+        return Training, Agent, Environment
         
 
-    def test(self, env: gym.Env, render=False):
-        """
-        Test trained agent for a single episode. Return the episode reward
-        :param env: Environment to test the agent on
-        :return: Episode reward
-        """
-
-        # run until episode ends
-        episode_reward = 0
-        done = False
-        obs = env.reset()
-        while not done:
-            action = self.agent.compute_single_action(obs)
-            observation, reward, terminated, truncated, info = env.step(action)
-            if render:
-                env.render()
-            if terminated or truncated:
-                done = True
-            episode_reward += reward
-        return episode_reward
+    def get_action(self, observation):
+        return self.agent.compute_action(observation)
 
     def add_to_config(self, config: Dict):
         self.config = {**self.config, **config}
@@ -126,4 +121,10 @@ class RAY_agent:
                     self.config[k][k1] = tune.grid_search(v1)
             else:
                 self.config[k] = tune.grid_search(v)
-    
+    def check_config(self, config: Dict):
+        for item, value in config.items():
+            if type(value) == Dict:
+                config[item] = self.check_config(value)
+            elif type(value) == list:
+                config[item] = tune.grid_search(value)
+        return config

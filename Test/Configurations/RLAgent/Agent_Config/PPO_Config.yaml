@@ -9,14 +9,17 @@ entropy_coeff: 0.01
 train_batch_size: 5000
 rollout_fragment_length: 20
 sgd_minibatch_size: 500
+lr:  0.001
+gamma: 0.99
 num_sgd_iter: 10
-num_workers: 5
-num_envs_per_worker: 5
+num_workers: 2
+num_envs_per_worker: 1
 batch_mode: truncate_episodes
 observation_filter: NoFilter
 num_gpus: 0
 model:
-    dim: 42
+    use_lstm: True
+    fcnet_hiddens: [64, 64, 64]
     vf_share_layers: True
 # Only for evaluation runs, render the env.
 evaluation_interval: 100000
