@@ -3,7 +3,7 @@ from time import sleep
 from typing import Callable
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-from SimpleSatellite.envs.simulation.Reward_functions import Reward_v1 
+from SimpleSatellite.envs.simulation.Reward_functions import Reward_example_SSv0 as Reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
 
@@ -14,7 +14,7 @@ from gym import spaces
 import numpy as np
 class Simple_satellite_Plan_v0(gym.Env):
     def __init__(self,
-            Reward: Callable[[gym.Env, int], float] = Reward_v1,
+            Reward: Callable[[gym.Env, int], float] = Reward,
             random: bool = False):
         super(Simple_satellite_Plan_v0, self).__init__()
         

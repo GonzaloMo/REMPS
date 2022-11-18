@@ -10,7 +10,7 @@ from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
 from time import sleep
 import matplotlib.pyplot as plt
 from copy import copy
-
+import numpy as np
 class SatelliteView:
 
     # Palette
@@ -19,11 +19,14 @@ class SatelliteView:
     PURPLE = (128, 0, 255)
     ORANGE = (255, 128, 0)
     PURPLE_ORANGE = (192, 64, 127)
+    DARK_BLUE = (0, 0, 128)
     WHITE_RED = (168, 132, 130)
     GREEN = (0, 255, 0)
     YELLOW = (255, 255, 0)
     RED = (255, 0, 0)
     GREY = (128, 128, 128)
+    DARK_GREY = (64, 64, 64)
+    LIGHT_YELLOW = (255, 255, 128)
 
     # config Main Window
     WIDTH, HEIGHT = 800, 1000
@@ -64,20 +67,24 @@ class SatelliteView:
         self.planner_screens = []
 
 
-    def drawArc(self, color: pygame.Color, start: float, end: float, thickness: float):
+    def drawArc(self, color: pygame.Color, start: float, end: float, thickness: float, radius: float = None, borders: bool = True):
+        if radius is None:
+            radius = SatelliteView.PLANET_SIZE 
+        
+        x_num = int((end - start) / (2 * math.pi) * SatelliteSim.CIRCUNFERENCE)
+        xpoints = [SatelliteView.PLANET_CENTER[0] + (radius) / 2 * math.sin(
+            start + (end - start) * i / x_num + math.pi / 2) for i in range(x_num+1)]
+        xpoints += [SatelliteView.PLANET_CENTER[0] + (radius- thickness) / 2 * math.sin(
+            start + (end - start) * i / x_num + math.pi / 2) for i in range(x_num, -1, -1)]
 
-        xpoints = [SatelliteView.PLANET_CENTER[0] + (SatelliteView.PLANET_SIZE - thickness) / 2 * math.sin(
-            start + (end - start) * i / 6.0 + math.pi / 2) for i in range(7)]
-        xpoints += [SatelliteView.PLANET_CENTER[0] + (SatelliteView.PLANET_SIZE + 1) / 2 * math.sin(
-            start + (end - start) * i / 6.0 + math.pi / 2) for i in range(6, -1, -1)]
-
-        ypoints = [SatelliteView.PLANET_CENTER[1] + (SatelliteView.PLANET_SIZE - thickness) / 2 * math.cos(
-            start + (end - start) * i / 6.0 + math.pi / 2) for i in range(7)]
-        ypoints += [SatelliteView.PLANET_CENTER[1] + (SatelliteView.PLANET_SIZE + 1) / 2 * math.cos(
-            start + (end - start) * i / 6.0 + math.pi / 2) for i in range(6, -1, -1)]
+        ypoints = [SatelliteView.PLANET_CENTER[1] + (radius) / 2 * math.cos(
+            start + (end - start) * i / x_num + math.pi / 2) for i in range(x_num+1)]
+        ypoints += [SatelliteView.PLANET_CENTER[1] + (radius- thickness) / 2 * math.cos(
+            start + (end - start) * i / x_num + math.pi / 2) for i in range(x_num, -1, -1)]
 
         pygame.draw.polygon(self.screen, color, [(x, y) for x, y in zip(xpoints, ypoints)])
-        pygame.draw.polygon(self.screen, SatelliteView.BLACK, [(x, y) for x, y in zip(xpoints, ypoints)], width=2)
+        if borders:
+            pygame.draw.polygon(self.screen, SatelliteView.BLACK, [(x, y) for x, y in zip(xpoints, ypoints)], width=2)
 
     def drawArcs(self, color, arcs, sim):
         for arc in arcs:
@@ -88,7 +95,6 @@ class SatelliteView:
             self.drawArc(color, min_pos_rad, max_pos_rad, int(SatelliteView.PLANET_SIZE / 16))
 
     def drawSim(self, sim: SatelliteSim, reward: float=None):
-
         self.screen.fill(SatelliteView.BLACK)
         planetList = [(SatelliteView.PLANET_CENTER[0] - SatelliteView.PLANET_SIZE/ 2) ,
                       (SatelliteView.PLANET_CENTER[1] - SatelliteView.PLANET_SIZE/ 2),
@@ -96,15 +102,22 @@ class SatelliteView:
 
         # draw planet
         pygame.draw.ellipse(self.screen, SatelliteView.WHITE, planetList)
+        
 
         # draw ground station arcs
         self.drawArcs(SatelliteView.PURPLE, sim.groundStations, sim)
         
         # draw target arcs
         self.drawArcs(SatelliteView.ORANGE, sim.targets, sim)
+        # Draw Eclipse
+        self.draw_eclpise(sim.get_state()) 
 
         # draw satellite
-        pygame.draw.ellipse(self.screen, SatelliteView.WHITE,
+        if sim.light_range[0] < sim.pos < sim.light_range[1]:
+            sat_color = SatelliteView.BLACK
+        else:
+            sat_color = SatelliteView.WHITE
+        pygame.draw.ellipse(self.screen, sat_color,
                             [(SatelliteView.PLANET_CENTER[0] - SatelliteView.SAT_SIZE/ 2)  + (
                                         SatelliteView.PLANET_SIZE / 2 + SatelliteView.ORBIT_DISTANCE) * math.sin(
                                 2*math.pi*sim.pos/SatelliteSim.CIRCUNFERENCE + math.pi / 2),
@@ -112,7 +125,7 @@ class SatelliteView:
                                          SatelliteView.PLANET_SIZE / 2 + SatelliteView.ORBIT_DISTANCE) * math.cos(
                                  2*math.pi*sim.pos/SatelliteSim.CIRCUNFERENCE + math.pi / 2),
                              SatelliteView.SAT_SIZE, SatelliteView.SAT_SIZE], 0)
-        pygame.draw.line(self.screen, SatelliteView.WHITE,
+        pygame.draw.line(self.screen, sat_color,
                          (SatelliteView.PLANET_CENTER[0] + (
                                      SatelliteView.PLANET_SIZE / 2 + SatelliteView.ORBIT_DISTANCE) * math.sin(
                              2*math.pi*sim.pos/SatelliteSim.CIRCUNFERENCE + math.pi / 2),
@@ -199,42 +212,8 @@ class SatelliteView:
             # Power text
             name = self.font.render("Power", True, SatelliteView.WHITE)
             self.screen.blit(name, (x_a, y_a + SatelliteView.POWER_BAR_HEIGHT + 4))
-
-
-
-        # # draw single goals
-        # if len(sim.goalRef.single_goals) >= 0:
-        #     for index, target in enumerate(sim.goalRef.single_goals):
-        #         pygame.draw.rect(self.screen, SatelliteView.ORANGE,
-        #                      [SatelliteView.OFFSET + index * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.1,
-        #                       SatelliteView.HEIGHT - SatelliteView.GOAL_SIZE * 5.1,
-        #                       SatelliteView.GOAL_SIZE * 0.8, SatelliteView.GOAL_SIZE * 0.8])
-        #         self.screen.blit(self.text_digits[target], (
-        #                     SatelliteView.OFFSET + index * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.2,
-        #                     SatelliteView.HEIGHT - SatelliteView.GOAL_SIZE * 5.0))
-
-        # # draw campaigns
-        # orbit = math.floor(sim.sim_time / self.sim.PERIOD)
-        # if len(sim.goalRef.campaigns) >= 0:
-        #     for index, c in enumerate(sim.goalRef.campaigns):
-        #         pygame.draw.rect(self.screen, SatelliteView.WHITE,
-        #                          [SatelliteView.OFFSET + SatelliteView.GOAL_SIZE * 0.1,
-        #                           SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.4 - index),
-        #                           len(c.targets) * (1.1*SatelliteView.GOAL_SIZE), SatelliteView.GOAL_SIZE])
-        #         for ti, t in enumerate(c.targets):
-        #             color = SatelliteView.ORANGE
-        #             if not c.campaign_started or t[1]+c.campaign_start_orbit > orbit:
-        #                 color = SatelliteView.BLACK
-        #             if c.targets_completed[ti]:
-        #                 color = SatelliteView.PURPLE
-        #             pygame.draw.rect(self.screen, color,
-        #                          [SatelliteView.OFFSET + ti * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.2,
-        #                           SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.3-index),
-        #                           SatelliteView.GOAL_SIZE * 0.8, SatelliteView.GOAL_SIZE * 0.8])
-        #             self.screen.blit(self.text_digits[t[0]], (
-        #                         SatelliteView.OFFSET + ti * (SatelliteView.GOAL_SIZE * 1.1) + SatelliteView.GOAL_SIZE * 0.3,
-        #                         SatelliteView.HEIGHT - (1.2*SatelliteView.GOAL_SIZE) * (3.2-index)))
         pygame.draw.line(self.screen, SatelliteView.WHITE, [0, SatelliteView.DIV_AGENT],[SatelliteView.WIDTH, SatelliteView.DIV_AGENT], width=2)
+        pygame.draw.arc(self.screen, SatelliteView.BLACK, planetList, 0, 2 * math.pi, width=2)
         
     ############
     ## Reward ##
@@ -403,3 +382,20 @@ class SatelliteView:
 
     def quit(self):
         pygame.quit()
+
+    def draw_eclpise(self, obs):
+        div_circ = obs["Eclipse"] + [360.] # Add 360 to close the circle
+        width = int(SatelliteView.ORBIT_DISTANCE + 6*SatelliteView.SAT_SIZE)
+        radius = int(SatelliteView.PLANET_SIZE + width)
+        for i in range(1, len(div_circ)):
+            if i == 1:
+                color = SatelliteView.LIGHT_YELLOW
+            elif i == 3:
+                color = SatelliteView.DARK_GREY
+            else:
+                color = SatelliteView.GREY
+            min_pos_rad = div_circ[i-1]*np.pi/180
+            max_pos_rad = div_circ[i]*np.pi/180
+            if min_pos_rad!=max_pos_rad:
+                self.drawArc(color, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+            

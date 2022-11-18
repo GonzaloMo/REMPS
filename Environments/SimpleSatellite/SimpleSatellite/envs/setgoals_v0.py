@@ -9,7 +9,7 @@ from typing import List, Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-from SimpleSatellite.envs.simulation.Reward_functions import Reward_v1 
+from SimpleSatellite.envs.simulation.Reward_functions import Reward_example_SS_setGolas_v0 as default_reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
 import random
@@ -22,7 +22,7 @@ from gym import spaces
 import numpy as np
 class Simple_satellite(gym.Env):
     def __init__(self,
-            Reward: Callable[[gym.Env, int], float] = Reward_v1,
+            Reward: Callable[[gym.Env, int], float] = default_reward,
             action_space_type: str = "Simple",
             Log_dir: str = "./Logs/Simulation/",
             Max_image_goals_per_target: int = 10,
@@ -113,7 +113,9 @@ class Simple_satellite(gym.Env):
         # Get Reward
         reward = self.Reward(self, action_tuple)
         # Take action 
-        if self.SatSim.check_action(action_tuple):
+        a, img = action_tuple
+        check, _ = self.SatSim.check_action(a, img)
+        if check:
             action_name = self.Number2name_action(action)
             if "dump" in action_name:
                 action_t, img = action_tuple
