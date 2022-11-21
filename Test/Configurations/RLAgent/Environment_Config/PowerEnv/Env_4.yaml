@@ -50,6 +50,6 @@ POWER_CONSUMPTION:
   PowerGenerationRate: .5 # in %/s when not taking actions
 
 # Eclipse parameters
-Umbra: 0.34
-Penumbra: 0.08
-Light: 0.5
+Umbra: 0.
+Penumbra: 0.
+Light: 1.

@@ -36,10 +36,10 @@ Training:
 Environment:
 
   # (List[str]) – List of environments to be trainned in sequence carrying the weights. [""./Configurations/Environment_Config/Env_1.yaml""]
-  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml"] #,
-                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
-                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
-                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
+  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
   render_env: False
 
   env_config: 
