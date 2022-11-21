@@ -30,7 +30,7 @@ class RAY_agent:
         env_config = Environment["env_config"]
         reward = env_config["Reward_Function"]
         env_name = env_config["env"]
-        config["render_env"] = Environment["render_env"]
+        # config["render_env"] = Environment["render_env"]
 
         restore = None
         config = self.check_config(config)

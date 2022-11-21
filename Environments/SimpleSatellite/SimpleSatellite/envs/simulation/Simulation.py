@@ -75,7 +75,7 @@ class SatelliteSim:
         # Action variables
         self.busy = 0
         self.satellite_busy_time = 0
-        self.last_action = 0
+        self.last_action = (0, None)
         self.ACTION_THRESHOLD = ACTION_THRESHOLD
         self.DURATIONS = [0, DURATION_TAKE_IMAGE, DURATION_ANALYSE, DURATION_DUMP]
         self.DURATION_TAKE_IMAGE = DURATION_TAKE_IMAGE

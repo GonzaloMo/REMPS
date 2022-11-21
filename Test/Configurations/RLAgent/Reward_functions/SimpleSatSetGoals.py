@@ -13,7 +13,7 @@ def Reward_v0(env: gym.Env, action_in: Tuple[int,int]):
     reward = 0
     goals = obs["Goals"]
     # Reward for dumping a picture
-    if env.SatSim.check_action((action,img)):
+    if env.SatSim.check_action(action,img):
         if img is None:
             for img in range(len(env.SatSim.analysis), 0, -1):
                 if env.SatSim.analysis[img-1]:

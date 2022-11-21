@@ -92,7 +92,11 @@ class SatelliteView:
             min_pos_rad = min_pos / SatelliteSim.CIRCUNFERENCE * 2 * math.pi
             max_pos = min(SatelliteSim.CIRCUNFERENCE, arc[1])
             max_pos_rad = max_pos / SatelliteSim.CIRCUNFERENCE * 2 * math.pi 
-            self.drawArc(color, min_pos_rad, max_pos_rad, int(SatelliteView.PLANET_SIZE / 16))
+            if color == SatelliteView.PURPLE:
+                thickness = int(SatelliteView.PLANET_SIZE / 10)
+            else:
+                thickness = int(SatelliteView.PLANET_SIZE / 16)
+            self.drawArc(color, min_pos_rad, max_pos_rad, thickness=thickness)
 
     def drawSim(self, sim: SatelliteSim, reward: float=None):
         self.screen.fill(SatelliteView.BLACK)
@@ -144,8 +148,8 @@ class SatelliteView:
             if image > 0:
                 panelColor = SatelliteView.BLACK
                 if sim.analysis[index] and sim.satellite_busy_time > 0 \
-                        and sim.last_action_tuple[0] == SatelliteSim.ACTION_ANALYSE \
-                        and sim.last_action_tuple[1] == sim.images[index]:
+                        and sim.last_action[0] == SatelliteSim.ACTION_ANALYSE \
+                        and sim.last_action[1] == sim.images[index]:
                     panelColor = [o + (p - o)*(sim.satellite_busy_time/self.sim.DURATION_ANALYSE) for p,o in zip(SatelliteView.ORANGE, SatelliteView.PURPLE)]
                 elif sim.analysis[index]:
                     panelColor = SatelliteView.PURPLE
