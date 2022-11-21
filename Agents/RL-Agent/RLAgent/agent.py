@@ -26,7 +26,7 @@ class RAY_agent:
             config = {**config, **temp_config}
 
         # Load Environment Configuration Files
-        Trianing_Envs = Environment["Trianing_Envs"]
+        Trianing_Envs = Environment["Trianing_Envs"]["Changing"]
         env_config = Environment["env_config"]
         reward = env_config["Reward_Function"]
         env_name = env_config["env"]
@@ -40,7 +40,7 @@ class RAY_agent:
             # Set Experiment config file
             Exp_name = file_name_function(env_file).stem
             env_config["Log_dir"] = f"./Simulation/"
-            env_config["Env_setup"] = env_file
+            env_config["Env_setup"] = Environment["Trianing_Envs"]["Main"] + [env_file]
             config["env_config"] = env_config
             config["env"] = env_name
             callback = [Custom_TBXLoggerCallback(env_creator(env_config))]

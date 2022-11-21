@@ -190,7 +190,8 @@ class SatelliteSim:
             compMode = SatelliteSim.ACTION_NAMES[self.Taking_action]
             if compMode == "DN":
                 compMode = "PowerGenerationRate"
-            self.Power += self.POWER_CONSUMPTION[compMode]*self.dt
+            if self.light_range[0] <= self.pos <= self.light_range[1]:
+                self.Power += self.POWER_CONSUMPTION[compMode]*self.dt
             if self.Power > 100.:
                 self.Power = 100.
             elif self.Power < 0.:
@@ -217,7 +218,6 @@ class SatelliteSim:
             return
         check, add_info = self.check_action(action, img)
         if not check and add_info in self.Failures["No Action Taken"]:
-            print(add_info)
             return
         else:
             # take action
@@ -415,19 +415,21 @@ class SatelliteSim:
             amount = self.n_targets
             random = self.random_targets
             half = self.TARGET_HALF_SIZE
+            upper_lim = SatelliteSim.CIRCUNFERENCE*self.light_percentage-half
         elif Type_Selection == "GroundStation_Coverage":
             amount = self.n_gs
             random = self.Random_GS
             half = self.GS_HALF_SIZE
+            upper_lim = SatelliteSim.CIRCUNFERENCE-half
         else:
             raise ValueError("Type_Selection must be either Target_Coverage or GroundStation_Coverage")
         # Generate the center of the sites
         if self.CoverageFile == "":
             centers = np.array([])
             if random:
-                Centers_po = np.random.rand(amount)*SatelliteSim.CIRCUNFERENCE
+                Centers_po = np.random.rand(amount)*upper_lim
             else: # Equidistant
-                Centers_po = np.linspace(half, SatelliteSim.CIRCUNFERENCE-half, amount)
+                Centers_po = np.linspace(half, upper_lim, amount)
             centers = Centers_po
         else:
             import yaml
