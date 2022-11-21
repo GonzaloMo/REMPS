@@ -1,6 +1,6 @@
 ### Ignore pycache
 **/__pycache__/
-
+**/.vscode/
 ###### Agents
 # Architecture
 Agents/Architecture/Logs
@@ -28,6 +28,6 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 /REMPS_Env
 
 ### Ignore Packeges_tester
-/Test
+/Test/
 
 Agents/Transformer-Planner/TransformerPlanner/Transformers/mesh-transformer-jax
