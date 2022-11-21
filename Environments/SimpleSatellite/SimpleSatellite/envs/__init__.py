@@ -10,6 +10,7 @@ from SimpleSatellite.envs.simsat_v1 import Simple_satellite as Simple_satellite_
 ## Simple Satellite Set Goals ##
 ################################
 from SimpleSatellite.envs.setgoals_v0 import Simple_satellite as Simple_satellite_setgoals_v0
+from SimpleSatellite.envs.setgoals_v1 import Simple_satellite as Simple_satellite_setgoals_v1
 
 #####################################################
 ## Simple Simulation of a Satellite with a Planner ##

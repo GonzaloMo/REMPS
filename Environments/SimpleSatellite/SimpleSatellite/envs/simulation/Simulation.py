@@ -155,7 +155,7 @@ class SatelliteSim:
             done: if the simulation is has been terminated.
         """
         done = False
-
+        self.action_taken_list.append(action)
         # update time variables
         self.sim_time += self.dt
         self.pos += self.velocity*self.dt
@@ -376,6 +376,7 @@ class SatelliteSim:
         self.last_action = 0
         self.Taking_action = 0
         self.n_images_dumped = [0] * self.n_targets
+        self.action_taken_list = [0]
 
         # memory state
         self.memory_level = 0

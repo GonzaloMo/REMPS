@@ -39,7 +39,7 @@ else:
 register_env(env_name, env_creator)
 
 ###### Start Ray ######
-ray.init(ignore_reinit_error=True)
+ray.init(ignore_reinit_error=True, resources={"cpu": 30, "gpu": 0})
 agent = RAY_agent()
 if recover is not None or mode == "test":
     if recover is None:
@@ -49,8 +49,6 @@ if recover is not None or mode == "test":
 
 ###### Main #############
 if __name__=="__main__":
-    # Load Config
-    
     #----------------- Train Agent -----------------#
     if mode == "train":
         agent.train(**MainConfig)

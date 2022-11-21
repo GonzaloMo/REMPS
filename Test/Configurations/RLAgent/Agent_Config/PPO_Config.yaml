@@ -12,9 +12,13 @@ sgd_minibatch_size: 500
 lr:  0.001
 gamma: 0.99
 num_sgd_iter: 10
-num_workers: 2
-num_envs_per_worker: 1
-batch_mode: truncate_episodes
+# num_cpus_per_worker: 5
+# num_cpus_for_driver: 10
+recreate_failed_workers: True
+restart_failed_sub_environments: True
+num_workers: 6
+num_envs_per_worker: 5
+batch_mode: complete_episodes
 observation_filter: NoFilter
 num_gpus: 0
 model:
@@ -22,9 +26,9 @@ model:
     fcnet_hiddens: [64, 64, 64]
     vf_share_layers: True
     
-render_env: True
+render_env: False
 # Only for evaluation runs, render the env.
 evaluation_interval: 100000
 evaluation_duration: 100
 evaluation_config:
-    render_env: True
+    render_env: False
