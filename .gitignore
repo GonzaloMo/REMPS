@@ -25,7 +25,7 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 /REMPS_Env
 
 ### Ignore Packeges_tester
-Test/
+/Test
 
 
 Test/Results/RLAgent_2/SimpleSatellite-setgoals-v0/Env_1
