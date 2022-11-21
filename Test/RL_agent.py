@@ -57,14 +57,17 @@ if __name__=="__main__":
     #----------------- Test Agent -----------------#
     elif mode == "test":
         # Create environment
+
         env_config = MainConfig["Environment"]
         env = env_creator(env_config)
-        obs = env.reset()
-        while True:
-            # action = agent.get_action(obs)
-            # print(env.Number2name_action(action))
-            action = env.action_space.sample()
-            obs, reward, done, info = env.step(action)
-            env.render()
-            if done:
-                break
+        for i in range(args.n_test):
+            obs = env.reset()
+            done = False
+            while not done:
+                action = agent.get_action(obs)
+                # if env.SatSim.busy:
+                #     action = 0
+                # else:
+                #     action = env.action_space.sample()
+                obs, reward, done, info = env.step(action)
+                env.render()

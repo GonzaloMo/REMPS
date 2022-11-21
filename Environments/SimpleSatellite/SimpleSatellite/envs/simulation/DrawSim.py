@@ -218,6 +218,7 @@ class SatelliteView:
             self.screen.blit(name, (x_a, y_a + SatelliteView.POWER_BAR_HEIGHT + 4))
         pygame.draw.line(self.screen, SatelliteView.WHITE, [0, SatelliteView.DIV_AGENT],[SatelliteView.WIDTH, SatelliteView.DIV_AGENT], width=2)
         pygame.draw.arc(self.screen, SatelliteView.BLACK, planetList, 0, 2 * math.pi, width=2)
+        self.draw_pos(sim.get_state())
         
     ############
     ## Reward ##
@@ -309,16 +310,20 @@ class SatelliteView:
     ## Helpers     ##
     ##################
     def draw_pos(self, obs):
-        current_pos = obs['Pos'][0]+ 360*obs['Orbit'][0]
+        pos = obs['Pos']
+        orb = obs['Orbit']
         lamba_w_r = 0.3
         lamba_h_r = (1-lamba_w_r)/2
         x_r = SatelliteView.OFFSET + SatelliteView.IMAGE_SIZE * 0.1 
         y_r = 3.5 * SatelliteView.IMAGE_SIZE
         w_r = SatelliteView.HUD_WIDTH*lamba_w_r
         h_r = SatelliteView.GOAL_SIZE
-        arbiter_txt = self.font.render("Orbit = "+str(obs['Orbit'][0]), True, SatelliteView.ORANGE)
+        arbiter_txt = self.font.render(f"Orbit = {orb}", True, SatelliteView.ORANGE)
         self.screen.blit(arbiter_txt, [x_r, y_r,
                                         .5*w_r, .5*h_r])
+        pos_txt = self.font.render(f"Pos = {pos}", True, SatelliteView.ORANGE)
+        self.screen.blit(pos_txt, [x_r, y_r + h_r,
+                                    .5*w_r, .5*h_r])
                                     
     
     def draw_legend(self):

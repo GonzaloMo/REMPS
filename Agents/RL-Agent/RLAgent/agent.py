@@ -100,6 +100,7 @@ class RAY_agent:
             if mode == "test":
                 config["num_workers"] = 0
                 config["num_envs_per_worker"] = 1
+                config["explore"] = False
             from RLAgent.Utils.ray import PPO
             self.agent = PPO(config=config)
    
@@ -109,7 +110,7 @@ class RAY_agent:
         
 
     def get_action(self, observation):
-        return self.agent.compute_action(observation)
+        return self.agent.compute_single_action(observation)
 
     def add_to_config(self, config: Dict):
         self.config = {**self.config, **config}

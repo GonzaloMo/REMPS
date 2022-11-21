@@ -131,6 +131,7 @@ class SatelliteSim:
         self.Failures = {
                         "No Action Taken": [
                             # Take Picture
+                            "Not above target",
                             "Memory full",
                             "Not in light",
                             # Analyse
@@ -166,20 +167,23 @@ class SatelliteSim:
             self.pos -=  SatelliteSim.CIRCUNFERENCE
             self.orbit += 1
 
+        # take action
+        self.apply_action(action)
+
         # update the satellite state
         if self.satellite_busy_time > 0:
             self.busy = 1
         else:
-            if self.Taking_action != SatelliteSim.ACTION_DO_NOTHING: 
+            if self.busy==1:
                 self.apply_effect()
+                self.Taking_action = SatelliteSim.ACTION_DO_NOTHING
             self.busy = 0
-            self.Taking_action = 0
+            
         # Check if simulation ends
         if self.orbit>=self.MAX_ORBITS:
             done = True
 
-        # take action
-        self.apply_action(action)
+        
 
         # Power update
         if self.POWER_OPTION:
@@ -209,13 +213,11 @@ class SatelliteSim:
         else:
             action, img = action_in
         self.action = action
-        # check if busy or the satellite does nothing 
-        if self.satellite_busy_time > 0:
-            return 
         if action==SatelliteSim.ACTION_DO_NOTHING or action==None:
             return
         check, add_info = self.check_action(action, img)
         if not check and add_info in self.Failures["No Action Taken"]:
+            print(add_info)
             return
         else:
             # take action
@@ -232,10 +234,12 @@ class SatelliteSim:
             if action == SatelliteSim.ACTION_TAKE_IMAGE:
                 # Check free location in the memory
                 if self.Underterministic_actions["TP"] < np.random.rand():
-                    self.images[add_info-1] = add_info
-                    self.analysis[add_info-1] = False
-                    self.memory_level = self.memory_level+1
-                    return
+                    for i in range(len(self.images)):
+                        if self.images[i] == 0:
+                            self.images[i] = add_info
+                            self.analysis[i] = False
+                            self.memory_level = self.memory_level+1
+                            return
                 
             # Analyse picture
             if action == SatelliteSim.ACTION_ANALYSE:
@@ -251,6 +255,7 @@ class SatelliteSim:
                 self.analysis[add_info] = False
                 self.memory_level = max(0,self.memory_level-1)
                 return
+            self.last_action = 0, ""
 
 
     def check_action(self, action, img):
@@ -263,7 +268,7 @@ class SatelliteSim:
         Returns:
             True if the action is posible.
         """
-        if self.satellite_busy_time > 0:
+        if self.busy==1:
             return False, "Satellite busy"        
         # Take picture
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
@@ -421,10 +426,7 @@ class SatelliteSim:
             if random:
                 Centers_po = np.random.rand(amount)*SatelliteSim.CIRCUNFERENCE
             else: # Equidistant
-                Centers_po = np.linspace(0, SatelliteSim.CIRCUNFERENCE, amount+2)[1:-1]
-            # print("Centers_po", Centers_po)
-            # for orb in range(0, self.MAX_ORBITS+1):
-            #     centers = np.concatenate([centers, Centers_po + orb*SatelliteSim.CIRCUNFERENCE])
+                Centers_po = np.linspace(half, SatelliteSim.CIRCUNFERENCE-half, amount)
             centers = Centers_po
         else:
             import yaml
