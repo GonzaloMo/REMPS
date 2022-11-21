@@ -90,7 +90,7 @@ class Simple_satellite(gym.Env):
                                               'Targets':         spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32), # target initial and final position
                                               'Ground Stations': spaces.Box(low=0, high=370., shape=(n_gs*2,), dtype=np.float32), # ground station initial and final position
                                               'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),
-                                              'Eclipse':         spaces.Box(low=0, high=max_inf, shape=(4,), dtype=np.int32),} # goals to be achieved
+                                              'Eclipse':         spaces.Box(low=0, high=max_inf, shape=(4,), dtype=np.float32),} # goals to be achieved
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
@@ -131,6 +131,7 @@ class Simple_satellite(gym.Env):
             done = False
         self.done = done
         observation = self.get_obs()
+        # self.print_obs_shape(observation)
         return observation, reward, done, info
 
     def reset(self, seed: int =None, options: Dict = {"n_targ": 4}) -> Dict[str, Any]:
@@ -196,6 +197,7 @@ class Simple_satellite(gym.Env):
         observation["Targets"] = np.array(state["Targets"], dtype=np.float32).flatten()
         observation["Ground Stations"] = np.array(state["Ground Stations"], dtype=np.float32).flatten()
         observation["Goals"] = np.array(self.goals, dtype=np.int32)
+        observation["Eclipse"] = np.array(state["Eclipse"], dtype=np.float32)
         if self.SatSim.POWER_OPTION:
             observation["Power"] = np.array([state["Power"]], dtype=np.float32)
         return observation

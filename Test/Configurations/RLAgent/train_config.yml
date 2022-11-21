@@ -11,16 +11,13 @@ Training:
   local_dir: "./Logs/PowerAgent/"
 
   # (int) – How many training iterations between checkpoints. A value of 0 (default) disables checkpointing.
-  checkpoint_freq: 1000000
+  checkpoint_freq: 1000
 
   # (bool) – Whether to checkpoint at the end of the experiment regardless of the checkpoint_freq. Default is False.
   checkpoint_at_end: True
 
   # (int) – Number of checkpoints to keep. A value of None keeps all checkpoints. Defaults to None. If set, need to provide checkpoint_score_attr.
   keep_checkpoints_num: 10
-
-  # (str) – The attribute on the result object to use for checkpoint scoring. This is used in conjunction with checkpoint_score_attr to determine the best checkpoint to keep. Defaults to None.
-  checkpoint_score_attr: "episode_reward_mean"
 
   # (str) – Specifies by which attribute to rank the best checkpoint. Default is increasing order. If attribute starts with min- it will rank attribute in decreasing order, i.e. min-validation_loss.
   # ['custom_metrics', 'episode_media', 'num_recreated_workers', 'info', 'sampler_results', 'episode_reward_max', 'episode_reward_min', 'episode_reward_mean', 'episode_len_mean', 
@@ -31,15 +28,15 @@ Training:
   checkpoint_score_attr: "episode_reward_mean"
 
   # (list) – List of formats that exported at the end of the experiment. Default is None. Types: ['h5', ...]
-  export_formats: ['h5']
+  # export_formats: ['h5']
 
 Environment:
 
   # (List[str]) – List of environments to be trainned in sequence carrying the weights. [""./Configurations/Environment_Config/Env_1.yaml""]
-  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml"] #,
-                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
-                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
-                  # "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
+  Trianing_Envs: ["./Configurations/RLAgent/Environment_Config/PowerEnv/Env_1.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_2.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_3.yaml",
+                  "./Configurations/RLAgent/Environment_Config/PowerEnv/Env_4.yaml"]
   render_env: False
 
   env_config: 

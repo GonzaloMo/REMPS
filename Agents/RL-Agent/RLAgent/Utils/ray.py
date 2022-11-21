@@ -2,6 +2,7 @@ import SimpleSatellite
 from typing import Dict
 import gym
 import os
+import ray.tune as tune
 from typing import Dict, Any, List, Optional, Tuple, Union
 current_dir = os.getcwd()
 def env_creator(env_config: Dict={"env": "SimpleSatellite-v0", "Env_setup": "./Configurations/Environment_Config/Env_1.yaml", 
@@ -207,6 +208,8 @@ class Custom_TBXLoggerCallback(LoggerCallback):
                 "in the hyperparameter values."
             )
             
-    def on_step_begin(self, iteration, trials, **info):
-        if  len(trials) > 2:
-            import IPython; IPython.embed()
+    def on_episode_end(worker, base_env, policies, episode, env_index, **kwargs)-> None:
+        env = base_env.get_unwrapped()
+        # tune.result.histogram(nparray, max_bins=5)
+        # episode.custom_metrics["action_histogram"] = np.histogram(episode.actions, bins=env.action_space.n)[0]
+
