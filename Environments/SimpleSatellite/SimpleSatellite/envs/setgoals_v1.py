@@ -9,7 +9,7 @@ from typing import List, Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-from SimpleSatellite.envs.simulation.Reward_functions import Reward_example_SS_setGolas_v0 as default_reward
+from SimpleSatellite.envs.Utils.Reward_function.Standard import Reward as default_reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
 import random

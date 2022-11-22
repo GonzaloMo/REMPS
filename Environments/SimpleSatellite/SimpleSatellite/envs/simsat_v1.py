@@ -9,7 +9,7 @@ from typing import Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-from SimpleSatellite.envs.simulation.Reward_functions import Reward_example_SSv0 as Reward 
+from SimpleSatellite.envs.Utils.Reward_function.Standard import Reward as default_reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
 
@@ -20,7 +20,7 @@ from gym import spaces
 import numpy as np
 class Simple_satellite(gym.Env):
     def __init__(self,
-            Reward: Callable[[gym.Env, int], float] = Reward,
+            Reward: Callable[[gym.Env, int], float] = default_reward,
             action_space_type: str = "Simple",
             render_reward: bool = False,
             **kwargs
