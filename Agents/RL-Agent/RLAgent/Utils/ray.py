@@ -30,7 +30,7 @@ class PPO(PPOTrainer):
     def __init__(self, *args, **kwargs):
         print("PPO init")
         super().__init__(*args, **kwargs)
-        self.get_policy().export_model(self.logdir+"/policy")
+        # self.get_policy().export_model(self.logdir+"/policy")
 
 
 
@@ -60,11 +60,6 @@ VALID_SUMMARY_TYPES = [int, float, np.float32, np.float64, np.int32, np.int64]
 
 from typing import TYPE_CHECKING, Dict
 from ray.tune import Callback
-# class Graph_Callback(Callback):
-#     def on_trial_start(self, iteration, trials, trial, result,
-#                         **info):
-#         model = torch.load(trial.logdir+"/policy/model.pt")
-#         self._trial_writer[trial].add_graph(model, torch.zeros(model.input_size))
 
 ## Callback logger
 class Custom_TBXLoggerCallback(LoggerCallback):
