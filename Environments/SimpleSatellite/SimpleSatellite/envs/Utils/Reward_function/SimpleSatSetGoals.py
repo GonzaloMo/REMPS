@@ -103,10 +103,12 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
                 reward += 5
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture
-            reward += 1
+            reward += 10
             # Reward for dumping a picture of a goal
             if goals[img-1] > 1:
-                reward += 50
+                reward += 500
+            if goals[img-1] == 1:
+                reward += 100000
             # Reward for dumping all pictures
             all_complete = False
             for obs_goal in goals:
@@ -114,7 +116,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
                     all_complete = True
                     break
             if all_complete:
-                reward += 10000
+                reward += 10000000
     else:
         # Action that made action to not be executed
         if add_info == "Memory full":
@@ -131,15 +133,17 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
             reward -= 100
         elif add_info == "Satellite busy":
             reward -= 100
-          
+        pass
     # Power 
     if env.SatSim.POWER_OPTION:
         if obs["Power"] < 25.:
-            reward -= 10
-        elif obs["Power"] > 99.:
-            reward -= .01
+            reward -= 100
+        # elif obs["Power"] > 99.:
+        #     reward -= .01
         elif obs["Power"] < 0.01:
             reward -= 1000000000
-        else:
+        elif obs["Power"] < 100. and \
+                env.SatSim.light_range[0] < obs["Pos"] < env.SatSim.light_range[1] and \
+                env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
             reward += 1
     return reward
