@@ -86,6 +86,7 @@ class SatelliteSim:
         # Power variables
         self.POWER_OPTION = POWER_OPTION
         self.POWER_CONSUMPTION = POWER_CONSUMPTION
+        self.POWER_CONSUMPTION["NoGenRate"] = 0.
         self.Power = 50.
 
         ## Environment parameters ##
@@ -189,9 +190,11 @@ class SatelliteSim:
         if self.POWER_OPTION:
             compMode = SatelliteSim.ACTION_NAMES[self.Taking_action]
             if compMode == "DN":
-                compMode = "PowerGenerationRate"
-            if self.light_range[0] <= self.pos <= self.light_range[1]:
-                self.Power += self.POWER_CONSUMPTION[compMode]*self.dt
+                if self.light_range[0] <= self.pos <= self.light_range[1]:
+                    compMode = "PowerGenerationRate"
+                else:
+                    compMode = "NoGenRate"
+            self.Power += self.POWER_CONSUMPTION[compMode]*self.dt
             if self.Power > 100.:
                 self.Power = 100.
             elif self.Power < 0.:

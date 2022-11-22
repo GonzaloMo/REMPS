@@ -134,7 +134,7 @@ class Simple_satellite(gym.Env):
         # self.print_obs_shape(observation)
         return observation, reward, done, info
 
-    def reset(self, seed: int =None, options: Dict = {"n_targ": 4}) -> Dict[str, Any]:
+    def reset(self) -> Dict[str, Any]:
         """
         Reset the enviroment to the start state
         Input:
@@ -142,8 +142,7 @@ class Simple_satellite(gym.Env):
         Output:
             observation: Dict[str, Any]
         """
-        n_targ = options["n_targ"]
-        self.SatSim.reset(n_targ)
+        self.SatSim.reset()
         self.Total_reward = 0
         self.goals = self.generate_goals()
         self.initial_goals = self.goals.copy()
