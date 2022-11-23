@@ -35,7 +35,7 @@ class RAY_agent:
         restore = None
         config = self.check_config(config)
         # import IPython; IPython.embed()
-        
+        from ray import tune
         for env_file in Trianing_Envs:
             # Set Experiment config file
             Exp_name = file_name_function(env_file).stem
@@ -100,7 +100,7 @@ class RAY_agent:
             if mode == "test":
                 config["num_workers"] = 0
                 config["num_envs_per_worker"] = 1
-                config["explore"] = False
+                # config["explore"] = False
             from RLAgent.Utils.ray import PPO
             self.agent = PPO(config=config)
    
