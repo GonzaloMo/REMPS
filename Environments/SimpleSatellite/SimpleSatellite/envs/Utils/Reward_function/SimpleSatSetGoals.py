@@ -184,9 +184,9 @@ def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
                     all_complete = True
                     break
             if all_complete:
-                percenof_total_steps = 1 - env.self.step_count/max_steps
+                percenof_total_steps = 1 - env.step_count/max_steps
                 reward += 10000000*percenof_total_steps 
-    if env.done and max_steps <= env.self.step_count:
+    if env.done and max_steps <= env.step_count:
         tot_goals_achieved = np.sum(goals) / np.sum(env.initial_goals)
         reward += 10000000 * tot_goals_achieved
     else:

@@ -146,6 +146,7 @@ class Simple_satellite(gym.Env):
         self.SatSim.reset()
         self.Total_reward = 0
         self.step_count = 0
+        self.done = False
         self.goals = self.generate_goals()
         self.initial_goals = self.goals.copy()
         observation = self.get_obs()
