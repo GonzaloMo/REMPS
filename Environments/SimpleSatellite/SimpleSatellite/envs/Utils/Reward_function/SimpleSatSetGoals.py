@@ -187,8 +187,12 @@ def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
                 percenof_total_steps = 1 - env.step_count/max_steps
                 reward += 10000000*percenof_total_steps 
     if env.done and max_steps <= env.step_count:
-        tot_goals_achieved = np.sum(goals) / np.sum(env.initial_goals)
-        reward += 10000000 * tot_goals_achieved
+
+        tot_goals_achieved = np.sum(goals)
+        tot_goals = np.sum(env.initial_goals)
+        print("Total goals achieved: ", tot_goals_achieved)
+        print("Total goals: ", tot_goals)
+        reward += 10000000 * tot_goals_achieved/tot_goals
     else:
         # Action that made action to not be executed
         if add_info == "Memory full":
@@ -208,7 +212,7 @@ def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
         pass
     # Incentivise having not having the memory free
     if obs["Memory Level"] > 0.1:
-        reward += min(obs["Memory Level"], env.SatSim.MEMORY_SIZE*.5) * reward
+        reward += min(obs["Memory Level"][0], env.SatSim.MEMORY_SIZE*.5) * reward
     # Power 
     if env.SatSim.POWER_OPTION:
         if obs["Power"] < 25.:
