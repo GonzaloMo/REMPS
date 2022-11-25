@@ -299,6 +299,7 @@ class Simple_satellite(gym.Env):
         """
         if Seed is None:
             Seed = np.random.randint(0, 2**32)
+        self.Seed = Seed
         goals = []
         Max_goals = self.Max_goals
         for i in range(self.SatSim.n_targets):

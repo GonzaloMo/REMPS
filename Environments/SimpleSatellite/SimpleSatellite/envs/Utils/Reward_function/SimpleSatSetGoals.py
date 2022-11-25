@@ -43,6 +43,7 @@ def Reward_v0(env: gym.Env, action_in: Tuple[int,int]):
 
     return reward
 
+
 def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
     # Get action and observation
     obs = env.get_obs()
@@ -223,4 +224,34 @@ def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
                 env.SatSim.light_range[0] < obs["Pos"] < env.SatSim.light_range[1] and \
                 env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
             reward += 1
+    return reward
+
+
+def Reward_eval(env: gym.Env, action_in: Tuple[int,int]):
+    reward = 0 
+    # Get action and observation
+    obs = env.get_obs()
+    goals = obs["Goals"]
+    action, img = action_in
+    check_action, add_info = env.SatSim.check_action(action,img)
+    # Reward for taking a correct action
+    if check_action:
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture
+            reward += .00001
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 1:
+                reward += 1
+            # Reward for dumping all pictures
+            all_complete = False
+            for obs_goal in goals:
+                if obs_goal < 0:
+                    all_complete = True
+                    break
+            if all_complete:
+                reward += 1000
+    # Power 
+    if env.SatSim.POWER_OPTION:
+        if obs["Power"] < 0.01:
+            reward -= 1000000
     return reward

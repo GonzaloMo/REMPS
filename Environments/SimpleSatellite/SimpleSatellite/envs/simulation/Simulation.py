@@ -507,6 +507,7 @@ class SatelliteSim:
             seed = int(seed)
             NewCase = False
         seed = seed if seed is not None else np.random.randint(0, 2**32)
+        self.seed = seed
         np.random.seed(seed)
         random.seed(seed)
         self.seed = seed

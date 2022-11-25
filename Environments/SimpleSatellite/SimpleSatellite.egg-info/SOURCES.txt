@@ -17,5 +17,4 @@ SimpleSatellite/envs/simsat_v1.py
 SimpleSatellite/envs/simsatplan_v0.py
 SimpleSatellite/envs/simulation/DrawSim.py
 SimpleSatellite/envs/simulation/GoalReferee.py
-SimpleSatellite/envs/simulation/Reward_functions.py
 SimpleSatellite/envs/simulation/Simulation.py
