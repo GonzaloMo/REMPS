@@ -8,7 +8,7 @@ from time import sleep
 from typing import List, Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+
 from SimpleSatellite.envs.Utils.Reward_function.Standard import Reward as default_reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
@@ -26,6 +26,7 @@ class Simple_satellite(gym.Env):
             action_space_type: str = "Simple",
             Log_dir: str = "./Logs/Simulation/",
             Max_image_goals_per_target: int = 10,
+            simulation_version: str = "v1",
             **kwargs
             ) -> None:
         """
@@ -46,14 +47,18 @@ class Simple_satellite(gym.Env):
 
         # save the satelite enviroment
         kwargs["Log_dir"] = Log_dir
-        self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
-        
+        if simulation_version == "v1":
+            from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+            self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
+        elif simulation_version == "v2":
+            from SimpleSatellite.envs.simulation.Simulation_v2 import SatelliteSim
+            self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
 
         # The actions available are:
-        self.action_dict = {"take_picture":SatelliteSim.ACTION_TAKE_IMAGE,
-                            "analyze":SatelliteSim.ACTION_ANALYSE,
-                            "dump": SatelliteSim.ACTION_DUMP,
-                            "idle": SatelliteSim.ACTION_DO_NOTHING}
+        self.action_dict = {"take_picture":self.SatSim.ACTION_TAKE_IMAGE,
+                            "analyze":self.SatSim.ACTION_ANALYSE,
+                            "dump": self.SatSim.ACTION_DUMP,
+                            "idle": self.SatSim.ACTION_DO_NOTHING}
         self.action_list_names = ["idle"]
 
         # Create action name list
@@ -276,21 +281,21 @@ class Simple_satellite(gym.Env):
                 img = None
             else:
                 img = int(action_name[16:])
-            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, img)
+            action_tuple = (self.SatSim.ACTION_TAKE_IMAGE, img)
         elif "analyze" in action_name:
             if self.action_space_type == "Simple":
                 img = None
             else:
                 img = int(action_name[11:])
-            action_tuple = (SatelliteSim.ACTION_ANALYSE, img)
+            action_tuple = (self.SatSim.ACTION_ANALYSE, img)
         elif "dump" in action_name:
             if self.action_space_type == "Simple":
                 img = None
             else:
                 img = int(action_name[8:])
-            action_tuple = (SatelliteSim.ACTION_DUMP, img)
+            action_tuple = (self.SatSim.ACTION_DUMP, img)
         else:
-            action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
+            action_tuple = (self.SatSim.ACTION_DO_NOTHING, None)
         return action_tuple
 
     def generate_goals(self, Seed: int = None) -> List[int]:

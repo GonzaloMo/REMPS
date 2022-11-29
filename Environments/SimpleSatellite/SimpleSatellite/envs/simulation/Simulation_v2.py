@@ -189,8 +189,9 @@ class SatelliteSim:
         # Power update
         if self.POWER_OPTION:
             compMode = SatelliteSim.ACTION_NAMES[self.Taking_action]
-            if compMode == "DN" :
-                if (self.light_range[0] <= self.pos <= self.light_range[1]):
+            action_sent = SatelliteSim.ACTION_NAMES[action[0]]
+            if compMode == "DN":
+                if (self.light_range[0] <= self.pos <= self.light_range[1]) and action_sent == "DN":
                     compMode = "PowerGenerationRate"
                 else:
                     compMode = "NoGenRate"
