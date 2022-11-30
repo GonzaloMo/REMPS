@@ -47,6 +47,7 @@ class Simple_satellite(gym.Env):
 
         # save the satelite enviroment
         kwargs["Log_dir"] = Log_dir
+        self.simulation_version = "Sim_" + simulation_version
         if simulation_version == "v1":
             from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
             self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
