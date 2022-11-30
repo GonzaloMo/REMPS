@@ -421,3 +421,80 @@ def Reward_v5(env: gym.Env, action_in: Tuple[int,int]):
                 env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
             reward += 1
     return reward
+
+############################################################################################################
+
+def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
+    reward = 0 
+    max_steps = (env.SatSim.MAX_ORBITS * env.SatSim.period)
+    # Get action and observation
+    obs = env.get_obs()
+    goals = obs["Goals"]
+    action, img = action_in
+    check_action, add_info = env.SatSim.check_action(action,img)
+    # Reward for taking a correct action
+    if check_action:
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture
+            reward += 20
+            # Reward for taking a picture of a goal
+            if goals[img-1] > 1:
+                reward += 200
+        if action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture
+            reward += 10
+            # Reward for analysing a picture of a goal
+            if goals[img-1] > 1:
+                reward += 200
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture
+            reward += 5
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 1:
+                reward += 200
+            if goals[img-1] == 1:
+                reward += 500
+            # Reward for dumping all pictures
+            all_complete = False
+            for obs_goal in goals:
+                if obs_goal < 0:
+                    all_complete = True
+                    break
+            if all_complete:
+                percenof_total_steps = 1 - env.step_count/max_steps
+                reward += 100000*percenof_total_steps 
+    if env.done and max_steps <= env.step_count:
+        tot_goals_achieved = np.sum(goals)
+        tot_goals = np.sum(env.initial_goals)
+        reward += 100000 * tot_goals_achieved/tot_goals
+    else:
+        # Action that made action to not be executed
+        if add_info == "Memory full":
+            reward -= 10
+        elif add_info == "Not above target":
+            reward -= 10
+        elif add_info == "Not in light":
+            reward -= 1
+        elif add_info == "No image to analyse":
+            reward -= 10
+        elif add_info == "No image to dump":
+            reward -= 10
+        elif add_info == "Not above GS":
+            reward -= 100
+        elif add_info == "Satellite busy":
+            reward -= 100
+        pass
+    # Incentivise having not having the memory free
+    if obs["Memory Level"] > 0.1:
+        reward += min(obs["Memory Level"][0], env.SatSim.MEMORY_SIZE*.5) * reward
+    # Power 
+    if env.SatSim.POWER_OPTION:
+        if obs["Power"] < 25.:
+            reward -= 100
+        elif obs["Power"] < 0.01:
+            reward -= 1000000000
+        elif obs["Power"] < 100. and \
+                env.SatSim.light_range[0] < obs["Pos"] < env.SatSim.light_range[1] and \
+                action == SatelliteSim.ACTION_DO_NOTHING:
+            reward += 5
+    return reward
