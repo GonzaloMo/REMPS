@@ -436,24 +436,24 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
     if check_action:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture
-            reward += 20
+            reward += 5
             # Reward for taking a picture of a goal
             if goals[img-1] > 1:
-                reward += 200
+                reward += 500
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture
-            reward += 10
+            reward += 5
             # Reward for analysing a picture of a goal
             if goals[img-1] > 1:
-                reward += 200
+                reward += 500
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture
             reward += 5
             # Reward for dumping a picture of a goal
             if goals[img-1] > 1:
-                reward += 200
-            if goals[img-1] == 1:
                 reward += 500
+            if goals[img-1] == 1:
+                reward += 100000
             # Reward for dumping all pictures
             all_complete = False
             for obs_goal in goals:
@@ -462,11 +462,14 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
                     break
             if all_complete:
                 percenof_total_steps = 1 - env.step_count/max_steps
-                reward += 100000*percenof_total_steps 
+                reward += 10000000*percenof_total_steps 
     if env.done and max_steps <= env.step_count:
+
         tot_goals_achieved = np.sum(goals)
         tot_goals = np.sum(env.initial_goals)
-        reward += 100000 * tot_goals_achieved/tot_goals
+        print("Total goals achieved: ", tot_goals_achieved)
+        print("Total goals: ", tot_goals)
+        reward += 10000000 * tot_goals_achieved/tot_goals
     else:
         # Action that made action to not be executed
         if add_info == "Memory full":
@@ -495,6 +498,6 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
             reward -= 1000000000
         elif obs["Power"] < 100. and \
                 env.SatSim.light_range[0] < obs["Pos"] < env.SatSim.light_range[1] and \
-                action == SatelliteSim.ACTION_DO_NOTHING:
-            reward += 5
+                env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
+            reward += 1
     return reward
