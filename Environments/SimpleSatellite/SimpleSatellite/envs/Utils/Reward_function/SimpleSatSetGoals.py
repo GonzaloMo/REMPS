@@ -356,13 +356,13 @@ def Reward_v5(env: gym.Env, action_in: Tuple[int,int]):
     if check_action:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture
-            reward += 20
+            reward += 5
             # Reward for taking a picture of a goal
             if goals[img-1] > 1:
                 reward += 200
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture
-            reward += 10
+            reward += 5
             # Reward for analysing a picture of a goal
             if goals[img-1] > 1:
                 reward += 200
@@ -423,7 +423,7 @@ def Reward_v5(env: gym.Env, action_in: Tuple[int,int]):
     return reward
 
 ############################################################################################################
-
+# incresed reward for analysing to compensate fromthe time consumption and energy consumption
 def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
     reward = 0 
     max_steps = (env.SatSim.MAX_ORBITS * env.SatSim.period)
@@ -439,13 +439,13 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
             reward += 5
             # Reward for taking a picture of a goal
             if goals[img-1] > 1:
-                reward += 500
+                reward += 200
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture
-            reward += 5
+            reward += 10
             # Reward for analysing a picture of a goal
             if goals[img-1] > 1:
-                reward += 500
+                reward += 400
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture
             reward += 5
