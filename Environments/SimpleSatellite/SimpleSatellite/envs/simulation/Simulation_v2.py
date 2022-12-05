@@ -165,7 +165,7 @@ class SatelliteSim:
 
         # update orbit position
         if self.pos > SatelliteSim.CIRCUNFERENCE:
-            self.pos -=  SatelliteSim.CIRCUNFERENCE
+            self.pos -= SatelliteSim.CIRCUNFERENCE
             self.orbit += 1
 
         # take action
@@ -183,8 +183,6 @@ class SatelliteSim:
         # Check if simulation ends
         if self.orbit>=self.MAX_ORBITS:
             done = True
-
-        
 
         # Power update
         if self.POWER_OPTION:
