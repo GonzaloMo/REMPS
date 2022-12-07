@@ -72,3 +72,15 @@ The observation space is a 'Dict' gym space and all sub-observations spaces are 
 - Ground Stax_1 & y_1 \\
 \vdots & \vddot \\
 x_n &tio y_nns: np.array(self.groundStations, dtype=np.float32)}
+
+
+
+## Simulation versions
+### V1
+In this version the simulation has a fixed number of orbits, and charges if an action is not being taken
+
+### V2
+In this version the simulation has a fixed number of orbits, and only charges if action sent is idle.
+
+### V3
+In this version the simulation finishes when the satellite achieves all goals, and charges if an action is not being taken.
