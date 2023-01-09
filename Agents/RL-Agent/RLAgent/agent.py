@@ -109,8 +109,8 @@ class RAY_agent:
         return Training, Agent, Environment
         
 
-    def get_action(self, observation):
-        return self.agent.compute_single_action(observation)
+    def get_action(self, observation, **kwargs):
+        return self.agent.compute_single_action(observation, **kwargs)
 
     def add_to_config(self, config: Dict):
         self.config = {**self.config, **config}

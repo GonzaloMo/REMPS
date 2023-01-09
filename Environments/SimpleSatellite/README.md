@@ -84,3 +84,11 @@ In this version the simulation has a fixed number of orbits, and only charges if
 
 ### V3
 In this version the simulation finishes when the satellite achieves all goals, and charges if an action is not being taken.
+
+
+
+## GYm nevironments
+### SimpleSatellite-v0
+Same observation space that the simulation.
+
+### SimpleSatellite-setgoals-v0

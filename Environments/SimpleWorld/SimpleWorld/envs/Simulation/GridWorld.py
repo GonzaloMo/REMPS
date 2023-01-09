@@ -1,5 +1,6 @@
 from time import sleep
 from copy import copy
+from typing import List, Tuple, Union, Any
 import numpy as np
 import pygame
 import random
@@ -41,17 +42,18 @@ class Gridworld:
         '''Create Initial Map  only exterior walls'''
         Map = self.Create_empty_map()
         Map = self.Spawn_init_and_Goal(Map)
-        if not ('Test_1' in problem_type or 'Test_3' in problem_type):
-            Map = self.Spawn_Obstacles(Map)
         return Map
 
     def Create_empty_map(self):
         '''Create Initial Map  only exterior walls'''
         Map = np.zeros([self.grid_size, self.grid_size], dtype=np.int8)
-        for i in range(self.grid_size):
-            for j in range(self.grid_size):
-                if i == 0 or i == self.grid_size-1 or j == 0 or j == self.grid_size-1:
-                    Map[i][j] = int(3)
+        return Map
+
+    def Spawn_init_and_Goal(self, Map, start_limit: List[int] = [1, 1], goal_limit: List[int] = [9, 9]):
+        self.start_pos =  list(np.random.randint(start_limit[0], high=start_limit[1], size=2))
+        self.goal_pos = list(np.random.randint(goal_limit[0], high=goal_limit[1], size=2))
+        Map[self.start_pos[0]][self.start_pos[1]] = 1
+        Map[self.goal_pos[0]][self.goal_pos[1]] = 2
         return Map
 
     def Spawn_Obstacles(self, Map, for_plan=False):
@@ -64,7 +66,6 @@ class Gridworld:
         goal_pos = self.goal_pos
         # Remove all obstacles if any
         if not list(obstacle_loc[0]) == []:
-            #print('true')
             Map = self.Create_empty_map()
             Map[current_pos[0]][current_pos[1]] = 1
             Map[goal_pos[0]][goal_pos[1]] = 2
@@ -135,12 +136,7 @@ class Gridworld:
             return True
         return False
 
-    def Spawn_init_and_Goal(self, Map):
-        self.start_pos = [1,1]
-        self.goal_pos = list(np.random.randint(int(self.grid_size/2), high=self.grid_size-1, size=2))
-        Map[self.start_pos[0]][self.start_pos[1]] = 1
-        Map[self.goal_pos[0]][self.goal_pos[1]] = 2
-        return Map
+    
 
     def Spawn_secondary(self, Map):
         number_of_obstacle = random.randint(1, 4) 
@@ -160,7 +156,7 @@ class Gridworld:
     ######### RENDER ################################
     def full_Render(self, Map, path=None, path_done=None, path_width=3):
         pos_pre = np.array(np.where(Map == 1))
-        pos = [pos_pre[0][0],pos_pre[1][0]]
+        pos = [pos_pre[0][0], pos_pre[1][0]]
         
         Display_x, Display_y = np.shape(Map)
         if self.render_type == 'PYGAME':

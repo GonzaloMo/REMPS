@@ -17,5 +17,4 @@ while True:
     print_obs(observation)
     print("Total reward = ", env.Total_reward)
     
-    
 env.view.quit()

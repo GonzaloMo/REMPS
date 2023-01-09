@@ -1,7 +1,7 @@
 from typing import Dict
 from gym import spaces, Env
 from Agents.AgentPDDL import PDDLAgent
-from Utils.GridWorld import Gridworld
+from Simulation.GridWorld import Gridworld
 from copy import copy
 import numpy as np
 import random
