@@ -113,8 +113,15 @@ class SatelliteView:
         
         # draw target arcs
         self.drawArcs(SatelliteView.ORANGE, sim.targets, sim)
+
+        # draw opportunity
+        if sim.opportunity:
+            self.drawArcs(SatelliteView.GREEN, [[sim.pos-2., sim.pos+2.]], sim)
+
         # Draw Eclipse
         self.draw_eclpise(sim.get_state()) 
+
+       
 
         # draw satellite
         if sim.light_range[0] < sim.pos < sim.light_range[1]:

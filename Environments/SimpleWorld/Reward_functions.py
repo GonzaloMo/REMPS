@@ -126,7 +126,3 @@ def Eval_p(env, state, valid_action):
         return (len(env.plan_state_achieved)/total_plan_length)
     else:
         return 0
-Reward_function = {'Eval': Eval, 'Eval_2': Eval_2, 'Eval_p': Eval_p, 'Eval_n': Eval_n, 'type1': type1, 
-'type2': type2, 'type3': type3, 'type4': type4, 'type5': type5, 
-'MSH':max_state_hard, 'MSH_2':max_state_hard_2,
-'mnsh': min_nonstate_hard,  'mnsh_2': min_nonstate_hard_2, 'mnsh_stp': min_nonstate_hard_stp}

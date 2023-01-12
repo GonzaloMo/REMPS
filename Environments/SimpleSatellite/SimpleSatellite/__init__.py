@@ -12,3 +12,6 @@ register(id='SimpleSatellite-setgoals-v1',entry_point='SimpleSatellite.envs:Simp
 # includes a planner agent
 register(id='SimpleSatellite-planner-v0',entry_point='SimpleSatellite.envs:Simple_satellite_planner_v0',)
 register(id='SimpleSatellite-planner-v1',entry_point='SimpleSatellite.envs:Simple_satellite_planner_v1',)
+
+# randomly creates an opportunity just below the satellite
+register(id='SimpleSatellite-opportunity-v1',entry_point='SimpleSatellite.envs:Simple_satellite_opportunity_v1',)

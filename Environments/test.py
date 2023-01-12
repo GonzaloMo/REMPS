@@ -1,17 +1,16 @@
 import gym
 import SimpleSatellite
-env = gym.make('SimpleSatellite-v0', action_space_type="Advanced")
+import yaml
+configfile = '/home/ksb21109/Documents/PhD/REMPS/Environments/SimpleSatellite/SimpleSatellite/envs/Examples/Configurations/Gym_env/Opportunity_v1.yaml'
+with open(configfile, 'r') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+env = gym.make('SimpleSatellite-opportunity-v1', **config)
 def print_obs(obs):
     for k, v in obs.items():
         print(k+': ',v)
-env.reset()
+obs = env.reset()
 while True:
-    print('--------------------------------')
-    print(env.action_list_names)
-    action = input("Enter action: ")
-    if action == "exit":
-        break
-    action = env.Name2number_action(action)
+    action = env.action_space.sample()
     observation, reward, done, info = env.step(action)
     env.render()
     print_obs(observation)

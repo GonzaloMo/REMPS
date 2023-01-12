@@ -30,6 +30,7 @@ class SatelliteSim:
                 Underterministic_actions: Dict[str, float]= {"TP": 0., "AN": 0., "DP": 0.}, 
                 DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
                 Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
+                Opportunity_Prob: float=0., Opportunity_duration: float=10,
                 Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
                 POWER_OPTION: bool=False,
                 POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
@@ -128,6 +129,13 @@ class SatelliteSim:
         self.targets = []
         self.CoverageFile = CoverageFile
 
+        # Oppurtunity
+        self.opportunity = False
+        self.opportunity_time = 0
+        self.opportunity_duration = Opportunity_duration
+        self.opportunity_probability = Opportunity_Prob
+
+
         # Failures
         self.Failures = {
                         "No Action Taken": [
@@ -184,8 +192,6 @@ class SatelliteSim:
         if self.orbit>=self.MAX_ORBITS:
             done = True
 
-        
-
         # Power update
         if self.POWER_OPTION:
             compMode = SatelliteSim.ACTION_NAMES[self.Taking_action]
@@ -200,6 +206,18 @@ class SatelliteSim:
             elif self.Power < 0.:
                 self.Power = 0.
                 done = True
+
+        # Opportunity update
+        if self.opportunity:
+            if self.opportunity_time > 0:
+                self.opportunity_time -= self.dt
+            else:
+                self.opportunity = False
+        else:
+            if np.random.rand() < self.opportunity_probability:
+                self.opportunity = True
+                self.opportunity_time = self.opportunity_duration
+
         state = self.get_state()
         return state, done
         
@@ -277,6 +295,7 @@ class SatelliteSim:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Check which target the satellite is above 
             above_target = None
+            
             if img == None:
                 check = False
                 for index in range(len(self.targets)):
@@ -291,6 +310,9 @@ class SatelliteSim:
                     return False, "Not above target"
                 else:
                     above_target = img
+
+            if self.opportunity:
+                above_target = "O"
  
             # Check Power
             if self.POWER_OPTION and self.Power < abs(self.POWER_CONSUMPTION["TP"]*self.DURATION_TAKE_IMAGE):
@@ -419,11 +441,13 @@ class SatelliteSim:
             random = self.random_targets
             half = self.TARGET_HALF_SIZE
             upper_lim = SatelliteSim.CIRCUNFERENCE*self.light_percentage-half
+            endpoint = True
         elif Type_Selection == "GroundStation_Coverage":
             amount = self.n_gs
             random = self.Random_GS
             half = self.GS_HALF_SIZE
-            upper_lim = SatelliteSim.CIRCUNFERENCE-half
+            upper_lim = SatelliteSim.CIRCUNFERENCE
+            endpoint = False
         else:
             raise ValueError("Type_Selection must be either Target_Coverage or GroundStation_Coverage")
         # Generate the center of the sites
@@ -432,7 +456,7 @@ class SatelliteSim:
             if random:
                 Centers_po = np.random.rand(amount)*upper_lim
             else: # Equidistant
-                Centers_po = np.linspace(half, upper_lim, amount)
+                Centers_po = np.linspace(half, upper_lim, amount, endpoint=endpoint)
             centers = Centers_po
         else:
             import yaml
@@ -441,8 +465,17 @@ class SatelliteSim:
                 centers = np.array(data[Type_Selection])
         # Generate the brackets
         for Center in centers:
-            min_pos = max(Center-half, 0)
-            max_pos = min(Center+half, 360)
+            add_to_max, add_to_min = 0, 0
+            min_pos = Center-half
+            max_pos = Center+half
+            if min_pos < 0:
+                min_pos = 0
+                add_to_max = abs(Center-half)
+            if Center+half > SatelliteSim.CIRCUNFERENCE:
+                max_pos = SatelliteSim.CIRCUNFERENCE
+                add_to_min = Center+half-SatelliteSim.CIRCUNFERENCE
+            min_pos -= add_to_min
+            max_pos += add_to_max
             CoverageList.append([min_pos, max_pos])
         return CoverageList
 
@@ -461,7 +494,8 @@ class SatelliteSim:
                 'Analysis': self.analysis,
                 'Targets': self.targets,
                 'Ground Stations': self.groundStations,
-                'Eclipse': self.light_range + self.umbra_range}
+                'Eclipse': self.light_range + self.umbra_range,
+                'Opportunity': self.opportunity,}
         if self.POWER_OPTION:
             obs['Power'] = self.Power
         return obs

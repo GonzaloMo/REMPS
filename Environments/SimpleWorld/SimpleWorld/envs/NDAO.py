@@ -5,22 +5,21 @@ from Simulation.GridWorld import Gridworld
 from copy import copy
 import numpy as np
 import random
-from Reward_functions import Reward_function
+from Reward_functions import Eval
 
 class NonDeterministicActionOutcomes_Env(Env):
     metadata = {'render.modes': ['humsan']}               
         
-    def __init__(self, n_plan_states = 10, verbose=False, debug=False, render_type = 'PYGAME',  Reward_type='Eval', env_type='Train'):
+    def __init__(self, n_plan_states = 10, verbose=False, debug=False, render_type = 'PYGAME',  Reward = Eval, plan_name = 'plan'):
 
         super().__init__() 
         '''Set Parameters '''
         self.debug = debug  # restart or not once done
         self.verbose = verbose # to show the environment or not
-        self.problem_type = 'NDOA'
         self.render_opt = False
 
         ''' initialize world '''
-        self.gridworld = Gridworld(problem_type='NDOA', debug=debug, verbose=verbose, render_type =render_type)
+        self.gridworld = Gridworld(debug=debug, verbose=verbose, render_type =render_type)
         self.num_steps = 0
         
 
@@ -39,13 +38,8 @@ class NonDeterministicActionOutcomes_Env(Env):
         self.obs_shape = [self.gridworld.grid_size, self.gridworld.grid_size]  # observation space shape
         self.obs_max = 4
         self.observation_space = spaces.Box(low=0, high=self.obs_max, shape=self.obs_shape, dtype=np.float32)
-        self.Reward_type = Reward_type
-
 
         ''' Initialize Planner'''
-        if env_type == 'Train':
-            env_type += problem_type
-        plan_name = env_type+"_"+Reward_type+'_np'+str(n_plan_states)
         self.PDDL = PDDLAgent(plan_name, write_output=verbose, debug=debug)
         self.plan_pointer = 0
         self.n_plan_states=n_plan_states
@@ -60,7 +54,7 @@ class NonDeterministicActionOutcomes_Env(Env):
                                             'Plan': spaces.Box(low=0, high=self.gridworld.grid_size, shape=plan_state_shape)})     
 
         ''' set Reward type'''
-        self._Reward = Reward_function[Reward_type]
+        self._Reward = Reward
 
     def reset(self):
         '''Initialize parameters'''

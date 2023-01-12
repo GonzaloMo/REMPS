@@ -19,7 +19,7 @@ class Gridworld:
     grey = (192, 192, 192)
     white = (255, 255, 255)
 
-    def __init__(self, grid_size=10, problem_type='CE', debug=False, verbose=False, render_type = 'ASCII'):
+    def __init__(self, grid_size=10, debug=False, verbose=False, render_type = 'ASCII'):
         '''Set Parameters '''
         self._seed = 0
         self.grid_size = grid_size
@@ -27,7 +27,7 @@ class Gridworld:
         self.verbose = verbose
         self.init_render = True
         self.render_type = render_type
-        self.problem_type = problem_type
+
 
 
     ############  Create new Scenario ###########################################
