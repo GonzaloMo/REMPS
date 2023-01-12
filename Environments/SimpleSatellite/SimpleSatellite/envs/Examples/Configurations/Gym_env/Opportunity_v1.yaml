@@ -2,6 +2,21 @@ simulation_version: v1
 # Reward function Location (input should be path/to/file.py, reward_function_name) if default it takes the prebuilt reward
 Reward: default
 
+
+# Orbital Parameters
+MAX_ORBITS: 20
+PERIOD: 600 # in seconds
+
+# Satellite Parameters
+MEMORY_SIZE: 15 # Memory should be higher than 1 
+
+# Actions
+# Failure Probabilities
+Underterministic_actions: 
+  TP: 0. 
+  AN: 0. 
+  DP: 0. 
+  
 # Action Space type (Simple or Advanced)
 action_space_type: Simple
 
