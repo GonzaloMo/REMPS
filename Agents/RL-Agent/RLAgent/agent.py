@@ -27,6 +27,14 @@ class RAY_agent:
 
         # Load Environment Configuration Files
         Trianing_Envs = Environment["Trianing_Envs"]["Changing"]
+        if Trianing_Envs == []:
+            Exp_names = ["Main"]
+            Env_setups = [Environment["Trianing_Envs"]["Main"]]
+        else:
+            Exp_name = []
+            for env_file in Trianing_Envs:
+                Env_setups = [Environment["Trianing_Envs"]["Main"] + [env_file]]
+                Exp_names.append(file_name_function(env_file).stem)
         env_config = Environment["env_config"]
         reward = env_config["Reward_Function"]
         env_name = env_config["env"]
@@ -35,12 +43,11 @@ class RAY_agent:
         restore = None
         config = self.check_config(config)
         # import IPython; IPython.embed()
-        from ray import tune
-        for env_file in Trianing_Envs:
+        for i, env_file in enumerate(Env_setups):
             # Set Experiment config file
-            Exp_name = file_name_function(env_file).stem
+            Exp_name = Exp_names[i]
             env_config["Log_dir"] = f"./Simulation/"
-            env_config["Env_setup"] = Environment["Trianing_Envs"]["Main"] + [env_file]
+            env_config["Env_setup"] = env_file
             config["env_config"] = env_config
             config["env"] = env_name
             callback = [Custom_TBXLoggerCallback(env_creator(env_config))]

@@ -6,7 +6,11 @@ SimpleSatellite.egg-info/SOURCES.txt
 SimpleSatellite.egg-info/dependency_links.txt
 SimpleSatellite.egg-info/requires.txt
 SimpleSatellite.egg-info/top_level.txt
+SimpleSatellite/envs/Arbiter_v0.py
+SimpleSatellite/envs/Arbiter_v1.py
 SimpleSatellite/envs/__init__.py
+SimpleSatellite/envs/opportunity_v1.py
+SimpleSatellite/envs/planner_v1.py
 SimpleSatellite/envs/setgoals_v0.py
 SimpleSatellite/envs/setgoals_v1.py
 SimpleSatellite/envs/simsatArb_v0.py
