@@ -31,7 +31,7 @@ class RAY_agent:
             Exp_names = ["Main"]
             Env_setups = [Environment["Trianing_Envs"]["Main"]]
         else:
-            Exp_name = []
+            Exp_names = []
             for env_file in Trianing_Envs:
                 Env_setups = [Environment["Trianing_Envs"]["Main"] + [env_file]]
                 Exp_names.append(file_name_function(env_file).stem)
