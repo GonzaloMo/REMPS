@@ -84,14 +84,14 @@ class Simple_satellite(gym.Env):
         # Observation space is composed as: 
         n_gs = self.SatSim.n_gs
         max_inf = 9999999999
-        obs_space = {
+        obs_space = {'Pos':             spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32), # current angular position
                     'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
                     'Images':          spaces.Box(low=0, high=max_inf, shape=(1,), dtype=np.int32),# n images per target taken
                     'Analysis':        spaces.Box(low=0, high=max_inf, shape=(1,), dtype=np.int32), # n images per target analyzed
-                    'Opportunity':     spaces.Box(low=0, high=1., shape=(1,), dtype=np.int8), # target initial and final position
-                    'Ground Stations': spaces.Box(low=0, high=1., shape=(n_gs*2,), dtype=np.int32), # ground station initial and final position
-                    'Eclipse':         spaces.Box(low=0, high=1., shape=(4,), dtype=np.int32),} # goals to be achieved
+                    'Opportunity':     spaces.Box(low=0, high=370., shape=(1,), dtype=np.int8), # target initial and final position
+                    'Ground Stations': spaces.Box(low=0, high=370., shape=(n_gs*2,), dtype=np.float32), # ground station initial and final position
+                    'Eclipse':         spaces.Box(low=0, high=370, shape=(4,), dtype=np.float32),} # goals to be achieved
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)

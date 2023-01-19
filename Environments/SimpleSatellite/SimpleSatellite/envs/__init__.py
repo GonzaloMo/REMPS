@@ -36,3 +36,4 @@ from SimpleSatellite.envs.simsatplan_v0 import Simple_satellite_Plan_v0
 ## Simple Satellite with Opportunity Creation ##
 ###############################################
 from SimpleSatellite.envs.opportunity_v1 import Simple_satellite as Simple_satellite_opportunity_v1
+from SimpleSatellite.envs.opportunity_v2 import Simple_satellite as Simple_satellite_opportunity_v2

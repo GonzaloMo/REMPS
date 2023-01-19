@@ -92,6 +92,15 @@ Same observation space that the simulation.
 
 ### V1
 
+for opportunity:
+set as a binary value, 1 if the satellite is in the light
+set as binary the ground station vision
+see full information about the ground station, pos, and eclipse
+
 ### V2
 all angular postion are converted to sin and cos values. Due to the periodicity caracteristics of the problem.
 light is set as a binary value, 1 if the satellite is in the light 
+
+for opportunity:
+see as a binary value, 1 if the satellite is in the light
+see as binary the ground station vision

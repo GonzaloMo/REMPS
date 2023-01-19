@@ -106,7 +106,7 @@ class SatelliteSim:
         Umbra_width = 360*self.Umbra_percentage
         Penumbra_width = 360*self.Penumbra_percentage
         self.light_range = [0, Light_width]
-        self.penumbre_range = [[Light_width, Light_width + Penumbra_width], [360-Penumbra_width, 360]]
+        self.penumbre_range = [Light_width, Light_width + Penumbra_width], [360-Penumbra_width, 360]
         self.umbra_range = [Light_width + Penumbra_width, 360-Penumbra_width]
 
         # initialize logger

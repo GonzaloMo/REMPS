@@ -16,3 +16,4 @@ register(id='SimpleSatellite-planner-v1',entry_point='SimpleSatellite.envs:Simpl
 
 # randomly creates an opportunity just below the satellite
 register(id='SimpleSatellite-opportunity-v1',entry_point='SimpleSatellite.envs:Simple_satellite_opportunity_v1',)
+register(id='SimpleSatellite-opportunity-v2',entry_point='SimpleSatellite.envs:Simple_satellite_opportunity_v2',) # simplified observation space

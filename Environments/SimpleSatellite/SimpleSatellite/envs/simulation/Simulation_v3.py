@@ -179,7 +179,7 @@ class SatelliteSim:
                 self.apply_effect()
                 self.Taking_action = SatelliteSim.ACTION_DO_NOTHING
             self.busy = 0
-            
+
         # Power update
         if self.POWER_OPTION:
             compMode = SatelliteSim.ACTION_NAMES[self.Taking_action]
@@ -328,7 +328,7 @@ class SatelliteSim:
         # Dump picture
         if action == SatelliteSim.ACTION_DUMP:                   
             # check if it is above the ground station
-            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
+            if  any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
                 pass
             else:
                 return False, "Not above GS" 
