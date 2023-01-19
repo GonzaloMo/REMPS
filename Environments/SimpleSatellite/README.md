@@ -86,9 +86,12 @@ In this version the simulation has a fixed number of orbits, and only charges if
 In this version the simulation finishes when the satellite achieves all goals, and charges if an action is not being taken.
 
 
-
-## GYm nevironments
-### SimpleSatellite-v0
+## Gym nevironments
+### V0
 Same observation space that the simulation.
 
-### SimpleSatellite-setgoals-v0
+### V1
+
+### V2
+all angular postion are converted to sin and cos values. Due to the periodicity caracteristics of the problem.
+light is set as a binary value, 1 if the satellite is in the light 
