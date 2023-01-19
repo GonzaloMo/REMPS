@@ -34,7 +34,7 @@ class RAY_agent:
             Exp_names = []
             Env_setups = []
             for env_file in Trianing_Envs:
-                Env_setups.append([Environment["Trianing_Envs"]["Main"] + [env_file]])
+                Env_setups.append(Environment["Trianing_Envs"]["Main"] + [env_file])
                 Exp_names.append(file_name_function(env_file).stem)
         env_config = Environment["env_config"]
         reward = env_config["Reward_Function"]
