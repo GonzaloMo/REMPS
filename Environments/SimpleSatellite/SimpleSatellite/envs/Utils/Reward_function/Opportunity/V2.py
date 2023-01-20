@@ -8,11 +8,11 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]) -> float:
     check, add_info = env.SatSim.check_action(action, img)
     # Rewards
     if action == env.SatSim.ACTION_TAKE_IMAGE and check: # Picture of the opportunity taken
-        reward += 10
+        reward += 100
     if action == env.SatSim.ACTION_ANALYSE and check: # Opportunity analysed
-        reward += 10
+        reward += 100
     if action == env.SatSim.ACTION_DUMP and check:  # Opportunity dumped
-        reward += 10
+        reward += 100
     
     
     #Penalties
