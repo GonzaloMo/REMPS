@@ -3,10 +3,17 @@ import yaml
 import gym
 import ray
 from ray import tune 
+import shutil
 from pathlib import Path as file_name_function
 
 from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
-
+def pretty(d, indent=0):
+   for key, value in d.items():
+      print('\t' * indent + str(key))
+      if isinstance(value, dict):
+         pretty(value, indent+1)
+      else:
+         print('\t' * (indent+1) + str(value))
 class RAY_agent:
     def __init__(self):
         self.config = {}
@@ -26,16 +33,22 @@ class RAY_agent:
             config = {**config, **temp_config}
 
         # Load Environment Configuration Files
-        Trianing_Envs = Environment["Trianing_Envs"]["Changing"]
-        if Trianing_Envs == []:
-            Exp_names = ["Main"]
-            Env_setups = [Environment["Trianing_Envs"]["Main"]]
+        Exp_names = []
+        Env_setups = []
+        env_config_loaded = {}
+        for main_env_file in Environment["Trianing_Envs"]["Main"]:
+            with open(main_env_file, "r") as f:
+                env_config_loaded.update(yaml.load(f, Loader=yaml.FullLoader))
+        if Environment["Trianing_Envs"]["Changing"] == []:
+            Env_setups.append(env_config_loaded)
+            Exp_names.append("main")
         else:
-            Exp_names = []
-            Env_setups = []
-            for env_file in Trianing_Envs:
-                Env_setups.append(Environment["Trianing_Envs"]["Main"] + [env_file])
-                Exp_names.append(file_name_function(env_file).stem)
+            for changing_env_file in Environment["Trianing_Envs"]["Changing"]:
+                env_config_loaded = {}
+                with open(changing_env_file, "r") as f:
+                    env_config_loaded.update(yaml.load(f, Loader=yaml.FullLoader))
+                Env_setups.append(env_config_loaded)
+                Exp_names.append(file_name_function(changing_env_file).stem)
         env_config = Environment["env_config"]
         reward = env_config["Reward_Function"]
         env_name = env_config["env"]
@@ -44,11 +57,11 @@ class RAY_agent:
         restore = None
         config = self.check_config(config)
         # import IPython; IPython.embed()
-        for i, env_file in enumerate(Env_setups):
+        for i, env_setup in enumerate(Env_setups):
             # Set Experiment config file
-            Exp_name = Exp_names[i]
+            Exp_name = Exp_names[i]            
             env_config["Log_dir"] = f"./Simulation/"
-            env_config["Env_setup"] = env_file
+            env_config["Env_setup"] = env_setup
             config["env_config"] = env_config
             config["env"] = env_name
             callback = [Custom_TBXLoggerCallback(env_creator(env_config))]
@@ -103,7 +116,7 @@ class RAY_agent:
             checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
         algo_name = Agent["Algorithm"]
         config = Training["config"]
-
+        pretty(config)
         if algo_name == "PPO":
             if mode == "test":
                 config["num_workers"] = 0
