@@ -94,6 +94,9 @@ class RAY_agent:
         path += f"/Model/"
         if not os.path.exists(path):
             os.makedirs(path)
+        # del Temp_config["Environment"]["Env_setup"]["Reward"]
+        pretty(Temp_config)
+        
         with open(path+'Config.json', 'w') as outfile:
             json.dump(Temp_config, outfile)
         print('Agent Saved')

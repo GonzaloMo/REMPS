@@ -4,6 +4,7 @@ import gym
 import os
 import ray.tune as tune
 from typing import Dict, Any, List, Optional, Tuple, Union
+from copy import deepcopy
 current_dir = os.getcwd()
 def env_creator_old(env_config: Dict={"env": "SimpleSatellite-v0", "Env_setup": ["./Configurations/Environment_Config/Env_1.yaml"], 
             "Reward_Module": "Reward_functions.SimpleSat", "Reward_Function": "Reward_v1", "Log_dir": "./Results/Sim/"}):
@@ -28,7 +29,7 @@ def env_creator(env_config: Dict={"env": "SimpleSatellite-v0", "Env_setup": {},
     import importlib
     module_name = env_config["Reward_Module"]
     Rewards = importlib.import_module(module_name, package=None)
-    config = env_config["Env_setup"]
+    config = deepcopy(env_config["Env_setup"])
     config["Reward"] = getattr(Rewards, env_config["Reward_Function"])
     config["Log_dir"] = env_config["Log_dir"]
     MyEnv = gym.make(env_config["env"], **config)
