@@ -95,7 +95,6 @@ class Simple_satellite(gym.Env):
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
-        self.print_obs(self.observation_space)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         if type(Reward)==str:
@@ -135,7 +134,6 @@ class Simple_satellite(gym.Env):
         self.step_count += 1
         self.done = done
         observation = self.get_obs()
-        self.print_obs(observation)
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:
@@ -151,7 +149,6 @@ class Simple_satellite(gym.Env):
         self.step_count = 0
         self.done = False
         observation = self.get_obs()
-        self.print_obs(observation, add=" RESET ")
         return observation
         
 
