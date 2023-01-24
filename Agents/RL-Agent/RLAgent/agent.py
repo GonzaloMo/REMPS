@@ -5,6 +5,7 @@ import ray
 from ray import tune 
 import shutil
 from pathlib import Path as file_name_function
+from copy import deepcopy
 
 from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
 def pretty(d, indent=0):
@@ -46,7 +47,7 @@ class RAY_agent:
             for changing_env_file in Environment["Trianing_Envs"]["Changing"]:
                 with open(changing_env_file, "r") as f:
                     env_config_loaded.update(yaml.load(f, Loader=yaml.FullLoader))
-                Env_setups.append(env_config_loaded)
+                Env_setups.append(deepcopy(env_config_loaded))
                 Exp_names.append(file_name_function(changing_env_file).stem)
         env_config = Environment["env_config"]
         reward = env_config["Reward_Function"]

@@ -214,7 +214,7 @@ class SatelliteSim:
             else:
                 self.opportunity = False
         else:
-            if np.random.rand() < self.opportunity_probability:
+            if np.random.rand() <= self.opportunity_probability:
                 self.opportunity = True
                 self.opportunity_time = self.opportunity_duration
 
@@ -303,6 +303,9 @@ class SatelliteSim:
                         check = True
                         above_target = index+1
                         break
+                if not check and self.opportunity:
+                    above_target = "O"
+                    check = True
                 if not check:
                     return False, "Not above target"
             else:

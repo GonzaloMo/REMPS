@@ -119,6 +119,7 @@ class Simple_satellite(gym.Env):
             info: Dict
         """
         action_tuple = self.Number2Tuple_action(action)
+
         # Get Reward
         reward = self.Reward(self, action_tuple)
         # Take action 
