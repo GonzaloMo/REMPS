@@ -85,21 +85,20 @@ class Simple_satellite(gym.Env):
         # Observation space is composed as: 
         n_targets = self.SatSim.n_targets
         n_gs = self.SatSim.n_gs
-        max_inf = 9999999999
-        # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
+        max_inf = np.inf
         obs_space = {
                     'Pos':             spaces.Box(low=0, high=1., shape=(2,), dtype=np.float32), # current angular position
-                    'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
+                    'Busy':            spaces.Discrete(2),# busy or not
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
                     'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
                     'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
-                    'Targets':         spaces.Box(low=0, high=1., shape=(n_targets*4,), dtype=np.float32), # target initial and final position
-                    'Ground Stations': spaces.Box(low=0, high=1., shape=(n_gs*4,), dtype=np.float32), # ground station initial and final position
+                    'Targets':         spaces.Box(low=0, high=1., shape=(n_targets,), dtype=np.int32), # target is visiblility, 
+                    'Ground Stations': spaces.Box(low=0, high=1., shape=(n_gs,), dtype=np.int32), # ground station initial and final position
                     'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # goals to be achieved
-                    'Eclipse':         spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32), 
+                    'Eclipse':         spaces.Discrete(3, start=-1), # Is it in light or not
                     } 
         if self.SatSim.POWER_OPTION:
-            obs_space['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
+            obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
@@ -192,9 +191,8 @@ class Simple_satellite(gym.Env):
         state = self.SatSim.get_state()
         pos = state["Pos"]
         observation = {}
-        observation["Orbit"] = np.array([state["Orbit"]], dtype=np.int32)
         observation["Pos"] = self.pos_to_sin_and_cos([pos], dtype=np.float32)
-        observation["Busy"] = np.array([state["Busy"]], dtype=np.int8)
+        observation["Busy"] = state["Busy"]
         observation["Memory Level"] = np.array([state["Memory Level"]/self.SatSim.MEMORY_SIZE], dtype=np.float32)
         observation["Analysis"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
         observation["Images"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
@@ -204,20 +202,15 @@ class Simple_satellite(gym.Env):
                 observation["Images"][img-1] += 1
                 if state["Analysis"][i]:
                     observation["Analysis"][img-1] += 1
-
-        observation["Targets"] = self.pos_to_sin_and_cos(state["Targets"], dtype=np.float32).flatten()
-        observation["Ground Stations"] = self.pos_to_sin_and_cos(state["Ground Stations"], dtype=np.float32).flatten()
-
+        target_av, ground_station_av = self.SatSim.check_availablility()
+        observation["Targets"] = np.array(target_av, dtype=np.int32)
+        observation["Ground Stations"] = np.array(ground_station_av, dtype=np.int32)
         observation["Goals"] = np.array(self.goals, dtype=np.int32)
 
         # Check if the satellite is in light
-        light_range = state["Eclipse"][0:2]
-        if light_range[0] < pos < light_range[1]:
-            observation["Eclipse"] = np.array([1], dtype=np.int32)
-        else:
-            observation["Eclipse"] = np.array([0], dtype=np.int32)
+        light_range = int(self.SatSim.check_light())
         if self.SatSim.POWER_OPTION:
-            observation["Power"] = np.array([state["Power"]], dtype=np.float32)
+            observation["Power"] = np.array([state["Power"]/100], dtype=np.float32)
         return observation
 
     def pos_to_sin_and_cos(pos: np.ndarray) -> np.ndarray:

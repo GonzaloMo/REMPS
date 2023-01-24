@@ -8,7 +8,7 @@ from time import sleep
 from typing import List, Callable, Dict, Optional, Tuple, Any
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+
 from SimpleSatellite.envs.Utils.Reward_function.Standard import Reward as default_reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame
@@ -23,11 +23,10 @@ import numpy as np
 class Simple_satellite(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = default_reward,
-            planner_type: str="PDDL",
-            planner_config: Dict = None,
             action_space_type: str = "Simple",
             Log_dir: str = "./Logs/Simulation/",
             Max_image_goals_per_target: int = 10,
+            simulation_version: str = "v1",
             **kwargs
             ) -> None:
         """
@@ -46,22 +45,21 @@ class Simple_satellite(gym.Env):
         self.Log_dir = Log_dir
         self.Max_goals = Max_image_goals_per_target
 
-        # create Planner
-        if planner_type == "PDDL":
-            from PDDLPlanner import Planner as planner
-        elif planner_type == "OR":
-            from ORToolAgent import ORAgent as planner
-        self.planner = planner(self, **planner_config)
         # save the satelite enviroment
         kwargs["Log_dir"] = Log_dir
-        self.SatSim = SatelliteSim(**kwargs)
-        
+        self.simulation_version = "Sim_" + simulation_version
+        if simulation_version == "v1":
+            from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+            self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
+        elif simulation_version == "v2":
+            from SimpleSatellite.envs.simulation.Simulation_v2 import SatelliteSim
+            self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
 
         # The actions available are:
-        self.action_dict = {"take_picture":SatelliteSim.ACTION_TAKE_IMAGE,
-                            "analyze":SatelliteSim.ACTION_ANALYSE,
-                            "dump": SatelliteSim.ACTION_DUMP,
-                            "idle": SatelliteSim.ACTION_DO_NOTHING}
+        self.action_dict = {"take_picture":self.SatSim.ACTION_TAKE_IMAGE,
+                            "analyze":self.SatSim.ACTION_ANALYSE,
+                            "dump": self.SatSim.ACTION_DUMP,
+                            "idle": self.SatSim.ACTION_DO_NOTHING}
         self.action_list_names = ["idle"]
 
         # Create action name list
@@ -87,19 +85,21 @@ class Simple_satellite(gym.Env):
         # Observation space is composed as: 
         n_targets = self.SatSim.n_targets
         n_gs = self.SatSim.n_gs
-        max_inf = 9999999999
-        # TODO: Multidiscrete is changed into a box until RLlib fixes the issues with handeling multi discrete and discrete only use boxes
-        self.observation_space = spaces.Dict({'Orbit':           spaces.Box(low=0, high=max_inf, shape=(1,), dtype=np.int32), # current orbit
-                                              'Pos':             spaces.Box(low=0, high=370., shape=(1,), dtype=np.float32), # current angular position
-                                              'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
-                                              'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
-                                              'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
-                                              'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
-                                              'Targets':         spaces.Box(low=0, high=370., shape=(n_targets*2,), dtype=np.float32), # target initial and final position
-                                              'Ground Stations': spaces.Box(low=0, high=370., shape=(n_gs*2,), dtype=np.float32), # ground station initial and final position
-                                              'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32)}) # goals to be achieved
+        max_inf = np.inf
+        obs_space = {
+                    'Pos':             spaces.Box(low=0, high=1., shape=(2,), dtype=np.float32), # current angular position
+                    'Busy':            spaces.Discrete(2),# busy or not
+                    'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
+                    'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
+                    'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
+                    'Targets':         spaces.Box(low=0, high=1., shape=(n_targets,), dtype=np.int32), # target is visiblility, 
+                    'Ground Stations': spaces.Box(low=0, high=1., shape=(n_gs,), dtype=np.int32), # ground station initial and final position
+                    'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # goals to be achieved
+                    'Eclipse':         spaces.Discrete(3, start=-1), # Is it in light or not
+                    } 
         if self.SatSim.POWER_OPTION:
-            self.observation_space.spaces['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
+            obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
+        self.observation_space = spaces.Dict(obs_space)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
@@ -120,31 +120,28 @@ class Simple_satellite(gym.Env):
         # Get Reward
         reward = self.Reward(self, action_tuple)
         # Take action 
-        if self.SatSim.check_action(action_tuple):
-            action_name = self.Number2name_action(action)
-            if "dump" in action_name:
-                action_t, img = action_tuple
-                self.goals[img-1] = max(0, self.goals[img-1]-1)
         next_state, truncated = self.SatSim.update(action_tuple)
-        
-        
-        # Action_avaible = self.SatSim.action_is_posible()
-        terminated = True
-        for g in self.goals:
-            if g>0:
-                terminated = False
-                break
+        # Goals achieved
+        goals = self.initial_goals - np.array(self.SatSim.n_images_dumped)
+        goals[goals<0] = 0
+        self.goals = goals
         self.Total_reward += reward
-        info = {}
-        observation = self.get_obs()
+        info = {}  
+        # Check episode done
+        terminated = False
+        if np.all(goals==0):   
+            terminated = True
         if terminated or truncated:
             done = True
         else:
             done = False
+        self.step_count += 1
         self.done = done
+        observation = self.get_obs()
+        # self.print_obs_shape(observation)
         return observation, reward, done, info
 
-    def reset(self, seed: int =None, options: Dict = {"n_targ": 4}) -> Dict[str, Any]:
+    def reset(self) -> Dict[str, Any]:
         """
         Reset the enviroment to the start state
         Input:
@@ -152,9 +149,10 @@ class Simple_satellite(gym.Env):
         Output:
             observation: Dict[str, Any]
         """
-        n_targ = options["n_targ"]
-        self.SatSim.reset(n_targ)
+        self.SatSim.reset()
         self.Total_reward = 0
+        self.step_count = 0
+        self.done = False
         self.goals = self.generate_goals()
         self.initial_goals = self.goals.copy()
         observation = self.get_obs()
@@ -191,10 +189,10 @@ class Simple_satellite(gym.Env):
             observation: Dict[str, Any]
         """
         state = self.SatSim.get_state()
+        pos = state["Pos"]
         observation = {}
-        observation["Orbit"] = np.array([state["Orbit"]], dtype=np.int32)
-        observation["Pos"] = np.array([state["Pos"]], dtype=np.float32)
-        observation["Busy"] = np.array([state["Busy"]], dtype=np.int8)
+        observation["Pos"] = self.pos_to_sin_and_cos([pos], dtype=np.float32)
+        observation["Busy"] = state["Busy"]
         observation["Memory Level"] = np.array([state["Memory Level"]/self.SatSim.MEMORY_SIZE], dtype=np.float32)
         observation["Analysis"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
         observation["Images"] = np.zeros((self.SatSim.n_targets,), dtype=np.int32)
@@ -204,12 +202,28 @@ class Simple_satellite(gym.Env):
                 observation["Images"][img-1] += 1
                 if state["Analysis"][i]:
                     observation["Analysis"][img-1] += 1
-        observation["Targets"] = np.array(state["Targets"], dtype=np.float32).flatten()
-        observation["Ground Stations"] = np.array(state["Ground Stations"], dtype=np.float32).flatten()
+        target_av, ground_station_av = self.SatSim.check_availablility()
+        observation["Targets"] = np.array(target_av, dtype=np.int32)
+        observation["Ground Stations"] = np.array(ground_station_av, dtype=np.int32)
         observation["Goals"] = np.array(self.goals, dtype=np.int32)
+
+        # Check if the satellite is in light
+        light_range = int(self.SatSim.check_light())
         if self.SatSim.POWER_OPTION:
-            observation["Power"] = np.array([state["Power"]], dtype=np.float32)
+            observation["Power"] = np.array([state["Power"]/100], dtype=np.float32)
         return observation
+
+    def pos_to_sin_and_cos(pos: np.ndarray) -> np.ndarray:
+        """
+        Convert the position to sin and cos
+        Input:
+            pos: np.ndarray, angular position in degrees
+        Output:
+            pos: np.ndarray, sin and cos of the angular position
+        """
+        pos = np.deg2rad(pos)
+        n_pos = np.array([np.sin(pos), np.cos(pos)])
+        return n_pos
 
     def print_obs(self, obs: Dict[str, Any]):
         """
@@ -283,21 +297,21 @@ class Simple_satellite(gym.Env):
                 img = None
             else:
                 img = int(action_name[16:])
-            action_tuple = (SatelliteSim.ACTION_TAKE_IMAGE, img)
+            action_tuple = (self.SatSim.ACTION_TAKE_IMAGE, img)
         elif "analyze" in action_name:
             if self.action_space_type == "Simple":
                 img = None
             else:
                 img = int(action_name[11:])
-            action_tuple = (SatelliteSim.ACTION_ANALYSE, img)
+            action_tuple = (self.SatSim.ACTION_ANALYSE, img)
         elif "dump" in action_name:
             if self.action_space_type == "Simple":
                 img = None
             else:
                 img = int(action_name[8:])
-            action_tuple = (SatelliteSim.ACTION_DUMP, img)
+            action_tuple = (self.SatSim.ACTION_DUMP, img)
         else:
-            action_tuple = (SatelliteSim.ACTION_DO_NOTHING, None)
+            action_tuple = (self.SatSim.ACTION_DO_NOTHING, None)
         return action_tuple
 
     def generate_goals(self, Seed: int = None) -> List[int]:
@@ -306,6 +320,7 @@ class Simple_satellite(gym.Env):
         """
         if Seed is None:
             Seed = np.random.randint(0, 2**32)
+        self.Seed = Seed
         goals = []
         Max_goals = self.Max_goals
         for i in range(self.SatSim.n_targets):

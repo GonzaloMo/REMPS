@@ -516,3 +516,20 @@ class SatelliteSim:
                 os.makedirs(self.log_dir)
             with open(self.log_dir+f"/Seed.yaml", "a") as f:
                 f.write(f"    {self.Sim_name}: {self.seed}\n")
+                
+    def check_availablility(self):
+        """
+        Check if the satellite is above a target or ground station
+
+        Returns:
+            Tuple[List[bool], List[bool]]: Tuple of two lists, the first one is a list of bools that indicates if the satellite is above a target, the second one is a list of bools that indicates if the satellite is above a ground station.
+        """
+        above_target = [False] * self.n_targets
+        above_gs = [False] * len(self.groundStations)
+        for index in range(len(self.targets)):
+            if self.targets[index][0] < self.pos < self.targets[index][1]:
+                above_target[index] = True
+        for index in range(len(self.groundStations)):
+            if self.groundStations[index][0] < self.pos < self.groundStations[index][1]:
+                above_gs[index] = True
+        return above_target, above_gs

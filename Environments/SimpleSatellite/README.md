@@ -4,11 +4,11 @@ Video: https://youtu.be/cAdJuryALuc
 <iframe width="1280" height="742" src="https://www.youtube.com/embed/cAdJuryALuc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-
 PDDL: http://editor.planning.domains/#read_session=DUrGySABsW
 
 [![Simple Satellite video](http://img.youtube.com/vi/cAdJuryALuc/0.jpg)](http://www.youtube.com/watch?v=cAdJuryALuc)
 
+---
 
 ## Installation 
 ```
@@ -33,47 +33,7 @@ import SimpleSatellite
 env = gym.make('SimpleSatellite-v0')
 ```
 
-## Environments
-### Action Spaces
-#### V0
-Version 0 of the simple satellite environment Action space:
-- Take picture (0)
-- Analyze last un-analyzed picture of the Memory (1)
-- Dump last analyze picture of the memory (2)
-- Don't take an action (3)
-
-$$
-a \in [0,4]
-$$
-
-#### V1
-Version 1 of the simple satellite environment Action space:
-- Take picture- (0)
-- Analyze a specific image of the memory ([1, $n_t$])
-- Dump a specific image of the memory ([$n_t$+1, $2n_t$])
-- Don't take an action ($2n_t+1$)
-$$
-a \in [0,2n_t+1]
-$$
-
-### Observation Space
-The observation space is a 'Dict' gym space and all sub-observations spaces are defined as gym 'Box' spaces:
-- Orbit: $o \in[0, M_o]$ -> $M_o\equiv$ Max orbits per episode, 
-- Pos: $p \in[0,360]$,
-- Busy: $b \in[0, 1]$,
-- Memory Level: $o \in[0, M_m-1]$ -> $M_m\equiv$ Memory size, 
-- Images: $[img_1,...,img_n]| \forall img \in [0,n_t-1]$ \& $n = 1,...,M_m$,
-- Analysis: $[an_1,...,an_n]| \forall img \in [0,1]$ \& $n = 1,...,M_m$,
-- Targets: $\begin{bmatrix}
-    x_1 & y_1 \\
-    \vdots & \vdots \\
-    x_n & y_n
-\end{bmatrix}$,
-- Ground Stax_1 & y_1 \\
-\vdots & \vddot \\
-x_n &tio y_nns: np.array(self.groundStations, dtype=np.float32)}
-
-
+---
 
 ## Simulation versions
 ### V1
@@ -85,22 +45,11 @@ In this version the simulation has a fixed number of orbits, and only charges if
 ### V3
 In this version the simulation finishes when the satellite achieves all goals, and charges if an action is not being taken.
 
+---
 
-## Gym nevironments
-### V0
-Same observation space that the simulation.
+## Gym environments
 
-### V1
-
-for opportunity:
-set as a binary value, 1 if the satellite is in the light
-set as binary the ground station vision
-see full information about the ground station, pos, and eclipse
-
-### V2
-all angular postion are converted to sin and cos values. Due to the periodicity caracteristics of the problem.
-light is set as a binary value, 1 if the satellite is in the light 
-
-for opportunity:
-see as a binary value, 1 if the satellite is in the light
-see as binary the ground station vision
+- [SimpleSatellite-setgoals](./SimpleSatellite/envs/SetGoals/README.md): (v0, v1, v2)
+- [SimpleSatellite-opportunity](./SimpleSatellite/envs/Opportunity/README.md): (v1, v2)
+- [SimpleSatellite-planner](./SimpleSatellite/envs/Planner/README.md): (NOT FULLY IMPLEMENTED)
+- [SimpleSatellite-Arbiter](./SimpleSatellite/envs/Arbiter/README.md): (NOT FULLY IMPLEMENTED)

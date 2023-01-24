@@ -105,9 +105,9 @@ class SatelliteSim:
         Light_width = 360*self.light_percentage
         Umbra_width = 360*self.Umbra_percentage
         Penumbra_width = 360*self.Penumbra_percentage
-        self.light_range = [0, Light_width]
+        self.light_range = [[0, Light_width]]
         self.penumbre_range = [[Light_width, Light_width + Penumbra_width], [360-Penumbra_width, 360]]
-        self.umbra_range = [Light_width + Penumbra_width, 360-Penumbra_width]
+        self.umbra_range = [[Light_width + Penumbra_width, 360-Penumbra_width]]
 
         # initialize logger
         if not os.path.exists(Log_dir):
@@ -356,6 +356,61 @@ class SatelliteSim:
             return True, mem_slot
         
         return True, ""
+
+    def check_availablility(self):
+        """
+        Check if the satellite is above a target or ground station
+
+        Returns:
+            Tuple[List[bool], List[bool]]: Tuple of two lists, the first one is a list of bools that indicates if the satellite is above a target, the second one is a list of bools that indicates if the satellite is above a ground station.
+        """
+        above_target = [False] * self.n_targets
+        above_gs = [False] * len(self.groundStations)
+        for index in range(len(self.targets)):
+            if self.targets[index][0] < self.pos < self.targets[index][1]:
+                above_target[index] = True
+        for index in range(len(self.groundStations)):
+            if self.groundStations[index][0] < self.pos < self.groundStations[index][1]:
+                above_gs[index] = True
+        return above_target, above_gs
+
+    def check_light(self):
+        """
+        Check if the satellite is in light
+
+        Returns:
+            int: 1 if the satellite is in light, 0 if the satellite is in penumbra and, -1 if the satellite is in eclipse.
+        """
+        for index in range(len(self.light_range)):
+            if self.light_range[index][0] < self.pos < self.light_range[index][1]:
+                return 1
+        for index in range(len(self.penumbre_range)):
+            if self.penumbre_range[index][0] < self.pos < self.penumbre_range[index][1]:
+                return 0
+        return -1
+
+    def check_time_to_availability(self):
+        """
+        Check the time to the next availability of the satellite
+
+        Returns:
+            Tuple[float, float]: Tuple of two floats, the first one is the time to the next target, the second one is the time to the next ground station.
+        """
+        time_to_target = [0] * self.n_targets
+        time_to_gs = [0] * len(self.groundStations)
+        for index in range(len(self.targets)):
+            if self.pos < self.targets[index][0]:
+                time_to_target[index] = (self.targets[index][0] - self.pos)/self.velocity
+            else:
+                time_to_target[index] = (self.orbit - self.pos + self.targets[index][0])/self.velocity
+                
+        for index in range(len(self.groundStations)):
+            if self.pos < self.groundStations[index][0]:
+                time_to_gs[index] = (self.groundStations[index][0] - self.pos)/self.velocity
+            else:
+                time_to_gs[index] = (self.orbit - self.pos + self.groundStations[index][0])/self.velocity
+
+        return time_to_target, time_to_gs
 
     def reset(self, seed: int =None) -> np.ndarray:
         """
