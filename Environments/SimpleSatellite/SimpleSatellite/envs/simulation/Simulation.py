@@ -32,10 +32,10 @@ class SatelliteSim:
                 Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
                 Opportunity_Prob: float=0., Opportunity_duration: float=10,
                 Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
-                POWER_OPTION: bool=False,
+                POWER_OPTION: bool=True,
                 POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
                 ACTION_THRESHOLD: float=1,
-                Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=False,
+                Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=True,
                 CoverageFile: str="",
                 Log_dir = "./Logs/Simulation/"):
         """

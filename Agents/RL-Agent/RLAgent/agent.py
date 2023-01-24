@@ -44,7 +44,6 @@ class RAY_agent:
             Exp_names.append("main")
         else:
             for changing_env_file in Environment["Trianing_Envs"]["Changing"]:
-                env_config_loaded = {}
                 with open(changing_env_file, "r") as f:
                     env_config_loaded.update(yaml.load(f, Loader=yaml.FullLoader))
                 Env_setups.append(env_config_loaded)

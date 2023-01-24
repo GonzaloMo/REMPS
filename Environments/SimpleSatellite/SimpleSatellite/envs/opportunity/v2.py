@@ -83,7 +83,7 @@ class Simple_satellite(gym.Env):
 
         # Observation space is composed as: 
         n_gs = self.SatSim.n_gs
-        max_inf = 9999999999
+        max_inf = np.inf
         obs_space = {
                     'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int8),# busy or not
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
@@ -95,6 +95,7 @@ class Simple_satellite(gym.Env):
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=-1., high=101., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
+        self.print_obs(self.observation_space)
         self.state = self.SatSim.get_state()
         self.Total_reward = 0
         if type(Reward)==str:
@@ -134,7 +135,7 @@ class Simple_satellite(gym.Env):
         self.step_count += 1
         self.done = done
         observation = self.get_obs()
-        # self.print_obs_shape(observation)
+        self.print_obs(observation)
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:
@@ -150,6 +151,7 @@ class Simple_satellite(gym.Env):
         self.step_count = 0
         self.done = False
         observation = self.get_obs()
+        self.print_obs(observation, add=" RESET ")
         return observation
         
 
@@ -211,15 +213,16 @@ class Simple_satellite(gym.Env):
             
         if self.SatSim.POWER_OPTION:
             observation["Power"] = np.array([state["Power"]], dtype=np.float32)
+        
         return observation
 
-    def print_obs(self, obs: Dict[str, Any]):
+    def print_obs(self, obs: Dict[str, Any], add: str = ""):
         """
         Print the observation
         Input:
             obs: Dict[str, Any]
         """
-        print('----------State-----------')
+        print(f'----------State{add}-----------')
         for k, v in obs.items():
             print(k+': ',v)
         print('---------------------')
