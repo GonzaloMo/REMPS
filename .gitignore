@@ -29,5 +29,6 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 
 ### Ignore Packeges_tester
 /Test/
+/Train/
 
 Agents/Transformer-Planner/TransformerPlanner/Transformers/mesh-transformer-jax
