@@ -47,3 +47,18 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]) -> float:
         if obs["Power"] < 0.1:
             reward -= 100000
     return reward
+
+
+def Reward_v3(env: gym.Env, action_in: Tuple[int,int]) -> float:
+    reward = 0
+    action, img = action_in
+    obs = env.get_obs()
+    check, add_info = env.SatSim.check_action(action, img)
+    # Rewards
+    if action == env.SatSim.ACTION_TAKE_IMAGE and check: # Picture of the opportunity taken
+        reward += 1000
+    if action == env.SatSim.ACTION_ANALYSE and check: # Opportunity analysed
+        reward += 100
+    if action == env.SatSim.ACTION_DUMP and check:  # Opportunity dumped
+        reward += 100
+    return reward
