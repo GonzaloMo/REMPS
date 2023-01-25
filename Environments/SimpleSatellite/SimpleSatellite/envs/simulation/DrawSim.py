@@ -6,7 +6,7 @@ Authors: Gonzalo Montesino Valle, Michael Cashmore
 """
 import math
 import pygame
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.Base import SatelliteSim_Base as SatelliteSim
 from time import sleep
 import matplotlib.pyplot as plt
 from copy import copy
@@ -119,12 +119,12 @@ class SatelliteView:
             self.drawArcs(SatelliteView.GREEN, [[sim.pos-2., sim.pos+2.]], sim)
 
         # Draw Eclipse
-        self.draw_eclpise(sim.get_state()) 
+        self.draw_eclpise(sim) 
 
        
 
         # draw satellite
-        if sim.light_range[0] < sim.pos < sim.light_range[1]:
+        if sim.check_light() > 0:
             sat_color = SatelliteView.BLACK
         else:
             sat_color = SatelliteView.WHITE
@@ -399,19 +399,26 @@ class SatelliteView:
     def quit(self):
         pygame.quit()
 
-    def draw_eclpise(self, obs):
-        div_circ = obs["Eclipse"] + [360.] # Add 360 to close the circle
+    def draw_eclpise(self, sim):
         width = int(SatelliteView.ORBIT_DISTANCE + 6*SatelliteView.SAT_SIZE)
         radius = int(SatelliteView.PLANET_SIZE + width)
-        for i in range(1, len(div_circ)):
-            if i == 1:
-                color = SatelliteView.LIGHT_YELLOW
-            elif i == 3:
-                color = SatelliteView.DARK_GREY
-            else:
-                color = SatelliteView.GREY
-            min_pos_rad = div_circ[i-1]*np.pi/180
-            max_pos_rad = div_circ[i]*np.pi/180
-            if min_pos_rad!=max_pos_rad:
-                self.drawArc(color, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+
+        light_range = sim.light_range
+        for r in light_range:
+            min_pos_rad = r[0]*np.pi/180
+            max_pos_rad = r[1]*np.pi/180
+            self.drawArc(SatelliteView.LIGHT_YELLOW, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+
+        penumbre_range = sim.penumbre_range
+        for r in penumbre_range:
+            min_pos_rad = r[0]*np.pi/180
+            max_pos_rad = r[1]*np.pi/180
+            self.drawArc(SatelliteView.GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+        
+        umbra_range = sim.umbra_range
+        for r in umbra_range:
+            min_pos_rad = r[0]*np.pi/180
+            max_pos_rad = r[1]*np.pi/180
+            self.drawArc(SatelliteView.DARK_GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+
             

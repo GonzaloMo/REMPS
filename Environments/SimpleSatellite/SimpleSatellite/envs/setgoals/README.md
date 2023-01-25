@@ -54,9 +54,9 @@ ___
 - **Memory Level**: memory used %/100
 - **Images**: n images per target taken
 - **Analysis**: n images per target analyzed
-- **Targets**: vector of targets visibility (1 if visible, 0 if not)
-- **Ground Stations**: vector of Ground Station visibility (1 if visible, 0 if not)
-- **Goals**: n of analyzed picture still left to be dumped
+- **Targets**: targets initial and final position in cos and sin [0, 1]
+- **Ground Stations**: ground station initial and final position in cos and sin [0, 1]
+- **Goals**: percentage of goals left/initial goals [0, 1]
 - **Eclipse**: Wether the satellite is in light (1), in umbra (0) or in penumbra (-1)
 - **Power**: Percentaje of power left [0 , 1]
 

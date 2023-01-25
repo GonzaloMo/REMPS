@@ -2,7 +2,7 @@ import os
 from time import sleep
 from typing import Callable, List, Dict, Any, Tuple
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from SimpleSatellite.envs.Utils.Reward_function.Standard import Reward as default_reward
 from SimpleSatellite.envs.simulation.DrawSim import SatelliteView 
 import pygame

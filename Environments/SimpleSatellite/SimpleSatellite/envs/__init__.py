@@ -12,6 +12,8 @@ from SimpleSatellite.envs.simsat_v1 import Simple_satellite as Simple_satellite_
 from SimpleSatellite.envs.setgoals.v0 import Simple_satellite as Simple_satellite_setgoals_v0
 from SimpleSatellite.envs.setgoals.v1 import Simple_satellite as Simple_satellite_setgoals_v1
 from SimpleSatellite.envs.setgoals.v2 import Simple_satellite as Simple_satellite_setgoals_v2
+# from SimpleSatellite.envs.setgoals.v3 import Simple_satellite as Simple_satellite_setgoals_v3
+
 
 ###############################################
 ## Simple Satellite with Opportunity Creation ##

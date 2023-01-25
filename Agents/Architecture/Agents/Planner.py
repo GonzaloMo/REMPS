@@ -3,7 +3,7 @@ from gym import spaces
 from copy import copy
 import SimpleSatellite
 from SimpleSatellite.envs.simulation.Utils import BaseVoice
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 import numpy as np
 from ArbiterVoices.Planner_utlis.AgentPDDL import PDDLAgent
 from ArbiterVoices.Planner_utlis.GoalReferee import GoalReferee

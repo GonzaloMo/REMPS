@@ -1,10 +1,10 @@
 import gym
 import SimpleSatellite
 import yaml
-configfile = '/home/ksb21109/Documents/PhD/REMPS/Environments/SimpleSatellite/SimpleSatellite/envs/Examples/Configurations/Gym_env/Opportunity_v1.yaml'
+configfile = "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/v2.yaml"
 with open(configfile, 'r') as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
-env = gym.make('SimpleSatellite-opportunity-v1', **config)
+env = gym.make('SimpleSatellite-setgoals-v2', **config)
 def print_obs(obs):
     for k, v in obs.items():
         print(k+': ',v)

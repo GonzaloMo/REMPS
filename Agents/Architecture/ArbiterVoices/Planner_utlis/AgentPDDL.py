@@ -1,5 +1,5 @@
 from logging import raiseExceptions
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from ArbiterVoices.Planner_utlis import PDDLManager 
 import numpy as np
 

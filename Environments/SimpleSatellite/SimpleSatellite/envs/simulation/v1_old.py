@@ -554,3 +554,18 @@ class SatelliteSim:
                 os.makedirs(self.log_dir)
             with open(self.log_dir+f"/Seed.yaml", "a") as f:
                 f.write(f"    {self.Sim_name}: {self.seed}\n")
+    
+    def check_light(self):
+        """
+        Check if the satellite is in light
+
+        Returns:
+            int: 1 if the satellite is in light, 0 if the satellite is in penumbra and, -1 if the satellite is in eclipse.
+        """
+        for index in range(len(self.light_range)):
+            if self.light_range[index][0] < self.pos < self.light_range[index][1]:
+                return 1
+        for index in range(len(self.penumbre_range)):
+            if self.penumbre_range[index][0] < self.pos < self.penumbre_range[index][1]:
+                return 0
+        return -1

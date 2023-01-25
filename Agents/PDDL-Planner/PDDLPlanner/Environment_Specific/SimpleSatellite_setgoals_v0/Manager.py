@@ -1,4 +1,4 @@
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from PDDLPlanner.Environment_Specific.SimpleSatellite_setgoals_v0.Action import Action
 from typing import List, Tuple, Dict, Any
 import subprocess

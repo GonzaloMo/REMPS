@@ -1,5 +1,5 @@
 from logging import raiseExceptions
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 
 
 class Action(object):

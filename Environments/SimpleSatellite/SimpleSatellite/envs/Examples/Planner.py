@@ -1,5 +1,5 @@
 from SimpleSatellite.envs.Test_Utils.Action import Action
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from copy import copy
 class Planner:
     def __init__(self, SatSim: SatelliteSim, name: str, goals: list, Save_path: str = "./SimpleSatellite/envs/Utils/"):
@@ -99,7 +99,7 @@ class Planner:
 " PDDL Agent"
 "----------------------------------------------------------------------------------------------------------------------------"
 from logging import raiseExceptions
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from SimpleSatellite.envs.Utils import PDDLManager 
 import numpy as np
 import os

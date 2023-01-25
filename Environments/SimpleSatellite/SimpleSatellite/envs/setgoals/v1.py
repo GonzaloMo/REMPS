@@ -48,13 +48,11 @@ class Simple_satellite(gym.Env):
         # save the satelite enviroment
         kwargs["Log_dir"] = Log_dir
         self.simulation_version = "Sim_" + simulation_version
-        if simulation_version == "v1":
-            from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
-            self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
-        elif simulation_version == "v2":
-            from SimpleSatellite.envs.simulation.Simulation_v2 import SatelliteSim
-            self.SatSim = SatelliteSim(ECLIPSE_OPTION=True,**kwargs)
-
+        import importlib
+        module_name = "SimpleSatellite.envs.simulation." + simulation_version
+        simsat_pack = importlib.import_module(module_name, package=None)
+        simsat_class = getattr(simsat_pack, "SatelliteSim")
+        self.SatSim = simsat_class(ECLIPSE_OPTION=True, **kwargs)
         # The actions available are:
         self.action_dict = {"take_picture":self.SatSim.ACTION_TAKE_IMAGE,
                             "analyze":self.SatSim.ACTION_ANALYSE,
