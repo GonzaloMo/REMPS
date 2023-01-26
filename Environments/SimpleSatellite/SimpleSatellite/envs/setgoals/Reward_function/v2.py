@@ -128,7 +128,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
             if goals[img-1] > 1:
                 reward += 500
             if goals[img-1] == 1:
-                reward += 100000
+                reward += 1000
     else:
         # Action that made action to not be executed
         if add_info == "Memory full":
@@ -157,7 +157,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
         if obs["Power"] < 25.:
             reward -= 10
         elif obs["Power"] < 0.01:
-            reward = -100000000
+            reward = -100000
         elif obs["Power"] < 100. and \
                 env.SatSim.check_light()>0 and \
                 env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
