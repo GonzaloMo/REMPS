@@ -148,7 +148,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
 
     ## penalty for taking to long to achieve goals
     if env.SatSim.orbit > limit_orbits and pos>359:
-        reward -= min(10**(env.SatSim.orbit-limit_orbits/20), 1000)
+        reward -= min(10**(env.SatSim.orbit-limit_orbits/20), 100)
     # Incentivise having not having the memory free
     # if obs["Memory Level"] > 0.1:
     #     reward += min(obs["Memory Level"][0], env.SatSim.MEMORY_SIZE*.5) * reward
