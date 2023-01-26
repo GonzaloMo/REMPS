@@ -158,7 +158,7 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
     # Power 
     if env.SatSim.POWER_OPTION:
         if obs["Power"] < 25.:
-            reward -= 100
+            reward -= 10
         elif obs["Power"] < 0.01:
             reward = -1000000000000
         elif obs["Power"] < 100. and \
