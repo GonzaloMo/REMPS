@@ -104,7 +104,7 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
 ########
 # penalty for taking to long to achieve goals
 
-def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
+def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     reward = 0 
     
     # Get action and observation
