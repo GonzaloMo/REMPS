@@ -119,7 +119,6 @@ class RAY_agent:
             checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
         algo_name = Agent["Algorithm"]
         config = Training["config"]
-        pretty(config)
         if algo_name == "PPO":
             if mode == "test":
                 config["num_workers"] = 0
@@ -132,6 +131,14 @@ class RAY_agent:
         self.agent.restore(checkpoint_path=checkpoint_path)
         return Training, Agent, Environment
         
+    def load_from_cehckpoint(self, path: str, config: str, mode="test"):
+        from RLAgent.Utils.ray import PPO
+        pretty(config)
+        if mode == "test":
+            config["num_workers"] = 0
+            config["num_envs_per_worker"] = 1
+        self.agent = PPO(config=config)
+        self.agent.restore(checkpoint_path=path)
 
     def get_action(self, observation, **kwargs):
         return self.agent.compute_single_action(observation, **kwargs)

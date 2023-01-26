@@ -5,24 +5,62 @@ import numpy as np
 def cossin_2_degrees(x: float, y: float) -> float:
     return np.degrees(np.arctan2(y, x))
 #####
-#idea from v1 Reward v9:
-def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
-    reward = 0 
+def Reward_test(env: gym.Env, action_in: Tuple[int,int]):
+    reward = 0
     # Get action and observation
     obs = env.get_obs()
     pos = cossin_2_degrees(obs["Pos"][0], obs["Pos"][1])
-    goals = obs["Goals"]
+    goals = env.goals
     action, img = action_in
     check_action, add_info = env.SatSim.check_action(action,img)
     # Reward for taking a correct action
     if check_action:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
+            if goals[img-1] > 0:
+                reward += 1
+                print("reward for taking a picture of {} is {}".format(img, reward))
+        if action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            if goals[img-1] > 0:
+                reward += 1
+                print("reward for analysing a picture of {} is {}".format(img, reward))
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
             if goals[img-1] > 1:
+                reward += 1
+                print("reward for dumping a picture of {} is {}".format(img, reward))
+            if goals[img-1] == 1:
+                reward += 100
+                print("reward for dumping all picture of {} is {}".format(img, reward))
+                import IPython; IPython.embed()
+
+    
+    if env.SatSim.POWER_OPTION:
+        if obs["Power"] < 0.01:
+            reward = -100000
+    return reward
+
+#####
+#idea from v1 Reward v9:
+def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
+    reward = 0 
+    
+    # Get action and observation
+    obs = env.get_obs()
+    pos = cossin_2_degrees(obs["Pos"][0], obs["Pos"][1])
+    goals = env.goals
+    action, img = action_in
+    check_action, add_info = env.SatSim.check_action(action,img)
+    # Reward for taking a correct action
+    if check_action:
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal
+            if goals[img-1] > 0:
                 reward += 1000
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
-            if goals[img-1] > 1:
+            if goals[img-1] > 0:
                 reward += 400
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
