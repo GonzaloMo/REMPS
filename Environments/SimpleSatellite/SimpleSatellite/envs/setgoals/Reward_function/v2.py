@@ -109,7 +109,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     obs = env.get_obs()
     pos = cossin_2_degrees(obs["Pos"][0], obs["Pos"][1])
     goals = env.goals
-    limit_orbits = np.sum(env.initial_goals)/4
+    limit_orbits = max(30, np.sum(env.initial_goals)/4)
 
     action, img = action_in
     check_action, add_info = env.SatSim.check_action(action,img)
