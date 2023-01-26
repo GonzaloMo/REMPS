@@ -33,7 +33,6 @@ def Reward_test(env: gym.Env, action_in: Tuple[int,int]):
             if goals[img-1] == 1:
                 reward += 100
                 print("reward for dumping all picture of {} is {}".format(img, reward))
-                import IPython; IPython.embed()
 
     
     if env.SatSim.POWER_OPTION:
@@ -84,7 +83,6 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
             reward -= 10
         elif add_info == "Satellite busy":
             reward -= 100
-        pass
     # # Incentivise having not having the memory free
     # if obs["Memory Level"] > 0.1:
     #     reward += min(obs["Memory Level"][0], env.SatSim.MEMORY_SIZE*.5) * reward
@@ -147,11 +145,10 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
             reward -= 10
         elif add_info == "Satellite busy":
             reward -= 100
-        pass
 
     ## penalty for taking to long to achieve goals
-    if env.SatSim.orbit > limit_orbits:
-        reward -= 10**(env.SatSim.orbit-limit_orbits/4)
+    if env.SatSim.orbit > limit_orbits and pos>359:
+        reward -= min(10**(env.SatSim.orbit-limit_orbits/20), 1000)
     # Incentivise having not having the memory free
     # if obs["Memory Level"] > 0.1:
     #     reward += min(obs["Memory Level"][0], env.SatSim.MEMORY_SIZE*.5) * reward
@@ -160,7 +157,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
         if obs["Power"] < 25.:
             reward -= 10
         elif obs["Power"] < 0.01:
-            reward = -1000000000000
+            reward = -100000000
         elif obs["Power"] < 100. and \
                 env.SatSim.check_light()>0 and \
                 env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
