@@ -132,19 +132,19 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     else:
         # Action that made action to not be executed
         if add_info == "Memory full":
-            reward -= 10
-        elif add_info == "Not above target":
-            reward -= 10
-        elif add_info == "Not in light":
             reward -= 1
+        elif add_info == "Not above target":
+            reward -= 1
+        elif add_info == "Not in light":
+            reward -= .1
         elif add_info == "No image to analyse":
-            reward -= 10
+            reward -= 1
         elif add_info == "No image to dump":
-            reward -= 10
+            reward -= 1
         elif add_info == "Not above GS":
-            reward -= 10
+            reward -= 1
         elif add_info == "Satellite busy":
-            reward -= 100
+            reward -= 10
 
     ## penalty for taking to long to achieve goals
     if env.SatSim.orbit > limit_orbits and pos>359:
