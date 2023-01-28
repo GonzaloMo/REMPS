@@ -169,7 +169,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
 ########
 # penalty for taking to long to achieve goals increase penalty for no power
 
-def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
+def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
     reward = 0 
     
     # Get action and observation
