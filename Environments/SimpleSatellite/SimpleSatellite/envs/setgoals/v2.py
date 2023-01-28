@@ -367,9 +367,9 @@ class Simple_satellite(gym.Env):
         for i in range(self.SatSim.n_targets):
             init_goals = self.initial_goals[i]
             if init_goals > 0:
-                g_per.append(1 - (goals[i]/init_goals))
+                g_per.append(goals[i]/init_goals)
             else:
-                g_per.append(1)
+                g_per.append(0)
         return np.array(g_per, dtype=np.float32)
 
     def render_goals(self, goals: List[int]) -> None:
