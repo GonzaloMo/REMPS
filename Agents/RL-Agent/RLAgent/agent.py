@@ -70,6 +70,7 @@ class RAY_agent:
             Training["restore"] = restore
             Training["name"] = Exp_name
             # Train on set envirnment
+            self.save(save_dir, Training, Agent, Environment, trainning_done=True)
             self.analysis = ray.tune.run(self.agent, **Training, callbacks=callback)
             self.last_checkpoint = self.analysis.get_last_checkpoint()
             # Save Agent
@@ -78,7 +79,7 @@ class RAY_agent:
             save_dir = "/".join(restore.split("/")[:-2])
             self.save(save_dir, Training, Agent, Environment)
 
-    def save(self, path: str, Training: Dict, Agent: Dict, Environment: Dict):
+    def save(self, path: str, Training: Dict, Agent: Dict, Environment: Dict, trainning_done=False):
         import os
         
         # Save Trainning data 
@@ -90,7 +91,8 @@ class RAY_agent:
         Temp_config["Agent"] = Agent
         Temp_config["Environment"] = Environment
         Temp_config["save_dir"] = path
-        Temp_config["last_checkpoint"] = self.last_checkpoint._local_path
+        if trainning_done:
+            Temp_config["last_checkpoint"] = self.last_checkpoint._local_path
         path += f"/Model/"
         if not os.path.exists(path):
             os.makedirs(path)
