@@ -6,6 +6,7 @@ from ray import tune
 import shutil
 from pathlib import Path as file_name_function
 from copy import deepcopy
+import numpy as np
 
 from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
 def pretty(d, indent=0):
@@ -15,9 +16,12 @@ def pretty(d, indent=0):
          pretty(value, indent+1)
       else:
          print('\t' * (indent+1) + str(value))
+
+
 class RAY_agent:
     def __init__(self):
         self.config = {}
+        self.state = None
 
     def train(self, Training: Dict, Agent: Dict, Environment: Dict):
         Training["local_dir"] = Training["local_dir"]+ Environment["env_config"]["env"]
@@ -116,7 +120,7 @@ class RAY_agent:
         Agent = Temp_config["Agent"]
         Environment = Temp_config["Environment"]
         if specific_checkpoint is not None:
-            checkpoint_path = Temp_config["save_dir"] +"/"+ specific_checkpoint
+            checkpoint_path = path +"/"+ specific_checkpoint
         else:
             checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
         algo_name = Agent["Algorithm"]
@@ -131,11 +135,11 @@ class RAY_agent:
    
         # Load Agent
         self.agent.restore(checkpoint_path=checkpoint_path)
+        self.config = config
         return Training, Agent, Environment
         
-    def load_from_cehckpoint(self, path: str, config: str, mode="test"):
+    def load_from_cehckpoint(self, path: str, config: Dict, mode="test"):
         from RLAgent.Utils.ray import PPO
-        pretty(config)
         if mode == "test":
             config["num_workers"] = 0
             config["num_envs_per_worker"] = 1
@@ -143,8 +147,22 @@ class RAY_agent:
         self.agent.restore(checkpoint_path=path)
 
     def get_action(self, observation, **kwargs):
-        return self.agent.compute_single_action(observation, **kwargs)
+        if self.state is None and (self.config["model"]["use_lstm"]):
+            if "lstm_cell_size" in self.config["model"].keys():
+                cell_size = self.config["model"]["lstm_cell_size"]
+            else:
+                cell_size = 256
+            state = [np.zeros(cell_size, np.float32),
+               np.zeros(cell_size, np.float32)]
+        else:
+            state = self.state
+        if state is not None:
+            action, state, logits = self.agent.compute_action(observation, state, **kwargs)
+        else:
+            action = self.agent.compute_single_action(observation, **kwargs)
+        self.state = state
 
+        return action
     def add_to_config(self, config: Dict):
         self.config = {**self.config, **config}
     
