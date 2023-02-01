@@ -6,6 +6,7 @@ from ray import tune
 import shutil
 from pathlib import Path as file_name_function
 from copy import deepcopy
+from datetime import datetime
 import numpy as np
 
 from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
@@ -21,6 +22,7 @@ def pretty(d, indent=0):
 class RAY_agent:
     def __init__(self):
         self.config = {}
+        self.date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         self.state = None
 
     def train(self, Training: Dict, Agent: Dict, Environment: Dict):
@@ -72,16 +74,17 @@ class RAY_agent:
             # Set Trainning configuration dict
             Training["config"] = config
             Training["restore"] = restore
-            Training["name"] = Exp_name
+            Training["name"] = Exp_name + f"/{self.date}/"
+            localdir = Training["local_dir"] + "/" +Training["name"]
             # Train on set envirnment
-            self.save(save_dir, Training, Agent, Environment, trainning_done=True)
+            self.save(localdir, Training, Agent, Environment)
             self.analysis = ray.tune.run(self.agent, **Training, callbacks=callback)
             self.last_checkpoint = self.analysis.get_last_checkpoint()
             # Save Agent
             restore = self.last_checkpoint._local_path
             # Store the configuration Dict
             save_dir = "/".join(restore.split("/")[:-2])
-            self.save(save_dir, Training, Agent, Environment)
+            self.save(save_dir, Training, Agent, Environment, trainning_done=True)
 
     def save(self, path: str, Training: Dict, Agent: Dict, Environment: Dict, trainning_done=False):
         import os
