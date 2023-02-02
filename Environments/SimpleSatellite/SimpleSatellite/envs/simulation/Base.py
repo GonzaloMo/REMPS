@@ -37,80 +37,25 @@ class SatelliteSim_Base:
                 ACTION_THRESHOLD: float=1,
                 Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=True,
                 CoverageFile: str="",
-                Log_dir = "./Logs/Simulation/"):
+                Log_dir = "./Logs/Simulation/", **kwargs):
         ############ Initialize the simulation parameters ############
         ## Satellite parameters ##
         # Postion variables
         self.pos = 0
         self.orbit = 0
 
-        # memory state
-        self.MEMORY_SIZE = MEMORY_SIZE
-        self.memory_level = 0
-        self.images = [0] * MEMORY_SIZE
-        self.analysis = [False] * MEMORY_SIZE
-
         # Action variables
         self.busy = 0
         self.satellite_busy_time = 0
-        self.last_action = (0, None)
-        self.ACTION_THRESHOLD = ACTION_THRESHOLD
-        self.DURATIONS = [0, DURATION_TAKE_IMAGE, DURATION_ANALYSE, DURATION_DUMP]
-        self.DURATION_TAKE_IMAGE = DURATION_TAKE_IMAGE
-        self.DURATION_DUMP = DURATION_DUMP
-        self.DURATION_ANALYSE = DURATION_ANALYSE
-        self.Underterministic_actions = Underterministic_actions
-
-        # Power variables
-        self.POWER_OPTION = POWER_OPTION
-        self.POWER_CONSUMPTION = POWER_CONSUMPTION
-        self.POWER_CONSUMPTION["NoGenRate"] = 0.
-        self.Power = 50.
-
-        ## Environment parameters ##
-        self.period = PERIOD
         self.sim_time = 0
-        self.dt = PERIOD/SatelliteSim_Base.CIRCUNFERENCE
-        self.velocity = SatelliteSim_Base.CIRCUNFERENCE/PERIOD
-
-        # Eclipse variables
-        self.ECLIPSE_OPTION = ECLIPSE_OPTION
-        self.Umbra_percentage = Umbra
-        self.Penumbra_percentage = Penumbra
-        self.light_percentage = Light
-        assert self.Umbra_percentage + 2*self.Penumbra_percentage + self.light_percentage == 1., "The sum of Light + Umbra + 2xPenumbra = 1."
-        Light_width = 360*self.light_percentage
-        Umbra_width = 360*self.Umbra_percentage
-        Penumbra_width = 360*self.Penumbra_percentage
-        self.light_range = [[0, Light_width]]
-        self.penumbre_range = [[Light_width, Light_width + Penumbra_width], [360-Penumbra_width, 360]]
-        self.umbra_range = [[Light_width + Penumbra_width, 360-Penumbra_width]]
 
         # initialize logger
         if not os.path.exists(Log_dir):
             os.makedirs(Log_dir)
         self.log_dir = Log_dir
-        
-        
-        # GS parameters
-        self.n_gs = Number_of_GS
-        self.Random_GS = Random_GS
-        self.GS_HALF_SIZE = GS_HALF_SIZE
-        self.groundStations = []
-        
-        # Targets
-        self.random_targets = Random_Targets
-        self.n_targets = Number_of_targets
-        self.TARGET_HALF_SIZE = TARGET_HALF_SIZE
-        self.targets = []
-        self.CoverageFile = CoverageFile
 
-        # Oppurtunity
-        self.opportunity = False
-        self.opportunity_time = 0
-        self.opportunity_duration = Opportunity_duration
-        self.opportunity_probability = Opportunity_Prob
-
+        # Set configuration
+        self.load_config(**kwargs)
 
         # Failures
         self.Failures = {
@@ -193,7 +138,7 @@ class SatelliteSim_Base:
         state = self.get_state()
         return state, done    
 
-    def Base_reset(self, seed: int =None) -> np.ndarray:
+    def Base_reset(self, seed: int =None, config:Dict = None) -> np.ndarray:
         """
         Reset the satellite simulation.
 
@@ -203,7 +148,8 @@ class SatelliteSim_Base:
         Returns:
             The initial state of the satellite.
         """
-        
+        if config is not None:
+            self.load_config(**config)
         # Reset the random seed
         date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         self.Sim_name = f"Sim_{date}"
@@ -581,3 +527,78 @@ class SatelliteSim_Base:
                 time_to_gs[index] = (self.orbit - self.pos + self.groundStations[index][0])/self.velocity
 
         return time_to_target, time_to_gs
+
+
+    def load_config(self, 
+                    PERIOD: float=600, 
+                    MEMORY_SIZE: int=10,  
+                    Underterministic_actions: Dict[str, float]= {"TP": 0., "AN": 0., "DP": 0.}, 
+                    DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
+                    Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
+                    Opportunity_Prob: float=0., Opportunity_duration: float=10,
+                    Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
+                    POWER_OPTION: bool=True,
+                    POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
+                    ACTION_THRESHOLD: float=1,
+                    Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=True,
+                    CoverageFile: str=""):
+        
+
+        # memory state
+        self.MEMORY_SIZE = MEMORY_SIZE
+        self.memory_level = 0
+        self.images = [0] * MEMORY_SIZE
+        self.analysis = [False] * MEMORY_SIZE
+
+        # Action variables
+        self.last_action = (0, None)
+        self.ACTION_THRESHOLD = ACTION_THRESHOLD
+        self.DURATIONS = [0, DURATION_TAKE_IMAGE, DURATION_ANALYSE, DURATION_DUMP]
+        self.DURATION_TAKE_IMAGE = DURATION_TAKE_IMAGE
+        self.DURATION_DUMP = DURATION_DUMP
+        self.DURATION_ANALYSE = DURATION_ANALYSE
+        self.Underterministic_actions = Underterministic_actions
+
+        # Power variables
+        self.POWER_OPTION = POWER_OPTION
+        self.POWER_CONSUMPTION = POWER_CONSUMPTION
+        self.POWER_CONSUMPTION["NoGenRate"] = 0.
+        self.Power = 50.
+
+        ## Environment parameters ##
+        self.period = PERIOD
+        self.dt = PERIOD/SatelliteSim_Base.CIRCUNFERENCE
+        self.velocity = SatelliteSim_Base.CIRCUNFERENCE/PERIOD
+
+        # Eclipse variables
+        self.ECLIPSE_OPTION = ECLIPSE_OPTION
+        self.Umbra_percentage = Umbra
+        self.Penumbra_percentage = Penumbra
+        self.light_percentage = Light
+        assert self.Umbra_percentage + 2*self.Penumbra_percentage + self.light_percentage == 1., "The sum of Light + Umbra + 2xPenumbra = 1."
+        Light_width = 360*self.light_percentage
+        Umbra_width = 360*self.Umbra_percentage
+        Penumbra_width = 360*self.Penumbra_percentage
+        self.light_range = [[0, Light_width]]
+        self.penumbre_range = [[Light_width, Light_width + Penumbra_width], [360-Penumbra_width, 360]]
+        self.umbra_range = [[Light_width + Penumbra_width, 360-Penumbra_width]]
+        
+        
+        # GS parameters
+        self.n_gs = Number_of_GS
+        self.Random_GS = Random_GS
+        self.GS_HALF_SIZE = GS_HALF_SIZE
+        self.groundStations = []
+        
+        # Targets
+        self.random_targets = Random_Targets
+        self.n_targets = Number_of_targets
+        self.TARGET_HALF_SIZE = TARGET_HALF_SIZE
+        self.targets = []
+        self.CoverageFile = CoverageFile
+
+        # Oppurtunity
+        self.opportunity = False
+        self.opportunity_time = 0
+        self.opportunity_duration = Opportunity_duration
+        self.opportunity_probability = Opportunity_Prob

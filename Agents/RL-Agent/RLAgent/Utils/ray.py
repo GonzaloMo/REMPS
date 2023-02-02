@@ -36,6 +36,10 @@ def env_creator(env_config: Dict={"env": "SimpleSatellite-setgoals-v0", "Env_set
     config["Log_dir"] = env_config["Log_dir"]
     MyEnv = gym.make(env_config["env"], **config)
     return MyEnv  # return an env instance
+
+#############################################################################################################################
+
+#############################################################################################################################
         
 from ray.rllib.agents.ppo import PPOTrainer
 import torch
