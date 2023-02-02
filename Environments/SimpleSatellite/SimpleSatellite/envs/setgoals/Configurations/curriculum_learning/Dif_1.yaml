@@ -1,0 +1,25 @@
+## SET A SEED ENVIRONMENT
+# Simulation_Seed: 0
+Max_image_goals_per_target: 5
+
+# Ground station (GS) parameters
+Random_GS: False
+# If Random GS is True
+Number_of_GS: 2
+GS_HALF_SIZE: 90. # in degrees
+
+
+# Target parameters
+Random_Targets: True
+# If Random Targets is True
+Number_of_targets: 10
+TARGET_HALF_SIZE: 10. # in degrees
+
+
+
+POWER_OPTION: True
+POWER_CONSUMPTION: 
+  TP: -0.0 # in %/s when Take Picture
+  AN: -0.0 # in %/s when Analyse
+  DP: -0.0 # in %/s when dumping
+  PowerGenerationRate: .0 # in %/s when not taking actions
