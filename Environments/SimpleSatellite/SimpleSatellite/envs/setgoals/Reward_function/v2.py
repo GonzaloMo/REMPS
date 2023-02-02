@@ -343,14 +343,6 @@ def Reward_v5(env: gym.Env, action_in: Tuple[int,int]):
             reward -= .1
         elif add_info == "Satellite busy":
             reward -= 1
-
-    ## penalty for taking to long to achieve goals
-    if env.SatSim.orbit > limit_orbits and pos>359:
-        reward -= min(10**((env.SatSim.orbit-limit_orbits)/40), 100)
-    # Incentivise having not having the memory free
-    # if obs["Memory Level"] > 0.1:
-    #     reward += min(obs["Memory Level"][0], env.SatSim.MEMORY_SIZE*.5) * reward
-    # Power 
     if env.SatSim.POWER_OPTION:
         if obs["Power"] < 25.:
             reward -= 10
