@@ -404,9 +404,9 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
         
     if env.SatSim.POWER_OPTION:
         if obs["Power"] < 25.:
-            reward -= 1
+            reward = -10
         elif obs["Power"] < 1:
-            reward = -100000
+            reward = min(-1e6, (limit_orbits-env.SatSim.orbit) * (2e5))
         elif obs["Power"] < 100. and \
                 env.SatSim.check_light()>0 and \
                 env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
