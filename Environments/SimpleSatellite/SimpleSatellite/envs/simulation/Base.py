@@ -25,18 +25,6 @@ class SatelliteSim_Base:
     ACTION_NAMES = ["DN","TP","AN","DP"]
 
     def __init__(self, 
-                PERIOD: float=600, 
-                MEMORY_SIZE: int=10,  
-                Underterministic_actions: Dict[str, float]= {"TP": 0., "AN": 0., "DP": 0.}, 
-                DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
-                Random_Targets: bool=True, Number_of_targets: int=4, TARGET_HALF_SIZE: float=5., 
-                Opportunity_Prob: float=0., Opportunity_duration: float=10,
-                Random_GS: bool=False, GS_HALF_SIZE: float=20., Number_of_GS: int=2, 
-                POWER_OPTION: bool=True,
-                POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
-                ACTION_THRESHOLD: float=1,
-                Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=True,
-                CoverageFile: str="",
                 Log_dir = "./Logs/Simulation/", **kwargs):
         ############ Initialize the simulation parameters ############
         ## Satellite parameters ##
