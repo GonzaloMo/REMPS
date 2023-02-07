@@ -20,6 +20,7 @@ import gym
 from gym import spaces
 
 import numpy as np
+
 class Simple_satellite(gym.Env):
     def __init__(self,
             Reward: Callable[[gym.Env, int], float] = default_reward,
@@ -147,6 +148,7 @@ class Simple_satellite(gym.Env):
         Output:
             observation: Dict[str, Any]
         """
+        
         self.SatSim.reset()
         self.Total_reward = 0
         self.step_count = 0

@@ -529,7 +529,7 @@ class SatelliteSim_Base:
                     POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
                     ACTION_THRESHOLD: float=1,
                     Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=True,
-                    CoverageFile: str=""):
+                    CoverageFile: str="", **kwargs):
         
 
         # memory state
@@ -555,7 +555,7 @@ class SatelliteSim_Base:
 
         ## Environment parameters ##
         self.period = PERIOD
-        self.dt = PERIOD/SatelliteSim_Base.CIRCUNFERENCE
+        self.dt = 1
         self.velocity = SatelliteSim_Base.CIRCUNFERENCE/PERIOD
 
         # Eclipse variables

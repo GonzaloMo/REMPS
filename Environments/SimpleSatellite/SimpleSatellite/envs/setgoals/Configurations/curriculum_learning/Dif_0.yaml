@@ -1,7 +1,5 @@
 ## SET A SEED ENVIRONMENT
 # Simulation_Seed: 0
-
-
 Max_image_goals_per_target: 4
 # Ground station (GS) parameters
 Random_GS: False

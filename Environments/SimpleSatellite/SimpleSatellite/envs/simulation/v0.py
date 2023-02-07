@@ -14,6 +14,6 @@ class SatelliteSim(SatelliteSim_Base):
     def update(self, action):
         return self.Base_update(action)
 
-    def reset(self, seed: int =None) -> np.ndarray:
-        return self.Base_reset(seed=seed)
+    def reset(self, **kwargs) -> np.ndarray:
+        return self.Base_reset(**kwargs)
     
