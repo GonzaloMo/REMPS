@@ -25,9 +25,6 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
             
     if np.sum(goals_after_action) == 0:
         reward += env.Max_goals * env.SatSim.n_targets * 0.5
-    else:
-        print(goals_after_action)
-        print(np.sum(goals_after_action))
     # Negative reward per step 
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
