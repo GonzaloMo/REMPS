@@ -412,3 +412,62 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
                 env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
             reward += 1
     return reward
+
+
+
+#########################################################################################
+# more positve reward
+def Reward_v7(env: gym.Env, action_in: Tuple[int,int]):
+    reward = 0 
+    
+    # Get action and observation
+    obs = env.get_obs()
+    pos = cossin_2_degrees(obs["Pos"][0], obs["Pos"][1])
+    goals = env.goals
+    limit_orbits = max(30, np.sum(env.initial_goals)/4)
+
+    action, img = action_in
+    check_action, add_info = env.SatSim.check_action(action,img)
+    # Reward for taking a correct action
+    if check_action:
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal 
+            if goals[img-1] > 0:
+                reward += 7 * env.SatSim.DURATION_TAKE_IMAGE
+        if action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            if goals[img-1] > 0:
+                reward += 8 * env.SatSim.DURATION_ANALYSE
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 1:
+                reward += 9 * env.SatSim.DURATION_DUMP
+            if goals[img-1] == 1:
+                reward += 16 * env.SatSim.DURATION_DUMP
+    else:
+        # Action that made action to not be executed
+        if add_info == "Memory full":
+            reward -= .01
+        elif add_info == "Not above target":
+            reward -= .001
+        elif add_info == "Not in light":
+            reward -= .001
+        elif add_info == "No image to analyse":
+            reward -= .001
+        elif add_info == "No image to dump":
+            reward -= .001
+        elif add_info == "Not above GS":
+            reward -= .001
+        elif add_info == "Satellite busy":
+            reward -= .0001
+        
+    if env.SatSim.POWER_OPTION:
+        if obs["Power"] < 25.:
+            reward = -10
+        elif obs["Power"] < 1:
+            reward = min(-1e6, (limit_orbits-env.SatSim.orbit) * (2e5))
+        elif obs["Power"] < 100. and \
+                env.SatSim.check_light()>0 and \
+                env.SatSim.Taking_action == SatelliteSim.ACTION_DO_NOTHING:
+            reward += 1
+    return reward

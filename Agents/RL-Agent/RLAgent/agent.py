@@ -128,6 +128,11 @@ class RAY_agent:
             checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
         algo_name = Agent["Algorithm"]
         config = Training["config"]
+        # Register Environment
+        from ray.tune.registry import register_env
+        env_name = config["env"]
+        register_env(env_name, env_creator)
+        pretty(config)
         if algo_name == "PPO":
             if mode == "test":
                 config["num_workers"] = 0
