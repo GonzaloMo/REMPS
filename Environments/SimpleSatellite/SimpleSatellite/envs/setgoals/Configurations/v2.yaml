@@ -25,7 +25,7 @@ Underterministic_actions:  # Values between 0 and 1
 
 # Target Generation Parameters
 Random_Targets: True
-Number_of_targets: 5
+Number_of_targets: 10
 TARGET_HALF_SIZE: 5. 
 
 # Oportunity Generation Parameters
@@ -34,7 +34,7 @@ Opportunity_duration: 10
 
 # Ground Station Generation Parameters
 Random_GS: True
-GS_HALF_SIZE: 20. 
+GS_HALF_SIZE: 10. 
 Number_of_GS: 2
 
 # Power Parameters
@@ -47,9 +47,9 @@ POWER_CONSUMPTION:
 
 
 # Eclipse Parameters
-Umbra: 0.3
+Umbra: 0.2
 Penumbra: 0.1
-Light: .5
+Light: .6
 
 # File Parameters
 CoverageFile: ""

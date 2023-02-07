@@ -1,28 +1,13 @@
-## SET A SEED ENVIRONMENT
-# Simulation_Seed: 0
-
-
-Max_image_goals_per_target: 5
-# Ground station (GS) parameters
-Random_GS: True
-# If Random GS is True
-Number_of_GS: 2
-GS_HALF_SIZE: 90. # in degrees
-
-
-# Target parameters
+Max_image_goals_per_target: 4
+# Target Generation Parameters
 Random_Targets: True
-# If Random Targets is True
-Number_of_targets: 10
-TARGET_HALF_SIZE: 10. # in degrees
+TARGET_HALF_SIZE: 15. 
 
-# Coverage file
-CoverageFile: "" # YAML File with the coverages
+# Ground Station Generation Parameters
+Random_GS: True
+GS_HALF_SIZE: 30. 
 
-
-POWER_OPTION: True
-POWER_CONSUMPTION: 
-  TP: -0.5 # in %/s when Take Picture
-  AN: -0.1 # in %/s when Analyse
-  DP: -0.5 # in %/s when dumping
-  PowerGenerationRate: .5 # in %/s when not taking actions
+# Eclipse Parameters
+Umbra: 0.2
+Penumbra: 0.1
+Light: .6

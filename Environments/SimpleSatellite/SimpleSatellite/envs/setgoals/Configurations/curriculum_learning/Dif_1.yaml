@@ -1,25 +1,16 @@
-## SET A SEED ENVIRONMENT
-# Simulation_Seed: 0
-Max_image_goals_per_target: 5
 
-# Ground station (GS) parameters
-Random_GS: False
-# If Random GS is True
-Number_of_GS: 2
-GS_HALF_SIZE: 90. # in degrees
+Max_image_goals_per_target: 2
 
-
-# Target parameters
+# Target Generation Parameters
 Random_Targets: True
-# If Random Targets is True
-Number_of_targets: 10
-TARGET_HALF_SIZE: 10. # in degrees
+TARGET_HALF_SIZE: 30. 
 
+# Ground Station Generation Parameters
+Random_GS: True
+GS_HALF_SIZE: 45. 
 
+# Eclipse Parameters
+Umbra: 0.
+Penumbra: 0.
+Light: 1.
 
-POWER_OPTION: True
-POWER_CONSUMPTION: 
-  TP: -0.0 # in %/s when Take Picture
-  AN: -0.0 # in %/s when Analyse
-  DP: -0.0 # in %/s when dumping
-  PowerGenerationRate: .0 # in %/s when not taking actions

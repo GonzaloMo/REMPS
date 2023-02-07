@@ -54,20 +54,26 @@ def curriculum_fn(
         TaskType: The task to set the env to. This may be the same as the
             current one.
     """
-    time_steps = train_results.get("timesteps_total")
     difficulty = task_settable_env.get_task()
+    episode_mean_reward = train_results.get("episode_reward_mean")
+    
+    if episode_mean_reward is not None:
+        max_goals = task_settable_env.Max_goals
+        mean_episode_goal = max_goals *0.5
+        print("----------------------------------------------------------------")
+        print(f"Episode reward mean: {episode_mean_reward}")
+        print(f"Max goals: {max_goals}")
+        print(f"Mean episode goal: {mean_episode_goal}")
+        if episode_mean_reward > mean_episode_goal:
+            difficulty += 1
+        if episode_mean_reward < 0 and difficulty > 0:
+            difficulty -= 1
 
-    difficulty = time_steps // 1000
     print(f"Current difficulty: {difficulty}")
     print(
         f"Worker #{env_ctx.worker_index} vec-idx={env_ctx.vector_index}"
         f"\nR={train_results['episode_reward_mean']}"
         f"\nSetting env to dificulty={difficulty}"
     )
-    return difficulty
-
-def evaluate_curriculum_fn(env):
-    """ Function that evaluates the agent."""
-
-
+    print("----------------------------------------------------------------")
     return difficulty

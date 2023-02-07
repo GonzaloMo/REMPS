@@ -563,7 +563,8 @@ class SatelliteSim_Base:
         self.Umbra_percentage = Umbra
         self.Penumbra_percentage = Penumbra
         self.light_percentage = Light
-        assert self.Umbra_percentage + 2*self.Penumbra_percentage + self.light_percentage == 1., "The sum of Light + Umbra + 2xPenumbra = 1."
+        total_eclipses = self.Umbra_percentage + 2*self.Penumbra_percentage + self.light_percentage
+        assert total_eclipses == 1., f"The sum of Light + Umbra + 2xPenumbra = 1. {self.light_percentage} + {self.Umbra_percentage} + 2* {self.Penumbra_percentage} = {total_eclipses}"
         Light_width = 360*self.light_percentage
         Umbra_width = 360*self.Umbra_percentage
         Penumbra_width = 360*self.Penumbra_percentage
