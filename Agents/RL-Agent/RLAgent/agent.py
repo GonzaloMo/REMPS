@@ -112,7 +112,7 @@ class RAY_agent:
         ## Merge all configuration for Training
         Training["config"] = config
         Training["restore"] =  None
-        Training["name"] = f"/{self.date}/"
+        Training["name"] = f"{self.date}/"
         localdir = Training["local_dir"] + Training["name"]
         # Train on set envirnment
         self.save(localdir, Training, Agent, Environment)
