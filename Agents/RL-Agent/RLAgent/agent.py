@@ -89,7 +89,7 @@ class RAY_agent:
             self.save(save_dir, Training, Agent, Environment, trainning_done=True)
     
     def train_curriculum(self, Training: Dict, Agent: Dict, Environment: Dict):
-        Training["local_dir"] = Training["local_dir"]+ Environment["env_config"]["env"]
+        Training["local_dir"] = Training["local_dir"]+ Environment["env"]
         ### Load Agent Configuration Files ###
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
