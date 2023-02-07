@@ -18,6 +18,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
             main_config = yaml.load(f, Loader=yaml.FullLoader)
         self.config = deepcopy(main_config)
         Simple_satellite.__init__(self,**main_config)
+        self.max_difficulty = len(CV_path)
         for pth in self.CV_paths:
             if not os.path.isfile(pth):
                 raise ValueError(f"CV path {pth} does not exist")
@@ -66,8 +67,10 @@ def curriculum_fn(
         print(f"Mean episode goal: {mean_episode_goal}")
         if episode_mean_reward > mean_episode_goal:
             difficulty += 1
-        if episode_mean_reward < 0 and difficulty > 0:
+        if episode_mean_reward < 0:
             difficulty -= 1
+    # Bound deficulty
+    difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
 
     print(f"Current difficulty: {difficulty}")
     print(

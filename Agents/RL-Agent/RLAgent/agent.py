@@ -9,6 +9,7 @@ from copy import deepcopy
 from datetime import datetime
 import numpy as np
 
+
 from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
 def pretty(d, indent=0):
    for key, value in d.items():
@@ -27,6 +28,7 @@ class RAY_agent:
 
     def train(self, Training: Dict, Agent: Dict, Environment: Dict):
         Training["local_dir"] = Training["local_dir"]+ Environment["env_config"]["env"]
+
         # Load Agent Configuration Files
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
@@ -85,6 +87,45 @@ class RAY_agent:
             # Store the configuration Dict
             save_dir = "/".join(restore.split("/")[:-2])
             self.save(save_dir, Training, Agent, Environment, trainning_done=True)
+    
+    def train_curriculum(self, Training: Dict, Agent: Dict, Environment: Dict):
+        Training["local_dir"] = Training["local_dir"]+ Environment["env_config"]["env"]
+        ### Load Agent Configuration Files ###
+        algo_name = Agent["Algorithm"]
+        if algo_name == "PPO":
+            from RLAgent.Utils.ray import PPO as agent
+        self.agent = agent
+        agent_files = Agent["Agent_Config"]
+        config = {}
+        for fileloc in agent_files:
+            with open(fileloc, "r") as f:
+                temp_config = yaml.load(f, Loader=yaml.FullLoader)
+            config = {**config, **temp_config}
+        # transform config fiel to tue gridsearch
+        config = self.check_config(config)
+
+        ### Environment Configuration Files ###
+        from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn
+        config["env_config"] = Environment
+        config["env_config"]["env_task_fn"] = curriculum_fn
+
+        ## Merge all configuration for Training
+        Training["config"] = config
+        Training["restore"] =  None
+        Training["name"] = f"/{self.date}/"
+        localdir = Training["local_dir"] + Training["name"]
+        # Train on set envirnment
+        self.save(localdir, Training, Agent, Environment)
+        ### Train on set envirnment ###
+        self.analysis = ray.tune.run(self.agent, **Training)
+
+        ## Save After training
+        self.last_checkpoint = self.analysis.get_last_checkpoint()
+        restore = self.last_checkpoint._local_path
+        # Store the configuration Dict
+        save_dir = "/".join(restore.split("/")[:-2])
+        self.save(save_dir, Training, Agent, Environment, trainning_done=True)
+
 
     def save(self, path: str, Training: Dict, Agent: Dict, Environment: Dict, trainning_done=False):
         import os
