@@ -7,10 +7,10 @@ from copy import deepcopy
 class CurriculumEnv(Simple_satellite, TaskSettableEnv):
 
     def __init__(self, 
-                main_config_file="",
-                CV_path=[]):
-        
-        
+                config_files={},
+                **kwargs):
+        main_config_file = config_files["main_config_file"]
+        CV_path = config_files["CV_path"]
         self.CV_paths = CV_path
         self.config = {}
         self.task_dificulty = 0
@@ -61,22 +61,21 @@ def curriculum_fn(
     if episode_mean_reward is not None:
         max_goals = task_settable_env.Max_goals
         mean_episode_goal = max_goals *0.5
-        print("----------------------------------------------------------------")
-        print(f"Episode reward mean: {episode_mean_reward}")
-        print(f"Max goals: {max_goals}")
-        print(f"Mean episode goal: {mean_episode_goal}")
+       
         if episode_mean_reward > mean_episode_goal:
             difficulty += 1
         if episode_mean_reward < 0:
             difficulty -= 1
     # Bound deficulty
     difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
-
-    print(f"Current difficulty: {difficulty}")
-    print(
-        f"Worker #{env_ctx.worker_index} vec-idx={env_ctx.vector_index}"
-        f"\nR={train_results['episode_reward_mean']}"
-        f"\nSetting env to dificulty={difficulty}"
-    )
-    print("----------------------------------------------------------------")
+    if env_ctx.worker_index == 1:
+        print("----------------------------------------------------------------")
+        print(f"Episode reward mean: {episode_mean_reward}")
+        print(f"Max goals: {max_goals}")
+        print(f"Mean episode goal: {mean_episode_goal}")
+        print(f"Current difficulty: {difficulty}")
+        print(
+            f"\nSetting env to dificulty={difficulty}"
+        )
+        print("----------------------------------------------------------------")
     return difficulty

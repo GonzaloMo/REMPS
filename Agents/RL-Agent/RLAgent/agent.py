@@ -104,11 +104,6 @@ class RAY_agent:
         # transform config fiel to tue gridsearch
         config = self.check_config(config)
 
-        ### Environment Configuration Files ###
-        from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn
-        config["env_config"] = Environment
-        
-
         ## Merge all configuration for Training
         Training["config"] = config
         Training["restore"] =  None
@@ -116,7 +111,12 @@ class RAY_agent:
         localdir = Training["local_dir"] +"/"+ Training["name"]
         # Train on set envirnment
         self.save(localdir, Training, Agent, Environment)
-        Training["config"]["env_config"]["env_task_fn"] = curriculum_fn
+        ### Environment Configuration Files ###
+        from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv
+        Training["config"]["env"] = CurriculumEnv
+        
+        Training["config"]["env_config"] = {**Environment["Env_setup"]}
+        Training["config"]["env_task_fn"] = curriculum_fn
         ### Train on set envirnment ###
         self.analysis = ray.tune.run(self.agent, **Training)
 
@@ -125,7 +125,8 @@ class RAY_agent:
         restore = self.last_checkpoint._local_path
         # Store the configuration Dict
         save_dir = "/".join(restore.split("/")[:-2])
-        del Training["config"]["env_config"]["env_task_fn"]
+        del Training["config"]["env_task_fn"]
+        del Training["config"]["env"]
         self.save(save_dir, Training, Agent, Environment, trainning_done=True)
 
 
@@ -147,7 +148,7 @@ class RAY_agent:
         if not os.path.exists(path):
             os.makedirs(path)
         # del Temp_config["Environment"]["Env_setup"]["Reward"]
-        pretty(Temp_config)
+        # pretty(Temp_config)
         
         with open(path+'Config.json', 'w') as outfile:
             json.dump(Temp_config, outfile)
