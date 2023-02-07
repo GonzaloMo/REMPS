@@ -107,7 +107,7 @@ class RAY_agent:
         ### Environment Configuration Files ###
         from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn
         config["env_config"] = Environment
-        config["env_config"]["env_task_fn"] = curriculum_fn
+        
 
         ## Merge all configuration for Training
         Training["config"] = config
@@ -116,6 +116,7 @@ class RAY_agent:
         localdir = Training["local_dir"] + Training["name"]
         # Train on set envirnment
         self.save(localdir, Training, Agent, Environment)
+        Training["config"]["env_config"]["env_task_fn"] = curriculum_fn
         ### Train on set envirnment ###
         self.analysis = ray.tune.run(self.agent, **Training)
 
@@ -124,6 +125,7 @@ class RAY_agent:
         restore = self.last_checkpoint._local_path
         # Store the configuration Dict
         save_dir = "/".join(restore.split("/")[:-2])
+        del Training["config"]["env_config"]["env_task_fn"]
         self.save(save_dir, Training, Agent, Environment, trainning_done=True)
 
 
