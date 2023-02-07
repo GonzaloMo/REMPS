@@ -68,7 +68,7 @@ def curriculum_fn(
     
     if episode_mean_reward is not None:
         max_goals = task_settable_env.Max_goals
-        mean_episode_goal = max_goals *0.5
+        mean_episode_goal = max_goals *0.8
        
         if episode_mean_reward > mean_episode_goal:
             difficulty += 1
