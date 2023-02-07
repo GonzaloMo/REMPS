@@ -407,18 +407,21 @@ class SatelliteView:
         for r in light_range:
             min_pos_rad = r[0]*np.pi/180
             max_pos_rad = r[1]*np.pi/180
-            self.drawArc(SatelliteView.LIGHT_YELLOW, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+            if min_pos_rad < max_pos_rad:
+                self.drawArc(SatelliteView.LIGHT_YELLOW, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
 
         penumbre_range = sim.penumbre_range
         for r in penumbre_range:
             min_pos_rad = r[0]*np.pi/180
             max_pos_rad = r[1]*np.pi/180
-            self.drawArc(SatelliteView.GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+            if min_pos_rad < max_pos_rad:
+                self.drawArc(SatelliteView.GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
         
         umbra_range = sim.umbra_range
         for r in umbra_range:
             min_pos_rad = r[0]*np.pi/180
             max_pos_rad = r[1]*np.pi/180
-            self.drawArc(SatelliteView.DARK_GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+            if min_pos_rad < max_pos_rad:
+                self.drawArc(SatelliteView.DARK_GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
 
             
