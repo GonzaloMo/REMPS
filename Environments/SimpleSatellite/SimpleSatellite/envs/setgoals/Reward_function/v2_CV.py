@@ -22,6 +22,8 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
     # Negative reward per step 
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
-        if obs["Power"] < 0.01:
+        if (obs["Power"]*100) < 25:
+            reward = -1
+        if (obs["Power"]*100) < 1:
             reward = -10000
     return reward

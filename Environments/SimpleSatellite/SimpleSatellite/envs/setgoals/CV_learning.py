@@ -2,6 +2,7 @@ from ray.rllib.env.apis.task_settable_env import TaskSettableEnv
 from SimpleSatellite.envs.setgoals.v2 import Simple_satellite
 import os
 import yaml
+import importlib
 from copy import deepcopy
 
 class CurriculumEnv(Simple_satellite, TaskSettableEnv):
@@ -11,13 +12,20 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                 **kwargs):
         main_config_file = config_files["main_config_file"]
         CV_path = config_files["CV_path"]
+        Reward_name = config_files["Reward_Function"]
+        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v2_CV")
+        
         self.CV_paths = CV_path
         self.config = {}
-        self.task_dificulty = 0
+        
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
+        self.task_dificulty = 0
         self.config = deepcopy(main_config)
-        Simple_satellite.__init__(self,**main_config)
+        with open(CV_path[0], 'r') as f:
+            self.config.update(yaml.load(f, Loader=yaml.FullLoader))
+        Simple_satellite.__init__(self,**self.config)
+        self.Reward = getattr(Reward_module, Reward_name)
         self.max_difficulty = len(CV_path)
         for pth in self.CV_paths:
             if not os.path.isfile(pth):
