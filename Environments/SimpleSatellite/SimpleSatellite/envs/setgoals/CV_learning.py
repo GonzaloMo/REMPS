@@ -15,9 +15,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         Reward_name = config_files["Reward_Function"]
         Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v2_CV")
         
-        self.CV_paths = CV_path
         self.config = {}
-        
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
         self.task_dificulty = 0
@@ -27,15 +25,18 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         Simple_satellite.__init__(self,**self.config)
         self.Reward = getattr(Reward_module, Reward_name)
         self.max_difficulty = len(CV_path)
-        for pth in self.CV_paths:
+        self.difficulty_config = []
+        for pth in CV_path:
             if not os.path.isfile(pth):
                 raise ValueError(f"CV path {pth} does not exist")
+            else:
+                with open(pth, 'r') as f:
+                    self.difficulty_config.append(yaml.load(f, Loader=yaml.FullLoader))
 
     def difficulty(self, task_dificulty):
-        difilculty_config_file = self.CV_paths[task_dificulty]
+        self.config.upadte(self.difficulty_config[task_dificulty])
         self.task_dificulty = task_dificulty
-        with open(difilculty_config_file, 'r') as f:
-            self.config.update(yaml.load(f, Loader=yaml.FullLoader))
+        
 
     def get_task(self):  
         return self.task_dificulty
@@ -76,6 +77,7 @@ def curriculum_fn(
         difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
         if env_ctx.worker_index == 1:
             print("----------------------------------------------------------------")
+            print(f"Worker {env_ctx.worker_index} set difficulty to {difficulty}")
             print(f"Episode reward mean: {episode_mean_reward}")
             print(f"Max goals: {max_goals}")
             print(f"Mean episode goal: {mean_episode_goal}")
