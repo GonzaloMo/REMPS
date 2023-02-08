@@ -43,9 +43,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
     def set_task(self, task_difficulty):  
         self.difficulty(task_difficulty)
         config = deepcopy(self.config)
-        self.Max_goals = config["Max_image_goals_per_target"]
-        del config["Max_image_goals_per_target"]
-        self.SatSim.load_config(**config)
+        self.load_config(**config)
 
 
 def curriculum_fn(
@@ -68,7 +66,7 @@ def curriculum_fn(
     
     if episode_mean_reward is not None:
         max_goals = task_settable_env.Max_goals
-        mean_episode_goal = max_goals *0.8
+        mean_episode_goal = 10**(task_settable_env.task_dificulty+1) *0.9
        
         if episode_mean_reward > mean_episode_goal:
             difficulty += 1

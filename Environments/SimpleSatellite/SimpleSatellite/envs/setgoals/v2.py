@@ -20,6 +20,8 @@ import gym
 from gym import spaces
 
 import numpy as np
+from numpy.random import default_rng
+rng = default_rng()
 
 class Simple_satellite(gym.Env):
     def __init__(self,
@@ -44,7 +46,7 @@ class Simple_satellite(gym.Env):
         # set true so initialization is only done once
         self.first_render = True
         self.Log_dir = Log_dir
-        self.Max_goals = Max_image_goals_per_target
+        
 
         # save the satelite enviroment
         kwargs["Log_dir"] = Log_dir
@@ -54,6 +56,9 @@ class Simple_satellite(gym.Env):
         simsat_pack = importlib.import_module(module_name, package=None)
         simsat_class = getattr(simsat_pack, "SatelliteSim")
         self.SatSim = simsat_class(ECLIPSE_OPTION=True, **kwargs)
+        
+        #
+        self.load_config(Max_image_goals_per_target=Max_image_goals_per_target, **kwargs)
 
         # The actions available are:
         self.action_dict = {"take_picture":self.SatSim.ACTION_TAKE_IMAGE,
@@ -347,12 +352,20 @@ class Simple_satellite(gym.Env):
         if Seed is None:
             Seed = np.random.randint(0, 2**32)
         self.Seed = Seed
-        goals = []
+        n_targets = self.SatSim.n_targets
         Max_goals = self.Max_goals
-        for i in range(self.SatSim.n_targets):
+        
+        target_random = rng.choice(n_targets, size=n_targets, replace=False)
+        goals = np.zeros((n_targets,))
+        total_goals = 0
+        for i in target_random:
             random.seed(Seed+i)
             n = random.randint(0, Max_goals)
-            goals.append(n)
+            if total_goals < self.Max_total_targets:
+                goals[i] = n
+                total_goals += n
+            else:
+                break
         
         # Create Log folder
         if not os.path.exists(self.Log_dir):
@@ -410,3 +423,18 @@ class Simple_satellite(gym.Env):
 
             init_goal_str = self.view.font.render(f"{init_goals}", True, SatelliteView.WHITE)
             screen.blit(init_goal_str, (x_a+bar_width/2-10, OFFSET_y-hudheight-20))
+
+    def load_config(self, 
+                    Max_image_goals_per_target: int = 10,
+                    Max_total_targets: int = None,
+                    **kwargs) -> None:
+        self.SatSim.load_config(**kwargs)
+        self.Max_goals = Max_image_goals_per_target
+
+        if Max_total_targets is not None:
+            self.Max_total_targets = Max_total_targets
+        else:
+            self.Max_total_targets = self.SatSim.n_targets*self.Max_goals
+        
+        print(f"Max_goals: {self.Max_goals}")
+        print(f"Max_total_targets: {self.Max_total_targets}")
