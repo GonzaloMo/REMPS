@@ -34,7 +34,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                     self.difficulty_config.append(yaml.load(f, Loader=yaml.FullLoader))
 
     def difficulty(self, task_dificulty):
-        self.config.upadte(self.difficulty_config[task_dificulty])
+        self.config.update(self.difficulty_config[task_dificulty])
         self.task_dificulty = task_dificulty
         
 
@@ -42,9 +42,13 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         return self.task_dificulty
 
     def set_task(self, task_difficulty):  
+        if task_difficulty != self.task_dificulty:
+            reset_env = True
         self.difficulty(task_difficulty)
         config = deepcopy(self.config)
         self.load_config(**config)
+        if reset_env:
+            self.reset()
 
 
 def curriculum_fn(
@@ -67,17 +71,17 @@ def curriculum_fn(
     previous_difficulty = deepcopy(difficulty)
     if episode_mean_reward is not None:
         max_goals = task_settable_env.Max_goals
-        mean_episode_goal = 10**(task_settable_env.task_dificulty+1) *0.9
+        mean_episode_goal = 10**(difficulty+1) *0.9
+        mean_episode_lower =  - 10**(difficulty+1)
        
         if episode_mean_reward > mean_episode_goal:
             difficulty += 1
-        if episode_mean_reward < 0:
+        if episode_mean_reward < mean_episode_lower:
             difficulty -= 1
         # Bound deficulty
         difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
-        if env_ctx.worker_index == 1:
+        if env_ctx.worker_index == 1 and env_ctx.vector_index == 0:
             print("----------------------------------------------------------------")
-            print(f"Worker {env_ctx.worker_index} set difficulty to {difficulty}")
             print(f"Episode reward mean: {episode_mean_reward}")
             print(f"Max goals: {max_goals}")
             print(f"Mean episode goal: {mean_episode_goal}")

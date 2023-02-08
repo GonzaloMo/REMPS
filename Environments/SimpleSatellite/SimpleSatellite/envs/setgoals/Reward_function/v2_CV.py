@@ -65,7 +65,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
-            reward -= 1
+            reward -= .01
         if (obs["Power"]*100) < 1:
             reward -= 10**(env.task_dificulty+1)*1.2
     return reward

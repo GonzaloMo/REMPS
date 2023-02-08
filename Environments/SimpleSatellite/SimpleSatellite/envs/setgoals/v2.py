@@ -143,6 +143,7 @@ class Simple_satellite(gym.Env):
         self.step_count += 1
         self.done = done
         observation = self.get_obs()
+        self.print_obs_shape_compare(observation, self.observation_space)
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:
@@ -262,13 +263,23 @@ class Simple_satellite(gym.Env):
         Input:
             obs: Dict[str, Any]
         """
-        print('----------State-----------')
+        i = 0
         for k, v in obs.items():
             if isinstance(v, np.ndarray) or isinstance(v, spaces.Box):
-                print(k+': ',np.shape(v), " | ", np.shape(obs2[k]))
+                if np.shape(v) != np.shape(obs2[k]):
+                    if i == 0:
+                        print('----------State-----------')
+                        i += 1
+                    print(k+': ',np.shape(v), " | ", np.shape(obs2[k]), " <----")
             else:
-                print(k+': ',type(v), " | ", type(obs2[k]))
-        print('---------------------')
+                if type(v) != type(obs2[k]):
+                    if i == 0:
+                        print('----------State-----------')
+                        i += 1
+                    print(k+': ',type(v), " | ", type(obs2[k]), " <----")
+        if i >0:
+            print('---------------------')
+    
 
     def print_obs_compare(self, obs: Dict[str, Any], obs2: Dict[str, Any]):
         """
