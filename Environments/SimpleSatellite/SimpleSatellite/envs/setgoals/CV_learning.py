@@ -63,7 +63,7 @@ def curriculum_fn(
     """
     difficulty = task_settable_env.get_task()
     episode_mean_reward = train_results.get("episode_reward_mean")
-    
+    previous_difficulty = deepcopy(difficulty)
     if episode_mean_reward is not None:
         max_goals = task_settable_env.Max_goals
         mean_episode_goal = 10**(task_settable_env.task_dificulty+1) *0.9
@@ -79,7 +79,7 @@ def curriculum_fn(
         print(f"Episode reward mean: {episode_mean_reward}")
         print(f"Max goals: {max_goals}")
         print(f"Mean episode goal: {mean_episode_goal}")
-        print(f"Current difficulty: {difficulty}")
+        print(f"Current difficulty: {previous_difficulty}")
         print(
             f"\nSetting env to dificulty={difficulty}"
         )
