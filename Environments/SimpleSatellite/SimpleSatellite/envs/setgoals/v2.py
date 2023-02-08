@@ -435,6 +435,3 @@ class Simple_satellite(gym.Env):
             self.Max_total_targets = Max_total_targets
         else:
             self.Max_total_targets = self.SatSim.n_targets*self.Max_goals
-        
-        print(f"Max_goals: {self.Max_goals}")
-        print(f"Max_total_targets: {self.Max_total_targets}")
