@@ -72,16 +72,16 @@ def curriculum_fn(
             difficulty += 1
         if episode_mean_reward < 0:
             difficulty -= 1
-    # Bound deficulty
-    difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
-    if env_ctx.worker_index == 1:
-        print("----------------------------------------------------------------")
-        print(f"Episode reward mean: {episode_mean_reward}")
-        print(f"Max goals: {max_goals}")
-        print(f"Mean episode goal: {mean_episode_goal}")
-        print(f"Current difficulty: {previous_difficulty}")
-        print(
-            f"\nSetting env to dificulty={difficulty}"
-        )
-        print("----------------------------------------------------------------")
+        # Bound deficulty
+        difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
+        if env_ctx.worker_index == 1:
+            print("----------------------------------------------------------------")
+            print(f"Episode reward mean: {episode_mean_reward}")
+            print(f"Max goals: {max_goals}")
+            print(f"Mean episode goal: {mean_episode_goal}")
+            print(f"Current difficulty: {previous_difficulty}")
+            print(
+                f"\nSetting env to dificulty={difficulty}"
+            )
+            print("----------------------------------------------------------------")
     return difficulty
