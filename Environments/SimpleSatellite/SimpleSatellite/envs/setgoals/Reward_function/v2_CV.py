@@ -48,15 +48,15 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
             if goals[img-1] > 0:
-                reward += .001
+                reward += .001 * 10**(env.task_dificulty)
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
             if goals[img-1] > 0:
-                reward += .002
+                reward += .002 * 10**(env.task_dificulty)
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                reward += 1
+                reward += 1 * 10**(env.task_dificulty)
                 goals_after_action[img-1] -= 1
             
     if np.sum(goals_after_action) == 0:
@@ -65,7 +65,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
-            reward -= .01
+            reward -= .01 * 10**(env.task_dificulty-1)
         if (obs["Power"]*100) < 1:
             reward -= 10**(env.task_dificulty+1)*1.2
     return reward
