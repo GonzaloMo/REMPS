@@ -154,7 +154,7 @@ class RAY_agent:
             json.dump(Temp_config, outfile)
         print('Agent Saved')
 
-    def load(self, path: str, mode: str="train", specific_checkpoint: str = None):
+    def load(self, path: str, mode: str="train", specific_checkpoint: str = None, env=None):
         """
         Agent loading function.
         :param path: Path to the saved agent
@@ -174,9 +174,15 @@ class RAY_agent:
         config = Training["config"]
         # Register Environment
         from ray.tune.registry import register_env
-        env_name = config["env"]
-        register_env(env_name, env_creator)
-        pretty(config)
+        
+        if env is not None:
+            config["env"] = env["env"]
+            config["env_config"] = env
+            pretty(config)
+        else:
+            env_name = config["env"]
+            register_env(env_name, env_creator)
+            register_env(env_name, env_creator)
         if algo_name == "PPO":
             if mode == "test":
                 config["num_workers"] = 0
