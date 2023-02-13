@@ -173,8 +173,9 @@ class Simple_satellite(gym.Env):
             # start render enviroment
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
-        self.view.drawSim(self.SatSim, self.Total_reward)
-        self.view.draw_reward(self.Total_reward)
+        action_taken = self.Tuple2Name_action(self.SatSim.Taking_action_tuple).upper().replace("_", " ")
+        self.view.drawSim(self.SatSim, action_name=action_taken)
+        self.view.drawReward(self.Total_reward)
         goals = self.goals.copy()
         self.render_goals(goals)
         pygame.display.flip()
@@ -311,6 +312,35 @@ class Simple_satellite(gym.Env):
             action_name: str
         """
         return self.action_list_names[action_number]
+
+    def Tuple2Number_action(self, action_tuple: Tuple) -> int:
+        """
+        Convert action tuple to action number
+        Input:
+            action_tuple: Tuple[int, int]
+        Output:
+            action_number: int
+        """
+        if self.action_space_type == "Simple":
+            return action_tuple[0]
+        
+        action, img = action_tuple
+        if img is None:
+            img = 0
+        action_number = max(action-1,0)*self.SatSim.n_targets + img
+        return action_number
+    
+    def Tuple2Name_action(self, action_tuple: Tuple) -> str:
+        """
+        Convert action tuple to action name
+        Input:
+            action_tuple: Tuple[int, int]
+        Output:
+            action_name: str
+        """
+        action_number = self.Tuple2Number_action(action_tuple)
+        action_name = self.Number2name_action(action_number)
+        return action_name
 
     def Number2Tuple_action(self, action: int) -> Tuple[int, int]:
         """

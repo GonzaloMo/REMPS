@@ -166,11 +166,11 @@ class RAY_agent:
         Training = Temp_config["Training"]
         Agent = Temp_config["Agent"]
         Environment = Temp_config["Environment"]
-        if specific_checkpoint is not None:
-            checkpoint_path = path +"/"+ specific_checkpoint
-        else:
-            checkpoint_path = path + "/" +Temp_config["last_checkpoint"].split("/")[-2]
+        if specific_checkpoint is None:
+            specific_checkpoint = Temp_config["last_checkpoint"].split("/")[-2]
+        checkpoint_path = path +"/"+ specific_checkpoint
         algo_name = Agent["Algorithm"]
+        self.name = algo_name+"_"+specific_checkpoint
         config = Training["config"]
         # Register Environment
         from ray.tune.registry import register_env
@@ -178,7 +178,7 @@ class RAY_agent:
         if env is not None:
             config["env"] = env["env"]
             config["env_config"] = env
-            pretty(config)
+            # pretty(config)
         else:
             env_name = config["env"]
             register_env(env_name, env_creator)
@@ -238,3 +238,4 @@ class RAY_agent:
             elif type(value) == list:
                 config[item] = tune.grid_search(value)
         return config
+    

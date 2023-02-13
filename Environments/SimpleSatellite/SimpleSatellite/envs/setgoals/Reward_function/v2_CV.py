@@ -48,15 +48,15 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
             if goals[img-1] > 0:
-                reward += .001 * 10**(env.task_dificulty)
+                reward += .001
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
             if goals[img-1] > 0:
-                reward += .002 * 10**(env.task_dificulty)
+                reward += .002 
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                reward += 1 * 10**(env.task_dificulty)
+                reward += 1
                 goals_after_action[img-1] -= 1
             
     if np.sum(goals_after_action) == 0:
@@ -65,7 +65,42 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
-            reward -= .01 * 10**(env.task_dificulty-1)
+            reward -= .01
+        if (obs["Power"]*100) < 1:
+            reward -= 10**(env.task_dificulty+1)*1.2
+    return reward
+
+def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
+    reward = 0
+    # Get action and observation
+    obs = env.get_obs()
+    goals = env.goals
+    action, img = action_in
+    check_action, add_info = env.SatSim.check_action(action,img)
+    goals_after_action = deepcopy(goals)
+    # Reward for taking a correct action
+    if check_action:
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal
+            if goals[img-1] > 0:
+                reward += .001
+        if action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            if goals[img-1] > 0:
+                reward += .002 
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 0:
+                reward += 1
+                goals_after_action[img-1] -= 1
+            
+    if np.sum(goals_after_action) == 0:
+        reward += 10**(env.task_dificulty+1)
+    # Negative reward per step 
+    reward -= 0.1/env.SatSim.period
+    if env.SatSim.POWER_OPTION:
+        if (obs["Power"]*100) < 25:
+            reward -= .01
         if (obs["Power"]*100) < 1:
             reward -= 10**(env.task_dificulty+1)*1.2
     return reward

@@ -95,6 +95,8 @@ class SatelliteSim_Base:
             if self.busy==1:
                 self.apply_effect()
                 self.Taking_action = SatelliteSim_Base.ACTION_DO_NOTHING
+                self.last_action = (0, None)
+                self.Taking_action_tuple = (0, None)
             self.busy = 0
 
         # Power update
@@ -146,8 +148,9 @@ class SatelliteSim_Base:
         # satellite state
         self.pos = 0
         self.orbit = 0
-        self.last_action = 0
+        self.last_action = (0, None)
         self.Taking_action = 0
+        self.Taking_action_tuple = (0, None)
         self.n_images_dumped = [0] * self.n_targets
         self.action_taken_list = [0]
 
@@ -318,6 +321,7 @@ class SatelliteSim_Base:
             self.last_action = (action, add_info)
             self.satellite_busy_time = self.DURATIONS[action]
             self.Taking_action = action
+            self.Taking_action_tuple = action_in
             self.busy = 1
             return
             
@@ -339,7 +343,6 @@ class SatelliteSim_Base:
             if action == SatelliteSim_Base.ACTION_ANALYSE:
                 if self.Underterministic_actions["AN"] < np.random.rand():
                     self.analysis[add_info] = True
-                    self.last_action = action
                     return
             
             # Dump picture
@@ -349,7 +352,7 @@ class SatelliteSim_Base:
                 self.analysis[add_info] = False
                 self.memory_level = max(0,self.memory_level-1)
                 return
-            self.last_action = 0, ""
+            # self.last_action = 0, ""
 
 
     def check_action(self, action, img):
