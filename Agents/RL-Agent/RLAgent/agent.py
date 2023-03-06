@@ -215,7 +215,6 @@ class RAY_agent:
         else:
             state = self.state
         action, RNN_list_input, additional_info = self.agent.compute_single_action(observation, state=state, **kwargs)
-        print(action)
         self.state = state
         if add_info:
             return action, additional_info
