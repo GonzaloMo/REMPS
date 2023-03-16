@@ -45,29 +45,24 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     goals_after_action = deepcopy(goals)
     # Reward for taking a correct action
     if check_action:
-        if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            # Reward for taking a picture of a goal
-            if goals[img-1] > 0:
-                reward += .001 * 10**(env.task_dificulty)
-        if action == SatelliteSim.ACTION_ANALYSE:
-            # Reward for analysing a picture of a goal
-            if goals[img-1] > 0:
-                reward += .002 * 10**(env.task_dificulty)
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                reward += 1 * 10**(env.task_dificulty)
+                reward += 1
                 goals_after_action[img-1] -= 1
+    
             
     if np.sum(goals_after_action) == 0:
-        reward += 10**(env.task_dificulty+1)
+        reward += env.Max_goals * env.SatSim.n_targets * 0.5
+    
     # Negative reward per step 
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
-            reward -= .01 * 10**(env.task_dificulty-1)
+            reward = -1
         if (obs["Power"]*100) < 1:
-            reward -= 10**(env.task_dificulty+1)*1.2
+            reward = -10000
     return reward
+
 
 
