@@ -6,6 +6,9 @@ The base simulation is a simulation of a satellite orbiting the earth. The satel
 ---
 
 ## Simulation versions
+### V0
+In this version the simulation finishes when the satellite achieves all goals, and charges if an action is not being taken.
+
 ### V1
 In this version the simulation has a fixed number of orbits, and charges if an action is not being taken
 
@@ -13,6 +16,5 @@ In this version the simulation has a fixed number of orbits, and charges if an a
 In this version the simulation has a fixed number of orbits, and only charges if action sent is idle.
 
 ### V3
-In this version the simulation finishes when the satellite achieves all goals, and charges if an action is not being taken.
-
+Same as V0, but the satellite generates repeated paterens of Targets to simulate a satellite in a repeating ground track orbit.
 ---

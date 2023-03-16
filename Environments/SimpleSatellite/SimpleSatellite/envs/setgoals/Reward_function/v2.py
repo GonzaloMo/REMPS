@@ -20,20 +20,16 @@ def Reward_test(env: gym.Env, action_in: Tuple[int,int]):
             # Reward for taking a picture of a goal
             if goals[img-1] > 0:
                 reward += 1
-                print("reward for taking a picture of {} is {}".format(img, reward))
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
             if goals[img-1] > 0:
                 reward += 1
-                print("reward for analysing a picture of {} is {}".format(img, reward))
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 1:
                 reward += 1
-                print("reward for dumping a picture of {} is {}".format(img, reward))
             if goals[img-1] == 1:
                 reward += 100
-                print("reward for dumping all picture of {} is {}".format(img, reward))
 
     if env.SatSim.orbit > limit_orbits and pos>359:
         reward -= min(10**((env.SatSim.orbit-limit_orbits)/40), 100)

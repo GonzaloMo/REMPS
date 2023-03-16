@@ -105,7 +105,8 @@ class Simple_satellite(gym.Env):
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
-        self.state = self.SatSim.get_state()
+        # self.reset()
+        # self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
         
@@ -173,8 +174,9 @@ class Simple_satellite(gym.Env):
             # start render enviroment
             self.view = SatelliteView(self.SatSim)
             self.first_render = False
-        self.view.drawSim(self.SatSim, self.Total_reward)
-        self.view.draw_reward(self.Total_reward)
+        action_taken = self.Tuple2Name_action(self.SatSim.Taking_action_tuple).upper().replace("_", " ")
+        self.view.drawSim(self.SatSim, action_name=action_taken)
+        self.view.drawReward(self.Total_reward)
         goals = self.goals.copy()
         self.render_goals(goals)
         pygame.display.flip()
@@ -228,8 +230,7 @@ class Simple_satellite(gym.Env):
         Output:
             pos: np.ndarray, sin and cos of the angular position
         """
-        pos = np.deg2rad(pos)
-        n_pos = np.array([np.sin(pos), np.cos(pos)], dtype=np.float32)
+        n_pos = np.array(self.SatSim.position_transformation(pos), dtype=np.float32)
         return n_pos
 
     def print_obs(self, obs: Dict[str, Any]):
@@ -311,6 +312,35 @@ class Simple_satellite(gym.Env):
             action_name: str
         """
         return self.action_list_names[action_number]
+
+    def Tuple2Number_action(self, action_tuple: Tuple) -> int:
+        """
+        Convert action tuple to action number
+        Input:
+            action_tuple: Tuple[int, int]
+        Output:
+            action_number: int
+        """
+        if self.action_space_type == "Simple":
+            return action_tuple[0]
+        
+        action, img = action_tuple
+        if img is None:
+            img = 0
+        action_number = max(action-1,0)*self.SatSim.n_targets + img
+        return action_number
+    
+    def Tuple2Name_action(self, action_tuple: Tuple) -> str:
+        """
+        Convert action tuple to action name
+        Input:
+            action_tuple: Tuple[int, int]
+        Output:
+            action_name: str
+        """
+        action_number = self.Tuple2Number_action(action_tuple)
+        action_name = self.Number2name_action(action_number)
+        return action_name
 
     def Number2Tuple_action(self, action: int) -> Tuple[int, int]:
         """

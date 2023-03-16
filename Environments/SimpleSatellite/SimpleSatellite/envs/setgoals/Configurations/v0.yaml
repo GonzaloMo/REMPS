@@ -46,9 +46,11 @@ POWER_CONSUMPTION:
 
 
 # Eclipse Parameters
-Umbra: 0.3
-Penumbra: 0.1
-Light: .6
+ECLIPSE:
+  File: ""
+  Umbra: 0.3
+  Penumbra: 0.1
+  Light: .6
 
 # File Parameters
 CoverageFile: ""

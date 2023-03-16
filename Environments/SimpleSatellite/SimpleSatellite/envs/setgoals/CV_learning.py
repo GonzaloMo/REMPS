@@ -42,6 +42,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         return self.task_dificulty
 
     def set_task(self, task_difficulty):  
+        reset_env = False
         if task_difficulty != self.task_dificulty:
             reset_env = True
         self.difficulty(task_difficulty)

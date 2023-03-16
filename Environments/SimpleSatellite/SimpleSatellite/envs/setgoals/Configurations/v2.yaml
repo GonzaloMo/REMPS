@@ -4,7 +4,8 @@ Max_image_goals_per_target: 10
 
 # SIMULATION PARAMETERS
 simulation_version: v1
-MAX_ORBITS: 1
+N_repeating_orbits: 5
+MAX_ORBITS: 10
 # General simulation parameters Parameters
 PERIOD: 600 # in seconds
 
@@ -47,9 +48,11 @@ POWER_CONSUMPTION:
 
 
 # Eclipse Parameters
-Umbra: 0.2
-Penumbra: 0.1
-Light: .6
+ECLIPSE:
+  File: ""
+  Umbra: 0.2
+  Penumbra: 0.1
+  Light: .6
 
 # File Parameters
 CoverageFile: ""

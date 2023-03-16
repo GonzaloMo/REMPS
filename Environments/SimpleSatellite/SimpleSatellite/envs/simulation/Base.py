@@ -10,7 +10,7 @@ from typing import Dict, List, Tuple, Any
 from datetime import datetime
 import numpy as np
 import os
-from copy import copy
+from copy import deepcopy
 
 
 class SatelliteSim_Base:
@@ -78,12 +78,20 @@ class SatelliteSim_Base:
         # update time variables
         self.sim_time += self.dt
         self.pos += self.velocity*self.dt
+        self.orbit_pos += self.velocity*self.dt
         self.satellite_busy_time -= self.dt
 
         # update orbit position
-        if self.pos > SatelliteSim_Base.CIRCUNFERENCE:
-            self.pos -=  SatelliteSim_Base.CIRCUNFERENCE
+        if self.orbit_pos > SatelliteSim_Base.CIRCUNFERENCE:
+            self.orbit_pos = self.orbit_pos - SatelliteSim_Base.CIRCUNFERENCE
             self.orbit += 1
+            self.n_orbit_repeat = self.orbit%self.N_repeating_orbits
+            self.update_ecplise()
+
+
+        if self.pos > SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits:
+            self.pos -=  SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits
+            
 
         # take action
         self.apply_action(action)
@@ -95,6 +103,8 @@ class SatelliteSim_Base:
             if self.busy==1:
                 self.apply_effect()
                 self.Taking_action = SatelliteSim_Base.ACTION_DO_NOTHING
+                self.last_action = (0, None)
+                self.Taking_action_tuple = (0, None)
             self.busy = 0
 
         # Power update
@@ -122,7 +132,7 @@ class SatelliteSim_Base:
             if np.random.rand() <= self.opportunity_probability:
                 self.opportunity = True
                 self.opportunity_time = self.opportunity_duration
-
+        self.update_coverage_list()   
         state = self.get_state()
         return state, done    
 
@@ -145,9 +155,12 @@ class SatelliteSim_Base:
 
         # satellite state
         self.pos = 0
+        self.orbit_pos = 0
         self.orbit = 0
-        self.last_action = 0
+        self.n_orbit_repeat = 0
+        self.last_action = (0, None)
         self.Taking_action = 0
+        self.Taking_action_tuple = (0, None)
         self.n_images_dumped = [0] * self.n_targets
         self.action_taken_list = [0]
 
@@ -158,20 +171,59 @@ class SatelliteSim_Base:
         self.satellite_busy_time = 0
         self.busy = 0
 
+        # update Eclipse
+        self.Eclipse_generator()
+        self.update_ecplise()
+
         # Generate Targets
-        self.targets = self.CoverageGenerator("Target_Coverage")
-        self.target_list = []
-        for i in range(self.n_targets):
-            self.target_list.append(i+1)
-                
+        self.target_matrix = self.CoverageGenerator("Target_Coverage")     
         # Generate Ground Stations
-        self.groundStations = self.CoverageGenerator("GroundStation_Coverage")
+        self.GS_matrix = self.CoverageGenerator("GroundStation_Coverage")   
+        
+        # Visible windows
+        self.update_coverage_list()       
+        
         if self.POWER_OPTION:
             self.Power = 100.
-
         return self.get_state()
 
-    def CoverageGenerator(self, Type_Selection: str) -> List[Tuple[float, float]]:
+    def update_coverage_list(self):
+        """
+        Update the coverage list.
+        """
+        self.targets = self.get_windows("Target")
+        self.groundStations = self.get_windows("GroundStation")
+        pass
+    
+    def get_windows(self, Type_Selection: str):
+        """
+        Get the next target to be visited.
+        """
+        current_orbit = self.orbit % self.N_repeating_orbits
+        next_orbit = (self.orbit+1) % self.N_repeating_orbits
+        window_list = []
+        if Type_Selection == "Target":
+            window_matrix = deepcopy(self.target_matrix)
+            max_windows = self.n_targets
+        elif Type_Selection == "GroundStation":
+            window_matrix = deepcopy(self.GS_matrix)
+            max_windows = self.n_gs
+
+        for i in range(max_windows):
+            if self.pos >= self.target_matrix[current_orbit][i][1]:
+                window_list.append(window_matrix[next_orbit][i])
+            else:
+                window_list.append(window_matrix[current_orbit][i])
+        return window_list
+
+    def CoverageGenerator(self, Type_Selection: str):
+        window_matrix = []
+        for i in range(self.N_repeating_orbits):
+            window_list = np.array(self.CoverageGenerator_singleOrbit(Type_Selection)) + i*SatelliteSim_Base.CIRCUNFERENCE
+            window_matrix.append(window_list)
+        return window_matrix 
+    
+    def CoverageGenerator_singleOrbit(self, Type_Selection: str) -> List[Tuple[float, float]]:
         """
         Generate position brackets of sites.
             
@@ -183,7 +235,7 @@ class SatelliteSim_Base:
             amount = self.n_targets
             random = self.random_targets
             half = self.TARGET_HALF_SIZE
-            upper_lim = SatelliteSim_Base.CIRCUNFERENCE*self.light_percentage-half
+            upper_lim = self.light_range[1]-half
             endpoint = True
         elif Type_Selection == "GroundStation_Coverage":
             amount = self.n_gs
@@ -229,6 +281,7 @@ class SatelliteSim_Base:
         Returns:
             The current state of the satellite.
         """
+
         obs = {'Orbit': self.orbit, 
                 'Pos': self.pos,
                 'Busy': self.busy,
@@ -237,7 +290,7 @@ class SatelliteSim_Base:
                 'Analysis': self.analysis,
                 'Targets': self.targets,
                 'Ground Stations': self.groundStations,
-                'Eclipse': self.light_range + self.umbra_range,
+                'Eclipse': [self.light_range, self.umbra_range],
                 'Opportunity': self.opportunity,}
         if self.POWER_OPTION:
             obs['Power'] = self.Power
@@ -318,6 +371,7 @@ class SatelliteSim_Base:
             self.last_action = (action, add_info)
             self.satellite_busy_time = self.DURATIONS[action]
             self.Taking_action = action
+            self.Taking_action_tuple = action_in
             self.busy = 1
             return
             
@@ -339,7 +393,6 @@ class SatelliteSim_Base:
             if action == SatelliteSim_Base.ACTION_ANALYSE:
                 if self.Underterministic_actions["AN"] < np.random.rand():
                     self.analysis[add_info] = True
-                    self.last_action = action
                     return
             
             # Dump picture
@@ -349,7 +402,7 @@ class SatelliteSim_Base:
                 self.analysis[add_info] = False
                 self.memory_level = max(0,self.memory_level-1)
                 return
-            self.last_action = 0, ""
+            # self.last_action = 0, ""
 
 
     def check_action(self, action, img):
@@ -399,7 +452,7 @@ class SatelliteSim_Base:
                 return False, "Memory full"
 
             # Check if the satellite is in light
-            if self.check_light() < 1 and self.ECLIPSE_OPTION:
+            if self.check_light() < 1:
                 return False, "Not in light"
             
             # return True if all the conditions are met
@@ -468,11 +521,11 @@ class SatelliteSim_Base:
         Returns:
             int: 1 if the satellite is in light, 0 if the satellite is in penumbra and, -1 if the satellite is in eclipse.
         """
-        for index in range(len(self.light_range)):
-            if self.light_range[index][0] < self.pos < self.light_range[index][1]:
-                return 1
-        for index in range(len(self.penumbre_range)):
-            if self.penumbre_range[index][0] < self.pos < self.penumbre_range[index][1]:
+        
+        if self.light_range[0] < self.pos < self.light_range[1]:
+            return 1
+        for index in range(len(self.penumbra_range)):
+            if self.penumbra_range[index][0] < self.pos < self.penumbra_range[index][1]:
                 return 0
         return -1
 
@@ -519,6 +572,7 @@ class SatelliteSim_Base:
 
     def load_config(self, 
                     PERIOD: float=600, 
+                    N_repeating_orbits: int=1,
                     MEMORY_SIZE: int=10,  
                     Underterministic_actions: Dict[str, float]= {"TP": 0., "AN": 0., "DP": 0.}, 
                     DURATION_TAKE_IMAGE: int=20, DURATION_DUMP: int=20, DURATION_ANALYSE: int=50, 
@@ -528,7 +582,7 @@ class SatelliteSim_Base:
                     POWER_OPTION: bool=True,
                     POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
                     ACTION_THRESHOLD: float=1,
-                    Umbra: float=0., Penumbra: float=0., Light: float=1., ECLIPSE_OPTION: bool=True,
+                    ECLIPSE ={"Umbra": 0., "Penumbra": 0., "Light": 1.},
                     CoverageFile: str="", **kwargs):
         
 
@@ -554,25 +608,15 @@ class SatelliteSim_Base:
         self.Power = 50.
 
         ## Environment parameters ##
+        self.N_repeating_orbits = N_repeating_orbits
         self.period = PERIOD
+        self.n_orbit_repeat = 0
         self.dt = 1
         self.velocity = SatelliteSim_Base.CIRCUNFERENCE/PERIOD
 
         # Eclipse variables
-        self.ECLIPSE_OPTION = ECLIPSE_OPTION
-        self.Umbra_percentage = Umbra
-        self.Penumbra_percentage = Penumbra
-        self.light_percentage = Light
-        total_eclipses = self.Umbra_percentage + 2*self.Penumbra_percentage + self.light_percentage
-        assert total_eclipses == 1., f"The sum of Light + Umbra + 2xPenumbra = 1. {self.light_percentage} + {self.Umbra_percentage} + 2* {self.Penumbra_percentage} = {total_eclipses}"
-        Light_width = 360*self.light_percentage
-        Umbra_width = 360*self.Umbra_percentage
-        Penumbra_width = 360*self.Penumbra_percentage
-        self.light_range = [[0, Light_width]]
-        self.penumbre_range = [[Light_width, Light_width + Penumbra_width], [360-Penumbra_width, 360]]
-        self.umbra_range = [[Light_width + Penumbra_width, 360-Penumbra_width]]
-        
-        
+        self.ECLIPSE = ECLIPSE
+   
         # GS parameters
         self.n_gs = Number_of_GS
         self.Random_GS = Random_GS
@@ -591,3 +635,53 @@ class SatelliteSim_Base:
         self.opportunity_time = 0
         self.opportunity_duration = Opportunity_duration
         self.opportunity_probability = Opportunity_Prob
+
+    def position_transformation(self, pos):
+        """
+        Transform the position of the satellite orbit*angular_position to a sincos representation
+
+        Args:
+            pos (float): angular position of the satellite (orbit*2pi + current orbital position) in radians
+        
+        Returns:
+            [float, float]: [x, y] position of the satellite in the sincos representation
+        """
+        pos = np.array(pos)/SatelliteSim_Base.CIRCUNFERENCE * 2 * np.pi 
+        x = np.cos(pos / self.N_repeating_orbits)
+        y = np.sin(pos / self.N_repeating_orbits)
+        return [x, y]
+    
+
+    def Eclipse_generator(self):
+        if "File" in self.ECLIPSE.keys():
+            if self.ECLIPSE["File"] != "":
+                raise NotImplementedError("Eclipse file not implemented yet")
+        
+        assert "Umbra" in self.ECLIPSE.keys(), "Umbra percentage not defined"
+        assert "Penumbra" in self.ECLIPSE.keys(), "Penumbra percentage not defined"
+        assert "Light" in self.ECLIPSE.keys(), "Light percentage not defined"
+        total_eclipses = self.ECLIPSE["Umbra"] + 2*self.ECLIPSE["Penumbra"] + self.ECLIPSE["Light"]
+        assert total_eclipses == 1., f"The sum of Light + Umbra + 2xPenumbra = 1. {self.light_percentage} + {self.Umbra_percentage} + 2* {self.Penumbra_percentage} = {total_eclipses}"
+        circ = SatelliteSim_Base.CIRCUNFERENCE
+        self.light_matrix, self.umbra_matrix, self.penumbra_matrix = [], [], []
+        light_width = self.ECLIPSE["Light"]*circ
+        umbra_width = self.ECLIPSE["Umbra"]*circ
+        penumbra_width = self.ECLIPSE["Penumbra"]*circ
+        for i in range(self.N_repeating_orbits):
+            init = i*circ
+            end = init + light_width
+            self.light_matrix.append([init, end])
+            init = end
+            end = init + penumbra_width
+            pen1 = [init, end]
+            init = end
+            end = init + umbra_width
+            self.umbra_matrix.append([init, end])
+            init = end
+            end = init + penumbra_width
+            self.penumbra_matrix.append([pen1, [init, end]])        
+
+    def update_ecplise(self):
+        self.light_range = self.light_matrix[self.n_orbit_repeat]
+        self.umbra_range = self.umbra_matrix[self.n_orbit_repeat]
+        self.penumbra_range = self.penumbra_matrix[self.n_orbit_repeat]
