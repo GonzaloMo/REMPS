@@ -9,6 +9,7 @@ GS_HALF_SIZE: 30.
 
 
 # Eclipse Parameters
-Umbra: 0.1
-Penumbra: 0.05
-Light: .8
+ECLIPSE:
+  Umbra: 0.1
+  Penumbra: 0.05
+  Light: .8

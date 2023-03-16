@@ -8,6 +8,7 @@ Random_GS: True
 GS_HALF_SIZE: 15. 
 
 # Eclipse Parameters
-Umbra: 0.2
-Penumbra: 0.1
-Light: .6
+ECLIPSE:
+  Umbra: 0.2
+  Penumbra: 0.1
+  Light: .6

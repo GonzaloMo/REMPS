@@ -79,9 +79,11 @@ class SatelliteView:
         # draw planet
         pygame.draw.ellipse(self.screen, SatelliteView.WHITE, planetList)
         # draw ground station arcs
-        self.drawArcsAndTags(SatelliteView.PURPLE, sim.groundStations)
+        current_orbit = int(sim.orbit % sim.N_repeating_orbits)
+        
+        self.drawArcsAndTags(SatelliteView.PURPLE, sim.GS_matrix[current_orbit])
         # draw target arcs
-        self.drawArcsAndTags(SatelliteView.ORANGE, sim.targets, tags="std")
+        self.drawArcsAndTags(SatelliteView.ORANGE, sim.target_matrix[current_orbit], tags="std")
         # draw opportunity
         if sim.opportunity:
             self.drawArcsAndTags(SatelliteView.GREEN, [[sim.pos-2., sim.pos+2.]], tags="O")
@@ -112,9 +114,11 @@ class SatelliteView:
                 thickness = int(SatelliteView.PLANET_SIZE / 8)
             else:
                 thickness = int(SatelliteView.PLANET_SIZE / 10)
-            min_pos = max(0, arc[0])
+            min_pos = arc[0]%SatelliteSim.CIRCUNFERENCE
             min_pos_rad = min_pos / SatelliteSim.CIRCUNFERENCE * 2 * math.pi
-            max_pos = min(SatelliteSim.CIRCUNFERENCE, arc[1])
+            max_pos = arc[1]%SatelliteSim.CIRCUNFERENCE
+            if max_pos == 0.:
+                max_pos = SatelliteSim.CIRCUNFERENCE
             max_pos_rad = max_pos / SatelliteSim.CIRCUNFERENCE * 2 * math.pi 
             match_range = False
             theta = (min_pos_rad + max_pos_rad) / 2
@@ -213,13 +217,12 @@ class SatelliteView:
         radius = int(SatelliteView.PLANET_SIZE + width)
 
         light_range = sim.light_range
-        for r in light_range:
-            min_pos_rad = r[0]*np.pi/180
-            max_pos_rad = r[1]*np.pi/180
-            if min_pos_rad < max_pos_rad:
-                self.drawArc(SatelliteView.LIGHT_YELLOW, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+        min_pos_rad = light_range[0]*np.pi/180
+        max_pos_rad = light_range[1]*np.pi/180
+        if min_pos_rad < max_pos_rad:
+            self.drawArc(SatelliteView.LIGHT_YELLOW, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
 
-        penumbre_range = sim.penumbre_range
+        penumbre_range = sim.penumbra_range
         for r in penumbre_range:
             min_pos_rad = r[0]*np.pi/180
             max_pos_rad = r[1]*np.pi/180
@@ -227,11 +230,10 @@ class SatelliteView:
                 self.drawArc(SatelliteView.GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
         
         umbra_range = sim.umbra_range
-        for r in umbra_range:
-            min_pos_rad = r[0]*np.pi/180
-            max_pos_rad = r[1]*np.pi/180
-            if min_pos_rad < max_pos_rad:
-                self.drawArc(SatelliteView.DARK_GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
+        min_pos_rad = umbra_range[0]*np.pi/180
+        max_pos_rad = umbra_range[1]*np.pi/180
+        if min_pos_rad < max_pos_rad:
+            self.drawArc(SatelliteView.DARK_GREY, min_pos_rad, max_pos_rad, width, radius=radius, borders=False)
     
     def drawPosOrbit(self, obs):
         pos = obs['Pos']

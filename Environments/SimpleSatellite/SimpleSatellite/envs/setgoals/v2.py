@@ -105,7 +105,8 @@ class Simple_satellite(gym.Env):
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
-        self.state = self.SatSim.get_state()
+        # self.reset()
+        # self.state = self.SatSim.get_state()
         self.Total_reward = 0
         self.Reward = Reward
         
@@ -229,8 +230,7 @@ class Simple_satellite(gym.Env):
         Output:
             pos: np.ndarray, sin and cos of the angular position
         """
-        pos = np.deg2rad(pos)
-        n_pos = np.array([np.sin(pos), np.cos(pos)], dtype=np.float32)
+        n_pos = np.array(self.SatSim.position_transformation(pos), dtype=np.float32)
         return n_pos
 
     def print_obs(self, obs: Dict[str, Any]):
