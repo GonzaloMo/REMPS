@@ -72,7 +72,7 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
             reward = -10000
     return reward
 
-def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
+def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
     reward = 0
     # Get action and observation
     obs = env.get_obs()
@@ -93,18 +93,22 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                reward += 1
+                reward += .1
                 goals_after_action[img-1] -= 1
             
     if np.sum(goals_after_action) == 0:
-        reward += 10**(env.task_dificulty+1)
+        reward += 100
     # Negative reward per step 
     reward -= 0.1/env.SatSim.period
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
-            reward -= .01
+            reward -= .001
         if (obs["Power"]*100) < 1:
-            reward -= 10**(env.task_dificulty+1)*1.2
+            reward -= 100
+    if obs["Memory Level"] > 0.9:
+        reward -= .001
+    elif obs["Memory Level"] > 0.5:
+        reward -= .0001
     return reward
 
 
