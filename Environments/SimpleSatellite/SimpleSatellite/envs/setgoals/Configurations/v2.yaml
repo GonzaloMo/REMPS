@@ -26,7 +26,7 @@ Underterministic_actions:  # Values between 0 and 1
 
 # Target Generation Parameters
 Random_Targets: True
-Number_of_targets: 10
+Number_of_targets: 5
 TARGET_HALF_SIZE: 5. 
 
 # Oportunity Generation Parameters
