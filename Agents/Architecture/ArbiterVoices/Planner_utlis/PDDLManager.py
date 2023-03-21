@@ -1,5 +1,5 @@
 from ifaddr import IP
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 import subprocess
 import math
 import numpy as np

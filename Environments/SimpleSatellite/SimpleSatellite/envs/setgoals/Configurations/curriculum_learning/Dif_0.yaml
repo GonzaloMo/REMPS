@@ -1,0 +1,17 @@
+
+Max_image_goals_per_target: 1
+
+# Target Generation Parameters
+Random_Targets: False
+TARGET_HALF_SIZE: 180. 
+
+# Ground Station Generation Parameters
+Random_GS: False
+GS_HALF_SIZE: 180. 
+
+
+# Eclipse Parameters
+ECLIPSE:
+  Umbra: 0.
+  Penumbra: 0.
+  Light: 1.

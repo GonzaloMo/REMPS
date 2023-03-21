@@ -1,6 +1,6 @@
 from logging import raiseExceptions
 from tkinter import simpledialog
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from pyrsistent import s
 import numpy as np
 

@@ -1,0 +1,45 @@
+{
+  "batch_mode": "truncate_episodes",
+  "entropy_coeff": 0.01,
+  "env": "<class 'SimpleSatellite.envs.setgoals.CV_learning.CurriculumEnv'>",
+  "env_config": {
+    "CV_path": [
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_0.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_1.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_2.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_3.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_4.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_5.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_6.yaml",
+      "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/curriculum_learning/Dif_7.yaml"
+    ],
+    "Reward_Function": "Reward_v2",
+    "main_config_file": "/home/ksb21109/REMPS/Test/Configurations/RLAgent_setGoals/Environment_Config/MainConfig_Power_eclipse_v0.yaml"
+  },
+  "env_task_fn": "<function curriculum_fn at 0x7f3c867fedc0>",
+  "evaluation_config": {
+    "render_env": false
+  },
+  "evaluation_duration": 100,
+  "evaluation_interval": 100000,
+  "framework": "torch",
+  "gamma": 0.99,
+  "kl_coeff": 0.5,
+  "lambda": 0.95,
+  "lr": 0.001,
+  "model": {
+    "fcnet_activation": "relu",
+    "fcnet_hiddens": [
+      128,
+      64,
+      64
+    ],
+    "lstm_cell_size": 64,
+    "use_lstm": true,
+    "vf_share_layers": false
+  },
+  "num_envs_per_worker": 5,
+  "num_gpus": 0,
+  "num_workers": 30,
+  "observation_filter": "NoFilter"
+}

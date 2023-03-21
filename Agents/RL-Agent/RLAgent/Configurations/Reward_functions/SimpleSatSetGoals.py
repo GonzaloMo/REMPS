@@ -1,4 +1,4 @@
-from SimpleSatellite.envs.simulation.Simulation import SatelliteSim
+from SimpleSatellite.envs.simulation.v1_old import SatelliteSim
 from typing import Dict, List, Tuple, Union
 import gym
 

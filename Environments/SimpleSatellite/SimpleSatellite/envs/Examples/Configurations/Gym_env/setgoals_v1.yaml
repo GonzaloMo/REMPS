@@ -1,0 +1,38 @@
+# Durations
+DURATION_TAKE_IMAGE: 20 # in seconds
+DURATION_DUMP: 20 # in seconds
+DURATION_ANALYSE: 50 # in seconds
+ACTION_THRESHOLD: 0.5 # in seconds
+
+# Target Generation Parameters
+Random_Targets: False
+Number_of_targets: 0 
+TARGET_HALF_SIZE: 5. 
+
+# Oportunity Generation Parameters
+Opportunity_Prob: 0.01
+Opportunity_duration: 10
+
+# Ground Station Generation Parameters
+Random_GS: False 
+GS_HALF_SIZE: 20. 
+Number_of_GS: 0
+
+# Power Parameters
+POWER_OPTION: True
+POWER_CONSUMPTION: 
+  TP: -0.5 # in %/s when Take Picture
+  AN: -0.1 # in %/s when Analyse
+  DP: -0.5 # in %/s when dumping
+  PowerGenerationRate: .5 # in %/s when not taking actions
+
+
+# Eclipse Parameters
+Umbra: 0.3
+Penumbra: 0.1
+Light: .5
+ECLIPSE_OPTION: True
+
+# File Parameters
+CoverageFile: ""
+Log_dir: ./Logs/Simulation/
