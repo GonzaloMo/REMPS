@@ -153,11 +153,13 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
         
     if np.sum(goals_after_action) == 0:
         done = True
+        print("Done")
         reward += 100 * math.log(math.e + 6*env.task_dificulty)
         reward += 10 * (env.SatSim.MAX_ORBITS - env.SatSim.orbit) 
     
     if done:
         tot_goals = np.sum(env.initial_goals)
+        print(1- np.sum(goals_after_action)/np.sum(env.initial_goals))
         if tot_goals  > 0:
             reward += 50 * (1- np.sum(goals_after_action)/np.sum(env.initial_goals))
     # Negative reward per step 

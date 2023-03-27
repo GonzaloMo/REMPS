@@ -119,7 +119,7 @@ class CV_CallBack(DefaultCallbacks):
         mean_epi_reward = result["episode_reward_mean"]
 
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-        mean_episode_goal =  90 *math.log(math.e + 6*self.task)
+        mean_episode_goal =  100 *math.log(math.e + 6*self.task)
         mean_episode_lower = -100
         previous_difficulty = deepcopy(self.task)
         if tot_epi_dificulty > 80 and mean_epi_reward  > mean_episode_goal:
