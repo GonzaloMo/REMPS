@@ -131,9 +131,23 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
     check_action, add_info = env.SatSim.check_action(action,img)
     goals_after_action = deepcopy(goals)
     # Reward for taking a correct action
-    if not check_action:
-        reward -= .001
-            
+    if check_action:
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal
+            if goals[img-1] > 0:
+                reward += .001
+        if action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            if goals[img-1] > 0:
+                reward += .002 
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 0:
+                reward += .1
+                goals_after_action[img-1] -= 1
+    else:
+        reward -= .0001
+
     if pos > env.SatSim.CIRCUNFERENCE and (env.SatSim.orbit+1) >= env.SatSim.MAX_ORBITS:
         done = True
         
@@ -144,7 +158,6 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
     
     if done:
         tot_goals = np.sum(env.initial_goals)
-        print(env.initial_goals)
         if tot_goals  > 0:
             reward += 50 * (1- np.sum(goals_after_action)/np.sum(env.initial_goals))
     # Negative reward per step 
