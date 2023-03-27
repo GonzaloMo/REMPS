@@ -92,7 +92,7 @@ class Custom_TBXLoggerCallback(LoggerCallback):
     VALID_HPARAMS = (str, bool, int, float, list, type(None))
     VALID_NP_HPARAMS = (np.bool8, np.float32, np.float64, np.int32, np.int64)
 
-    def __init__(self,env):
+    def __init__(self):
         try:
             from tensorboardX import SummaryWriter
             
@@ -103,7 +103,6 @@ class Custom_TBXLoggerCallback(LoggerCallback):
             raise
         self._trial_writer: Dict["Trial", SummaryWriter] = {}
         self._trial_result: Dict["Trial", Dict] = {}
-        self.env = env
 
     def log_trial_start(self, trial: "Trial"):
         if trial in self._trial_writer:
@@ -224,7 +223,7 @@ class Custom_TBXLoggerCallback(LoggerCallback):
             )
             
     def on_episode_end(worker, base_env, policies, episode, env_index, **kwargs)-> None:
-        env = base_env.get_unwrapped()
+        episode.custom_metrics["episodes_total"] = episode.episodes_total
         # tune.result.histogram(nparray, max_bins=5)
         # episode.custom_metrics["action_histogram"] = np.histogram(episode.actions, bins=env.action_space.n)[0]
 

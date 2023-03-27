@@ -9,6 +9,7 @@ register(id='SimpleSatellite-v1',entry_point='SimpleSatellite.envs:Simple_satell
 register(id='SimpleSatellite-setgoals-v0',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v0',)
 register(id='SimpleSatellite-setgoals-v1',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v1',) # Adds eclipse to the observation space
 register(id='SimpleSatellite-setgoals-v2',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v2',) # sin and cos observation space
+register(id='SimpleSatellite-setgoals-v2.2',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v2.2',)
 register(id='SimpleSatellite-setgoals_CV-v2',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v2_cv',) 
 
 # includes a planner agent

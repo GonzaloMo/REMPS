@@ -355,6 +355,7 @@ class SatelliteSim_Base:
         Args:
             action: the action to be taken. 
         """
+        self.action_taken = False
         if len(action_in) == 1:
             action = action_in
             img = None
@@ -368,6 +369,7 @@ class SatelliteSim_Base:
             return
         else:
             # take action
+            self.action_taken = True
             self.last_action = (action, add_info)
             self.satellite_busy_time = self.DURATIONS[action]
             self.Taking_action = action
@@ -435,6 +437,9 @@ class SatelliteSim_Base:
                 if not check:
                     return False, "Not above target"
             else:
+                if img > len(self.targets):
+                    print(len(self.targets), img)
+                    print(self.targets[img-1][0], self.pos, self.targets[img-1][1])
                 if not (self.targets[img-1][0] < self.pos < self.targets[img-1][1]):
                     return False, "Not above target"
                 else:

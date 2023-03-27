@@ -123,15 +123,15 @@ class Simple_satellite(gym.Env):
             info: Dict
         """
         action_tuple = self.Number2Tuple_action(action)
-        # Get Reward
-        reward = self.Reward(self, action_tuple)
+        
         # Take action 
         next_state, truncated = self.SatSim.update(action_tuple)
+
         # Goals achieved
         goals = self.initial_goals - np.array(self.SatSim.n_images_dumped)
         goals[goals<0] = 0
         self.goals = goals
-        self.Total_reward += reward
+        
         info = {}  
         # Check episode done
         terminated = False
@@ -143,6 +143,9 @@ class Simple_satellite(gym.Env):
             done = False
         self.step_count += 1
         self.done = done
+        # Get Reward
+        reward = self.Reward(self, action_tuple)
+        self.Total_reward += reward
         observation = self.get_obs()
         self.print_obs_shape_compare(observation, self.observation_space)
         return observation, reward, done, info
@@ -407,9 +410,6 @@ class Simple_satellite(gym.Env):
                 total_goals += n
             else:
                 break
-        if total_goals == 0:
-            goals[0] = 1
-            total_goals += 1
         
         # Create Log folder
         if not os.path.exists(self.Log_dir):

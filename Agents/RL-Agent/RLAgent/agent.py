@@ -72,7 +72,7 @@ class RAY_agent:
             env_config["Env_setup"] = env_setup
             config["env_config"] = env_config
             config["env"] = env_name
-            callback = [Custom_TBXLoggerCallback(env_creator(env_config))]
+            callback = [Custom_TBXLoggerCallback()]
             # Set Trainning configuration dict
             Training["config"] = config
             Training["restore"] = restore
@@ -112,11 +112,12 @@ class RAY_agent:
         # Train on set envirnment
         self.save(localdir, Training, Agent, Environment)
         ### Environment Configuration Files ###
-        from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv
+        from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
         Training["config"]["env"] = CurriculumEnv
         
         Training["config"]["env_config"] = {**Environment["Env_setup"]}
         Training["config"]["env_task_fn"] = curriculum_fn
+        Training["config"]["callbacks"] = CV_CallBack
         ### Train on set envirnment ###
         self.analysis = ray.tune.run(self.agent, **Training)
 
