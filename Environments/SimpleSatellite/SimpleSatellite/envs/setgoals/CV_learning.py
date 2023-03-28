@@ -112,30 +112,33 @@ class CV_CallBack(DefaultCallbacks):
         super().__init__(*args, **kwargs)
         self.task = 0
         self.begin_epi_dificulty = 0
-        self.per_goals = []
+    
 
     def on_train_result(self, algorithm, result, **kwargs):
         tot_epi = result["episodes_total"]
         mean_epi_reward = result["episode_reward_mean"]
+        if "percentage_of_goals_mean" in result["custom_metrics"].keys():
+            per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
+        else:
+            per_goals = -1
 
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-        mean_episode_goal =  100 *math.log(math.e + 6*self.task)
+        mean_episode_goal =  90 * (math.log(math.e + 6*self.task) + .51)
         mean_episode_lower = -100
         previous_difficulty = deepcopy(self.task)
-        if tot_epi_dificulty > 80 and mean_epi_reward  > mean_episode_goal:
+        if tot_epi_dificulty > 100 and per_goals  > .85:
             self.begin_epi_dificulty = deepcopy(tot_epi)
             self.task += 1
         elif mean_epi_reward < mean_episode_lower:
             self.task -= 1
 
         task = self.task
-        # per_goals = result["custom_metrics"]["Percentage_of_goals"]
+        
         print("----------------------------------------------------------------")
         print(f"Episode reward mean: {mean_epi_reward}")
-        # print(f"Percentage of goals: {per_goals}")
+        print(f"Percentage of goals: {per_goals}")
         print(f"Total episode: {tot_epi}")
         print(f"Total episode difficulty: {tot_epi_dificulty}")
-        print(f"Change Mean episode goal: {mean_episode_goal}")
         print(f"Current difficulty: {previous_difficulty}")
         print(f"Setting env to dificulty: {task}")
         print("----------------------------------------------------------------")
@@ -143,13 +146,19 @@ class CV_CallBack(DefaultCallbacks):
             lambda ev: ev.foreach_env(
                 lambda env: env.set_task(task)))
     
-    # def on_episode_end(self, *, worker, base_env, policies, episode, env_index: int,**kwargs) -> None:
-    #     percentage_of_goals = (1- np.sum(base_env[env_index].goals)/np.sum(base_env[env_index].initial_goals))
-    #     episode.custom_metrics["Percentage_of_goals"] = percentage_of_goals
-    #     if len(self.per_goals > 100):
-    #         self.per_goals.pop(0)
-    #     self.per_goals.append(percentage_of_goals)
-    #     return 
+    
+    def on_episode_end(self, *, worker, base_env, policies, episode, env_index: int,**kwargs) -> None:
+        env = base_env.get_sub_environments()[env_index]
+        percentage_of_goals = (1- np.sum(env.goals)/np.sum(env.initial_goals))
+        if "percentage_of_goals" in episode.hist_data.keys():
+            episode.hist_data["percentage_of_goals"].append(percentage_of_goals)
+        else:
+            episode.hist_data["percentage_of_goals"] = [percentage_of_goals]
+        if len(episode.hist_data["percentage_of_goals"]) > 100:
+            episode.hist_data["percentage_of_goals"].pop(0)
+        episode.custom_metrics["percentage_of_goals"] = percentage_of_goals
+        episode.custom_metrics["task_difficulty"] = env.get_task()
+        return 
 
 # from ray.rllib.agents.callbacks import Callback
 # class CV_CallBack(Callback):
