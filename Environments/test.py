@@ -51,20 +51,25 @@ def sinCos2degree(x, y):
         rad += 2 * np.pi
     return rad * 180 / np.pi
 
-for i in range(5,len(CV_path)):
+from tqdm import tqdm
+for i in range(3,4):
     env.set_task(i)
     # print(env.difficulty_config[i])
-    obs = env.reset()
-    done = False
-    
-    while not done:
-        action = env.action_space.sample()
-        observation, reward, done, info = env.step(action)
-        env.render()
-        obs = env.SatSim.get_state()
-        print_obs(observation)
-        # print_obs(obs, stp=1)
-
+    epi_percentage = []
+    for epi in tqdm(range(100)):
+        obs = env.reset()
+        done = False
+        
+        while not done:
+            action = env.action_space.sample()
+            observation, reward, done, info = env.step(action)
+            # env.render()
+            # obs = env.SatSim.get_state()
+            # print_obs(observation)
+            # print_obs(obs, stp=1)
+        
+        epi_percentage.append((1- np.sum(env.goals)/np.sum(env.initial_goals)))
+print(f"mean percentage: {np.mean(epi_percentage)}")
     
 env.view.quit()
 curses.endwin()
