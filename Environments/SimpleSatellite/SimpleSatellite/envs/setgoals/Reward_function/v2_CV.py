@@ -145,28 +145,31 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
             if goals[img-1] > 0:
                 reward += .1
                 goals_after_action[img-1] -= 1
+        if action == SatelliteSim.ACTION_DO_NOTHING:
+            reward += .0001
     else:
         reward -= .0001
+        # Negative reward per step 
+        reward -= 0.1/env.SatSim.period
 
     if pos > env.SatSim.CIRCUNFERENCE and (env.SatSim.orbit+1) >= env.SatSim.MAX_ORBITS:
         done = True
         
     if np.sum(goals_after_action) == 0:
         done = True
-        reward += 100 * math.log(math.e + 6*env.task_dificulty)
-        reward += 20 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS) 
+        reward += 1000 * math.log(math.e + 6*env.task_dificulty)
+        reward += 200 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS) 
     
     if done:
         tot_goals = np.sum(env.initial_goals)
         if tot_goals  > 0:
-            reward += 100 * (1 - np.sum(goals_after_action)/np.sum(env.initial_goals))
-    # Negative reward per step 
-    reward -= 0.1/env.SatSim.period
+            reward += 500 * (1 - np.sum(goals_after_action)/np.sum(env.initial_goals))
+    
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
             reward -= .001
-        if (obs["Power"]*100) < 1:
-            reward -= 100
+        if (obs["Power"]*100) < .2:
+            reward -= 1000
     if obs["Memory Level"] > 0.9:
         reward -= .001
     elif obs["Memory Level"] > 0.5:

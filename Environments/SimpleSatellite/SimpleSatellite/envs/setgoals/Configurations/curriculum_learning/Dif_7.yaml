@@ -2,7 +2,7 @@ Max_image_goals_per_target: 5
 Max_total_targets: 25
 
 
-MAX_ORBITS: 80
+MAX_ORBITS: 50
 
 # Eclipse Parameters
 Umbra: .4

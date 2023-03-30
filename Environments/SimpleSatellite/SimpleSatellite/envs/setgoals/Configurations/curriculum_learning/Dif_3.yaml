@@ -1,15 +1,16 @@
-Max_image_goals_per_target: 4
-# Target Generation Parameters
-Random_Targets: True
-TARGET_HALF_SIZE: 15. 
+Max_image_goals_per_target: 1
+Max_total_targets: 4
 
-# Ground Station Generation Parameters
-Random_GS: True
-GS_HALF_SIZE: 30. 
 
+MAX_ORBITS: 8
 
 # Eclipse Parameters
-ECLIPSE:
-  Umbra: 0.1
-  Penumbra: 0.05
-  Light: .8
+Umbra: .4
+Penumbra: 0.
+Light: .6
+
+POWER_CONSUMPTION: 
+  TP: -0.5 # in %/s when Take Picture
+  AN: -0.1 # in %/s when Analyse
+  DP: -0.5 # in %/s when dumping
+  PowerGenerationRate: .5 # in %/s when not taking actions
