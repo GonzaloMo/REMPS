@@ -123,25 +123,23 @@ class CV_CallBack(DefaultCallbacks):
             per_goals = -1
 
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-        mean_episode_goal =  90 * (math.log(math.e + 6*self.task) + .51)
-        mean_episode_lower = -100
         previous_difficulty = deepcopy(self.task)
         if tot_epi_dificulty > 100 and per_goals  > .85:
             self.begin_epi_dificulty = deepcopy(tot_epi)
             self.task += 1
-        elif mean_epi_reward < mean_episode_lower:
-            self.task -= 1
+        elif per_goals < .05:
+            self.task = max(0, self.task - 1)
 
         task = self.task
-        
-        print("----------------------------------------------------------------")
-        print(f"Episode reward mean: {mean_epi_reward}")
-        print(f"Percentage of goals: {per_goals}")
-        print(f"Total episode: {tot_epi}")
-        print(f"Total episode difficulty: {tot_epi_dificulty}")
-        print(f"Current difficulty: {previous_difficulty}")
-        print(f"Setting env to dificulty: {task}")
-        print("----------------------------------------------------------------")
+        report  = "----------------------------------------------------------------\n"
+        report += f"Episode reward mean: {mean_epi_reward}\n"
+        report += f"Percentage of goals: {per_goals}\n"
+        report += f"Total episode: {tot_epi}\n"
+        report += f"Total episode difficulty: {tot_epi_dificulty}\n"
+        report += f"Current difficulty: {previous_difficulty}\n"
+        report += f"Setting env to dificulty: {task}\n"
+        report += "----------------------------------------------------------------"
+        print(report)
         algorithm.workers.foreach_worker(
             lambda ev: ev.foreach_env(
                 lambda env: env.set_task(task)))
