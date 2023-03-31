@@ -75,6 +75,7 @@ class SatelliteSim_Base:
         """
         done = False
         self.action_taken_list.append(action)
+        self.check_visibility()
         # update time variables
         self.sim_time += self.dt
         self.pos += self.velocity*self.dt
@@ -690,3 +691,14 @@ class SatelliteSim_Base:
         self.light_range = self.light_matrix[self.n_orbit_repeat]
         self.umbra_range = self.umbra_matrix[self.n_orbit_repeat]
         self.penumbra_range = self.penumbra_matrix[self.n_orbit_repeat]
+
+    
+    def check_visibility(self):
+        self.above_target = np.zeros(self.n_targets, dtype=int)
+        for index in range(len(self.targets)):
+            if self.targets[index][0] < self.pos < self.targets[index][1]:
+                self.above_target[index] = 1
+                
+        self.above_gs = False
+        if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
+            self.above_gs = True

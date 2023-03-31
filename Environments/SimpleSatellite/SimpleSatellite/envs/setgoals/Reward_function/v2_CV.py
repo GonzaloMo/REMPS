@@ -135,29 +135,34 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
             if goals[img-1] > 0:
-                reward += .001
+                reward += .1
         if action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
             if goals[img-1] > 0:
-                reward += .002 
+                reward += .1 
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                reward += .1
                 goals_after_action[img-1] -= 1
         if action == SatelliteSim.ACTION_DO_NOTHING:
             reward += .0001
     else:
-        reward -= .0001
-        # Negative reward per step 
-        reward -= 0.1/env.SatSim.period
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal
+            reward -= .01
+        if action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            reward -= .01 
+        if action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
+            reward -= .01
 
     if pos > env.SatSim.CIRCUNFERENCE and (env.SatSim.orbit+1) >= env.SatSim.MAX_ORBITS:
         done = True
         
     if np.sum(goals_after_action) == 0:
         done = True
-        reward += 1000 * math.log(math.e + 6*env.task_dificulty)
+        reward += 1000 * env.task_dificulty # math.log(math.e + 6*env.task_dificulty)
         reward += 200 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS) 
     
     if done:

@@ -86,15 +86,15 @@ class Simple_satellite(gym.Env):
         n_gs = self.SatSim.n_gs
         max_inf = np.inf
         obs_space = {
-                    'Pos':             spaces.Box(low=0, high=1., shape=(2,), dtype=np.float32), # current angular position
-                    'Busy':            spaces.Discrete(2),# busy or not
-                    'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
-                    'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
-                    'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
-                    'Targets':         spaces.Box(low=0, high=1., shape=(n_targets,), dtype=np.int32), # target is visiblility, 
-                    'Ground Stations': spaces.Box(low=0, high=1., shape=(n_gs,), dtype=np.int32), # ground station initial and final position
-                    'Goals':           spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # goals to be achieved
-                    'Eclipse':         spaces.Discrete(3, start=-1), # Is it in light or not
+                    'Pos':                  spaces.Box(low=-1, high=1., shape=(2,), dtype=np.float32), # transform angular position
+                    'Busy':                 spaces.Discrete(2),# busy or not
+                    'Memory Level':         spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
+                    'Images':               spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
+                    'Analysis':             spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
+                    'Target':               spaces.Discrete(n_targets), # above which target 
+                    'Ground Station':       spaces.Discrete(2), # if above ground station
+                    'Goals':                spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # goals to be achieved
+                    'Eclipse':              spaces.Discrete(3, start=-1), # Is it in light or not
                     } 
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
