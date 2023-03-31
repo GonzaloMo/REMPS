@@ -369,15 +369,18 @@ class Base_Simple_satellite(gym.Env):
             Seed = np.random.randint(0, 2**32)
         self.Seed = Seed
         n_targets = self.SatSim.n_targets
-        Max_goals = self.Max_goals
+        Max_total_goals = self.Max_total_targets
         
         target_random = rng.choice(n_targets, size=n_targets, replace=False)
         goals = np.zeros((n_targets,))
         total_goals = 0
         for i in target_random:
+            Max_goals = min(self.Max_goals, Max_total_goals - total_goals)
             random.seed(Seed+i)
             n = random.randint(0, Max_goals)
-            if total_goals < self.Max_total_targets:
+            if total_goals <= self.Max_total_targets:
+                n = min(self.Max_total_targets - total_goals - n, n)
+                
                 goals[i] = n
                 total_goals += n
             else:

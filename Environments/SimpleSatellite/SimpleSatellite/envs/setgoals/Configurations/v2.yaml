@@ -1,11 +1,14 @@
 # GYM ENVIRONMENT PARAMETERS
 action_space_type: "Advance" # "Simple" or "Advance"
-Max_image_goals_per_target: 10
+Max_image_goals_per_target: 5
+Max_total_targets: 10
+
 
 # SIMULATION PARAMETERS
 simulation_version: v1
 N_repeating_orbits: 1
-MAX_ORBITS: 10
+MAX_ORBITS: 25
+
 # General simulation parameters Parameters
 PERIOD: 600 # in seconds
 
