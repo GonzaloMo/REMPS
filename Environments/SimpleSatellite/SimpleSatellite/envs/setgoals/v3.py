@@ -83,6 +83,7 @@ class Simple_satellite(Base_Simple_satellite):
         info = {}  
         # Check episode done
         terminated = False
+        self.truncated = truncated
         if np.all(goals==0):   
             terminated = True
         if terminated or truncated:

@@ -15,7 +15,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         main_config_file = config_files["main_config_file"]
         CV_path = config_files["CV_path"]
         Reward_name = config_files["Reward_Function"]
-        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v2_CV")
+        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v3_CV")
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -124,10 +124,10 @@ class CV_CallBack(DefaultCallbacks):
 
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
         previous_difficulty = deepcopy(self.task)
-        if tot_epi_dificulty > 100 and per_goals  > .85:
+        if tot_epi_dificulty > 1000 and per_goals  > .90:
             self.begin_epi_dificulty = deepcopy(tot_epi)
             self.task += 1
-        elif per_goals < .05:
+        elif per_goals < .0:
             self.task = max(0, self.task - 1)
 
         task = self.task
@@ -148,14 +148,9 @@ class CV_CallBack(DefaultCallbacks):
     def on_episode_end(self, *, worker, base_env, policies, episode, env_index: int,**kwargs) -> None:
         env = base_env.get_sub_environments()[env_index]
         percentage_of_goals = (1- np.sum(env.goals)/np.sum(env.initial_goals))
-        if "percentage_of_goals" in episode.hist_data.keys():
-            episode.hist_data["percentage_of_goals"].append(percentage_of_goals)
-        else:
-            episode.hist_data["percentage_of_goals"] = [percentage_of_goals]
-        if len(episode.hist_data["percentage_of_goals"]) > 100:
-            episode.hist_data["percentage_of_goals"].pop(0)
         episode.custom_metrics["percentage_of_goals"] = percentage_of_goals
         episode.custom_metrics["task_difficulty"] = env.get_task()
+        episode.custom_metrics["Power_truncated"] = env.truncated
         return 
 
 # from ray.rllib.agents.callbacks import Callback

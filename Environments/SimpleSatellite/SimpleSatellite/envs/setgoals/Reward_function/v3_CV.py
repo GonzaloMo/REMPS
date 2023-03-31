@@ -1,4 +1,4 @@
-from SimpleSatellite.envs.simulation.Base import SatelliteSim
+from SimpleSatellite.envs.simulation.Base import SatelliteSim_Base as SatelliteSim
 from typing import Dict, List, Tuple, Union
 from copy import deepcopy
 import math
@@ -33,7 +33,7 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
             if goals[img-1] > 0:
                 goals_after_action[img-1] -= 1
         if action == SatelliteSim.ACTION_DO_NOTHING:
-            reward += .0001
+            reward += .001
     else:
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
@@ -50,13 +50,13 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
         
     if np.sum(goals_after_action) == 0:
         done = True
-        reward += 1000 * env.task_dificulty # math.log(math.e + 6*env.task_dificulty)
-        reward += 200 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS) 
+        reward += 1000 * math.log(math.e + 6*env.task_dificulty)
+        reward += 200 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS)
     
     if done:
         tot_goals = np.sum(env.initial_goals)
         if tot_goals  > 0:
-            reward += 500 * (1 - np.sum(goals_after_action)/np.sum(env.initial_goals))
+            reward += 1000 * (1 - np.sum(goals_after_action)/np.sum(env.initial_goals)) * math.log(math.e + 6*env.task_dificulty)
     
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:
