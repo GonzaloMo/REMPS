@@ -4,7 +4,7 @@ Max_image_goals_per_target: 10
 
 # SIMULATION PARAMETERS
 simulation_version: v1
-N_repeating_orbits: 5
+N_repeating_orbits: 1
 MAX_ORBITS: 10
 # General simulation parameters Parameters
 PERIOD: 600 # in seconds

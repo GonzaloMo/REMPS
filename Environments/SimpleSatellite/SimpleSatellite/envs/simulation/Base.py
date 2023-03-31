@@ -182,7 +182,8 @@ class SatelliteSim_Base:
         self.GS_matrix = self.CoverageGenerator("GroundStation_Coverage")   
         
         # Visible windows
-        self.update_coverage_list()       
+        self.update_coverage_list()
+        self.check_visibility()
         
         if self.POWER_OPTION:
             self.Power = 100.
@@ -427,8 +428,8 @@ class SatelliteSim_Base:
             
             if img == None:
                 check = False
-                for index in range(len(self.targets)):
-                    if self.targets[index][0] < self.pos < self.targets[index][1]:
+                for index, val in enumerate(self.above_target):
+                    if val == 1:
                         check = True
                         above_target = index+1
                         break
@@ -441,7 +442,7 @@ class SatelliteSim_Base:
                 if img > len(self.targets):
                     print(len(self.targets), img)
                     print(self.targets[img-1][0], self.pos, self.targets[img-1][1])
-                if not (self.targets[img-1][0] < self.pos < self.targets[img-1][1]):
+                if self.above_target[img-1] == 0:
                     return False, "Not above target"
                 else:
                     above_target = img
@@ -490,7 +491,7 @@ class SatelliteSim_Base:
         # Dump picture
         if action == SatelliteSim_Base.ACTION_DUMP:                   
             # check if it is above the ground station
-            if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
+            if self.above_gs:
                 pass
             else:
                 return False, "Not above GS" 
@@ -534,23 +535,6 @@ class SatelliteSim_Base:
             if self.penumbra_range[index][0] < self.pos < self.penumbra_range[index][1]:
                 return 0
         return -1
-
-    def check_availablility(self):
-        """
-        Check if the satellite is above a target or ground station
-
-        Returns:
-            Tuple[List[bool], List[bool]]: Tuple of two lists, the first one is a list of bools that indicates if the satellite is above a target, the second one is a list of bools that indicates if the satellite is above a ground station.
-        """
-        above_target = [False] * self.n_targets
-        above_gs = [False] * len(self.groundStations)
-        for index in range(len(self.targets)):
-            if self.targets[index][0] < self.pos < self.targets[index][1]:
-                above_target[index] = True
-        for index in range(len(self.groundStations)):
-            if self.groundStations[index][0] < self.pos < self.groundStations[index][1]:
-                above_gs[index] = True
-        return above_target, above_gs
     
     def check_time_to_availability(self):
         """
@@ -700,5 +684,6 @@ class SatelliteSim_Base:
                 self.above_target[index] = 1
                 
         self.above_gs = False
-        if any([gs[0]-self.ACTION_THRESHOLD < self.pos < gs[1]+self.ACTION_THRESHOLD for gs in self.groundStations]):
-            self.above_gs = True
+        for index in range(len(self.groundStations)):
+            if self.groundStations[index][0] < self.pos < self.groundStations[index][1]:
+                self.above_gs = True

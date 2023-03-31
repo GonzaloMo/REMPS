@@ -1,5 +1,5 @@
 from ray.rllib.env.apis.task_settable_env import TaskSettableEnv
-from SimpleSatellite.envs.setgoals.v2 import Simple_satellite
+from SimpleSatellite.envs.setgoals.v3 import Simple_satellite
 import numpy as np
 import math
 import os

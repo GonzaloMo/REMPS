@@ -6,16 +6,6 @@ import sys
 import numpy as np
 
 Mainconfigfile = "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/v2.yaml"
-CV_path = [
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_0.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_1.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_2.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_4.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_5.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_6.yaml",
-]
-env = gym.make('SimpleSatellite-setgoals_CV-v2', config_files={"main_config_file": Mainconfigfile, "CV_path": CV_path, "Reward_Function": "Reward_v1"})
 
 def get_obs_str(obs, stp = 4):
     hline = "-" *10 + "\n"
@@ -52,24 +42,67 @@ def sinCos2degree(x, y):
     return rad * 180 / np.pi
 
 from tqdm import tqdm
+
+CV_path = [
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_1.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_2.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_4.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_5.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_6.yaml",
+]
+env = gym.make('SimpleSatellite-setgoals-CV', config_files={"main_config_file": Mainconfigfile, "CV_path": CV_path, "Reward_Function": "Reward_v1"})
 for i in range(3,4):
     env.set_task(i)
     # print(env.difficulty_config[i])
     epi_percentage = []
+    rewards = []
     for epi in tqdm(range(100)):
         obs = env.reset()
         done = False
-        
         while not done:
             action = env.action_space.sample()
             observation, reward, done, info = env.step(action)
-            # env.render()
+
+            env.render()
+            # print(f"target_visibility:{env.SatSim.above_target}")
+            # print(f"GS visibilty: {env.SatSim.above_gs}")
             # obs = env.SatSim.get_state()
-            # print_obs(observation)
+            print_obs(observation)
             # print_obs(obs, stp=1)
-        
+        rewards.append(env.Total_reward)
         epi_percentage.append((1- np.sum(env.goals)/np.sum(env.initial_goals)))
+
+
+
+# with open(Mainconfigfile, "r") as f:
+#     config = yaml.load(f, Loader=yaml.FullLoader)
+
+# env = gym.make('SimpleSatellite-setgoals-v3',**config)
+# epi_percentage = []
+# rewards = []
+# for epi in tqdm(range(100)):
+#     obs = env.reset()
+#     done = False
+#     while not done:
+#         action = env.action_space.sample()
+#         observation, reward, done, info = env.step(action)
+
+#         env.render()
+#         # obs = env.SatSim.get_state()
+#         print_obs(observation)
+#         # print("Target Mat:", env.SatSim.target_matrix, "\n")
+#     rewards.append(env.Total_reward)
+#     epi_percentage.append((1- np.sum(env.goals)/np.sum(env.initial_goals)))
+
+
+
 print(f"mean percentage: {np.mean(epi_percentage)}")
-    
-env.view.quit()
+print(f"mean reward:     {np.mean(rewards)}")
+from matplotlib import pyplot as plt
+plt.plot(rewards)
+plt.show()
+env.quit()
+
 curses.endwin()
