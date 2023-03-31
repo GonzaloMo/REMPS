@@ -45,14 +45,14 @@ class Simple_satellite(Base_Simple_satellite):
         max_inf = np.inf
         obs_space = {
                     'Pos':                  spaces.Box(low=-1, high=1., shape=(2,), dtype=np.float32), # transform angular position
-                    'Busy':                 spaces.Discrete(2),# busy or not
+                    'Busy':                 spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32),# busy or not
                     'Memory Level':         spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
                     'Images':               spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32),# n images per target taken
                     'Analysis':             spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # n images per target analyzed
-                    'Target':               spaces.Discrete(n_targets), # above which target 
-                    'Ground Station':       spaces.Discrete(2), # if above ground station
+                    'Target':               spaces.Box(low=0, high=1, shape=(n_targets,), dtype=np.int32), # above which target 
+                    'Ground Station':       spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32), # if above ground station
                     'Goals':                spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.int32), # goals to be achieved
-                    'Eclipse':              spaces.Discrete(3, start=-1), # Is it in light or not
+                    'Eclipse':              spaces.Box(low=-1, high=1, shape=(1,), dtype=np.int32), # Is it in light or not
                     } 
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
@@ -129,8 +129,8 @@ class Simple_satellite(Base_Simple_satellite):
                         "Images": np.zeros((self.SatSim.n_targets,), dtype=np.int32),
                         "Analysis": np.zeros((self.SatSim.n_targets,), dtype=np.int32),
                         "Target": np.array(self.SatSim.above_target, dtype=np.int32),
-                        "Ground Station": self.SatSim.above_gs,
-                        "Eclipse": light_condition,
+                        "Ground Station": np.array([self.SatSim.above_gs], dtype=np.int32),
+                        "Eclipse": np.array([light_condition], dtype=np.int32),
                         "Goals": self.goal_percentage(self.goals),
                         }
         for i in range(self.SatSim.MEMORY_SIZE):

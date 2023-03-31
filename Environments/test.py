@@ -53,7 +53,7 @@ CV_path = [
     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_6.yaml",
 ]
 env = gym.make('SimpleSatellite-setgoals-CV', config_files={"main_config_file": Mainconfigfile, "CV_path": CV_path, "Reward_Function": "Reward_v1"})
-for i in range(3,4):
+for i in range(0,4):
     env.set_task(i)
     # print(env.difficulty_config[i])
     epi_percentage = []
