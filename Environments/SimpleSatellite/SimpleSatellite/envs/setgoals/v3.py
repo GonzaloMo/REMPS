@@ -132,7 +132,7 @@ class Simple_satellite(Base_Simple_satellite):
                         "Target": np.array(self.SatSim.above_target, dtype=np.int32),
                         "Ground Station": np.array([self.SatSim.above_gs], dtype=np.int32),
                         "Eclipse": np.array([light_condition], dtype=np.int32),
-                        "Goals": self.goal_percentage(self.goals),
+                        "Goals": np.array(self.goals, dtype=np.int32),
                         }
         for i in range(self.SatSim.MEMORY_SIZE):
             img = state["Images"][i]
