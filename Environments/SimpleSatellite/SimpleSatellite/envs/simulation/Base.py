@@ -94,8 +94,7 @@ class SatelliteSim_Base:
             self.pos -=  SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits
             
 
-        # take action
-        self.apply_action(action)
+        
 
         # update the satellite state
         if self.satellite_busy_time > 0:
@@ -107,6 +106,8 @@ class SatelliteSim_Base:
                 self.last_action = (0, None)
                 self.Taking_action_tuple = (0, None)
             self.busy = 0
+        # take action
+        self.apply_action(action)
 
         # Power update
         if self.POWER_OPTION:
