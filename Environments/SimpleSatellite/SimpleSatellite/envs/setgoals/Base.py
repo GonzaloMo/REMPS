@@ -375,12 +375,10 @@ class Base_Simple_satellite(gym.Env):
         goals = np.zeros((n_targets,))
         total_goals = 0
         for i in target_random:
-            Max_goals = min(self.Max_goals, Max_total_goals - total_goals)
+            Max_goals = max(0, min(self.Max_goals, Max_total_goals - total_goals))
             random.seed(Seed+i)
             n = random.randint(0, Max_goals)
             if total_goals <= self.Max_total_targets:
-                n = min(self.Max_total_targets - total_goals - n, n)
-                
                 goals[i] = n
                 total_goals += n
             else:
