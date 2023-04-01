@@ -105,9 +105,9 @@ class SatelliteSim_Base:
                 self.Taking_action = SatelliteSim_Base.ACTION_DO_NOTHING
                 self.last_action = (0, None)
                 self.Taking_action_tuple = (0, None)
+            # take action
+            self.apply_action(action)
             self.busy = 0
-        # take action
-        self.apply_action(action)
 
         # Power update
         if self.POWER_OPTION:

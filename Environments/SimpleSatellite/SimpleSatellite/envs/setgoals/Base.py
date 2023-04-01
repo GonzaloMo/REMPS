@@ -386,7 +386,8 @@ class Base_Simple_satellite(gym.Env):
             else:
                 break
         if total_goals == 0:
-            goals[0] = 1
+            i = random.randint(0, n_targets)
+            goals[i] = 1
             total_goals += 1
         
         # Create Log folder
