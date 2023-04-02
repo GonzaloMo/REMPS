@@ -384,7 +384,7 @@ class Base_Simple_satellite(gym.Env):
             else:
                 break
         if total_goals == 0:
-            i = random.randint(0, n_targets)
+            i = random.randint(0, n_targets-1)
             goals[i] = 1
             total_goals += 1
         
