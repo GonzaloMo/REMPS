@@ -1,5 +1,5 @@
 from ray.rllib.env.apis.task_settable_env import TaskSettableEnv
-from SimpleSatellite.envs.setgoals.v3 import Simple_satellite
+from SimpleSatellite.envs.setgoals.v2 import Simple_satellite
 import numpy as np
 import math
 import os
@@ -15,7 +15,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         main_config_file = config_files["main_config_file"]
         CV_path = config_files["CV_path"]
         Reward_name = config_files["Reward_Function"]
-        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v3_CV")
+        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v2_CV")
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -124,7 +124,7 @@ class CV_CallBack(DefaultCallbacks):
 
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
         previous_difficulty = deepcopy(self.task)
-        if tot_epi_dificulty > 1000 and per_goals  > .90:
+        if tot_epi_dificulty > 1000 and per_goals  > .85:
             self.begin_epi_dificulty = deepcopy(tot_epi)
             self.task += 1
         elif per_goals < .0:
@@ -150,7 +150,7 @@ class CV_CallBack(DefaultCallbacks):
         percentage_of_goals = (1- np.sum(env.goals)/np.sum(env.initial_goals))
         episode.custom_metrics["percentage_of_goals"] = percentage_of_goals
         episode.custom_metrics["task_difficulty"] = env.get_task()
-        episode.custom_metrics["Power_truncated"] = env.truncated
+        # episode.custom_metrics["Power_truncated"] = env.truncated
         return 
 
 # from ray.rllib.agents.callbacks import Callback
