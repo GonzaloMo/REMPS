@@ -226,7 +226,11 @@ class RAY_agent:
                np.zeros(cell_size, np.float32)]
         else:
             state = self.state
-        action, RNN_list_input, additional_info = self.agent.compute_single_action(observation, state=state, **kwargs)
+        res = self.agent.compute_single_action(observation, state=state, **kwargs)
+        if type(res) == np.int32:
+            action, RNN_list_input, additional_info = res, None, None
+        else:
+            action, RNN_list_input, additional_info = res
         self.state = state
         if add_info:
             return action, additional_info
