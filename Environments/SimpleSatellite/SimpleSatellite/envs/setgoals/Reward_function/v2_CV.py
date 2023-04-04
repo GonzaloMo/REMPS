@@ -285,13 +285,13 @@ def Reward_v6(env: gym.Env, action_in: Tuple[int,int]):
         
     if np.sum(goals_after_action) == 0:
         done = True
-        reward += 1000 * math.log(math.e + 6*env.task_dificulty)
-        reward += 200 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS)
+        reward += 100 * math.log(math.e + 6*env.task_dificulty)
+        reward += 20 * (1 - env.SatSim.orbit/env.SatSim.MAX_ORBITS)
     
     if done:
         tot_goals = np.sum(env.initial_goals)
         if tot_goals  > 0:
-            reward += 1000 * (1 - np.sum(goals_after_action)/np.sum(env.initial_goals)) * math.log(math.e + 6*env.task_dificulty)
+            reward += 100 * (1 - np.sum(goals_after_action)/np.sum(env.initial_goals)) * math.log(math.e + 6*env.task_dificulty)
     
     if env.SatSim.POWER_OPTION:
         if (obs["Power"]*100) < 25:

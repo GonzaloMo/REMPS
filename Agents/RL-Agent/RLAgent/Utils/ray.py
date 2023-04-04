@@ -41,7 +41,7 @@ def env_creator(env_config: Dict={"env": "SimpleSatellite-setgoals-v0", "Env_set
 
 #############################################################################################################################
         
-from ray.rllib.agents.ppo import PPOTrainer
+from ray.rllib.agents.ppo import PPOTrainer, APPOTrainer
 import torch
 from torch.utils.tensorboard import SummaryWriter
 import tensorflow as tf
@@ -49,6 +49,12 @@ class PPO(PPOTrainer):
     def __init__(self, *args, **kwargs):
         print("PPO init")
         super().__init__(*args, **kwargs)
+
+class APPO(APPOTrainer):
+    def __init__(self, *args, **kwargs):
+        print("APPO init")
+        super().__init__(*args, **kwargs)
+
 
 
 
