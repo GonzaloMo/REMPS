@@ -124,7 +124,7 @@ class CV_CallBack(DefaultCallbacks):
 
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
         previous_difficulty = deepcopy(self.task)
-        if tot_epi_dificulty > 1000 and per_goals  > .85:
+        if tot_epi_dificulty > 1000 and per_goals  > .9:
             self.begin_epi_dificulty = deepcopy(tot_epi)
             self.task += 1
         elif per_goals < .0:

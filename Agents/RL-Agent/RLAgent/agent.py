@@ -33,6 +33,8 @@ class RAY_agent:
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
             from RLAgent.Utils.ray import PPO as agent
+        elif algo_name == "APPO":
+            from RLAgent.Utils.ray import APPO as agent
         self.agent = agent
         agent_files = Agent["Agent_Config"]
         config = {}
@@ -94,6 +96,8 @@ class RAY_agent:
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
             from RLAgent.Utils.ray import PPO as agent
+        elif algo_name == "APPO":
+            from RLAgent.Utils.ray import APPO as agent
         self.agent = agent
         agent_files = Agent["Agent_Config"]
         config = {}
