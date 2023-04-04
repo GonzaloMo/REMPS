@@ -26,11 +26,6 @@ rng = default_rng()
 
 class Simple_satellite(Base_Simple_satellite):
     def __init__(self,
-            Reward: Callable[[gym.Env, int], float] = default_reward,
-            action_space_type: str = "Simple",
-            Log_dir: str = "./Logs/Simulation/",
-            Max_image_goals_per_target: int = 10,
-            simulation_version: str = "v1",
             **kwargs
             ) -> None:
         """
@@ -42,47 +37,7 @@ class Simple_satellite(Base_Simple_satellite):
             action_space_type: str
             **kwargs
         """
-        super(Simple_satellite, self).__init__()
-        
-        # set true so initialization is only done once
-        self.first_render = True
-        self.Log_dir = Log_dir
-        
-
-        # save the satelite enviroment
-        kwargs["Log_dir"] = Log_dir
-        self.simulation_version = "Sim_" + simulation_version
-        import importlib
-        module_name = "SimpleSatellite.envs.simulation." + simulation_version
-        simsat_pack = importlib.import_module(module_name, package=None)
-        simsat_class = getattr(simsat_pack, "SatelliteSim")
-        self.SatSim = simsat_class(ECLIPSE_OPTION=True, **kwargs)
-        
-        #
-        self.load_config(Max_image_goals_per_target=Max_image_goals_per_target, **kwargs)
-
-        # The actions available are:
-        self.action_dict = {"take_picture":self.SatSim.ACTION_TAKE_IMAGE,
-                            "analyze":self.SatSim.ACTION_ANALYSE,
-                            "dump": self.SatSim.ACTION_DUMP,
-                            "idle": self.SatSim.ACTION_DO_NOTHING}
-        self.action_list_names = ["idle"]
-
-        # Create action name list
-        self.action_space_type = action_space_type
-        if action_space_type=="Simple":
-            self.action_list_names += ["take_picture", "analyze", "dump"]
-        elif action_space_type=="Advance":
-            temp_list = []
-            temp_list_a = []
-            for i in range(self.SatSim.n_targets):
-                self.action_list_names.append("take_picture img"+str(i+1))
-                temp_list_a.append("analyze img"+str(i+1))
-                temp_list.append("dump img"+str(i+1))
-            self.action_list_names.extend(temp_list_a)
-            self.action_list_names.extend(temp_list)
-        else:
-            raise ValueError("action_space_type must be Simple or Advance")
+        super(Simple_satellite, self).__init__(**kwargs)
 
         # Define Discrete action space
         n_actions = len(self.action_list_names) 
@@ -106,10 +61,6 @@ class Simple_satellite(Base_Simple_satellite):
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Dict(obs_space)
-        # self.reset()
-        # self.state = self.SatSim.get_state()
-        self.Total_reward = 0
-        self.Reward = Reward
         
        
     def step(self, action: int) -> Tuple[Dict[str, Any], float, bool, Dict]:
