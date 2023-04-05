@@ -166,13 +166,15 @@ class RAY_agent:
         """
         # Load Configuration Variables
         import json
+        if specific_checkpoint is None:
+            specific_checkpoint = Temp_config["last_checkpoint"].split("/")[-2]
+            path += f"/{specific_checkpoint}"
         with open(path+'/Model/Config.json') as file:
             Temp_config = json.load(file)
         Training = Temp_config["Training"]
         Agent = Temp_config["Agent"]
         Environment = Temp_config["Environment"]
-        if specific_checkpoint is None:
-            specific_checkpoint = Temp_config["last_checkpoint"].split("/")[-2]
+        
         checkpoint_path = path +"/"+ specific_checkpoint
         algo_name = Agent["Algorithm"]
         self.name = algo_name+"_"+specific_checkpoint
