@@ -79,7 +79,7 @@ from tqdm import tqdm
 with open(Mainconfigfile, "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
-env = gym.make('SimpleSatellite-setgoals-v3',**config)
+env = gym.make('SimpleSatellite-setgoals-v2',**config)
 epi_percentage = []
 rewards = []
 for epi in tqdm(range(100)):

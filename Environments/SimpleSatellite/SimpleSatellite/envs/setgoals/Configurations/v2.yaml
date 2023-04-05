@@ -44,9 +44,9 @@ Number_of_GS: 2
 # Power Parameters
 POWER_OPTION: True
 POWER_CONSUMPTION: 
-  TP: -0.5 # in %/s when Take Picture
+  TP: -0.3 # in %/s when Take Picture
   AN: -0.1 # in %/s when Analyse
-  DP: -0.5 # in %/s when dumping
+  DP: -0.3 # in %/s when dumping
   PowerGenerationRate: .5 # in %/s when not taking actions
 
 
