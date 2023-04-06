@@ -14,6 +14,7 @@ from SimpleSatellite.envs.simulation.DrawSim import SatelliteView
 import pygame
 import random
 from datetime import datetime
+from copy import deepcopy
 
 # import the gym class and spaces
 import gym
@@ -57,8 +58,10 @@ class Base_Simple_satellite(gym.Env):
         simsat_class = getattr(simsat_pack, "SatelliteSim")
         self.SatSim = simsat_class(ECLIPSE_OPTION=True, **kwargs)
         
+        
         #
         self.load_config(Max_image_goals_per_target=Max_image_goals_per_target, **kwargs)
+        self.Max_total_targets_global = deepcopy(self.Max_goals)
 
         # The actions available are:
         self.action_dict = {"take_picture":self.SatSim.ACTION_TAKE_IMAGE,
@@ -456,3 +459,7 @@ class Base_Simple_satellite(gym.Env):
             self.Max_total_targets = Max_total_targets
         else:
             self.Max_total_targets = self.SatSim.n_targets*self.Max_goals
+
+    
+    def set_global_max_targets(self, Max_total_targets: int) -> None:
+        self.Max_total_targets_global = Max_total_targets
