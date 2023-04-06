@@ -168,7 +168,6 @@ class RAY_agent:
         import json
         if specific_checkpoint is None:
             specific_checkpoint = Temp_config["last_checkpoint"].split("/")[-2]
-            path += f"/{specific_checkpoint}"
         with open(path+'/Model/Config.json') as file:
             Temp_config = json.load(file)
         Training = Temp_config["Training"]
