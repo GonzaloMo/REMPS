@@ -11,6 +11,7 @@ register(id='SimpleSatellite-setgoals-v1',entry_point='SimpleSatellite.envs:Simp
 register(id='SimpleSatellite-setgoals-v2',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v2',) # sin and cos observation space
 register(id='SimpleSatellite-setgoals-v3',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v3',) 
 register(id='SimpleSatellite-setgoals-CV',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_cv',) 
+register(id='SimpleSatellite-setgoals-v4',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v4',)
 
 # includes a planner agent
 register(id='SimpleSatellite-planner-v0',entry_point='SimpleSatellite.envs:Simple_satellite_planner_v0',)

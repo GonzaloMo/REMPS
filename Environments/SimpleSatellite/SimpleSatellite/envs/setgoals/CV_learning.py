@@ -1,5 +1,5 @@
 from ray.rllib.env.apis.task_settable_env import TaskSettableEnv
-from SimpleSatellite.envs.setgoals.v2 import Simple_satellite
+from SimpleSatellite.envs.setgoals.v4 import Simple_satellite
 import numpy as np
 import math
 import os
@@ -15,7 +15,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         main_config_file = config_files["main_config_file"]
         CV_path = config_files["CV_path"]
         Reward_name = config_files["Reward_Function"]
-        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v2_CV")
+        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v4_CV")
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -34,7 +34,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
             else:
                 with open(pth, 'r') as f:
                     self.difficulty_config.append(yaml.load(f, Loader=yaml.FullLoader))
-        self.set_global_max_targets(main_config["Max_image_goals_per_target:"])
+        self.set_global_max_targets(main_config["Max_image_goals_per_target"])
 
     def difficulty(self, task_dificulty):
         self.config.update(self.difficulty_config[task_dificulty])

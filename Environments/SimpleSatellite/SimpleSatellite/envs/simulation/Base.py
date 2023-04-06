@@ -542,7 +542,7 @@ class SatelliteSim_Base:
         if self.light_range[0] < self.pos < self.light_range[1]:
             time2eclipse[0] = abs(self.light_range[1] - self.pos)/SatelliteSim_Base.CIRCUNFERENCE
         else:
-            time2eclipse[1] = abs(self.light_range[0] - self.pos)/SatelliteSim_Base.CIRCUNFERENCE
+            time2eclipse[1] = 1- abs(self.light_range[0] - self.pos)/SatelliteSim_Base.CIRCUNFERENCE
         return time2eclipse
     
     def check_time_to_availability(self):

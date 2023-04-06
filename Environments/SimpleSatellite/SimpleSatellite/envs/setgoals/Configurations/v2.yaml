@@ -13,7 +13,7 @@ MAX_ORBITS: 25
 PERIOD: 600 # in seconds
 
 # Satellite parameters
-MEMORY_SIZE: 15 # Memory should be higher than 1 
+MEMORY_SIZE: 30 # Memory should be higher than 1 
 
 # Durations
 DURATION_TAKE_IMAGE: 20 # in seconds
@@ -30,7 +30,7 @@ Underterministic_actions:  # Values between 0 and 1
 # Target Generation Parameters
 Random_Targets: True
 Number_of_targets: 5
-TARGET_HALF_SIZE: 5. 
+TARGET_HALF_SIZE: 10. 
 
 # Oportunity Generation Parameters
 Opportunity_Prob: 0.
