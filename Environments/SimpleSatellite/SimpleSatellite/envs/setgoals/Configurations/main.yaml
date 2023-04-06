@@ -1,16 +1,13 @@
 # GYM ENVIRONMENT PARAMETERS
 action_space_type: "Advance" # "Simple" or "Advance"
 Max_image_goals_per_target: 5
-Max_total_targets: 10
-
 
 # SIMULATION PARAMETERS
 simulation_version: v1
-N_repeating_orbits: 1
-MAX_ORBITS: 25
-
 # General simulation parameters Parameters
 PERIOD: 600 # in seconds
+N_repeating_orbits: 5
+MAX_ORBITS: 40
 
 # Satellite parameters
 MEMORY_SIZE: 30 # Memory should be higher than 1 
@@ -29,7 +26,7 @@ Underterministic_actions:  # Values between 0 and 1
 
 # Target Generation Parameters
 Random_Targets: True
-Number_of_targets: 5
+Number_of_targets: 10
 TARGET_HALF_SIZE: 10. 
 
 # Oportunity Generation Parameters
@@ -38,7 +35,7 @@ Opportunity_duration: 10
 
 # Ground Station Generation Parameters
 Random_GS: True
-GS_HALF_SIZE: 10. 
+GS_HALF_SIZE: 15. 
 Number_of_GS: 2
 
 # Power Parameters
@@ -52,11 +49,9 @@ POWER_CONSUMPTION:
 
 # Eclipse Parameters
 ECLIPSE:
-  File: ""
-  Umbra: 0.2
-  Penumbra: 0.1
+  Umbra: .4
+  Penumbra: 0.
   Light: .6
-
 # File Parameters
 CoverageFile: ""
 Log_dir: ./Logs/Simulation/

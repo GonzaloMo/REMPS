@@ -1,22 +1,10 @@
 Max_image_goals_per_target: 1
 Max_total_targets: 1
 
-MAX_ORBITS: 2
-
-# Target Parameters
-TARGET_HALF_SIZE: 100. 
-
-# Ground Station Parameters
-GS_HALF_SIZE: 100.
+MAX_ORBITS: 4
 
 # Eclipse Parameters
-Umbra: 0.
-Penumbra: 0.
-Light: 1.
-
-
-POWER_CONSUMPTION: 
-  TP: -0.2 # in %/s when Take Picture
-  AN: -0.05 # in %/s when Analyse
-  DP: -0.2 # in %/s when dumping
-  PowerGenerationRate: .5 # in %/s when not taking actions
+ECLIPSE:
+  Umbra: .2
+  Penumbra: 0.
+  Light: .8

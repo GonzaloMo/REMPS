@@ -1,16 +1,11 @@
-Max_image_goals_per_target: 1
-Max_total_targets: 4
+Max_image_goals_per_target: 5
+Max_total_targets: 5
 
 
-MAX_ORBITS: 8
+MAX_ORBITS: 20
 
 # Eclipse Parameters
-Umbra: .4
-Penumbra: 0.
-Light: .6
-
-POWER_CONSUMPTION: 
-  TP: -0.5 # in %/s when Take Picture
-  AN: -0.1 # in %/s when Analyse
-  DP: -0.5 # in %/s when dumping
-  PowerGenerationRate: .5 # in %/s when not taking actions
+ECLIPSE:
+  Umbra: .4
+  Penumbra: 0.
+  Light: .6
