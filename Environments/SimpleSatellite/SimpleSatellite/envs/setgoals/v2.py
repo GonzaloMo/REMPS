@@ -56,7 +56,7 @@ class Simple_satellite(Base_Simple_satellite):
                     'Targets':         spaces.Box(low=-1, high=1., shape=(n_targets*4,), dtype=np.float32), # target initial and final position in cos,sin
                     'Ground Stations': spaces.Box(low=-1, high=1., shape=(n_gs*4,), dtype=np.float32), # ground station initial and final position in cos,sin
                     'Goals':           spaces.Box(low=0., high=max_inf, shape=(n_targets,), dtype=np.int32), # percentage of goals achieved
-                    'Eclipse':         spaces.Box(low=-1., high=1., shape=(4,), dtype=np.float32), # Is it in light or not
+                    'Eclipse':         spaces.Box(low=-1., high=1., shape=(1,), dtype=np.int32), # Is it in light or not
                     } 
         if self.SatSim.POWER_OPTION:
             obs_space['Power'] = spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32)
@@ -146,8 +146,10 @@ class Simple_satellite(Base_Simple_satellite):
         
 
         # Check if the satellite is in light
-        light_range = self.pos_to_sin_and_cos(state["Eclipse"][0]).flatten()
-        observation["Eclipse"] = np.array(light_range, dtype=np.float32)
+        light_range = self.SatSim.check_light()
+        observation["Eclipse"] = np.array([light_range], dtype=np.int32)
+        # light_range = self.pos_to_sin_and_cos(state["Eclipse"][0]).flatten()
+        # observation["Eclipse"] = np.array(light_range, dtype=np.float32)
         if self.SatSim.POWER_OPTION:
             observation["Power"] = np.array([state["Power"]/100], dtype=np.float32)
         return observation
