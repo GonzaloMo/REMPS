@@ -135,7 +135,7 @@ class Simple_satellite(Base_Simple_satellite):
                         "Images": np.zeros((self.SatSim.n_targets,), dtype=np.int32),
                         "Targets": self.pos_to_sin_and_cos(state["Targets"]).flatten(),
                         "Ground Stations": self.pos_to_sin_and_cos(state["Ground Stations"]).flatten(),
-                        "Goals": np.array(self.goals, dtype=np.int32),
+                        "Goals": np.array(self.goals, dtype=np.int32)/self.Max_goals,
                         }
         for i in range(self.SatSim.MEMORY_SIZE):
             img = state["Images"][i]
