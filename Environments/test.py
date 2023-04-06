@@ -5,7 +5,7 @@ import yaml
 import sys
 import numpy as np
 
-Mainconfigfile = "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/v2.yaml"
+Mainconfigfile = "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/main.yaml"
 
 def get_obs_str(obs, stp = 4):
     hline = "-" *10 + "\n"
@@ -44,7 +44,7 @@ def sinCos2degree(x, y):
 from tqdm import tqdm
 
 CV_path = [
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
+    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_0.yaml",
     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_1.yaml",
     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_2.yaml",
     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
