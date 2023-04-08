@@ -539,10 +539,20 @@ class SatelliteSim_Base:
     
     def check_time_of_eclipse(self):
         time2eclipse = [0, 0]
-        if self.light_range[0] < self.pos < self.light_range[1]:
-            time2eclipse[0] = abs(self.light_range[1] - self.pos)/SatelliteSim_Base.CIRCUNFERENCE
+        light_range_mod = np.array(self.light_range) - 360* self.n_orbit_repeat
+        if light_range_mod[0] < self.orbit_pos < light_range_mod[1]:
+            time2eclipse[0] = abs(light_range_mod[1] - self.orbit_pos)/SatelliteSim_Base.CIRCUNFERENCE
         else:
-            time2eclipse[1] = 1- abs(self.light_range[0] - self.pos)/SatelliteSim_Base.CIRCUNFERENCE
+            time2eclipse[1] = 1 - abs(light_range_mod[0] - self.orbit_pos)/SatelliteSim_Base.CIRCUNFERENCE
+        if time2eclipse[0] > 1 or time2eclipse[1] > 1 or time2eclipse[0] < 0 or time2eclipse[1] < 0:
+            print("Error: time2eclipse out of range")
+            print(time2eclipse)
+            print(self.light_range)
+            print(light_range_mod)
+            print(self.orbit_pos)
+            print(self.pos)
+            print(self.n_orbit_repeat)
+            print(self.orbit)
         return time2eclipse
     
     def check_time_to_availability(self):
