@@ -2,7 +2,6 @@ from time import sleep
 from copy import copy
 import numpy as np
 import pygame
-from Agents.AgentPDDL import PDDLAgent
 import random
 import math
 
@@ -27,7 +26,7 @@ class Gridworld:
     obstacleTag = 3
 
 
-    def __init__(self, grid_size=10, problem_type='Train_env', debug=False, verbose=False, render_type = 'ASCII'):
+    def __init__(self, grid_size=10):
         
         """
 
@@ -41,35 +40,36 @@ class Gridworld:
         '''Set Parameters '''
         self._seed = 0
         self.grid_size = grid_size
-        self.debug = debug  # restart or not once done
-        self.verbose = verbose
         self.init_render = True
-        self.render_type = render_type
-
-    ############  Create new Scenario ###########################################     
+    ############  Create Map Helpers ###########################################     
+    def CreateFullMap(self, n_obstacle):
+        Map = self.Create_empty_map()
+        Map, start_pos, goal_pos = self.Generate_init_and_Goal(Map)
+        Map = self.Generate_Obstacles(Map, n_obstacle)
+        return Map, start_pos, goal_pos
+    
     def Create_empty_map(self):
         '''Create Initial Map  only exterior walls'''
         Map = np.zeros([self.grid_size, self.grid_size], dtype=np.int8)
         return Map
     
     def Generate_init_and_Goal(self, Map):
-        self.start_pos = [1,1]
-        self.pos = copy(self.start_pos)
-        self.goal_pos = list(np.random.randint(int(self.grid_size/2), high=self.grid_size-1, size=2))
-        Map[self.start_pos[0]][self.start_pos[1]] = self.positionTag
-        Map[self.goal_pos[0]][self.goal_pos[1]] = self.goalPositionTag
-        return Map
+        start_pos = [0,0]
+        goal_pos = list(np.random.randint(int(self.grid_size/2), high=self.grid_size, size=2))
+        Map[start_pos[0]][start_pos[1]] = self.positionTag
+        Map[goal_pos[0]][goal_pos[1]] = self.goalPositionTag
+        return Map, start_pos, goal_pos
     
     def Generate_Obstacles(self, Map, number_of_obstacle): 
         obstacle_loc = np.where(Map==self.obstacleTag)
         current_pos = np.reshape(np.array(np.where(Map==self.positionTag)), (2,))
-        goal_pos = np.reshape(np.array(np.where(Map==self.goalpositionTag)), (2,))
+        goal_pos = np.reshape(np.array(np.where(Map==self.goalPositionTag)), (2,))
         # Remove all obstacles if any
         if not list(obstacle_loc[0]) == []:
             #print('true')
             Map = self.Create_empty_map()
             Map[current_pos[0]][current_pos[1]] = self.positionTag
-            Map[goal_pos[0]][goal_pos[1]] = self.goalpositionTag
+            Map[goal_pos[0]][goal_pos[1]] = self.goalPositionTag
         danger_map = copy(Map)
         for i in range(number_of_obstacle):
             Map,danger_map = self._Spawn_single_obstacle(Map, danger_map)
@@ -105,13 +105,14 @@ class Gridworld:
             x = pos[0] + i
             for j in p_list: 
                 y = pos[1] + j
-                # walls are dangerous
-                if danger_map[x][y] == 3 and not wall_counted:
-                    count_dangerous += 1
-                    wall_counted = True
-                # obstacle
-                if danger_map[x][y]==5:
-                    count_dangerous += 1
+                if y < 0 or y > self.grid_size or x < 0 or x > self.grid_size:
+                    if not wall_counted:
+                        count_dangerous += 1
+                        wall_counted = True
+                else:
+                    # obstacle
+                    if danger_map[x][y]==self.obstacleTag + 1:
+                        count_dangerous += 1
                 if count_dangerous>1:
                     return count_dangerous
         # return 0 or 1
@@ -157,18 +158,15 @@ class Gridworld:
         return Map
 
     ######### RENDER ################################
-    def full_Render(self, Map, path=None, path_done=None, path_width=3, pathcolor=['b']):
-        pos_pre = np.array(np.where(Map == 1))
-        pos = [pos_pre[0][0],pos_pre[1][0]]
-        
+    def full_Render(self, Map, path=None, path_done=None, path_width=3, pathcolor=['b'], render_type='ASCII'):        
         Display_x, Display_y = np.shape(Map)
-        if self.render_type == 'PYGAME':
+        if render_type == 'PYGAME':
             if self.init_render: 
                 pygame.init()
                 self.screen = pygame.display.set_mode(((Display_y*2)*Gridworld.Scale, (Display_x*2)*Gridworld.Scale))
                 self.init_render = False
             self.Render_Map(Map)
-            self.render_pos(pos)
+            # self.render_pos(pos)
             
             if path:
                 print('Plan')
@@ -185,21 +183,14 @@ class Gridworld:
         self.screen.fill(Gridworld.white)        
         for i in range(self.grid_size):
             for j in range(self.grid_size):
-
-                if self.start_pos == [i,j]:
-                    pygame.draw.rect(self.screen, Gridworld.light_blue, (i*block_size, j*block_size, block_size, block_size))
-                elif self.goal_pos==[i,j]:
+                if Map[i][j]==self.goalPositionTag:
                     pygame.draw.rect(self.screen, Gridworld.green, (i*block_size, j*block_size, block_size, block_size))
                 elif Map[i][j]==self.obstacleTag:
                     pygame.draw.circle(self.screen, Gridworld.grey, ((i*block_size)+Gridworld.Scale, (j*block_size)+Gridworld.Scale), int(Gridworld.Scale))
-                elif Map[i][j]==2:
-                    pygame.draw.circle(self.screen, Gridworld.green, ((i*block_size)+Gridworld.Scale, (j*block_size)+Gridworld.Scale), int(Gridworld.Scale))
+                elif Map[i][j]==self.positionTag:
+                    pygame.draw.circle(self.screen, Gridworld.blue, ((i*block_size)+Gridworld.Scale, (j*block_size)+Gridworld.Scale), int(Gridworld.Scale))
                 pygame.draw.rect(self.screen, Gridworld.black, (i*block_size, j*block_size, block_size, block_size), width=1)
                 
-    def render_pos(self, pos):
-        block_size = Gridworld.block_size*Gridworld.Scale
-        pygame.draw.circle(self.screen, Gridworld.blue, ((pos[0]*block_size)+Gridworld.Scale, (pos[1]*block_size)+Gridworld.Scale), int(0.75*Gridworld.Scale))            
-
     def render_path(self, path, colorname=['r'], width=2):
         
         block_size = Gridworld.block_size*Gridworld.Scale

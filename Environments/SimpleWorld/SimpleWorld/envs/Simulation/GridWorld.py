@@ -8,6 +8,7 @@ import random
 class Gridworld:
     block_size = 2
     Scale = 20
+    window_size = 1000, 1000
 
     # define colors
     black = (0, 0, 0)
