@@ -1,9 +1,10 @@
 ### Ignore pycache
 **/__pycache__/
 **/.vscode/
+**/Logs/
 ###### Agents
 # Architecture
-Agents/Architecture/Logs
+
 Agents/Architecture/ArbiterVoices/Planner_utlis/Plans
 Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
 Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
