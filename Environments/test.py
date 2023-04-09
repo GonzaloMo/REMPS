@@ -1,6 +1,5 @@
 import gym
 import os
-import os
 import SimpleSatellite
 import curses
 import yaml
@@ -13,7 +12,7 @@ import numpy as np
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-env", "--environment", type=str, dest="env", required=True, help="Environment registration name")
-parser.add_argument("-c", "--config", type=str, dest="config", default="",  help="Environment configuration file registration name")
+parser.add_argument("-c", "--config", type=str, dest="config", default="", help="Environment configuration file registration name")
 parser.add_argument("-n", "--n_test", type=int, dest="n_test", default=10, help="Number of tests")
 parser.add_argument("-r", "--render", type=str, dest="render", default="", help="Render Type")
 args = parser.parse_args()
@@ -26,7 +25,6 @@ console = curses.initscr()
 with open(config_file, "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
-
 env = gym.make(env_name,**config)
 for epi in tqdm(range(n_test)):
     obs = env.reset()
@@ -36,7 +34,7 @@ for epi in tqdm(range(n_test)):
         observation, reward, done, info = env.step(action)
         env.render(render_type=render)
         print_obs(observation, console)
-env.quit()
+        env.quit()
 
 curses.endwin()
 

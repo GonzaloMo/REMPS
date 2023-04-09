@@ -2,13 +2,8 @@
 **/__pycache__/
 **/.vscode/
 **/Logs/
-### Ignore pycache
-**/__pycache__/
-**/.vscode/
-**/Logs/
 ###### Agents
 # Architecture
-
 
 Agents/Architecture/ArbiterVoices/Planner_utlis/Plans
 Agents/Architecture/ArbiterVoices/Planner_utlis/Problems
@@ -35,6 +30,6 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 /Test/
 /Train/
 
-/Environments/EagleEye/
+
 ## 
 /Environments/EagleEye
