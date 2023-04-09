@@ -1,5 +1,6 @@
 import gym
 import os
+import os
 import SimpleSatellite
 import curses
 import yaml
