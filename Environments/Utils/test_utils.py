@@ -1,3 +1,4 @@
+import numpy as np
 def get_obs_str(obs, stp = 4):
     hline = "-" *10 + "\n"
     blank_space = " "
