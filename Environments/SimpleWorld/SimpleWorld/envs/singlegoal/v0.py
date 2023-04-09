@@ -6,6 +6,7 @@ from copy import deepcopy
 from importlib import import_module
 import os 
 import yaml 
+import random
 import pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from time import sleep
@@ -18,9 +19,12 @@ class Gridworld_singlegoal_env(gym.Env):
         # Initalize Gridworld Sim
 
         assert SimV in Simulation_Versions.keys(), f" Simulation Version {SimV} is not register as Simulation version in SimpleWorld"
-        self.n_obstacle_range = n_obstacle_range
+
+        
         SimModule = import_module(Simulation_Versions[SimV])
         self.sim = SimModule.Gridworld(**kwargs)
+        self.n_obstacle_range = np.clip(n_obstacle_range, a_min=0, a_max=.6*self.sim.grid_size**2)
+        
         self.num_steps = 0
 
         # Action space
@@ -40,18 +44,17 @@ class Gridworld_singlegoal_env(gym.Env):
         self.observation_space = spaces.Dict({'Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32)})  
 
     def step(self, action):
-        self.move(action)
-        if self.timestep > 10000:
-            done = True
-        else:
-            done = False
+        done = self.move(action)
         self.timestep +=1
         observation, reward, done, info = self.get_obs(), 0, done, {}
         return observation, reward, done, info
     
     def reset(self):
         self.timestep = 0
-        n_obstacle = 10
+        n_obstacle = random.randint(self.n_obstacle_range[0], self.n_obstacle_range[1])
+        n_o_p = "-"*5+str(n_obstacle)+"-"*5
+        print(self.n_obstacle_range)
+        print(n_o_p)
         self.Map, self.start_pos, self.goal_pos  = self.sim.CreateFullMap(n_obstacle)
         self.pos = np.array(deepcopy(self.start_pos))
         return self.get_obs(), {}
@@ -74,13 +77,17 @@ class Gridworld_singlegoal_env(gym.Env):
         pass
 
     def move(self, action):
+        done = False
         new_pos = np.clip(self.pos - np.array(self.action_pos_dict[action]), a_min=0, a_max=self.sim.grid_size-1)
         i, j = self.pos
         i_n, j_n = new_pos
         if self.Map[i_n, j_n] == self.sim.freeSpaceTag or self.Map[i_n, j_n] == self.sim.goalPositionTag:
+            if self.Map[i_n, j_n] == self.sim.goalPositionTag:
+                done = True
             self.Map[i,j] = self.sim.freeSpaceTag
             self.Map[i_n,j_n] = self.sim.positionTag
             self.pos = deepcopy(new_pos)
+            return done
         
         
         

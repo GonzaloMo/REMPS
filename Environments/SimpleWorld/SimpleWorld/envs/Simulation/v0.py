@@ -41,6 +41,7 @@ class Gridworld:
         self._seed = 0
         self.grid_size = grid_size
         self.init_render = True
+
     ############  Create Map Helpers ###########################################     
     def CreateFullMap(self, n_obstacle):
         Map = self.Create_empty_map()
@@ -71,8 +72,11 @@ class Gridworld:
             Map[current_pos[0]][current_pos[1]] = self.positionTag
             Map[goal_pos[0]][goal_pos[1]] = self.goalPositionTag
         danger_map = copy(Map)
-        for i in range(number_of_obstacle):
-            Map,danger_map = self._Spawn_single_obstacle(Map, danger_map)
+        n_obstacle = 0
+        while n_obstacle < number_of_obstacle:
+            Map, danger_map, placed = self._Spawn_single_obstacle(Map, danger_map)
+            if placed:
+                n_obstacle +=1
         return Map
     
     def _Spawn_single_obstacle(self, Map, danger_map):
@@ -93,7 +97,8 @@ class Gridworld:
                     self._make_neighbours_dangerous(obst_loc)
                     danger_map = copy(self.temp_danger_Map)
                 Map[obst_loc[0]][obst_loc[1]] = self.obstacleTag
-        return Map, danger_map
+                return Map, danger_map, True
+        return Map, danger_map, False
     
     def _check_dangerous(self, pos, danger_map):
         # adjacent dangerous cells

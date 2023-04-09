@@ -37,7 +37,11 @@ for epi in tqdm(range(n_test)):
         action = env.action_space.sample()
         observation, reward, done, info = env.step(action)
         if pObs:
-            console =  print_obs(observation, console, other_info={"Action": env.action_list[action]})
+            console =  print_obs(observation, 
+                                 console, 
+                                 other_info={"Action": env.action_list[action],
+                                             "Grid Size": str(env.sim.grid_size)}, 
+                                 stp=env.sim.grid_size)
             console.refresh()
         env.render(render_type=render)
        

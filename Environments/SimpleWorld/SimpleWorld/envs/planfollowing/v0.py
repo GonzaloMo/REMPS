@@ -14,14 +14,26 @@ print(os.getcwd())
 with open("./SimpleWorld/SimpleWorld/envs/Simulation/simulationVersions.yaml", "r") as f:
     Simulation_Versions = yaml.load(f, Loader=yaml.FullLoader)
 
-class Gridworld_singlegoal_env(gym.Env):
-    def __init__(self, SimV="v0", n_obstacle_range=[0,80], **kwargs):
+class Gridworld_planfollowing_env(gym.Env):
+    def __init__(self, 
+                SimV="v0", 
+                n_obstacle_range={"Agent": [0,80], 
+                                  "Planner":[0,80]}, 
+                NDAO = {"Distance": 3,
+                        "Probability": .1},
+                **kwargs):
         # Initalize Gridworld Sim
+
         assert SimV in Simulation_Versions.keys(), f" Simulation Version {SimV} is not register as Simulation version in SimpleWorld"
-        SimModule = import_module(Simulation_Versions[SimV])
-        self.n_obstacle_range = n_obstacle_range
-        self.sim = SimModule.Gridworld(**kwargs)
+
         
+        SimModule = import_module(Simulation_Versions[SimV])
+        self.sim = SimModule.Gridworld(**kwargs)
+        self.n_obstacle_range = {}
+        for k, v in n_obstacle_range.items():
+            self.n_obstacle_range[k] = np.clip(v, a_min=0, a_max=int(.6*self.sim.grid_size**2))
+        
+        self.num_steps = 0
 
         # Action space
         '''Define actions'''
@@ -36,29 +48,29 @@ class Gridworld_singlegoal_env(gym.Env):
         self.action_shape = len(self.actions)
 
         # Observation Space 
-        state_shape = (self.sim.grid_size, self.sim.grid_size)
-        self.observation_space = spaces.Dict({'Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32)})  
+        state_shape = (self.sim.grid_size*self.sim.grid_size, )
+        self.observation_space = spaces.Dict({'Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32),
+                                              'Planner_Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32)})  
 
     def step(self, action):
-        self.move(action)
-        if self.timestep > 10000:
-            done = True
-        else:
-            done = False
+        done = self.move(action)
         self.timestep +=1
         observation, reward, done, info = self.get_obs(), 0, done, {}
         return observation, reward, done, info
     
     def reset(self):
         self.timestep = 0
-        n_obstacle = random.randint(*self.n_obstacle_range)
+        n_obstacle = random.randint(*self.n_obstacle_range["Agent"])
         self.Map, self.start_pos, self.goal_pos  = self.sim.CreateFullMap(n_obstacle)
+        n_obstacle = random.randint(*self.n_obstacle_range["Planner"])
+        self.Map_planner = self.sim.Generate_Obstacles(deepcopy(self.Map), n_obstacle)
         self.pos = np.array(deepcopy(self.start_pos))
         return self.get_obs(), {}
     
     def get_obs(self):
         obs = {
-            "Map": np.array(self.Map, dtype=np.int32),
+            "Map": np.array(self.Map, dtype=np.int32).flatten(),
+            "Planner_Map": np.array(self.plan_obs(), dtype=np.int32).flatten(),
                }
         return obs
 
@@ -74,13 +86,23 @@ class Gridworld_singlegoal_env(gym.Env):
         pass
 
     def move(self, action):
+        done = False
         new_pos = np.clip(self.pos - np.array(self.action_pos_dict[action]), a_min=0, a_max=self.sim.grid_size-1)
         i, j = self.pos
         i_n, j_n = new_pos
         if self.Map[i_n, j_n] == self.sim.freeSpaceTag or self.Map[i_n, j_n] == self.sim.goalPositionTag:
+            if self.Map[i_n, j_n] == self.sim.goalPositionTag:
+                done = True
             self.Map[i,j] = self.sim.freeSpaceTag
             self.Map[i_n,j_n] = self.sim.positionTag
             self.pos = deepcopy(new_pos)
+            return done
         
+    def plan_obs(self):
+        i_p, j_p = np.reshape(np.array(np.where(self.Map_planner==self.sim.positionTag)), (2,))
+        Map = deepcopy(self.Map_planner)
+        Map[i_p,j_p] = self.sim.freeSpaceTag
+        Map[self.pos[0], self.pos[1]] =  self.sim.positionTag
+        return Map
         
         

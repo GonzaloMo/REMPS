@@ -8,6 +8,6 @@ SimpleWorld.egg-info/requires.txt
 SimpleWorld.egg-info/top_level.txt
 SimpleWorld/envs/CE.py
 SimpleWorld/envs/MA.py
-SimpleWorld/envs/NDAO.py
+SimpleWorld/envs/NDAO_old.py
 SimpleWorld/envs/UPS.py
 SimpleWorld/envs/__init__.py
