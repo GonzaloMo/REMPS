@@ -1,108 +1,72 @@
 import gym
+import os
 import SimpleSatellite
 import curses
 import yaml
 import sys
+from tqdm import tqdm
+from Utils.test_utils import *
 import numpy as np
 
-Mainconfigfile = "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/main.yaml"
+## Arguments
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("-env", "--environment", type=str, dest="env", required=True, help="Environment registration name")
+parser.add_argument("-c", "--config", type=str, dest="config", default="",  help="Environment configuration file registration name")
+parser.add_argument("-n", "--n_test", type=int, dest="n_test", default=10, help="Number of tests")
+parser.add_argument("-r", "--render", type=str, dest="render", default="", help="Render Type")
+args = parser.parse_args()
+env_name, config_file, n_test, render = args.env, args.config, args.n_test, args.render
+env_div = env_name.split("-")
+if config_file == "":
+    config_file = f"./{env_div[0]}/{env_div[0]}/envs/{env_div[1]}/Configurations/v2.yaml"
 
-def get_obs_str(obs, stp = 4):
-    hline = "-" *10 + "\n"
-    blank_space = " "
-    obs_str = ""
-    obs_str += hline
-    for k, v in obs.items():
-       key_str = k+":"
-       if k == "Ground Stations" or k == "Targets":
-            obs_str += f"{key_str: <20} {v[0:stp]}\n"
-            for j in range(stp, len(v), stp):
-                up_lim = int(min(j+stp, len(v)))
-                obs_str += f"{blank_space: <20} {v[j:up_lim]}\n"
-            
-       else:
-            obs_str += f"{key_str: <20} {v}\n"
-    obs_str += hline
-    return obs_str
-
-def print_obs(obs):
-    obs_list = get_obs_str(obs).split("\n")
-    # for i, v in enumerate(obs_list):
-    #     print(i, v)
-    console.clear()
-    for i, v in enumerate(obs_list):
-       console.addstr(i , 0, v)
-    console.refresh()
 console = curses.initscr()
-
-def sinCos2degree(x, y):
-    rad = np.arctan2(x, y)
-    if rad < 0:
-        rad += 2 * np.pi
-    return rad * 180 / np.pi
-
-from tqdm import tqdm
-
-CV_path = [
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_0.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_1.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_2.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_4.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_5.yaml",
-    "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_6.yaml",
-]
-env = gym.make('SimpleSatellite-setgoals-CV', config_files={"main_config_file": Mainconfigfile, "CV_path": CV_path, "Reward_Function": "Reward_v1"})
-for i in range(0,4):
-    env.set_task(i)
-    # print(env.difficulty_config[i])
-    epi_percentage = []
-    rewards = []
-    for epi in tqdm(range(100)):
-        obs = env.reset()
-        done = False
-        while not done:
-            action = env.action_space.sample()
-            observation, reward, done, info = env.step(action)
-
-            env.render()
-            # print(f"target_visibility:{env.SatSim.above_target}")
-            # print(f"GS visibilty: {env.SatSim.above_gs}")
-            # obs = env.SatSim.get_state()
-            print_obs(observation)
-            # print_obs(obs, stp=1)
-        rewards.append(env.Total_reward)
-        epi_percentage.append((1- np.sum(env.goals)/np.sum(env.initial_goals)))
+with open(config_file, "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
 
-
-# with open(Mainconfigfile, "r") as f:
-#     config = yaml.load(f, Loader=yaml.FullLoader)
-
-# env = gym.make('SimpleSatellite-setgoals-v4',**config)
-# epi_percentage = []
-# rewards = []
-# for epi in tqdm(range(100)):
-#     obs = env.reset()
-#     done = False
-#     while not done:
-#         action = env.action_space.sample()
-#         observation, reward, done, info = env.step(action)
-
-#         env.render()
-#         # obs = env.SatSim.get_state()
-#         print_obs(observation)
-#         # print("Target Mat:", env.SatSim.target_matrix, "\n")
-#     rewards.append(env.Total_reward)
-#     epi_percentage.append((1- np.sum(env.goals)/np.sum(env.initial_goals)))
-
-
-
-# print(f"mean percentage: {np.mean(epi_percentage)}")
-# print(f"mean reward:     {np.mean(rewards)}")
-# from matplotlib import pyplot as plt
-# plt.plot(rewards)
-# plt.show()
-# env.quit()
+env = gym.make(env_name,**config)
+for epi in tqdm(range(n_test)):
+    obs = env.reset()
+    done = False
+    while not done:
+        action = env.action_space.sample()
+        observation, reward, done, info = env.step(action)
+        env.render(render_type=render)
+        print_obs(observation, console)
+env.quit()
 
 curses.endwin()
+
+
+# CV_path = [
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_0.yaml",
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_1.yaml",
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_2.yaml",
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_3.yaml",
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_4.yaml",
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_5.yaml",
+#     "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_6.yaml",
+# ]
+# env = gym.make('SimpleSatellite-setgoals-CV', config_files={"main_config_file": Mainconfigfile, "CV_path": CV_path, "Reward_Function": "Reward_v1"})
+# for i in range(0,4):
+#     env.set_task(i)
+#     # print(env.difficulty_config[i])
+#     epi_percentage = []
+#     rewards = []
+#     for epi in tqdm(range(100)):
+#         obs = env.reset()
+#         done = False
+#         while not done:
+#             action = env.action_space.sample()
+#             observation, reward, done, info = env.step(action)
+
+#             env.render()
+#             # print(f"target_visibility:{env.SatSim.above_target}")
+#             # print(f"GS visibilty: {env.SatSim.above_gs}")
+#             # obs = env.SatSim.get_state()
+#             print_obs(observation)
+#             # print_obs(obs, stp=1)
+#         rewards.append(env.Total_reward)
+#         epi_percentage.append((1- np.sum(env.goals)/np.sum(env.initial_goals)))

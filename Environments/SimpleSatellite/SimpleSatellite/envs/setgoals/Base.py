@@ -144,7 +144,7 @@ class Base_Simple_satellite(gym.Env):
         return observation
         
 
-    def render(self) -> None:
+    def render(self, render_type="") -> None:
         """
         Render the enviroment
         """
