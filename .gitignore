@@ -31,5 +31,5 @@ Agents/Architecture/ArbiterVoices/Planner_utlis/Domain.pddl
 /Train/
 
 
-/Environments/EagleEye/
-Agents/Transformer-Planner/TransformerPlanner/Transformers/mesh-transformer-jax
+## 
+/Environments/EagleEye

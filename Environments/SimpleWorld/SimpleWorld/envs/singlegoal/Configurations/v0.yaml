@@ -1,0 +1,3 @@
+SimV: "v0"
+n_obstacle_range: [0, 0]
+grid_size: 5
