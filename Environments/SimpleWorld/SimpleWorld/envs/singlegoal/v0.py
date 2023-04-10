@@ -23,7 +23,7 @@ class Gridworld_singlegoal_env(gym.Env):
         
         SimModule = import_module(Simulation_Versions[SimV])
         self.sim = SimModule.Gridworld(**kwargs)
-        self.n_obstacle_range = np.clip(n_obstacle_range, a_min=0, a_max=.6*self.sim.grid_size**2)
+        self.n_obstacle_range = np.clip(n_obstacle_range, a_min=0, a_max=.5*self.sim.grid_size**2)
         
         self.num_steps = 0
 
@@ -52,9 +52,6 @@ class Gridworld_singlegoal_env(gym.Env):
     def reset(self):
         self.timestep = 0
         n_obstacle = random.randint(self.n_obstacle_range[0], self.n_obstacle_range[1])
-        n_o_p = "-"*5+str(n_obstacle)+"-"*5
-        print(self.n_obstacle_range)
-        print(n_o_p)
         self.Map, self.start_pos, self.goal_pos  = self.sim.CreateFullMap(n_obstacle)
         self.pos = np.array(deepcopy(self.start_pos))
         return self.get_obs(), {}

@@ -67,12 +67,12 @@ class Gridworld:
         goal_pos = np.reshape(np.array(np.where(Map==self.goalPositionTag)), (2,))
         # Remove all obstacles if any
         if not list(obstacle_loc[0]) == []:
-            #print('true')
             Map = self.Create_empty_map()
             Map[current_pos[0]][current_pos[1]] = self.positionTag
             Map[goal_pos[0]][goal_pos[1]] = self.goalPositionTag
         danger_map = copy(Map)
         n_obstacle = 0
+        failed_pos = 0
         while n_obstacle < number_of_obstacle:
             Map, danger_map, placed = self._Spawn_single_obstacle(Map, danger_map)
             if placed:
@@ -80,6 +80,16 @@ class Gridworld:
                 pygame.display.flip()
                 sleep(.1)
                 n_obstacle +=1
+                failed_pos = 0
+            else:
+                failed_pos += 1
+                if failed_pos > 100:
+                    free_pos = self._check_obstacle_placement(danger_map)
+                    if free_pos == []:
+                        break
+                    else:
+                        n_obstacle +=1
+                        failed_pos = 0
         self.danger_map = danger_map
         return Map
     
@@ -140,7 +150,6 @@ class Gridworld:
                             self.temp_danger_Map[x][y] = self.obstacleTag+1
                             self._make_neighbours_dangerous((x,y))
 
-    
     def _check_location(self, pos, Map):
         x = pos[0]
         y = pos[1]
@@ -148,8 +157,6 @@ class Gridworld:
         if Map[x][y] != 0:
             return True
         return False
-
-    
 
     def Spawn_secondary(self, Map):
         number_of_obstacle = random.randint(1, 4) 
@@ -165,6 +172,14 @@ class Gridworld:
         if not match:
             Map[x][y] = 2
         return Map
+
+    def _check_obstacle_placement(self, Map):
+        for x in range(self.grid_size):
+            for y in range(self.grid_size):
+                if Map[x][y] == self.obstacleTag or Map[x][y] == self.obstacleTag+1:
+                    if self._check_dangerous((x,y), Map)<2:
+                        return [x,y]
+        return []
 
     ######### RENDER ################################
     def full_Render(self, Map, path=None, path_done=None, path_width=3, pathcolor=['b'], render_type='ASCII', last_color="green"):        
