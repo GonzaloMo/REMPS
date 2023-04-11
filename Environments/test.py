@@ -35,12 +35,12 @@ for epi in tqdm(range(n_test)):
     done = False
     while not done:
         action = env.action_space.sample()
-        observation, reward, done, info = env.step(action)
+        observation, reward, done, info_env = env.step(action)
+        info = info_env
         if pObs:
             console =  print_obs(observation, 
                                  console, 
-                                 other_info={"Action": env.action_list[action],
-                                             "Grid Size": str(env.sim.grid_size)}, 
+                                 other_info=info, 
                                  stp=env.sim.grid_size)
             console.refresh()
         env.render(render_type=render)
