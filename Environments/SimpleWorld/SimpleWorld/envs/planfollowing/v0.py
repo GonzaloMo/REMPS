@@ -18,64 +18,90 @@ with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
 
 class Gridworld_planfollowing_env(gym.Env):
     def __init__(self,
-                env_name="SimpleWorld-sinlgegoal-v0",
+                Reward="v0",
+                env_name="SimpleWorld-singlegoal-v0",
                 env_setup="v0", 
-                n_obstacle_range={"Agent": [0,80], 
-                                  "Planner":[0,80]}, 
-                NDAO = {"Distance": 3,
-                        "Probability": .1},
+                n_planner_obstacles= [],
+                Missing_actions = {"Probability": 0.,
+                                   "Number": 0},
                 plannerConfig = {},
                 **kwargs):
         # Initalize Gridworld Sim
         super().__init__()
         self.env = gym.make(env_name, **env_setup)
-        self.agent = PDDLPlanner.Planner(self, env_name="SimpleWorld-sinlgegoal-v0", **plannerConfig)
-        # Action space
-        '''Define actions'''
-        self.actions = self.env.actions
-        self.num_action = self.env.num_action
-        self.action_dict = self.env.action_dict
-        self.action_list = self.env.action_list
-        self.action_pos_dict = self.env.action_pos_dict   
+        self.sim = self.env.sim
+        self.agent = PDDLPlanner.Planner(self.env, **plannerConfig)
+        self.n_planner_obstacles = n_planner_obstacles
+        self.Missing_actions = Missing_actions
+        reward_module = import_module("SimpleWorld.envs.planfollowing.Reward_function.v0")
+        reward_name = f"Reward_{Reward}"
+        reward_list = list(vars(reward_module).keys())
+        assert reward_name in reward_list, f"Reward function {Reward} is not register as Reward function in SimpleWorld"
+        self.reward = getattr(reward_module, reward_name)
 
-        '''Define action and action space'''
+        # Action space
+        self.actions, self.num_action, self.action_dict = self.env.actions, self.env.num_action, self.env.action_dict
+        self.action_list, self.action_pos_dict = self.env.action_list, self.env.action_pos_dict 
         self.action_space = self.env.action_space
 
         # Observation Space 
-        state_shape = (self.sim.grid_size*self.sim.grid_size, )
+        grid_size = self.env.sim.grid_size
+        state_shape = (grid_size**2, )
         self.observation_space = spaces.Dict({**self.env.observation_space,
-                                              'Planner_Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32)})  
+                                              'Planner_Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32),
+                                              'Next_state': spaces.Box(low=0, high=grid_size, shape=(2,), dtype=np.int32),})  
     def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-        return observation, reward, done, info
+        reward, info_reward = self.reward(self, action)
+        _, _, done, info = self.env.step(action)
+        self.trim_plan(self.Map)
+        self.info  = {**self.info , **info_reward}
+        return self.get_obs(), reward, done, self.info
     
     def reset(self):
-        obs = self.env.reset()
+        _ = self.env.reset()
+        self.info = {}
+        self.Map, self.start_pos, self.goal_pos = self.env.Map, self.env.start_pos, self.env.goal_pos
         self.agent.generateDomain()
-        
-        n_obstacle = random.randint(*self.n_obstacle_range["Agent"])
-        self.Map, self.start_pos, self.goal_pos  = self.sim.CreateFullMap(n_obstacle)
-        if self.n_obstacle_range["Planner"] == []:
+        if self.n_planner_obstacles == []:
             self.Map_planner = deepcopy(self.Map)
         else:
-            n_obstacle = random.randint(*self.n_obstacle_range["Planner"])
+            n_obstacle = random.randint(*self.n_planner_obstacles)
             self.Map_planner = self.sim.Generate_Obstacles(deepcopy(self.Map), n_obstacle)
-        plan_obs = self.plan_obs()
-        self.plan = self.agent.get_plan(plan_obs)
+        self.blank_map = self.sim.Create_empty_map()
+        self.get_plan()
         self.pos = np.array(deepcopy(self.start_pos))
-        return self.get_obs(), {}
+        return self.get_obs(), self.info 
     
     def get_obs(self):
+        obs_planner = deepcopy(self.blank_map)
+        x, y = self.pos
+        obs_planner[x][y] = self.sim.positionTag
+        for a in self.plan:
+            x, y  = a.getEffects().tolist()
+            obs_planner[x][y] = self.sim.goalPositionTag
+        obs_env = self.env.get_obs()
         obs = {
-            "Map": np.array(self.Map, dtype=np.int32).flatten(),
-            "Planner_Map": np.array(self.plan_obs(), dtype=np.int32).flatten(),
+                **obs_env,
+                "Planner_Map": np.array(obs_planner, dtype=np.int32).flatten(),
+                "Next_state": np.array(self.next_plan_state, dtype=np.int32),
                }
         return obs
-
+    
+    def get_plan(self):
+        self.plan = self.agent.get_plan(self.Map_planner)
+        if self.Missing_actions["Probability"] > 0 and self.Missing_actions["Number"] > 0:
+            n_missing = 0 
+            max_actions = len(self.plan)
+            while n_missing < self.Missing_actions["Number"] or n_missing < max_actions:
+                prob = random.random()
+                if prob < self.Missing_actions["Probability"]:
+                    self.plan.pop(random.randint(0, len(self.plan)-1))
+                    n_missing += 1
+        self.next_plan_state = self.get_next_plan_state(0)
     
     def render(self, render_type="ASCII"):
         if not render_type == "":
-            self.sim.full_Render(self.Map, render_type=render_type)
+            self.sim.full_Render(self.Map, render_type=render_type, path=[a.getEffects().tolist() for a in self.plan])
             if render_type == "PYGAME":
                 pygame.display.flip()
         sleep(.1)
@@ -93,18 +119,33 @@ class Gridworld_planfollowing_env(gym.Env):
                 done = True
             self.Map[i,j] = self.sim.freeSpaceTag
             self.Map[i_n,j_n] = self.sim.positionTag
-            self.pos = deepcopy(new_pos)
+            self.pos = [i_n, j_n]
             return done
-        
-    def planner_obs(self):
-        obs = {
-            "Map": np.array(self.Map_planner, dtype=np.int32).flatten(),
-            }
-        return obs
     
-    def plan_obs(self):
-        obs = deepcopy(self.Map_planner)
-        obs[obs == self.sim.obstacleTag] = self.sim.freeSpaceTag
-        return obs
-        
+    def trim_plan(self, Map):
+        for i, a in enumerate(self.plan):
+            if a.checkEffects(Map):
+                self.next_plan_state = self.get_next_plan_state(i)
+                self.plan.pop(i)
+                break
+    
+    def get_next_plan_state(self, i, initial=True):
+        if i < len(self.plan):
+            i = len(self.plan)-1
+            return self.plan[i].getPreconditions()
+        x_n, y_n = self.plan[i].getPreconditions()
+        if initial:
+            self.info["GNP_Map"] = []
+            self.info["GNP_Map"].append(self.Map[x_n, y_n])
+        self.info["GNP_Map"].append(self.Map[x_n, y_n])
+        if self.Map[x_n, y_n] == self.sim.obstacleTag:
+            j = i+1
+            if j < len(self.plan)-1:
+                next_plan_state = self.get_next_plan_state(j, initial=False)
+            else:
+                next_plan_state = np.array([x_n, y_n])
+        else:
+            next_plan_state = np.array([x_n, y_n])
+        return next_plan_state
+ 
         

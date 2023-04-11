@@ -183,13 +183,14 @@ class Gridworld:
             print(Map.T)
             print('')
 
-    def Render_Map(self, Map):
+    def Render_Map(self, Map, top_corner=[0,0]):
         block_size = Gridworld.block_size*Gridworld.Scale
+        x_i, y_i = np.array(top_corner) *block_size
         self.screen.fill(Gridworld.white)        
         for i in range(self.grid_size):
             for j in range(self.grid_size):
                 if Map[i][j]==self.goalPositionTag:
-                    pygame.draw.rect(self.screen, Gridworld.green, (i*block_size, j*block_size, block_size, block_size))
+                    pygame.draw.rect(self.screen, Gridworld.green, (i*block_size+x_i, j*block_size+y_i, block_size, block_size))
                 elif Map[i][j]==self.obstacleTag:
                     pygame.draw.circle(self.screen, Gridworld.grey, ((i*block_size)+Gridworld.Scale, (j*block_size)+Gridworld.Scale), int(Gridworld.Scale))
                 elif Map[i][j]==self.positionTag:

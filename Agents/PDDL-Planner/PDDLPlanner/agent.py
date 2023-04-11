@@ -85,8 +85,8 @@ class Planner:
         new_obs = np.reshape(obs["Map"], (grid_size, grid_size))
         return new_obs
     
-    def get_plan(self, obs:Dict[str, Any]) -> List[Any]:
-        self.Write_Problem(obs, self.Problem_file)
+    def get_plan(self, Map) -> List[Any]:
+        self.Write_Problem(Map, self.Problem_file)
         planner_setup = self.planner_setup
         print(f"{self.name}: Generating Plan")
         generatePlan(self.optic_sh, self.Domain_file, self.Problem_file, self.Plan_file, **planner_setup)

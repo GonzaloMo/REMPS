@@ -166,6 +166,10 @@ class Action:
 		x, y = np.reshape(np.array(np.where(obs==1)), (2,))
 		return x == self.preconditions[0] and y == self.preconditions[1]
 	
+	def checkEffects(self, obs):
+		x, y = np.reshape(np.array(np.where(obs==1)), (2,))
+		return x == self.effects[0] and y == self.effects[1]
+	
 	def __str__(self):
 		return self.name
 	
