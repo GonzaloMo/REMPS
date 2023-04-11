@@ -2,10 +2,10 @@
 name: "PDDL-Planner"
 
 # Folder where the planner files are located
-log_dir: "./Logs/"
+plan_dir: "./Logs/PDDL/"
 
 # bash script to run the planner
-optic_sh: "./Utils/"
+optic_sh: ""
 
 # Wait time between two consecutive runs of the planner in timesteps
 wait_time: 10

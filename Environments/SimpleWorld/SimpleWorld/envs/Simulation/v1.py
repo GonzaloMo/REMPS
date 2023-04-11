@@ -193,10 +193,10 @@ class Gridworld:
             # self.render_pos(pos)
             
             if path:
-                print('Plan')
+                # print('Plan')
                 self.render_path(path, width=path_width)
             if path_done:
-                print('Path done')
+                # print('Path done')
                 self.render_path(path_done, colorname=pathcolor)
         else:
             print(Map.T)
@@ -230,9 +230,11 @@ class Gridworld:
             else:
                 c = Gridworld.colorPallet[colorname[i+1]]
 
-            pygame.draw.line(self.screen, c, (path[i]*block_size)+Gridworld.Scale, (path[i+1]*block_size)+Gridworld.Scale, width=width)
+            pygame.draw.line(self.screen, c, (np.array(path[i])*block_size)+Gridworld.Scale, (np.array(path[i+1])*block_size)+Gridworld.Scale, width=width)
             x,y = path[i]
             pygame.draw.circle(self.screen, c, ((x*block_size)+Gridworld.Scale, (y*block_size)+Gridworld.Scale), int(Gridworld.Scale*.3))
+        # x,y = path[-1]
+        # pygame.draw.circle(self.screen, c, ((x*block_size)+Gridworld.Scale, (y*block_size)+Gridworld.Scale), int(Gridworld.Scale*.3))
     
     def circleState(self, state):
         block_size = Gridworld.block_size*Gridworld.Scale
