@@ -10,8 +10,9 @@ import random
 import pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from time import sleep
-print(os.getcwd())
-with open("./SimpleWorld/SimpleWorld/envs/Simulation/simulationVersions.yaml", "r") as f:
+direc = "/".join(str(__file__).split("/")[:-2]) 
+# /home/ksb21109/Documents/PhD/REMPS/Environments/SimpleWorld/SimpleWorld/envs/singlegoal/v0.py
+with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
     Simulation_Versions = yaml.load(f, Loader=yaml.FullLoader)
 
 class Gridworld_planfollowing_env(gym.Env):

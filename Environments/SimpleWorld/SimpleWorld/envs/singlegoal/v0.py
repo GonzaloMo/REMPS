@@ -10,8 +10,9 @@ import random
 import pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from time import sleep
-print(os.getcwd())
-with open("./SimpleWorld/SimpleWorld/envs/Simulation/simulationVersions.yaml", "r") as f:
+direc = "/".join(str(__file__).split("/")[:-2]) 
+# /home/ksb21109/Documents/PhD/REMPS/Environments/SimpleWorld/SimpleWorld/envs/singlegoal/v0.py
+with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
     Simulation_Versions = yaml.load(f, Loader=yaml.FullLoader)
 
 class Gridworld_singlegoal_env(gym.Env):
@@ -63,9 +64,9 @@ class Gridworld_singlegoal_env(gym.Env):
         return obs
 
     
-    def render(self, render_type="ASCII"):
+    def render(self, render_type="ASCII", **kwargs):
         if not render_type == "":
-            self.sim.full_Render(self.Map, render_type=render_type)
+            self.sim.full_Render(self.Map, render_type=render_type, **kwargs)
             if render_type == "PYGAME":
                 pygame.display.flip()
         sleep(.1)
