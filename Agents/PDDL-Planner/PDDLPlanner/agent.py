@@ -12,6 +12,7 @@ class Planner:
     PDDLPlanner_path = os.path.dirname(PDDLPlanner.__file__)
     def __init__(self, 
                 env: gym.Env, 
+                env_name: str = None,
                 name: str="PDDL-Planner", 
                 plan_dir: str = "./Logs/PDDL/", 
                 optic_sh: str = "",
@@ -19,8 +20,12 @@ class Planner:
                 plan_setup: Dict[str, Any] = None,
                 wait_time: int = 1,):
         # Variables
+        assert isinstance(env, gym.Env), f"env must be a gym environment, it is currently a {type(env)}"
         self.env = env
-        self.env_name = env.unwrapped.spec.id
+        if env_name is None:
+            self.env_name = env.unwrapped.spec.id
+        else:
+            self.env_name = env_name
         self.name = name
         if optic_sh is "":
             optic_sh = self.PDDLPlanner_path + "/Utils/generateplan_optic.sh"

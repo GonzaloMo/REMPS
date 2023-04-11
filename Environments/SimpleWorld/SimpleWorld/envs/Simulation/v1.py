@@ -224,13 +224,13 @@ class Gridworld:
     def render_path(self, path, colorname=['r'], width=2):
         
         block_size = Gridworld.block_size*Gridworld.Scale
-        for i in range(len(path)-1):
+        for i in range(len(path)):
             if len(colorname) == 1:
                 c = Gridworld.colorPallet[colorname[0]]
             else:
                 c = Gridworld.colorPallet[colorname[i+1]]
 
-            pygame.draw.line(self.screen, c, (np.array(path[i])*block_size)+Gridworld.Scale, (np.array(path[i+1])*block_size)+Gridworld.Scale, width=width)
+            # pygame.draw.line(self.screen, c, (np.array(path[i])*block_size)+Gridworld.Scale, (np.array(path[i+1])*block_size)+Gridworld.Scale, width=width)
             x,y = path[i]
             pygame.draw.circle(self.screen, c, ((x*block_size)+Gridworld.Scale, (y*block_size)+Gridworld.Scale), int(Gridworld.Scale*.3))
         # x,y = path[-1]
