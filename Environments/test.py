@@ -39,6 +39,7 @@ for epi in tqdm(range(n_test)):
     env.render(render_type=render)
     done = False
     episode_reward = 0
+    exitloop = False
     action_info = {"Last Action": " ", "Actions": " "}
     info = {**action_info, "Instant Reward":  0,"Reward": 0}
     last_action = " "
@@ -52,12 +53,18 @@ for epi in tqdm(range(n_test)):
                 action = action_input[action_in]
         else:
             action = env.action_space.sample()
-        action_info = {"Last Action": last_action, "Actions": action}
+        
         if action == "q":
             exitloop = True
             break
-
-        if action < env.num_action:
+        
+        if action < env.action_space.n:
+            if last_action == " ":
+                last_action = "None"
+            else:
+                last_action = env.action_list[int(last_action)]
+            action_info["Last Action"] = last_action
+            action_info["Actions"] = env.action_list[int(action)]
             last_action = action
             observation, reward, done, info_env = env.step(action)
             action_name = env.action_list[action]

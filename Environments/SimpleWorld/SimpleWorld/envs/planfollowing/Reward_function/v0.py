@@ -9,27 +9,31 @@ def Reward_v0(env, action_in):
     obs = env.get_obs()
     Map = np.reshape(obs["Map"], (grid_size, grid_size))
     Map_plan = np.reshape(obs["Planner_Map"], (grid_size, grid_size))
-    next_pos = obs["Next_state"]
+    next_pos = env.next_plan_state
     dpos = env.action_pos_dict[action_in]
     pos = env.pos
     x, y = pos
-    x_n, y_n = pos + dpos
-    info = {"Next_state": next_pos, "Planner_Map": Map_plan[x_n][y_n]}
+    blocked = False
+    x_n, y_n = np.clip(pos + dpos, 0, grid_size-1)
+    NewPos_real = [x_n, y_n]
     if x_n < 0 or x_n >= grid_size or y_n < 0 or y_n >= grid_size:
-        return -1, info
-
+        blocked = True
+        NewPos_real = pos
+        reward =  -1
     if Map[x_n][y_n] == env.sim.obstacleTag:
-        return -1, info
+        blocked = True
+        NewPos_real = pos
+        reward =  -1
+        
     elif Map[x_n][y_n] == env.sim.goalPositionTag:
-        reward = 40
+        reward = 20
     else:
         reward = -0.1
     X_nn, Y_nn = next_pos
-    
-    if Map_plan[x_n][y_n] == env.sim.goalPositionTag:
-        if X_nn == x_n or Y_nn == y_n:
+    if Map_plan[x_n][y_n] == env.sim.goalPositionTag and not blocked:
+        if X_nn == x_n and Y_nn == y_n:
             reward += 5
-        reward += 10
-
+        reward += 1.1
+    info = {}
     return reward, info
 

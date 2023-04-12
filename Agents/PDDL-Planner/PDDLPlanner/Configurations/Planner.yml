@@ -1,6 +1,3 @@
-# Agent name
-name: "PDDL-Planner"
-
 # Folder where the planner files are located
 plan_dir: "./Logs/PDDL/"
 

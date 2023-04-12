@@ -18,6 +18,7 @@ with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
 
 class Gridworld_planfollowing_env(gym.Env):
     def __init__(self,
+                name="Planner_0",
                 Reward="v0",
                 env_name="SimpleWorld-singlegoal-v0",
                 env_setup="v0", 
@@ -30,7 +31,8 @@ class Gridworld_planfollowing_env(gym.Env):
         super().__init__()
         self.env = gym.make(env_name, **env_setup)
         self.sim = self.env.sim
-        self.agent = PDDLPlanner.Planner(self.env, **plannerConfig)
+        print(plannerConfig)
+        self.agent = PDDLPlanner.Planner(self.env, name=name, **plannerConfig)
         self.n_planner_obstacles = n_planner_obstacles
         self.Missing_actions = Missing_actions
         reward_module = import_module("SimpleWorld.envs.planfollowing.Reward_function.v0")
@@ -53,7 +55,8 @@ class Gridworld_planfollowing_env(gym.Env):
     def step(self, action):
         reward, info_reward = self.reward(self, action)
         _, _, done, info = self.env.step(action)
-        self.trim_plan(self.Map)
+        self.pos = self.env.pos
+        self.trim_plan(deepcopy(self.Map))
         self.info  = {**self.info , **info_reward}
         return self.get_obs(), reward, done, self.info
     
@@ -123,29 +126,20 @@ class Gridworld_planfollowing_env(gym.Env):
             return done
     
     def trim_plan(self, Map):
+        self.info["Trimmed_plan_i"] = "None"
         for i, a in enumerate(self.plan):
             if a.checkEffects(Map):
+                self.info["Trimmed_plan_i"] = i
                 self.next_plan_state = self.get_next_plan_state(i)
+                self.info["Next_state_trim"] = self.next_plan_state
                 self.plan.pop(i)
                 break
     
     def get_next_plan_state(self, i, initial=True):
-        if i < len(self.plan):
-            i = len(self.plan)-1
-            return self.plan[i].getPreconditions()
-        x_n, y_n = self.plan[i].getPreconditions()
-        if initial:
-            self.info["GNP_Map"] = []
-            self.info["GNP_Map"].append(self.Map[x_n, y_n])
-        self.info["GNP_Map"].append(self.Map[x_n, y_n])
-        if self.Map[x_n, y_n] == self.sim.obstacleTag:
-            j = i+1
-            if j < len(self.plan)-1:
-                next_plan_state = self.get_next_plan_state(j, initial=False)
-            else:
-                next_plan_state = np.array([x_n, y_n])
-        else:
-            next_plan_state = np.array([x_n, y_n])
-        return next_plan_state
+        for j in range(i, len(self.plan)):
+            x, y = self.plan[j].getEffects()
+            if self.Map[x, y] == self.sim.freeSpaceTag or self.Map[x, y] == self.sim.goalPositionTag:
+                return np.array([x, y])
+        return np.array([x, y])
  
         

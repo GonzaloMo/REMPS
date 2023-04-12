@@ -13,7 +13,7 @@ class Planner:
     def __init__(self, 
                 env: gym.Env, 
                 env_name: str = None,
-                name: str="PDDL-Planner", 
+                name: str="Planner_0", 
                 plan_dir: str = "./Logs/PDDL/", 
                 optic_sh: str = "",
                 planner_setup: Dict[str, Any] ={"time_limit": 60, "memory_limit": 1000000},
@@ -22,11 +22,11 @@ class Planner:
         # Variables
         assert isinstance(env, gym.Env), f"env must be a gym environment, it is currently a {type(env)}"
         self.env = env
+        self.name = name
         if env_name is None:
             self.env_name = env.unwrapped.spec.id
         else:
             self.env_name = env_name
-        self.name = name
         if optic_sh is "":
             optic_sh = self.PDDLPlanner_path + "/Utils/generateplan_optic.sh"
         self.optic_sh = optic_sh
@@ -43,17 +43,19 @@ class Planner:
         manager_lib = importlib.import_module(f"PDDLPlanner.Environment_Specific.{self.env_name.replace('-','_')}.Manager")
 
         # PDDL Functions
+        self.create_folders()
         # Domain
-        self.Domain_file = self.planner_dir + "Domain.pddl"
+        self.Domain_file = self.planner_dir + f"/Domains/{name}.pddl"
         self.Write_Domain = getattr(manager_lib, "create_Domain")
         
         # Problem
-        self.Problem_file = self.planner_dir + "Problem.pddl"
+        self.Problem_file = self.planner_dir + f"/Problems/{name}.pddl"
         self.Write_Problem  = getattr(manager_lib, "create_Problem")
         
         # Plan
-        self.Plan_file = self.planner_dir + "Plan.txt"
+        self.Plan_file = self.planner_dir + f"/Plans/{name}.txt"
         self.Read_Plan = getattr(manager_lib, "read_Plan")
+        self.create_folders()
     
     def generateDomain(self, setup: Dict[str, Any] = None):
         self.Write_Domain(setup, self.Domain_file)
@@ -96,3 +98,13 @@ class Planner:
         if plan == []:
             print(f"{self.name}: Plan is empty")
         return plan
+    
+    def create_folders(self):
+        if not os.path.exists(self.planner_dir):
+            os.makedirs(self.planner_dir)
+        if not os.path.exists(self.planner_dir + "/Domains"):
+            os.makedirs(self.planner_dir + "/Domains")
+        if not os.path.exists(self.planner_dir + "/Problems"):
+            os.makedirs(self.planner_dir + "/Problems")
+        if not os.path.exists(self.planner_dir + "/Plans"):
+            os.makedirs(self.planner_dir + "/Plans")
