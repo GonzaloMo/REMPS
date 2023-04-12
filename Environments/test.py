@@ -48,16 +48,3 @@ for epi in tqdm(range(n_test)):
         env.quit()
 if pObs:
     curses.endwin() 
-
-# for i in range(0,4):
-#     env.set_task(i)
-#     epi_percentage = []
-#     rewards = []
-#     for epi in tqdm(range(100)):
-#         obs = env.reset()
-#         done = False
-#         while not done:
-#             action = env.action_space.sample()
-#             observation, reward, done, info = env.step(action)
-#             env.render()
-#             print_obs(observation)

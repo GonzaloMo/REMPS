@@ -270,7 +270,7 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
     reward_end =  10**(1 + math.log(math.e + 6*env.task_dificulty))
 
     if pos > env.SatSim.CIRCUNFERENCE:
-        reward += .5*reward_end * (1 - 1/env.SatSim.MAX_ORBITS)
+        reward += .5*reward_end * (1/env.SatSim.MAX_ORBITS)
         if (env.SatSim.orbit+1) >= env.SatSim.MAX_ORBITS:
             done = True
 
