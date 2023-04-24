@@ -102,9 +102,6 @@ def curriculum_fn(
     return difficulty
 
 
-from ray.tune import Callback
-
-
 from ray.rllib.agents.callbacks import DefaultCallbacks
 
 

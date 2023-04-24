@@ -1,2 +1,2 @@
 from RLAgent.agent import RAY_agent
-from RLAgent.Utils.ray import env_creator
+from RLAgent.Utils.tune import env_creator
