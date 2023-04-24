@@ -26,7 +26,7 @@ class Gridworld:
     obstacleTag = 3
 
 
-    def __init__(self, grid_size=10):
+    def __init__(self, grid_size=10, **kwargs):
         
         """
 
@@ -76,9 +76,6 @@ class Gridworld:
         while n_obstacle < number_of_obstacle:
             Map, danger_map, placed = self._Spawn_single_obstacle(Map, danger_map)
             if placed:
-                self.full_Render(danger_map, render_type="PYGAME", last_color="red")
-                pygame.display.flip()
-                sleep(.1)
                 n_obstacle +=1
                 failed_pos = 0
             else:

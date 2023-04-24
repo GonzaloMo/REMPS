@@ -16,16 +16,27 @@ with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
     Simulation_Versions = yaml.load(f, Loader=yaml.FullLoader)
 
 class Gridworld_singlegoal_env(gym.Env):
-    def __init__(self, SimV="v0", n_obstacle_range=[0,80], **kwargs):
+    def __init__(self, 
+                 Reward = "v0",
+                 SimV="v0", 
+                 n_obstacle_range=[0,80], 
+                 NDAO = {
+                        "Distance": 3,
+                        "Probability": .0,
+                        },
+                 **kwargs):
         # Initalize Gridworld Sim
 
         assert SimV in Simulation_Versions.keys(), f" Simulation Version {SimV} is not register as Simulation version in SimpleWorld"
-
-        
+        reward_module = import_module("SimpleWorld.envs.singlegoal.Reward_function.v0")
+        reward_name = f"Reward_{Reward}"
+        reward_list = list(vars(reward_module).keys())
+        assert reward_name in reward_list, f"Reward function {Reward} is not register as Reward function in SimpleWorld"
+        self.reward = getattr(reward_module, reward_name)
         SimModule = import_module(Simulation_Versions[SimV])
         self.sim = SimModule.Gridworld(**kwargs)
         self.n_obstacle_range = np.clip(n_obstacle_range, a_min=0, a_max=.5*self.sim.grid_size**2)
-        
+        self.NDAO = NDAO
         self.num_steps = 0
 
         # Action space
@@ -47,7 +58,8 @@ class Gridworld_singlegoal_env(gym.Env):
     def step(self, action):
         done = self.move(action)
         self.timestep +=1
-        observation, reward, done, info = self.get_obs(), 0, done, {}
+        reward = self.reward(self, action)
+        observation, reward, done, info = self.get_obs(), reward, done, {}
         return observation, reward, done, info
     
     def reset(self):
@@ -76,7 +88,11 @@ class Gridworld_singlegoal_env(gym.Env):
 
     def move(self, action):
         done = False
-        new_pos = np.clip(self.pos - np.array(self.action_pos_dict[action]), a_min=0, a_max=self.sim.grid_size-1)
+        if self.NDAO["Probability"] > np.random.rand():
+            dpos = np.random.randint(-self.NDAO["Distance"], self.NDAO["Distance"]+1, size=2)
+        else:
+            dpos = np.array(self.action_pos_dict[action])
+        new_pos = np.clip(self.pos + dpos, a_min=0, a_max=self.sim.grid_size-1)
         i, j = self.pos
         i_n, j_n = new_pos
         if self.Map[i_n, j_n] == self.sim.freeSpaceTag or self.Map[i_n, j_n] == self.sim.goalPositionTag:

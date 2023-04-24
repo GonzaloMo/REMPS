@@ -1,16 +1,22 @@
 
 env: SimpleWorld-sinlgegoal-v0
 env_setup:
-  SimV: "v0"
-  n_obstacle_range: 
-    Agent: [0,80]
-    Planner: []
-    
-  grid_size: 20
+  SimV: "v1"
+  n_obstacle_range: [0, 10]
+  grid_size: 10
+  NDAO: 
+    Distance: 3
+    Probability: .0
+
+Missing_actions:
+  Probability: 0.
+  Number: 0
+
+n_planner_obstacles: [30, 40]
+
+Reward: v0
 
 plannerConfig:
-  # Agent name
-  name: "PDDL-Planner"
 
   # Folder where the planner files are located
   plan_dir: "./Logs/Env/PDDL/"
