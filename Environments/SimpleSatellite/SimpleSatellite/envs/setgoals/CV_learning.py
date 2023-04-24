@@ -119,10 +119,9 @@ class CV_CallBack(DefaultCallbacks):
             per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
         else:
             per_goals = -1
-
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
         previous_difficulty = deepcopy(self.task)
-        if (tot_epi_dificulty > 50000 and per_goals  > .95) or tot_epi_dificulty > 80000*(self.task + 1):
+        if ((tot_epi_dificulty > 50000 and per_goals  > .95) or tot_epi_dificulty > 80000*(self.task + 1)) and self.task < 1:
             self.begin_epi_dificulty = deepcopy(tot_epi)
             self.task += 1
         elif per_goals < .0:
