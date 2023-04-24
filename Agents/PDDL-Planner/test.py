@@ -2,6 +2,7 @@ import gym
 import os
 import SimpleSatellite
 import SimpleWorld
+import PDDLPlanner
 import curses
 import yaml
 import sys
@@ -22,7 +23,8 @@ env_name, config_file, n_test, render, pObs = args.env, args.config, args.n_test
 env_div = env_name.split("-")
 
 if config_file == "":
-    config_file = f"./{env_div[0]}/{env_div[0]}/envs/{env_div[1]}/Configurations/{env_div[2]}.yaml"
+    # config_file = f"./{env_div[0]}/{env_div[0]}/envs/{env_div[1]}/Configurations/{env_div[2]}.yaml"
+    config_file = "./Utils/v0.yaml"
 
 if pObs:
     console = curses.initscr()
@@ -30,20 +32,29 @@ with open(config_file, "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 env = gym.make(env_name,**config)
+
+## Agent 
+with open("./PDDLPlanner/Configurations/Planner.yml", "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+agent = PDDLPlanner.Planner(env, **config)
+agent.generateDomain()
+
 for epi in tqdm(range(n_test)):
-    obs = env.reset()
+    observation, _ = env.reset()
+    # plan = agent.get_plan(obs)
     done = False
     while not done:
-        action = env.action_space.sample()
+        action, info_agent = agent.get_action(observation)
         observation, reward, done, info_env = env.step(action)
-        info = info_env
+        plan_eff = [a.getEffects().tolist() for a in agent.plan]
+        info = {**info_agent, **info_env}
         if pObs:
             console =  print_obs(observation, 
                                  console, 
                                  other_info=info, 
                                  stp=env.sim.grid_size)
             console.refresh()
-        env.render(render_type=render)
+        env.render(render_type=render, path=plan_eff)
        
         env.quit()
 if pObs:

@@ -3,6 +3,7 @@ from copy import copy
 import numpy as np
 import os
 from typing import Dict, List, Tuple, Union, Any
+from PDDLPlanner.Utils.planner_utils import generatePlan
 import importlib
 
 
@@ -11,18 +12,22 @@ class Planner:
     PDDLPlanner_path = os.path.dirname(PDDLPlanner.__file__)
     def __init__(self, 
                 env: gym.Env, 
+                env_name: str = None,
                 name: str="PDDL-Planner", 
-                log_dir: str = "./Logs/", 
-                optic_sh: str = None,
+                plan_dir: str = "./Logs/PDDL/", 
+                optic_sh: str = "",
                 planner_setup: Dict[str, Any] ={"time_limit": 60, "memory_limit": 1000000},
                 plan_setup: Dict[str, Any] = None,
                 wait_time: int = 1,):
         # Variables
+        assert isinstance(env, gym.Env), f"env must be a gym environment, it is currently a {type(env)}"
         self.env = env
-        self.env_name = env.unwrapped.spec.id
+        if env_name is None:
+            self.env_name = env.unwrapped.spec.id
+        else:
+            self.env_name = env_name
         self.name = name
-        self.log_dir = log_dir + name + "/"
-        if optic_sh is None:
+        if optic_sh is "":
             optic_sh = self.PDDLPlanner_path + "/Utils/generateplan_optic.sh"
         self.optic_sh = optic_sh
         self.plan = []
@@ -30,57 +35,64 @@ class Planner:
         self.plan_setup = plan_setup
         self.wait_time = wait_time
         self.waiting = 0
+        self.planner_dir = f"{plan_dir}/{self.env_name.replace('-','_')}/"
+        if not os.path.exists(self.planner_dir):
+            os.makedirs(self.planner_dir)
 
         # import Environment Specific Libraries
-        path = f"PDDLPlanner.Environment_Specific.{self.env_name.replace('-','_')}."
-        manager_lib = importlib.import_module(path + "Manager")
-        action_lib  = importlib.import_module(path + "Action") 
-        
+        manager_lib = importlib.import_module(f"PDDLPlanner.Environment_Specific.{self.env_name.replace('-','_')}.Manager")
+
         # PDDL Functions
         # Domain
-        self.Domain_file = self.log_dir + "domain.pddl"
-        self.Write_Domain = getattr(manager_lib, "writePDDLDomain")
-        self.Write_Domain(env, self.Domain_file, Conservative_add=2)
+        self.Domain_file = self.planner_dir + "Domain.pddl"
+        self.Write_Domain = getattr(manager_lib, "create_Domain")
         
         # Problem
-        self.Problem_file = self.log_dir + "problem.pddl"
-        self.Write_Problem = getattr(manager_lib, "writePDDLProblem")
+        self.Problem_file = self.planner_dir + "Problem.pddl"
+        self.Write_Problem  = getattr(manager_lib, "create_Problem")
         
         # Plan
-        self.Plan_file = self.log_dir + "plan.txt"
-        self.Read_Plan = getattr(manager_lib, "readPDDLPlan")
-        self.Generate_Plan = getattr(manager_lib, "generatePlan")
+        self.Plan_file = self.planner_dir + "Plan.txt"
+        self.Read_Plan = getattr(manager_lib, "read_Plan")
+    
+    def generateDomain(self, setup: Dict[str, Any] = None):
+        self.Write_Domain(setup, self.Domain_file)
+    
+    def generateProblem(self, obs: Dict[str, Any]):
+        self.Write_Problem(obs, self.Problem_file)
 
-        # Action
-        self.Action_obj = getattr(action_lib, "Action")
-        self.idle_action = self.Action_obj(env, "idle")
-         
-
-        
-    def take_action(self, obs: Dict[str, Any]) -> int:
-        if self.waiting > 0:
-            self.waiting -= 1
-            return self.idle_action.get_action_gym()
+    def get_action(self, obs: Dict[str, Any]) -> int:
+        Map = self.observation_handler(obs)
+        # Check if plan is available
         if self.plan == []:
-            self.plan = self.get_plan(obs)
+            self.plan = self.get_plan(Map)
             if self.plan == []:
-                self.waiting = self.wait_time
-                return self.idle_action.get_action_gym()
+                return self.env.action_space.sample()
+            
         action = self.plan[0]
-        if action.check_preconditions(obs):
+        check = action.checkPreconditions(Map)
+        pos = np.reshape(np.array(np.where(Map==1)), (2,))
+        info = {"Plan": [str(a) for a in self.plan], "Pos": pos, "precondition": action.getPreconditions(), "Check": np.array([check])}
+        if check:
             self.plan.pop(0)
-            return action.get_action_gym()
+            
+            return action.getAction(), info
         else:
-            return self.idle_action.get_action_gym()
+            return self.env.action_space.sample(), info
+    
+    def observation_handler(self, obs: Dict[str, Any]) -> Dict[str, Any]:
+        grid_size = int(len(obs["Map"])**.5)
+        new_obs = np.reshape(obs["Map"], (grid_size, grid_size))
+        return new_obs
     
     def get_plan(self, obs:Dict[str, Any]) -> List[Any]:
         self.Write_Problem(obs, self.Problem_file)
         planner_setup = self.planner_setup
         print(f"{self.name}: Generating Plan")
-        self.Generate_Plan(self.optic_sh, self.Domain_file, self.Problem_file, self.Plan_file, **planner_setup)
+        generatePlan(self.optic_sh, self.Domain_file, self.Problem_file, self.Plan_file, **planner_setup)
         print(f"{self.name}: Reading Plan")
         plan_setup = self.plan_setup
-        plan = self.Read_Plan(self.Plan_file, self.env, **plan_setup)
+        plan = self.Read_Plan(self.Plan_file, **plan_setup)
         if plan == []:
             print(f"{self.name}: Plan is empty")
         return plan
