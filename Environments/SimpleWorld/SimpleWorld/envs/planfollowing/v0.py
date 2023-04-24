@@ -106,5 +106,8 @@ class Gridworld_planfollowing_env(gym.Env):
         obs = deepcopy(self.Map_planner)
         obs[obs == self.sim.obstacleTag] = self.sim.freeSpaceTag
         return obs
+
+    def set_planner_name(self, name):
+        self.agent.set_name(name)
         
         

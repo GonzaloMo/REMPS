@@ -96,3 +96,6 @@ class Planner:
         if plan == []:
             print(f"{self.name}: Plan is empty")
         return plan
+    
+    def set_name(self, name: str):
+        self.name = name
