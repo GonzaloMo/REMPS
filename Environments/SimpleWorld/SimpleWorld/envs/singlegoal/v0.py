@@ -59,7 +59,8 @@ class Gridworld_singlegoal_env(gym.Env):
         done = self.move(action)
         self.timestep +=1
         reward = self.reward(self, action)
-        observation, reward, done, info = self.get_obs(), reward, done, {}
+        observation = self.get_obs()
+        info = {}
         return observation, reward, done, info
     
     def reset(self):
@@ -102,6 +103,7 @@ class Gridworld_singlegoal_env(gym.Env):
             self.Map[i_n,j_n] = self.sim.positionTag
             self.pos = deepcopy(new_pos)
             return done
+        return done
         
         
         

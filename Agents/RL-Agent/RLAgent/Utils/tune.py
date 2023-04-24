@@ -1,4 +1,5 @@
 import SimpleSatellite
+import SimpleWorld
 from typing import Dict
 import gym
 import os
@@ -20,7 +21,8 @@ def env_creator_old(env_config: Dict={"env": "SimpleSatellite-setgoals-v0", "Env
         with open(env_config_file, "r") as f:
             config.update(yaml.load(f, Loader=yaml.FullLoader))
     config["Reward"] = getattr(Rewards, env_config["Reward_Function"])
-    config["Log_dir"] = env_config["Log_dir"]
+    if "Log_dir" in env_config:
+        config["Log_dir"] = env_config["Log_dir"]
     MyEnv = gym.make(env_config["env"], **config)
     return MyEnv  # return an env instance
 

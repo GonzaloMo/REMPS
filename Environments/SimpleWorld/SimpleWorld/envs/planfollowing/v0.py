@@ -11,6 +11,7 @@ import random
 import pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from time import sleep
+from SimpleWorld.envs.planfollowing.Reward_function.v0 import Reward_v0
 direc = "/".join(str(__file__).split("/")[:-2]) 
 # /home/ksb21109/Documents/PhD/REMPS/Environments/SimpleWorld/SimpleWorld/envs/singlegoal/v0.py
 with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
@@ -20,34 +21,27 @@ class Gridworld_planfollowing_env(gym.Env):
     def __init__(self,
 
                 name="Planner_0",
-                Reward="v0",
+                Reward=Reward_v0,
                 env_name="SimpleWorld-singlegoal-v0",
-                env_setup="v0", 
+                env_setup={}, 
                 n_planner_obstacles= [],
                 Missing_actions = {"Probability": 0.,
                                    "Number": 0},
-
-                n_obstacle_range={"Agent": [0,80], 
-                                  "Planner":[0,80]}, 
-                NDAO = {"Distance": 3,
-                        "Probability": .1},
-
                 plannerConfig = {},
+                Log_dir = "./Logs/Env/",
                 **kwargs):
         # Initalize Gridworld Sim
         super().__init__()
+        env_setup = {**env_setup, **kwargs}
         self.env = gym.make(env_name, **env_setup)
 
         self.sim = self.env.sim
-        print(plannerConfig)
+        if "plan_dir" in plannerConfig.keys():
+            plannerConfig["plan_dir"] = f"{Log_dir}/{plannerConfig['plan_dir']}"
         self.agent = PDDLPlanner.Planner(self.env, name=name, **plannerConfig)
         self.n_planner_obstacles = n_planner_obstacles
         self.Missing_actions = Missing_actions
-        reward_module = import_module("SimpleWorld.envs.planfollowing.Reward_function.v0")
-        reward_name = f"Reward_{Reward}"
-        reward_list = list(vars(reward_module).keys())
-        assert reward_name in reward_list, f"Reward function {Reward} is not register as Reward function in SimpleWorld"
-        self.reward = getattr(reward_module, reward_name)
+        self.reward = Reward
 
         # Action space
         self.actions, self.num_action, self.action_dict = self.env.actions, self.env.num_action, self.env.action_dict
@@ -82,7 +76,7 @@ class Gridworld_planfollowing_env(gym.Env):
         self.get_plan()
 
         self.pos = np.array(deepcopy(self.start_pos))
-        return self.get_obs(), self.info 
+        return self.get_obs()
     
     def get_obs(self):
         obs_planner = deepcopy(self.blank_map)
@@ -111,7 +105,7 @@ class Gridworld_planfollowing_env(gym.Env):
                     n_missing += 1
         self.next_plan_state = self.get_next_plan_state(0)
     
-    def render(self, render_type="ASCII"):
+    def render(self, render_type="PYGAME"):
         if not render_type == "":
             self.sim.full_Render(self.Map, render_type=render_type, path=[a.getEffects().tolist() for a in self.plan])
             if render_type == "PYGAME":

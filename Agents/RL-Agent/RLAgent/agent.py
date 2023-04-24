@@ -11,6 +11,7 @@ import numpy as np
 
 
 from RLAgent.Utils.tune import env_creator, Custom_TBXLoggerCallback
+from RLAgent.Utils.rllib import CV_CallBack, Planner_CallBack
 def pretty(d, indent=0):
    for key, value in d.items():
       print('\t' * indent + str(key))
@@ -27,10 +28,11 @@ class RAY_agent:
         self.state = None
 
     def train(self, Training: Dict, Agent: Dict, Environment: Dict):
-        Training["local_dir"] = Training["local_dir"]+ Environment["env_config"]["env"]
+        env_name = Environment["env"]
+        algo_name = Agent["Algorithm"]
+        Training["local_dir"] = Training["local_dir"] + f"{env_name}/"
 
         # Load Agent Configuration Files
-        algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
             from RLAgent.Utils.tune import PPO as agent
         elif algo_name == "APPO":
@@ -42,53 +44,35 @@ class RAY_agent:
             with open(fileloc, "r") as f:
                 temp_config = yaml.load(f, Loader=yaml.FullLoader)
             config = {**config, **temp_config}
-
         # Load Environment Configuration Files
-        Exp_names = []
-        Env_setups = []
-        env_config_loaded = {}
-        for main_env_file in Environment["Trianing_Envs"]["Main"]:
-            with open(main_env_file, "r") as f:
-                env_config_loaded.update(yaml.load(f, Loader=yaml.FullLoader))
-        if Environment["Trianing_Envs"]["Changing"] == []:
-            Env_setups.append(env_config_loaded)
-            Exp_names.append("main")
-        else:
-            for changing_env_file in Environment["Trianing_Envs"]["Changing"]:
-                with open(changing_env_file, "r") as f:
-                    env_config_loaded.update(yaml.load(f, Loader=yaml.FullLoader))
-                Env_setups.append(deepcopy(env_config_loaded))
-                Exp_names.append(file_name_function(changing_env_file).stem)
-        env_config = Environment["env_config"]
-        reward = env_config["Reward_Function"]
-        env_name = env_config["env"]
+        env_config = deepcopy(Environment)
+        main_env_file = Environment["config_file"]
+        with open(main_env_file, "r") as f:
+            env_config["Env_setup"] = yaml.load(f, Loader=yaml.FullLoader)
+        
         # config["render_env"] = Environment["render_env"]
-
         restore = None
         config = self.check_config(config)
         # import IPython; IPython.embed()
-        for i, env_setup in enumerate(Env_setups):
-            # Set Experiment config file
-            Exp_name = Exp_names[i]            
-            env_config["Log_dir"] = f"./Simulation/"
-            env_config["Env_setup"] = env_setup
-            config["env_config"] = env_config
-            config["env"] = env_name
-            callback = [Custom_TBXLoggerCallback()]
-            # Set Trainning configuration dict
-            Training["config"] = config
-            Training["restore"] = restore
-            Training["name"] = Exp_name + f"/{self.date}/"
-            localdir = Training["local_dir"] + "/" +Training["name"]
-            # Train on set envirnment
-            self.save(localdir, Training, Agent, Environment)
-            self.analysis = ray.tune.run(self.agent, **Training, callbacks=callback)
-            self.last_checkpoint = self.analysis.get_last_checkpoint()
-            # Save Agent
-            restore = self.last_checkpoint._local_path
-            # Store the configuration Dict
-            save_dir = "/".join(restore.split("/")[:-2])
-            self.save(save_dir, Training, Agent, Environment, trainning_done=True)
+        config["env_config"] = env_config
+        config["env"] = env_name
+        callback = [Custom_TBXLoggerCallback(),]
+        # Set Trainning configuration dict
+        Training["config"] = config
+        Training["restore"] = restore
+        Training["name"] = f"{self.date}/"
+        localdir = Training["local_dir"] + "/" +Training["name"]
+        env_config["Log_dir"] = "EnvLogs/"
+        # Train on set envirnment
+        self.save(localdir, Training, Agent, Environment)
+        config["callbacks"] = Planner_CallBack
+        self.analysis = ray.tune.run(self.agent, **Training, callbacks=callback)
+        self.last_checkpoint = self.analysis.get_last_checkpoint()
+        # Save Agent
+        restore = self.last_checkpoint._local_path
+        # Store the configuration Dict
+        save_dir = "/".join(restore.split("/")[:-2])
+        self.save(save_dir, Training, Agent, Environment, trainning_done=True)
     
     def train_curriculum(self, Training: Dict, Agent: Dict, Environment: Dict):
         Training["local_dir"] = Training["local_dir"]+ Environment["env"]
