@@ -10,7 +10,7 @@ from datetime import datetime
 import numpy as np
 
 
-from RLAgent.Utils.ray import env_creator, Custom_TBXLoggerCallback
+from RLAgent.Utils.tune import env_creator, Custom_TBXLoggerCallback
 def pretty(d, indent=0):
    for key, value in d.items():
       print('\t' * indent + str(key))
@@ -32,9 +32,9 @@ class RAY_agent:
         # Load Agent Configuration Files
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
-            from RLAgent.Utils.ray import PPO as agent
+            from RLAgent.Utils.tune import PPO as agent
         elif algo_name == "APPO":
-            from RLAgent.Utils.ray import APPO as agent
+            from RLAgent.Utils.tune import APPO as agent
         self.agent = agent
         agent_files = Agent["Agent_Config"]
         config = {}
@@ -95,9 +95,9 @@ class RAY_agent:
         ### Load Agent Configuration Files ###
         algo_name = Agent["Algorithm"]
         if algo_name == "PPO":
-            from RLAgent.Utils.ray import PPO as agent
+            from RLAgent.Utils.tune import PPO as agent
         elif algo_name == "APPO":
-            from RLAgent.Utils.ray import APPO as agent
+            from RLAgent.Utils.tune import APPO as agent
         self.agent = agent
         agent_files = Agent["Agent_Config"]
         config = {}
@@ -194,14 +194,14 @@ class RAY_agent:
                 config["num_workers"] = 0
                 config["num_envs_per_worker"] = 1
                 # config["explore"] = False
-            from RLAgent.Utils.ray import PPO
+            from RLAgent.Utils.tune import PPO
             self.agent = PPO(config=config)
         elif algo_name == "APPO":
             if mode == "test":
                 config["num_workers"] = 0
                 config["num_envs_per_worker"] = 1
                 # config["explore"] = False
-            from RLAgent.Utils.ray import APPO
+            from RLAgent.Utils.tune import APPO
             self.agent = APPO(config=config)
    
         # Load Agent
@@ -210,7 +210,7 @@ class RAY_agent:
         return Training, Agent, Environment
         
     def load_from_cehckpoint(self, path: str, config: Dict, mode="test"):
-        from RLAgent.Utils.ray import PPO
+        from RLAgent.Utils.tune import PPO
         if mode == "test":
             config["num_workers"] = 0
             config["num_envs_per_worker"] = 1

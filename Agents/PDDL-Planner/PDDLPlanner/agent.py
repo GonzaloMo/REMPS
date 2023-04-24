@@ -13,6 +13,7 @@ class Planner:
     def __init__(self, 
                 env: gym.Env, 
                 env_name: str = None,
+
                 name: str="Planner_0", 
                 plan_dir: str = "./Logs/PDDL/", 
                 optic_sh: str = "",
@@ -87,6 +88,11 @@ class Planner:
         new_obs = np.reshape(obs["Map"], (grid_size, grid_size))
         return new_obs
     
+    def observation_handler(self, obs: Dict[str, Any]) -> Dict[str, Any]:
+        grid_size = int(len(obs["Map"])**.5)
+        new_obs = np.reshape(obs["Map"], (grid_size, grid_size))
+        return new_obs
+    
     def get_plan(self, Map) -> List[Any]:
         self.Write_Problem(Map, self.Problem_file)
         planner_setup = self.planner_setup
@@ -99,6 +105,7 @@ class Planner:
             print(f"{self.name}: Plan is empty")
         return plan
     
+
     def create_folders(self):
         if not os.path.exists(self.planner_dir):
             os.makedirs(self.planner_dir)
@@ -108,3 +115,6 @@ class Planner:
             os.makedirs(self.planner_dir + "/Problems")
         if not os.path.exists(self.planner_dir + "/Plans"):
             os.makedirs(self.planner_dir + "/Plans")
+            
+    def set_name(self, name: str):
+        self.name = name

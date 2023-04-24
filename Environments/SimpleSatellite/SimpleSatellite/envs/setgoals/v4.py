@@ -48,6 +48,7 @@ class Simple_satellite(Base_Simple_satellite):
         n_gs = self.SatSim.n_gs
         max_inf = np.inf
         obs_space = {
+                    'Orbit':           spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32), # current orbit position
                     'Pos':             spaces.Box(low=-1, high=1., shape=(2,), dtype=np.float32), # current angular position
                     'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32),# spaces.Discrete(2),# busy or not 
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
@@ -128,7 +129,9 @@ class Simple_satellite(Base_Simple_satellite):
         """
         state = self.SatSim.get_state()
         pos = state["Pos"]
-        observation = { "Pos": self.pos_to_sin_and_cos(pos),
+        observation = { 
+                        "Orbit": np.array([state["Orbit"]/self.SatSim.MAX_ORBITS], dtype=np.float32),
+                        "Pos": self.pos_to_sin_and_cos(pos),
                         "Busy": np.array([state["Busy"]] , dtype=np.int32),
                         "Memory Level": np.array([state["Memory Level"]/self.SatSim.MEMORY_SIZE], dtype=np.float32),
                         "Analysis": np.zeros((self.SatSim.n_targets,), dtype=np.float32),

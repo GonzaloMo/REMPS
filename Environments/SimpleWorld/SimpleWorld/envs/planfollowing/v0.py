@@ -18,6 +18,7 @@ with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
 
 class Gridworld_planfollowing_env(gym.Env):
     def __init__(self,
+
                 name="Planner_0",
                 Reward="v0",
                 env_name="SimpleWorld-singlegoal-v0",
@@ -25,11 +26,18 @@ class Gridworld_planfollowing_env(gym.Env):
                 n_planner_obstacles= [],
                 Missing_actions = {"Probability": 0.,
                                    "Number": 0},
+
+                n_obstacle_range={"Agent": [0,80], 
+                                  "Planner":[0,80]}, 
+                NDAO = {"Distance": 3,
+                        "Probability": .1},
+
                 plannerConfig = {},
                 **kwargs):
         # Initalize Gridworld Sim
         super().__init__()
         self.env = gym.make(env_name, **env_setup)
+
         self.sim = self.env.sim
         print(plannerConfig)
         self.agent = PDDLPlanner.Planner(self.env, name=name, **plannerConfig)
@@ -72,6 +80,7 @@ class Gridworld_planfollowing_env(gym.Env):
             self.Map_planner = self.sim.Generate_Obstacles(deepcopy(self.Map), n_obstacle)
         self.blank_map = self.sim.Create_empty_map()
         self.get_plan()
+
         self.pos = np.array(deepcopy(self.start_pos))
         return self.get_obs(), self.info 
     
@@ -124,6 +133,7 @@ class Gridworld_planfollowing_env(gym.Env):
             self.Map[i_n,j_n] = self.sim.positionTag
             self.pos = [i_n, j_n]
             return done
+
     
     def trim_plan(self, Map):
         self.info["Trimmed_plan_i"] = "None"
@@ -141,5 +151,19 @@ class Gridworld_planfollowing_env(gym.Env):
             if self.Map[x, y] == self.sim.freeSpaceTag or self.Map[x, y] == self.sim.goalPositionTag:
                 return np.array([x, y])
         return np.array([x, y])
- 
+        
+    def planner_obs(self):
+        obs = {
+            "Map": np.array(self.Map_planner, dtype=np.int32).flatten(),
+            }
+        return obs
+    
+    def plan_obs(self):
+        obs = deepcopy(self.Map_planner)
+        obs[obs == self.sim.obstacleTag] = self.sim.freeSpaceTag
+        return obs
+
+    def set_planner_name(self, name):
+        self.agent.set_name(name)
+
         

@@ -17,6 +17,7 @@ n_planner_obstacles: [30, 40]
 Reward: v0
 
 plannerConfig:
+
   # Folder where the planner files are located
   plan_dir: "./Logs/Env/PDDL/"
 
