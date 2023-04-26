@@ -1,0 +1,41 @@
+env: SimpleWorld-sinlgegoal-v0
+name: Planner
+env_setup:
+  SimV: "v1"
+  n_obstacle_range: [0, 10]
+  grid_size: 10
+  NDAO: 
+    Distance: 3
+    Probability: .0
+
+Missing_actions:
+  Probability: 0.
+  Number: 0
+
+n_planner_obstacles: [30, 40]
+
+plannerConfig:
+  # Folder where the planner files are located
+  plan_dir: "PDDL/"
+
+  # bash script to run the planner
+  optic_sh: ""
+
+  # Wait time between two consecutive runs of the planner in timesteps
+  wait_time: 10
+  
+  # verbose level of the planner
+  verbose: False
+
+  # Planner settings
+  planner_setup: 
+    
+    # Timeout for the planner in seconds
+    time_limit: 60
+
+    # Memory limit for the planner in kB
+    memory_limit: 1000000
+
+  plan_setup:
+    executionMargin: 
+      Pos: 1 # Margin to execute an action of the plan in timesteps
