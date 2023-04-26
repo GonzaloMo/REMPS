@@ -38,6 +38,9 @@ class Gridworld_planfollowing_env(gym.Env):
         self.sim = self.env.sim
         if "plan_dir" in plannerConfig.keys():
             plannerConfig["plan_dir"] = f"{Log_dir}/{plannerConfig['plan_dir']}"
+        if name[-1] == "_":
+            process_id = os.getpid()
+            name = f"{name}_{process_id}"
         self.agent = PDDLPlanner.Planner(self.env, name=name, **plannerConfig)
         self.n_planner_obstacles = n_planner_obstacles
         self.Missing_actions = Missing_actions
@@ -141,10 +144,13 @@ class Gridworld_planfollowing_env(gym.Env):
     
     def get_next_plan_state(self, i, initial=True):
         for j in range(i, len(self.plan)):
-            x, y = self.plan[j].getEffects()
-            if self.Map[x, y] == self.sim.freeSpaceTag or self.Map[x, y] == self.sim.goalPositionTag:
-                return np.array([x, y])
-        return np.array([x, y])
+            x_eff, y_eff = self.plan[j].getEffects()
+            if self.Map[x_eff, y_eff] == self.sim.freeSpaceTag or self.Map[x_eff, y_eff] == self.sim.goalPositionTag:
+                return np.array([x_eff, y_eff])
+        try:
+            return np.array([x_eff, y_eff])
+        except:
+            return np.array([self.start_pos[0], self.start_pos[1]])
         
     def planner_obs(self):
         obs = {

@@ -62,7 +62,7 @@ class RAY_agent:
         Training["restore"] = restore
         Training["name"] = f"{self.date}/"
         localdir = Training["local_dir"] + "/" +Training["name"]
-        env_config["Log_dir"] = "EnvLogs/"
+        env_config["Log_dir"] = localdir + "/EnvLogs/"
         # Train on set envirnment
         self.save(localdir, Training, Agent, Environment)
         config["callbacks"] = Planner_CallBack

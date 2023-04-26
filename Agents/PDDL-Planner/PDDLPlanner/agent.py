@@ -13,17 +13,19 @@ class Planner:
     def __init__(self, 
                 env: gym.Env, 
                 env_name: str = None,
-
                 name: str="Planner_0", 
                 plan_dir: str = "./Logs/PDDL/", 
                 optic_sh: str = "",
                 planner_setup: Dict[str, Any] ={"time_limit": 60, "memory_limit": 1000000},
                 plan_setup: Dict[str, Any] = None,
-                wait_time: int = 1,):
+                wait_time: int = 1,
+                verbose: bool = True):
         # Variables
         assert isinstance(env, gym.Env), f"env must be a gym environment, it is currently a {type(env)}"
         self.env = env
+
         self.name = name
+        self.verbose = verbose
         if env_name is None:
             self.env_name = env.unwrapped.spec.id
         else:
@@ -96,13 +98,15 @@ class Planner:
     def get_plan(self, Map) -> List[Any]:
         self.Write_Problem(Map, self.Problem_file)
         planner_setup = self.planner_setup
-        print(f"{self.name}: Generating Plan")
+        if self.verbose:
+            print(f"{self.name}: Generating Plan")
         generatePlan(self.optic_sh, self.Domain_file, self.Problem_file, self.Plan_file, **planner_setup)
-        print(f"{self.name}: Reading Plan")
+        if self.verbose:
+            print(f"{self.name}: Reading Plan")
         plan_setup = self.plan_setup
         plan = self.Read_Plan(self.Plan_file, **plan_setup)
-        if plan == []:
-            print(f"{self.name}: Plan is empty")
+        if self.verbose and plan == []:
+            print(f"{self.name}: Plan is {plan}")
         return plan
     
 
@@ -118,3 +122,7 @@ class Planner:
             
     def set_name(self, name: str):
         self.name = name
+        self.Domain_file = self.planner_dir + f"/Domains/{name}.pddl"
+        self.Problem_file = self.planner_dir + f"/Problems/{name}.pddl"
+        self.Plan_file = self.planner_dir + f"/Plans/{name}.txt"
+

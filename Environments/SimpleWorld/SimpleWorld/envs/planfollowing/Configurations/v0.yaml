@@ -25,6 +25,9 @@ plannerConfig:
   # Wait time between two consecutive runs of the planner in timesteps
   wait_time: 10
 
+  # verbose level of the planner
+  verbose: True
+
   # Planner settings
   planner_setup: 
     
