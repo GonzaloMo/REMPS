@@ -35,7 +35,7 @@ action_input = {"w": 0, "s": 1, "a": 2, "d": 3, "q": "q"}
 
 env = gym.make(env_name,**config)
 for epi in tqdm(range(n_test)):
-    observation, _ = env.reset()
+    observation = env.reset()
     env.render(render_type=render)
     done = False
     episode_reward = 0
