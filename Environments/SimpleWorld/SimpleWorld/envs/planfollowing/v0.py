@@ -166,4 +166,7 @@ class Gridworld_planfollowing_env(gym.Env):
     def set_planner_name(self, name):
         self.agent.set_name(name)
 
+    def Number2name_action(self, action):
+        return self.action_list[action]
+
         
