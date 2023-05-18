@@ -71,5 +71,5 @@ def Reward_2(env: gym.Env, action_in: Tuple[int,int]):
             check_AP, _ = env.SatSim.check_action(SatelliteSim.ACTION_ANALYSE, None)
             check_DP, _ = env.SatSim.check_action(SatelliteSim.ACTION_DUMP, None)
             if not (check_TP or check_AP or check_DP):
-                return 1/period
+                return 0
     return standard_penalty
