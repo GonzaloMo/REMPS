@@ -53,8 +53,8 @@ class Simple_satellite(Base_Simple_satellite):
                     'Pos':             spaces.Box(low=-1, high=1., shape=(2,), dtype=np.float32), # current angular position
                     'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32),# spaces.Discrete(2),# busy or not 
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
-                    'Images':          spaces.Box(low=0, high=1., shape=(n_targets,), dtype=np.float32),# n images per target taken
-                    'Analysis':        spaces.Box(low=0, high=1., shape=(n_targets,), dtype=np.float32), # n images per target analyzed
+                    'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.float32),# n images per target taken
+                    'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.float32), # n images per target analyzed
                     'Targets':         spaces.Box(low=-1, high=1., shape=(n_targets*4,), dtype=np.float32), # target initial and final position in cos,sin
                     'Ground Stations': spaces.Box(low=-1, high=1., shape=(n_gs*4,), dtype=np.float32), # ground station initial and final position in cos,sin
                     'Goals':           spaces.Box(low=0., high=1., shape=(n_targets,), dtype=np.float32), # percentage of goals achieved
@@ -139,7 +139,7 @@ class Simple_satellite(Base_Simple_satellite):
                         "Images": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
                         "Targets": self.pos_to_sin_and_cos(state["Targets"]).flatten(),
                         "Ground Stations": self.pos_to_sin_and_cos(state["Ground Stations"]).flatten(),
-                        "Goals": np.array(self.goals, dtype=np.int32)/self.Max_total_targets_global,
+                        "Goals": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
                         }
         imgs = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
         anls = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
@@ -148,11 +148,13 @@ class Simple_satellite(Base_Simple_satellite):
             if img > 0:
                 imgs[img-1] += 1
                 if state["Analysis"][i]:
-                    imgs[img-1] += 1
+                    anls[img-1] += 1
 
         for i in range(self.SatSim.n_targets):
-            observation["Images"][i] = imgs[i]/self.initial_goals[i]
-            observation["Analysis"][i] = anls[i]/self.initial_goals[i]
+            if self.initial_goals[i] > 0:
+                observation["Images"][i] = imgs[i]/self.initial_goals[i]
+                observation["Analysis"][i] = anls[i]/self.initial_goals[i]
+                observation["Goals"][i] = self.goals[i]/self.initial_goals[i]
 
         
 

@@ -53,7 +53,7 @@ def Reward_1(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
     period = env.SatSim.period
-    standard_penalty = 10/period
+    standard_penalty = -10/period
     if check_action:
         # Get action and observation 
         obs = env.get_obs()

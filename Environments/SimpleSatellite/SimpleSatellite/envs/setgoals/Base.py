@@ -85,6 +85,7 @@ class Base_Simple_satellite(gym.Env):
             self.action_list_names.extend(temp_list)
         else:
             raise ValueError("action_space_type must be Simple or Advance")
+        self.action_list = self.action_list_names
         self.Total_reward = 0
         self.Reward = Reward
         

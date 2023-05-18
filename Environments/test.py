@@ -44,7 +44,7 @@ for epi in tqdm(range(n_test)):
     info = {**action_info, "Instant Reward":  0,"Reward": 0}
     last_action = " "
     if pObs:
-        console =  print_obs(observation, console, other_info=info, stp=env.sim.grid_size)
+        console =  print_obs(observation, console, other_info=info) # , stp=env.sim.grid_size)
     while not done:
         if inAct:
             
@@ -74,7 +74,7 @@ for epi in tqdm(range(n_test)):
                 console =  print_obs(observation, 
                                     console, 
                                     other_info=info, 
-                                    stp=env.sim.grid_size)
+                                    )
                 console.refresh()
             
             env.render(render_type=render)
