@@ -176,7 +176,6 @@ class SatelliteSim_Base:
         # update Eclipse
         self.Eclipse_generator()
         self.update_ecplise()
-        print(self.fixed_windows, self.First_reset)
         if (not self.fixed_windows) or self.First_reset: 
             # Generate Targets
             self.target_matrix = self.CoverageGenerator("Target_Coverage")     
