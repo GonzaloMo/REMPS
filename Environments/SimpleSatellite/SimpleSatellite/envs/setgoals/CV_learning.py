@@ -13,31 +13,44 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                 config_files={},
                 **kwargs):
         main_config_file = config_files["main_config_file"]
-        CV_path = config_files["CV_path"]
-        Reward_name = config_files["Reward_Function"]
-        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v4_CV_stepReward")
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
         self.task_dificulty = 0
         self.config = deepcopy(main_config)
-        with open(CV_path[0], 'r') as f:
-            self.config.update(yaml.load(f, Loader=yaml.FullLoader))
+        
+        if "CV_path" in config_files.keys():
+            CV_path = config_files["CV_path"]
+            with open(CV_path[0], 'r') as f:
+                self.config.update(yaml.load(f, Loader=yaml.FullLoader))
+            self.max_difficulty = len(CV_path)
+            self.difficulty_config = []
+            CVpath_total = CV_path + [main_config_file]
+            for pth in CVpath_total:
+                if not os.path.isfile(pth):
+                    raise ValueError(f"CV path {pth} does not exist")
+                else:
+                    with open(pth, 'r') as f:
+                        self.difficulty_config.append(yaml.load(f, Loader=yaml.FullLoader))
+            self.set_global_max_targets(main_config["Max_image_goals_per_target"])
+            R_module_name = "v4_CV"
+            self.CV_type = "Config"
+        else:
+            R_module_name = "v4_CV_stepReward"
+            self.CV_type = "Reward"
+        
         Simple_satellite.__init__(self,**self.config)
-        self.Reward = getattr(Reward_module, Reward_name)
-        self.max_difficulty = len(CV_path)
-        self.difficulty_config = []
-        CVpath_total = CV_path + [main_config_file]
-        for pth in CVpath_total:
-            if not os.path.isfile(pth):
-                raise ValueError(f"CV path {pth} does not exist")
-            else:
-                with open(pth, 'r') as f:
-                    self.difficulty_config.append(yaml.load(f, Loader=yaml.FullLoader))
-        self.set_global_max_targets(main_config["Max_image_goals_per_target"])
+        Reward_name = config_files["Reward_Function"]
+        self.Reward_module = importlib.import_module(f"SimpleSatellite.envs.setgoals.Reward_function.{R_module_name}")
+        self.Reward = getattr(self.Reward_module, Reward_name)
 
     def difficulty(self, task_dificulty):
-        self.config.update(self.difficulty_config[task_dificulty])
+        if self.CV_type == "Reward":
+            self.Reward = getattr(self.Reward_module, f"Reward_{task_dificulty}")
+        elif self.CV_type == "Config":
+            self.config.update(self.difficulty_config[task_dificulty])
+            config = deepcopy(self.config)
+            self.load_config(**config)
         self.task_dificulty = task_dificulty
         
 
@@ -47,8 +60,6 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
     def set_task(self, task_difficulty):  
         if task_difficulty != self.task_dificulty:
             self.difficulty(task_difficulty)
-            config = deepcopy(self.config)
-            self.load_config(**config)
             self.reset()
 
     def reset(self):

@@ -5,15 +5,6 @@ import math
 import gym
 import numpy as np
 
-def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
-    task_dificulty = env.get_task()
-    return Reward_1(env, action_in)
-    # if task_dificulty == 0:
-    #     return Reward_0(env, action_in)
-    # else:
-    #     return Reward_1(env, action_in)
-
-
 # Leran to take picture, analyse and dump of specific goals no penalties
 def Reward_0(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
