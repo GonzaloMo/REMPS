@@ -15,7 +15,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         main_config_file = config_files["main_config_file"]
         CV_path = config_files["CV_path"]
         Reward_name = config_files["Reward_Function"]
-        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v4_CV")
+        Reward_module = importlib.import_module("SimpleSatellite.envs.setgoals.Reward_function.v4_CV_stepReward")
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -71,34 +71,6 @@ def curriculum_fn(
             current one.
     """
     difficulty = task_settable_env.get_task()
-    # tot_epi = len(train_results["hist_stats"]["episode_reward"])
-    # episode_mean_reward = train_results.get("episode_reward_mean")
-    # # episode_mean_reward = np.mean(task_settable_env.last_50_episode_reward)
-    # previous_difficulty = deepcopy(difficulty)
-    # if episode_mean_reward is not None:
-    #     max_goals = task_settable_env.Max_goals
-    #     mean_episode_goal = 90 * math.log(math.e + 6*task_settable_env.task_dificulty)
-    #     mean_episode_lower = -100
-       
-    #     if episode_mean_reward > mean_episode_goal and tot_epi>80:
-    #         difficulty += 1
-    #     if episode_mean_reward < mean_episode_lower:
-    #         difficulty -= 1
-    #     # Bound deficulty
-    #     difficulty = max(0, min(task_settable_env.max_difficulty, difficulty))
-    #     if env_ctx.worker_index == 1 and env_ctx.vector_index == 0:
-    #         print("----------------------------------------------------------------")
-    #         for k, v in train_results.items():
-    #             print(f"{k}: {v}")
-    #         print("----------------------------------------------------------------")
-    #         print(f"Episode reward mean: {episode_mean_reward}")
-    #         print(f"Max goals: {max_goals}")
-    #         print(f"Change Mean episode goal: {mean_episode_goal}")
-    #         print(f"Current difficulty: {previous_difficulty}")
-    #         print(
-    #             f"\nSetting env to dificulty={difficulty}"
-    #         )
-    #         print("----------------------------------------------------------------")
     return difficulty
 
 

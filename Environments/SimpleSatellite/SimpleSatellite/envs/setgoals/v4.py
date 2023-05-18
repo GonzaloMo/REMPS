@@ -41,7 +41,7 @@ class Simple_satellite(Base_Simple_satellite):
 
         # Define Discrete action space
         n_actions = len(self.action_list_names) 
-        print("n_actions", n_actions)
+        # print("n_actions", n_actions)
         self.action_space = spaces.Discrete(n_actions)
 
         # Observation space is composed as: 
@@ -98,7 +98,7 @@ class Simple_satellite(Base_Simple_satellite):
         self.step_count += 1
         self.done = done
         observation = self.get_obs()
-        self.print_obs_shape_compare(observation, self.observation_space)
+        # self.print_obs_shape_compare(observation, self.observation_space)
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:
@@ -141,12 +141,19 @@ class Simple_satellite(Base_Simple_satellite):
                         "Ground Stations": self.pos_to_sin_and_cos(state["Ground Stations"]).flatten(),
                         "Goals": np.array(self.goals, dtype=np.int32)/self.Max_total_targets_global,
                         }
+        imgs = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
+        anls = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
         for i in range(self.SatSim.MEMORY_SIZE):
             img = state["Images"][i]
             if img > 0:
-                observation["Images"][img-1] += 1/self.initial_goals
+                imgs[img-1] += 1
                 if state["Analysis"][i]:
-                    observation["Analysis"][img-1] += 1/self.initial_goals
+                    imgs[img-1] += 1
+
+        for i in range(self.SatSim.n_targets):
+            observation["Images"][i] = imgs[i]/self.initial_goals[i]
+            observation["Analysis"][i] = anls[i]/self.initial_goals[i]
+
         
 
         # Check if the satellite is in light
