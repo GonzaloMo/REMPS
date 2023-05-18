@@ -464,3 +464,7 @@ class Base_Simple_satellite(gym.Env):
     
     def set_global_max_targets(self, Max_total_targets: int) -> None:
         self.Max_total_targets_global = Max_total_targets
+    
+    def quit(self) -> None:
+        pass
+        

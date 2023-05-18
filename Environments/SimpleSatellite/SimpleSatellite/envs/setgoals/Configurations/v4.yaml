@@ -6,8 +6,8 @@ Max_image_goals_per_target: 5
 simulation_version: v1
 # General simulation parameters Parameters
 PERIOD: 600 # in seconds
-N_repeating_orbits: 5
-MAX_ORBITS: 40
+N_repeating_orbits: 1
+MAX_ORBITS: 2
 
 # Satellite parameters
 MEMORY_SIZE: 30 # Memory should be higher than 1 
@@ -25,6 +25,7 @@ Underterministic_actions:  # Values between 0 and 1
 # ACTION_SEED: 0
 
 # Target Generation Parameters
+fixed_windows: False
 Random_Targets: True
 Number_of_targets: 5
 TARGET_HALF_SIZE: 10. 

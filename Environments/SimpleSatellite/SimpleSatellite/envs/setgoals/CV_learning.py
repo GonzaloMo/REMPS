@@ -19,7 +19,14 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         self.task_dificulty = 0
         self.config = deepcopy(main_config)
         
-        if "CV_path" in config_files.keys():
+        if type(config_files["Reward_Function"]) == list:
+            self.Reward_list = config_files["Reward_Function"]
+            Reward_name = self.Reward_list[0]
+            R_module_name = "v4_CV_stepReward"
+            self.CV_type = "Reward"
+            self.max_difficulty = len(self.Reward_list) 
+
+        else:
             CV_path = config_files["CV_path"]
             with open(CV_path[0], 'r') as f:
                 self.config.update(yaml.load(f, Loader=yaml.FullLoader))
@@ -34,13 +41,12 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                         self.difficulty_config.append(yaml.load(f, Loader=yaml.FullLoader))
             self.set_global_max_targets(main_config["Max_image_goals_per_target"])
             R_module_name = "v4_CV"
+            Reward_name = config_files["Reward_Function"]
             self.CV_type = "Config"
-        else:
-            R_module_name = "v4_CV_stepReward"
-            self.CV_type = "Reward"
+            self.max_difficulty = len(self.difficulty_config) 
+        
         
         Simple_satellite.__init__(self,**self.config)
-        Reward_name = config_files["Reward_Function"]
         self.Reward_module = importlib.import_module(f"SimpleSatellite.envs.setgoals.Reward_function.{R_module_name}")
         self.Reward = getattr(self.Reward_module, Reward_name)
 
@@ -58,7 +64,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         return self.task_dificulty
 
     def set_task(self, task_difficulty):  
-        if task_difficulty != self.task_dificulty:
+        if task_difficulty != self.task_dificulty and task_difficulty < self.max_difficulty:
             self.difficulty(task_difficulty)
             self.reset()
 

@@ -176,11 +176,13 @@ class SatelliteSim_Base:
         # update Eclipse
         self.Eclipse_generator()
         self.update_ecplise()
-
-        # Generate Targets
-        self.target_matrix = self.CoverageGenerator("Target_Coverage")     
-        # Generate Ground Stations
-        self.GS_matrix = self.CoverageGenerator("GroundStation_Coverage")   
+        print(self.fixed_windows, self.First_reset)
+        if (not self.fixed_windows) or self.First_reset: 
+            # Generate Targets
+            self.target_matrix = self.CoverageGenerator("Target_Coverage")     
+            # Generate Ground Stations
+            self.GS_matrix = self.CoverageGenerator("GroundStation_Coverage")   
+            self.First_reset = False
         
         # Visible windows
         self.update_coverage_list()
@@ -595,7 +597,7 @@ class SatelliteSim_Base:
                     POWER_CONSUMPTION: Dict[str, float]={"TP": 0.1, "AN": 0.1, "DP": 0.1, "PowerGenerationRate": 1.},
                     ACTION_THRESHOLD: float=1,
                     ECLIPSE ={"Umbra": 0., "Penumbra": 0., "Light": 1.},
-                    CoverageFile: str="", **kwargs):
+                    CoverageFile: str="", fixed_windows=False, **kwargs):
         
 
         # memory state
@@ -636,6 +638,8 @@ class SatelliteSim_Base:
         self.groundStations = []
         
         # Targets
+        self.fixed_windows = fixed_windows
+        self.First_reset = True
         self.random_targets = Random_Targets
         self.n_targets = Number_of_targets
         self.TARGET_HALF_SIZE = TARGET_HALF_SIZE
