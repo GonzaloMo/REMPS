@@ -144,9 +144,9 @@ class Simple_satellite(Base_Simple_satellite):
         for i in range(self.SatSim.MEMORY_SIZE):
             img = state["Images"][i]
             if img > 0:
-                observation["Images"][img-1] += 1/self.SatSim.MEMORY_SIZE
+                observation["Images"][img-1] += 1/self.initial_goals
                 if state["Analysis"][i]:
-                    observation["Analysis"][img-1] += 1/self.SatSim.MEMORY_SIZE
+                    observation["Analysis"][img-1] += 1/self.initial_goals
         
 
         # Check if the satellite is in light

@@ -421,7 +421,10 @@ class SatelliteSim_Base:
             True if the action is posible.
         """
         if self.busy==1:
-            return False, "Satellite busy"        
+            if action == SatelliteSim_Base.ACTION_DO_NOTHING:
+                return True, ""
+            else:
+                return False, "Satellite busy"        
         # Take picture
         if action == SatelliteSim_Base.ACTION_TAKE_IMAGE:
             # Check which target the satellite is above 
