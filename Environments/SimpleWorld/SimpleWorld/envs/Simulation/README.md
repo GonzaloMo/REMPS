@@ -5,3 +5,4 @@
 Creates a random map with initial, final goal and obstacle positions 
 
 ## v1
+Added a Mineral type

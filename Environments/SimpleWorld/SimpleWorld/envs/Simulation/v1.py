@@ -24,6 +24,7 @@ class Gridworld:
     positionTag = 1
     goalPositionTag = 2
     obstacleTag = 3
+    mineralTag = 4
 
 
     def __init__(self, grid_size=10, **kwargs):
@@ -47,6 +48,7 @@ class Gridworld:
         Map = self.Create_empty_map()
         Map, start_pos, goal_pos = self.Generate_init_and_Goal(Map)
         Map = self.Generate_Obstacles(Map, n_obstacle)
+        Map = self.Generate_Minerals(Map, Total_minerals=[1,3])
         return Map, start_pos, goal_pos
     
     def Create_empty_map(self):
@@ -60,6 +62,30 @@ class Gridworld:
         Map[start_pos[0]][start_pos[1]] = self.positionTag
         Map[goal_pos[0]][goal_pos[1]] = self.goalPositionTag
         return Map, start_pos, goal_pos
+    
+    def Generate_Minerals(self, Map, Total_minerals=[1,3]):
+        assert len(Total_minerals) == 2, f"Length of Total_minerals should be equal to 2"
+        n_minerals = 0
+        New_Map = copy(Map)
+        failed_pos = 0
+        while n_minerals < Total_minerals[1] and failed_pos < 100:
+            x = random.randint(0, self.grid_size-1)
+            y = random.randint(0, self.grid_size-1)
+            minral_loc = (x, y)
+            match = self._check_location(minral_loc, Map)
+            if not match: # it is not placed above any other object
+                New_Map[x][y] = self.mineralTag
+                n_minerals += 1
+            else:
+                failed_pos += 1
+
+            if n_minerals < Total_minerals[0]:
+                failed_pos = 0
+            print(failed_pos)
+            print(n_minerals)
+        return New_Map
+            
+        
     
     def Generate_Obstacles(self, Map, number_of_obstacle): 
         obstacle_loc = np.where(Map==self.obstacleTag)
@@ -213,9 +239,11 @@ class Gridworld:
                 elif Map[i][j]==4:
                     if last_color == "red":
                         color= Gridworld.red
+                        radius = Gridworld.Scale
                     else:
                         color = Gridworld.green
-                    pygame.draw.circle(self.screen, color, ((i*block_size)+Gridworld.Scale, (j*block_size)+Gridworld.Scale), int(Gridworld.Scale))
+                        radius = .5*Gridworld.Scale
+                    pygame.draw.circle(self.screen, color, ((i*block_size)+Gridworld.Scale, (j*block_size)+Gridworld.Scale), int(radius))
                 pygame.draw.rect(self.screen, Gridworld.black, (i*block_size, j*block_size, block_size, block_size), width=1)
                 
     def render_path(self, path, colorname=['r'], width=2):

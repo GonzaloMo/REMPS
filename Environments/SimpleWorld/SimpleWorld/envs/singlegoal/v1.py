@@ -103,5 +103,3 @@ class Gridworld_singlegoal_env(gym.Env):
             self.pos = deepcopy(new_pos)
             return done
         
-        
-        
