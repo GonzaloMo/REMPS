@@ -1,0 +1,10 @@
+Number of Voices: 5
+env: SimplesSatellite-arbiter-v0
+
+State nodes:
+  - Ground Station Visibility
+  - Target Visibility
+  - Analysis Availablility
+  - Memory 
+  - Power
+  
