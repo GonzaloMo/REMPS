@@ -45,9 +45,17 @@ def Reward_1(env: gym.Env, action_in: Tuple[int,int]):
     check_action, _ = env.SatSim.check_action(action,img)
     period = env.SatSim.period
     standard_penalty = -10/period
+     
+    obs = env.get_obs()
+    orbit = obs["Orbit"]
+    pos = env.SatSim.orbit_pos
+    new_pos =  pos + env.SatSim.dt*env.SatSim.velocity
+    if new_pos > env.SatSim.CIRCUNFERENCE and (orbit+1 > env.SatSim.MAX_ORBITS):
+        reward = -100 * (np.sum(env.goals)/np.sum(env.initial_goals))
+    else:
+        reward = 0
     if check_action:
         # Get action and observation 
-        obs = env.get_obs()
         Memory_pic = obs["Images"] * env.initial_goals
         Memrory_analysed = obs["Analysis"] * env.initial_goals
         goals = env.goals
@@ -57,19 +65,19 @@ def Reward_1(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
             if goals_pic_mem[img-1] > 0:
-                return  1
+                return  1 + reward
         elif action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
             if goals_analysed_mem[img-1] > 0:
-                return 2
+                return 2 + reward
         elif action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                return 5
+                return 5 + reward
         elif action == SatelliteSim.ACTION_DO_NOTHING:
             check_TP, _ = env.SatSim.check_action(SatelliteSim.ACTION_TAKE_IMAGE, None)
             check_AP, _ = env.SatSim.check_action(SatelliteSim.ACTION_ANALYSE, None)
             check_DP, _ = env.SatSim.check_action(SatelliteSim.ACTION_DUMP, None)
             if not (check_TP or check_AP or check_DP):
-                return 0
-    return standard_penalty
+                return 0 + reward
+    return standard_penalty + reward
