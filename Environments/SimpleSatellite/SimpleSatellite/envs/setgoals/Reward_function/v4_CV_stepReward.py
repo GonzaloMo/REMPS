@@ -121,7 +121,7 @@ def Reward_bullseye(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             Pos = state["Pos"]
             window = state["Targets"][img-1]
-            if 
+            return 0
 
         elif action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
