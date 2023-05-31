@@ -73,3 +73,55 @@ def Reward_1(env: gym.Env, action_in: Tuple[int,int]):
             if not (check_TP or check_AP or check_DP):
                 return 0
     return standard_penalty
+
+
+### Reward where the penalty increases the further away from the goal the action is
+def Reward_bullseye(env: gym.Env, action_in: Tuple[int,int]):
+    action, img = action_in
+    check_action, _ = env.SatSim.check_action(action,img)
+    period = env.SatSim.period
+    standard_penalty = -10/period
+    if check_action:
+        # Get action and observation 
+        obs = env.get_obs()
+        Memory_pic = obs["Images"] * env.initial_goals
+        Memrory_analysed = obs["Analysis"] * env.initial_goals
+        goals = env.goals
+        # images in memory
+        goals_pic_mem = np.array([max(0,goals[i] - Memory_pic[i]) for i in range(len(goals))])
+        goals_analysed_mem = np.array([max(0,goals[i] - Memrory_analysed[i]) for i in range(len(goals))])
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal
+            if goals_pic_mem[img-1] > 0:
+                return  1
+        elif action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            if goals_analysed_mem[img-1] > 0:
+                return 2
+        elif action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 0:
+                return 5
+        elif action == SatelliteSim.ACTION_DO_NOTHING:
+            check_TP, _ = env.SatSim.check_action(SatelliteSim.ACTION_TAKE_IMAGE, None)
+            check_AP, _ = env.SatSim.check_action(SatelliteSim.ACTION_ANALYSE, None)
+            check_DP, _ = env.SatSim.check_action(SatelliteSim.ACTION_DUMP, None)
+            if not (check_TP or check_AP or check_DP):
+                return 0
+    else:
+        state = env.SatSim.get_state()
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            Pos = state["Pos"]
+            window = state["Targets"][img-1]
+            if 
+
+        elif action == SatelliteSim.ACTION_ANALYSE:
+            # Reward for analysing a picture of a goal
+            if goals_analysed_mem[img-1] > 0:
+                return 2
+        elif action == SatelliteSim.ACTION_DUMP:
+            # Reward for dumping a picture of a goal
+            if goals[img-1] > 0:
+                return 5
+        
+    return standard_penalty
