@@ -369,16 +369,17 @@ class SatelliteSim_Base:
         if action==SatelliteSim_Base.ACTION_DO_NOTHING or action==None:
             return
         check, add_info = self.check_action(action, img)
+        self.satellite_busy_time = self.DURATIONS[action]
+        self.busy = 1
         if not check and add_info in self.Failures["No Action Taken"]:
             return
         else:
             # take action
             self.action_taken = True
             self.last_action = (action, add_info)
-            self.satellite_busy_time = self.DURATIONS[action]
             self.Taking_action = action
             self.Taking_action_tuple = action_in
-            self.busy = 1
+            
             return
             
     def apply_effect(self):
