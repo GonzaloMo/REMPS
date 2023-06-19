@@ -15,6 +15,7 @@ from SimpleSatellite.envs.setgoals.v2 import Simple_satellite as Simple_satellit
 from SimpleSatellite.envs.setgoals.v3 import Simple_satellite as Simple_satellite_setgoals_v3
 from SimpleSatellite.envs.setgoals.CV_learning import CurriculumEnv as Simple_satellite_setgoals_cv
 from SimpleSatellite.envs.setgoals.v4 import Simple_satellite as Simple_satellite_setgoals_v4
+from SimpleSatellite.envs.setgoals.v5 import Simple_satellite as Simple_satellite_setgoals_v5
 
 
 ###############################################

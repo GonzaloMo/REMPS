@@ -49,6 +49,7 @@ class Simple_satellite(Base_Simple_satellite):
         n_gs = self.SatSim.n_gs
         max_inf = np.inf
         obs_space = {
+                    'Pos':             spaces.Box(low=-1, high=1., shape=(1,), dtype=np.float32), # current position from 0 to 1
                     'Orbit':           spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32), # current orbit position
                     'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32),# spaces.Discrete(2),# busy or not 
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
@@ -131,14 +132,15 @@ class Simple_satellite(Base_Simple_satellite):
         pos = state["Pos"]
         observation = { 
                         "Orbit": np.array([state["Orbit"]/self.SatSim.MAX_ORBITS], dtype=np.float32),
+                        "Pos": np.array([(pos % 360)/360], dtype=np.float32),
                         "Busy": np.array([state["Busy"]] , dtype=np.int32),
                         "Memory Level": np.array([state["Memory Level"]/self.SatSim.MEMORY_SIZE], dtype=np.float32),
                         "Analysis": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
                         "Images": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
-                        "Targets": self.time2window(state["Targets"]),
-                        "Ground Stations": self.time2window(state["Ground Stations"]),
+                        "Targets": self.time2window(pos, state["Targets"]),
+                        "Ground Stations": self.time2window(pos, state["Ground Stations"]),
                         "Goals": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
-                        "Eclipse": self.time2window(state["Eclipse"][0]),
+                        "Eclipse": self.time2window(pos, [state["Eclipse"][0]]),
                         }
         imgs = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
         anls = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
@@ -162,20 +164,19 @@ class Simple_satellite(Base_Simple_satellite):
         return observation
     
     def time2window(self, position: float, windows: List[int]) -> List[int]:
-        pos = position
+        pos = position % 360
         modified_windows = []
-        for i in range(len(window)):
-            window = windows[i]
+        for window in windows:
             if window[0] < pos < window[1]:
-                dpos = (window[1] - pos)
+                dpos = (window[1]% 360 - pos)
                 if dpos < 0:
-                    dpos += 360*self.SatSim.N_repeating_orbits
-                time_left = dpos/ self.SatSim.velocity
+                    dpos += 360
+                time_left = dpos/360
             else:
-                dpos = (window[1] - pos)
-                if dpos < 0:
-                    dpos += 360*self.SatSim.N_repeating_orbits
-                time_left = (window[0] - pos)/ self.SatSim.velocity
+                dpos = (pos - window[0]% 360)
+                if dpos > 0:
+                    dpos -= 360
+                time_left = dpos/360
 
             modified_windows.append(time_left)
         
