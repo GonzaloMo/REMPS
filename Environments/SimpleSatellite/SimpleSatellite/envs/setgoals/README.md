@@ -67,6 +67,26 @@ ___
 - **Analyze picture**: Analyze a picture of the target, (n_targets, 2$\times$n_targets+1]
 - **Dump picture**: Dump a picture of the target, (2$\times$n_targets+1, 3$\times$n_targets+2]
   
+
+## V5 
+### Observation Space
+- **Orbit**: current orbit [0, $\infty$)
+- **Busy**: busy or not
+- **Memory Level**: memory used %/100
+- **Images**: n images per target taken5
+- **Analysis**: n images per target analyzed
+- **Targets**: negative time to target, positive time in target in seconds/Period of the orbit
+- **Ground Stations**: negative time to ground station, positive time in ground station in seconds/Period of the orbit
+- **Goals**: percentage of goals left/initial goals [0, 1]
+- **Eclipse**: positive time to eclipse, negative time in eclipse in seconds/Period of the orbit
+- **Power**: Percentaje of power left [0 , 1]
+
+### Action Space
+- **Do nothing**: Do nothing, 0
+- **Take picture**: Take a picture of the target, [1, n_targets]
+- **Analyze picture**: Analyze a picture of the target, (n_targets, 2$\times$n_targets+1]
+- **Dump picture**: Dump a picture of the target, (2$\times$n_targets+1, 3$\times$n_targets+2]
+
 ___
 
 ## Reward Functions
