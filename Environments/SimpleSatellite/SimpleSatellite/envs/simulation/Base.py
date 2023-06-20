@@ -93,9 +93,6 @@ class SatelliteSim_Base:
         if self.pos > SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits:
             self.pos -=  SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits
             
-
-        
-
         # update the satellite state
         if self.satellite_busy_time > 0:
             self.busy = 1
@@ -369,17 +366,25 @@ class SatelliteSim_Base:
         if action==SatelliteSim_Base.ACTION_DO_NOTHING or action==None:
             return
         check, add_info = self.check_action(action, img)
+        #! Next to lines are new maybe need to change to seperate version Linked with function change in line
         self.satellite_busy_time = self.DURATIONS[action]
         self.busy = 1
+        self.last_action = (action, add_info)
+        self.Taking_action = action
+        self.Taking_action_tuple = action_in
+        self.action_taken = False
+        #! End of new lines
         if not check and add_info in self.Failures["No Action Taken"]:
             return
         else:
             # take action
+            # Previous Version
+            # self.satellite_busy_time = self.DURATIONS[action]
+            # self.busy = 1
+            # self.last_action = (action, add_info)
+            # self.Taking_action = action
+            # self.Taking_action_tuple = action_in
             self.action_taken = True
-            self.last_action = (action, add_info)
-            self.Taking_action = action
-            self.Taking_action_tuple = action_in
-            
             return
             
     def apply_effect(self):
