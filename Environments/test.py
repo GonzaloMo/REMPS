@@ -5,6 +5,7 @@ import SimpleWorld
 import curses
 import yaml
 import sys
+from copy import deepcopy
 from time import sleep
 from tqdm import tqdm
 from Utils.test_utils import *
@@ -31,9 +32,14 @@ if pObs:
     console.keypad(True)
 with open(config_file, "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
-action_input = {"w": 0, "s": 1, "a": 2, "d": 3, "q": "q"}
+
+action_input = []
 
 env = gym.make(env_name,**config)
+action_input = deepcopy(env.action_list)
+if "CV" in env_name:
+    difficulty = 0
+    env.set_task(difficulty)
 for epi in tqdm(range(n_test)):
     observation = env.reset()
     env.render(render_type=render)
@@ -47,7 +53,6 @@ for epi in tqdm(range(n_test)):
         console =  print_obs(observation, console, other_info=info) # , stp=env.sim.grid_size)
     while not done:
         if inAct:
-            
             action_in = console.getstr(26,21, 2).decode(encoding="utf-8")
             if action_in in action_input.keys():
                 action = action_input[action_in]
@@ -69,7 +74,7 @@ for epi in tqdm(range(n_test)):
             observation, reward, done, info_env = env.step(action)
             action_name = env.action_list[action]
             episode_reward += reward
-            info = {**action_info, "Instant Reward":  reward,"Reward": episode_reward, **info_env}
+            info = {**action_info,"Reward Type": env.Reward_name,  "Instant Reward":  reward,"Reward": episode_reward, **info_env}
             if pObs:
                 console =  print_obs(observation, 
                                     console, 
@@ -80,6 +85,10 @@ for epi in tqdm(range(n_test)):
             env.render(render_type=render)
         else:
             last_action = "Not Valid Action"
+    if "CV" in env_name:
+        difficulty += 1
+        env.set_task(difficulty)
+    sleep(1)
     env.quit()
     if exitloop:
         break
