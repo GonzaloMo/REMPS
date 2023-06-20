@@ -41,7 +41,7 @@ def Reward_0(env: gym.Env, action_in: Tuple[int,int]):
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)
-        Power = deepcopy(sim.power)
+        Power = deepcopy(sim.Power)
         compMode = sim.ACTION_NAMES[sim.Taking_action]
         if compMode == "DN" :
             if (sim.check_light() > 0):
@@ -67,7 +67,7 @@ def Reward_1(env: gym.Env, action_in: Tuple[int,int]):
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)
-        Power = deepcopy(sim.power)
+        Power = deepcopy(sim.Power)
         compMode = sim.ACTION_NAMES[sim.Taking_action]
         if compMode == "DN" :
             if (sim.check_light() > 0):
@@ -93,7 +93,7 @@ def Reward_2(env: gym.Env, action_in: Tuple[int,int]):
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)
-        Power = deepcopy(sim.power)
+        Power = deepcopy(sim.Power)
         compMode = sim.ACTION_NAMES[sim.Taking_action]
         if compMode == "DN" :
             if (sim.check_light() > 0):
