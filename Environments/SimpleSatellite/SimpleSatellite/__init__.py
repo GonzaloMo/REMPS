@@ -12,6 +12,7 @@ register(id='SimpleSatellite-setgoals-v2',entry_point='SimpleSatellite.envs:Simp
 register(id='SimpleSatellite-setgoals-v3',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v3',) 
 register(id='SimpleSatellite-setgoals-CV',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_cv',) 
 register(id='SimpleSatellite-setgoals-v4',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v4',)
+register(id='SimpleSatellite-setgoals-v5',entry_point='SimpleSatellite.envs:Simple_satellite_setgoals_v5',)
 
 # includes a planner agent
 register(id='SimpleSatellite-planner-v0',entry_point='SimpleSatellite.envs:Simple_satellite_planner_v0',)

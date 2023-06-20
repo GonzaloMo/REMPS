@@ -1,4 +1,5 @@
 import numpy as np
+from time import sleep
 def get_obs_str(obs, stp = 20):
     hline = "-" *10 + "\n"
     blank_space = " "
@@ -24,10 +25,15 @@ def print_obs(obs, console, other_info={}, **kwargs):
     if not other_info =={} and type(other_info) == dict: 
         obs_list += get_obs_str(other_info, **kwargs).split("\n")
     # for i, v in enumerate(obs_list):
-    # print(i, v)
+    #     print(i, v)
     console.clear()
-    for i, v in enumerate(obs_list):
-        console.addstr(i , 0, v)
+    try:
+        for i, v in enumerate(obs_list):
+            console.addstr(i , 0, v)
+    except:
+        print(obs)
+        # print(obs_list)
+        sleep(100)
     return console
     
 
