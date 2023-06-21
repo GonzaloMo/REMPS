@@ -20,10 +20,11 @@ def get_obs_str(obs, stp = 20):
     obs_str += hline
     return obs_str
 
-def print_obs(obs, console, other_info={}, **kwargs):
-    obs_list = get_obs_str(obs, **kwargs).split("\n")
-    if not other_info =={} and type(other_info) == dict: 
-        obs_list += get_obs_str(other_info, **kwargs).split("\n")
+def print_obs(info, console, **kwargs):
+    obs_list = []
+    for other_info in info:
+        if not other_info =={} and type(other_info) == dict: 
+            obs_list += get_obs_str(other_info, **kwargs).split("\n")
     # for i, v in enumerate(obs_list):
     #     print(i, v)
     console.clear()
@@ -31,7 +32,7 @@ def print_obs(obs, console, other_info={}, **kwargs):
         for i, v in enumerate(obs_list):
             console.addstr(i , 0, v)
     except:
-        print(obs)
+        print(obs_list)
         # print(obs_list)
         sleep(100)
     return console
