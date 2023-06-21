@@ -3,6 +3,7 @@ import yaml
 import gym
 import ray
 from ray import tune 
+from time import sleep
 import shutil
 from pathlib import Path as file_name_function
 from copy import deepcopy
@@ -102,8 +103,7 @@ class RAY_agent:
         ### Environment Configuration Files ###
         from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
         Training["config"]["env"] = CurriculumEnv
-        
-        Training["config"]["env_config"] = {**Environment["Env_setup"]}
+        Training["config"]["env_config"] = {**Environment["Env_setup"], "local_dir": localdir}
         Training["config"]["env_task_fn"] = curriculum_fn
         Training["config"]["callbacks"] = CV_CallBack
         ### Train on set envirnment ###

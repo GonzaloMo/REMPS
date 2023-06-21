@@ -22,21 +22,15 @@ def Reward_0(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
             if goals_pic_mem[img-1] > 0:
-                return  .01
+                return  .1
         elif action == SatelliteSim.ACTION_ANALYSE:
             # Reward for analysing a picture of a goal
             if goals_analysed_mem[img-1] > 0:
-                return .02
+                return .2
         elif action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] > 0:
-                return .05
-        elif action == SatelliteSim.ACTION_DO_NOTHING:
-            check_TP, _ = env.SatSim.check_action(SatelliteSim.ACTION_TAKE_IMAGE, None)
-            check_AP, _ = env.SatSim.check_action(SatelliteSim.ACTION_ANALYSE, None)
-            check_DP, _ = env.SatSim.check_action(SatelliteSim.ACTION_DUMP, None)
-            if not (check_TP or check_AP or check_DP):
-                return 1/period
+                return .5
             
     # Check Power level
     if env.SatSim.POWER_OPTION:
@@ -63,7 +57,7 @@ def Reward_1(env: gym.Env, action_in: Tuple[int,int]):
         if action == SatelliteSim.ACTION_DUMP:
             # Reward for dumping a picture of a goal
             if goals[img-1] == 1:
-                return .1
+                return 1
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)

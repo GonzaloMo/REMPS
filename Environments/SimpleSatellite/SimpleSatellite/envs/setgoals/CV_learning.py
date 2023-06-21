@@ -13,6 +13,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                 config_files={},
                 **kwargs):
         main_config_file = config_files["main_config_file"]
+        self.localdir = config_files["local_dir"]
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -113,9 +114,11 @@ class CV_CallBack(DefaultCallbacks):
             per_goals = -1
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
         previous_difficulty = deepcopy(self.task)
-        if ((tot_epi_dificulty > 500000 and per_goals  > .95) or tot_epi_dificulty > 80000*(self.task + 1)) and self.task < 1:
+        minmum_epi = 500000
+        max_epi = minmum_epi * 1.5
+        if ((tot_epi_dificulty > minmum_epi and per_goals  > .95) or (tot_epi_dificulty > max_epi*(self.task + 1) and mean_epi_reward>0)):
             self.begin_epi_dificulty = deepcopy(tot_epi)
-            algorithm.save_checkpoint(f"./CV/{self.task}")
+            algorithm.save( f"./checkpoint_Task_{self.task}")
             self.task += 1
         elif per_goals < .0:
             self.task = max(0, self.task - 1)
