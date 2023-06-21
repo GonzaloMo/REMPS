@@ -23,6 +23,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         if type(config_files["Reward_Function"]) == list:
             self.Reward_list = config_files["Reward_Function"]
             Reward_name = self.Reward_list[0]
+            self.Reward_name = Reward_name
             R_module_name = "v4_CV_stepReward"
             self.CV_type = "Reward"
             self.max_difficulty = len(self.Reward_list) 
@@ -43,6 +44,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
             self.set_global_max_targets(main_config["Max_image_goals_per_target"])
             R_module_name = "v4_CV"
             Reward_name = config_files["Reward_Function"]
+            self.Reward_name = Reward_name
             self.CV_type = "Config"
             self.max_difficulty = len(self.difficulty_config) 
         
@@ -53,7 +55,8 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
 
     def difficulty(self, task_dificulty):
         if self.CV_type == "Reward":
-            self.Reward = getattr(self.Reward_module, f"Reward_{task_dificulty}")
+            self.Reward_name = self.Reward_list[task_dificulty]
+            self.Reward = getattr(self.Reward_module, self.Reward_name)
         elif self.CV_type == "Config":
             self.config.update(self.difficulty_config[task_dificulty])
             config = deepcopy(self.config)
