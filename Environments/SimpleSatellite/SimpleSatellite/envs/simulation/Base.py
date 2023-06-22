@@ -97,14 +97,15 @@ class SatelliteSim_Base:
         if self.satellite_busy_time > 0:
             self.busy = 1
         else:
-            if self.busy==1:
+            if self.busy==1 or (self.satellite_busy_time + self.dt > 0 and self.satellite_busy_time <= 0):
                 self.apply_effect()
                 self.Taking_action = SatelliteSim_Base.ACTION_DO_NOTHING
                 self.last_action = (0, None)
                 self.Taking_action_tuple = (0, None)
             # take action
-            self.apply_action(action)
             self.busy = 0
+            self.apply_action(action)
+            
 
         # Power update
         if self.POWER_OPTION:
@@ -169,6 +170,8 @@ class SatelliteSim_Base:
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
         self.busy = 0
+        self.Valid_action = False
+        self.action_taken = False
 
         # update Eclipse
         self.Eclipse_generator()
@@ -356,7 +359,6 @@ class SatelliteSim_Base:
         Args:
             action: the action to be taken. 
         """
-        self.action_taken = False
         if len(action_in) == 1:
             action = action_in
             img = None
@@ -384,6 +386,7 @@ class SatelliteSim_Base:
             # self.last_action = (action, add_info)
             # self.Taking_action = action
             # self.Taking_action_tuple = action_in
+            self.Valid_action = True
             self.action_taken = True
             return
             
@@ -391,6 +394,7 @@ class SatelliteSim_Base:
         action, add_info = self.last_action
         if not isinstance(add_info,str): 
             # Take picture action
+            self.Valid_action = False
             if action == SatelliteSim_Base.ACTION_TAKE_IMAGE:
                 # Check free location in the memory
                 if self.Underterministic_actions["TP"] < np.random.rand():

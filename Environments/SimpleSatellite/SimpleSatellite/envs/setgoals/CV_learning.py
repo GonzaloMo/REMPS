@@ -13,7 +13,6 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                 config_files={},
                 **kwargs):
         main_config_file = config_files["main_config_file"]
-        self.localdir = config_files["local_dir"]
         self.config = {}
         with open(main_config_file, 'r') as f:
             main_config = yaml.load(f, Loader=yaml.FullLoader)
