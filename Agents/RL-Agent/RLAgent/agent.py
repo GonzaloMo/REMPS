@@ -158,7 +158,7 @@ class RAY_agent:
         Agent = Temp_config["Agent"]
         Environment = Temp_config["Environment"]
         
-        checkpoint_path = path +"/"+ specific_checkpoint
+        checkpoint_path = specific_checkpoint
         algo_name = Agent["Algorithm"]
         self.name = algo_name+"_"+specific_checkpoint
         config = Training["config"]
