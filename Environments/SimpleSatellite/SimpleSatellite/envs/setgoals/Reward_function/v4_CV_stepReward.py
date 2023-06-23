@@ -240,12 +240,9 @@ def Reward_bullseye(env: gym.Env, action_in: Tuple[int,int]):
     return standard_penalty
 
 
-
-
-
-
-
-############# Step Rewards 23/06/2023 #############
+#####################################################################################################################################
+##                                              Step Rewards 23/06/2023                                                            ##
+#####################################################################################################################################
 # Learn to not loose power and take, analyse and dump pictures of any target
 def R_0(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
