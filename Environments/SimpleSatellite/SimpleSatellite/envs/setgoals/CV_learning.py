@@ -115,7 +115,7 @@ class CV_CallBack(DefaultCallbacks):
         previous_difficulty = deepcopy(self.task)
         minmum_epi = 500000
         max_epi = minmum_epi * 1.5
-        if ((tot_epi_dificulty > minmum_epi and per_goals  > .95) or (tot_epi_dificulty > max_epi*(self.task + 1) and mean_epi_reward>0)):
+        if ((tot_epi_dificulty > minmum_epi and per_goals  > .95) or (tot_epi_dificulty > max_epi*(self.task + 1) and mean_epi_reward>10)):
             self.begin_epi_dificulty = deepcopy(tot_epi)
             algorithm.save( f"./checkpoint_Task_{self.task}")
             self.task += 1
