@@ -211,15 +211,8 @@ class RAY_agent:
                np.zeros(cell_size, np.float32)]
         else:
             state = self.state
-        res = self.agent.compute_single_action(observation, state=state, **kwargs)
-        if type(res) == np.int32:
-            action, RNN_list_input, additional_info = res, None, None
-        else:
-            action, RNN_list_input, additional_info = res
-        self.state = state
-        if add_info:
-            return action, additional_info
-        return action
+        res = self.agent.compute_single_action(observation, state=state, full_fetch=add_info, **kwargs)
+        return res
     def add_to_config(self, config: Dict):
         self.config = {**self.config, **config}
     
