@@ -14,3 +14,14 @@ def copy_directory(directory, new_folder="copy"):
 def remove_directories(directoris: List[str]):
     for directory in directoris:
         shutil.rmtree(directory)
+
+def actionDistribution2Probabilities(ActionDistribution, type="softmax"):
+    if type == "softmax":
+        from scipy.special import softmax
+        probs = softmax(ActionDistribution) 
+    elif type == "sigmoid":
+        from scipy.special import expit
+        probs = expit(ActionDistribution)
+    else:
+        raise ValueError(f"Type {type} not supported")
+    return probs
