@@ -54,6 +54,9 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
 
     def difficulty(self, task_dificulty):
         if self.CV_type == "Reward":
+            print(self.Reward_list)
+            print(task_dificulty)
+            print(self.Reward_list[task_dificulty])
             self.Reward_name = self.Reward_list[task_dificulty]
             self.Reward = getattr(self.Reward_module, self.Reward_name)
         elif self.CV_type == "Config":
@@ -102,11 +105,30 @@ class CV_CallBack(DefaultCallbacks):
         super().__init__(*args, **kwargs)
         self.task = 0
         self.begin_epi_dificulty = 0
+        self.Reward_vec = []
+        self.max_size = 100
     
 
     def on_train_result(self, algorithm, result, **kwargs):
         tot_epi = result["episodes_total"]
         mean_epi_reward = result["episode_reward_mean"]
+        max_dif = max(max(algorithm.workers.foreach_worker(
+            lambda ev: ev.foreach_env(
+                lambda env: env.max_difficulty)))) - 1
+
+        n = len(self.Reward_vec)
+        if n < self.max_size:
+            self.Reward_vec.append(mean_epi_reward)
+            mean_error = 10.
+            result["custom_metrics"]["mean_error"] = 0
+        else:
+            
+            self.Reward_vec.pop(0)
+            self.Reward_vec.append(mean_epi_reward)
+            mean_error = np.abs(np.mean(self.Reward_vec[-10:]) - np.mean(self.Reward_vec[:10]))/np.abs(np.mean(self.Reward_vec[:10]))
+            result["custom_metrics"]["mean_error"] = mean_error
+
+
         if "percentage_of_goals_mean" in result["custom_metrics"].keys():
             per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
         else:
@@ -115,16 +137,23 @@ class CV_CallBack(DefaultCallbacks):
         previous_difficulty = deepcopy(self.task)
         minmum_epi = 500000
         max_epi = minmum_epi * 1.5
-        if ((tot_epi_dificulty > minmum_epi and per_goals  > .95) or (tot_epi_dificulty > max_epi*(self.task + 1) and mean_epi_reward>10)):
+        
+        if  (tot_epi_dificulty > minmum_epi and per_goals>.9) or \
+            (tot_epi_dificulty > max_epi*(self.task + 1) and mean_epi_reward>50) or \
+            (mean_error<0.01 and n>=self.max_size and mean_epi_reward>50):
+            self.Reward_vec = []
             self.begin_epi_dificulty = deepcopy(tot_epi)
-            algorithm.save( f"./checkpoint_Task_{self.task}")
-            self.task += 1
+            algorithm.save( f"./Task_{self.task}")
+            self.task =  min(self.task + 1, max_dif)
         elif per_goals < .0:
             self.task = max(0, self.task - 1)
-
+        result["custom_metrics"]["N_stored_mean_error"] = n
+        result["custom_metrics"]["iteration"] = algorithm.iteration
         task = self.task
         report  = "----------------------------------------------------------------\n"
         report += f"Episode reward mean: {mean_epi_reward}\n"
+        report += f"Mean error: {mean_error}\n"
+        report += f"n: {n}\n"
         report += f"Percentage of goals: {per_goals}\n"
         report += f"Total episode: {tot_epi}\n"
         report += f"Total episode difficulty: {tot_epi_dificulty}\n"
