@@ -1,5 +1,6 @@
 import shutil
 from typing import List
+import numpy as np
 def copy_directory(directory, new_folder="copy"):
         folder_path = directory.split("/")
         folder_name = folder_path[-1]
@@ -18,10 +19,10 @@ def remove_directories(directoris: List[str]):
 def actionDistribution2Probabilities(ActionDistribution, type="softmax"):
     if type == "softmax":
         from scipy.special import softmax
-        probs = softmax(ActionDistribution) 
+        probs = np.array(softmax(ActionDistribution), dtype=float)
     elif type == "sigmoid":
         from scipy.special import expit
-        probs = expit(ActionDistribution)
+        probs = np.array(expit(ActionDistribution), dtype=float)
     else:
         raise ValueError(f"Type {type} not supported")
-    return probs
+    return list(probs)

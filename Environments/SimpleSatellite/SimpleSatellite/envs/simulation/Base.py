@@ -74,6 +74,7 @@ class SatelliteSim_Base:
             done: if the simulation is has been terminated.
         """
         done = False
+        self.Valid_action = False
         self.action_taken_list.append(action)
         self.check_visibility()
         # update time variables
@@ -290,8 +291,8 @@ class SatelliteSim_Base:
                 'Pos': self.pos,
                 'Busy': self.busy,
                 'Memory Level': self.memory_level,
-                'Images': self.images,
-                'Analysis': self.analysis,
+                'Images': np.array(self.images, dtype=int),
+                'Analysis': np.array(self.analysis, dtype=int),
                 'Targets': self.targets,
                 'Ground Stations': self.groundStations,
                 'Eclipse': [self.light_range, self.umbra_range],

@@ -99,6 +99,8 @@ class Simple_satellite(Base_Simple_satellite):
         self.done = done
         observation = self.get_obs()
         # self.print_obs_shape_compare(observation, self.observation_space)
+        if self.generateTelemetry:
+            self.StoreTelemetry(action)
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:
@@ -117,6 +119,8 @@ class Simple_satellite(Base_Simple_satellite):
         self.goals = self.generate_goals()
         self.initial_goals = self.goals.copy()
         observation = self.get_obs()
+        if self.generateTelemetry:
+            self.InitTelemetry()
         return observation
         
 
