@@ -20,12 +20,12 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         self.config = deepcopy(main_config)
         
         if type(config_files["Reward_Function"]) == list:
-            self.Reward_list = config_files["Reward_Function"]
-            Reward_name = self.Reward_list[0]
+            self.Reward_list_names = config_files["Reward_Function"]
+            Reward_name = self.Reward_list_names[0]
             self.Reward_name = Reward_name
             R_module_name = "v4_CV_stepReward"
             self.CV_type = "Reward"
-            self.max_difficulty = len(self.Reward_list) 
+            self.max_difficulty = len(self.Reward_list_names) 
 
         else:
             CV_path = config_files["CV_path"]
@@ -51,13 +51,20 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         Simple_satellite.__init__(self,**self.config)
         self.Reward_module = importlib.import_module(f"SimpleSatellite.envs.setgoals.Reward_function.{R_module_name}")
         self.Reward = getattr(self.Reward_module, Reward_name)
+        if self.CV_type == "Reward":
+            self.Reward_list = []
+            for reward_name in self.Reward_list_names:
+                self.Reward_list.append(getattr(self.Reward_module, reward_name))
 
     def difficulty(self, task_dificulty):
         if self.CV_type == "Reward":
-            print(self.Reward_list)
-            print(task_dificulty)
-            print(self.Reward_list[task_dificulty])
-            self.Reward_name = self.Reward_list[task_dificulty]
+            self.Reward_name = self.Reward_list_names[task_dificulty]
+            with open("./logs_CV.txt", "a") as f:
+                f.write("----------------------------------------------------------------\n")
+                f.write(f"Reward List name: {self.Reward_name}\n")
+                f.write(f"Difficulty: {task_dificulty}\n")
+                f.write(f"Reward: {self.Reward_list[task_dificulty]}\n")
+                f.write("----------------------------------------------------------------\n")
             self.Reward = getattr(self.Reward_module, self.Reward_name)
         elif self.CV_type == "Config":
             self.config.update(self.difficulty_config[task_dificulty])
@@ -73,6 +80,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         if task_difficulty != self.task_dificulty and task_difficulty < self.max_difficulty:
             self.difficulty(task_difficulty)
             self.reset()
+        
 
     def reset(self):
         return super().reset()
@@ -103,29 +111,33 @@ from ray.rllib.agents.callbacks import DefaultCallbacks
 class CV_CallBack(DefaultCallbacks):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.task = 0
         self.begin_epi_dificulty = 0
         self.Reward_vec = []
         self.max_size = 100
+        self.Task_change = 1000
     
 
     def on_train_result(self, algorithm, result, **kwargs):
         tot_epi = result["episodes_total"]
         mean_epi_reward = result["episode_reward_mean"]
-        max_dif = max(max(algorithm.workers.foreach_worker(
-            lambda ev: ev.foreach_env(
-                lambda env: env.max_difficulty)))) - 1
+        try:
+            task = min(min(algorithm.workers.foreach_worker(
+                lambda ev: ev.foreach_env(
+                    lambda env: env.get_task()))))
+        except:
+            task = 0
 
         n = len(self.Reward_vec)
+        self.Task_change += 1
         if n < self.max_size:
             self.Reward_vec.append(mean_epi_reward)
             mean_error = 10.
             result["custom_metrics"]["mean_error"] = 0
         else:
-            
             self.Reward_vec.pop(0)
             self.Reward_vec.append(mean_epi_reward)
-            mean_error = np.abs(np.mean(self.Reward_vec[-10:]) - np.mean(self.Reward_vec[:10]))/np.abs(np.mean(self.Reward_vec[:10]))
+            range_limit = int(self.max_size//10)
+            mean_error = np.abs(np.mean(self.Reward_vec[-range_limit:]) - np.mean(self.Reward_vec[:range_limit]))/np.abs(np.mean(self.Reward_vec[:range_limit]))
             result["custom_metrics"]["mean_error"] = mean_error
 
 
@@ -133,23 +145,27 @@ class CV_CallBack(DefaultCallbacks):
             per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
         else:
             per_goals = -1
+    
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-        previous_difficulty = deepcopy(self.task)
+        previous_difficulty = deepcopy(task)
         minmum_epi = 500000
         max_epi = minmum_epi * 1.5
         
-        if  (tot_epi_dificulty > minmum_epi and per_goals>.9) or \
-            (tot_epi_dificulty > max_epi*(self.task + 1) and mean_epi_reward>50) or \
-            (mean_error<0.01 and n>=self.max_size and mean_epi_reward>50):
+        if  ((tot_epi_dificulty > minmum_epi and per_goals>.9) or \
+            (tot_epi_dificulty > max_epi*(task + 1)) or \
+            (mean_error<.01 and n>=self.max_size and mean_epi_reward>0 and self.Task_change>200)) and \
+                task < max(max(algorithm.workers.foreach_worker(
+                    lambda ev: ev.foreach_env(
+                        lambda env: env.max_difficulty)))):
             self.Reward_vec = []
+            mean_error = 10.
             self.begin_epi_dificulty = deepcopy(tot_epi)
-            algorithm.save( f"./Task_{self.task}")
-            self.task =  min(self.task + 1, max_dif)
-        elif per_goals < .0:
-            self.task = max(0, self.task - 1)
+            algorithm.save( f"./Task_{task}")
+            task+=1
+            self.Task_change = 0
+            
         result["custom_metrics"]["N_stored_mean_error"] = n
         result["custom_metrics"]["iteration"] = algorithm.iteration
-        task = self.task
         report  = "----------------------------------------------------------------\n"
         report += f"Episode reward mean: {mean_epi_reward}\n"
         report += f"Mean error: {mean_error}\n"

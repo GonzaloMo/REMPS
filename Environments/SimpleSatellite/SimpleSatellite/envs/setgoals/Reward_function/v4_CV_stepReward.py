@@ -293,6 +293,8 @@ def R_1(env: gym.Env, action_in: Tuple[int,int]):
             # Reward for taking a picture of a goal
             if goals_pic_mem[img-1] > 0:
                 return  2
+            else:
+                return 1
         elif action == SatelliteSim.ACTION_ANALYSE:
             return 3
         elif action == SatelliteSim.ACTION_DUMP:
