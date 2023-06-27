@@ -134,6 +134,7 @@ class Simple_satellite(Base_Simple_satellite):
         """
         state = self.SatSim.get_state()
         pos = state["Pos"]
+        orbit_ = state["Orbit"]%self.SatSim.N_repeating_orbits / self.SatSim.N_repeating_orbits
         observation = { 
                         "Orbit": np.array([state["Orbit"]/self.SatSim.MAX_ORBITS], dtype=np.float32),
                         "Pos": self.pos_to_sin_and_cos(pos),

@@ -1,3 +1,4 @@
+from typing import Dict, Union
 from ray.rllib.env.apis.task_settable_env import TaskSettableEnv
 from SimpleSatellite.envs.setgoals.v4 import Simple_satellite
 import numpy as np
@@ -6,6 +7,13 @@ import os
 import yaml
 import importlib
 from copy import deepcopy
+
+from ray.rllib.env.base_env import BaseEnv
+from ray.rllib.evaluation import RolloutWorker
+from ray.rllib.evaluation.episode import Episode
+from ray.rllib.evaluation.episode_v2 import EpisodeV2
+from ray.rllib.policy import Policy
+from ray.rllib.utils.typing import PolicyID
 
 class CurriculumEnv(Simple_satellite, TaskSettableEnv):
 
@@ -59,12 +67,12 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
     def difficulty(self, task_dificulty):
         if self.CV_type == "Reward":
             self.Reward_name = self.Reward_list_names[task_dificulty]
-            with open("./logs_CV.txt", "a") as f:
-                f.write("----------------------------------------------------------------\n")
-                f.write(f"Reward List name: {self.Reward_name}\n")
-                f.write(f"Difficulty: {task_dificulty}\n")
-                f.write(f"Reward: {self.Reward_list[task_dificulty]}\n")
-                f.write("----------------------------------------------------------------\n")
+            # with open("./logs_CV.txt", "a") as f:
+                # f.write("----------------------------------------------------------------\n")
+                # f.write(f"Reward List name: {self.Reward_name}\n")
+                # f.write(f"Difficulty: {task_dificulty}\n")
+                # f.write(f"Reward: {self.Reward_list[task_dificulty]}\n")
+                # f.write("----------------------------------------------------------------\n")
             self.Reward = getattr(self.Reward_module, self.Reward_name)
         elif self.CV_type == "Config":
             self.config.update(self.difficulty_config[task_dificulty])
@@ -79,7 +87,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
     def set_task(self, task_difficulty):  
         if task_difficulty != self.task_dificulty and task_difficulty < self.max_difficulty:
             self.difficulty(task_difficulty)
-            self.reset()
+            # self.reset()
         
 
     def reset(self):
@@ -114,21 +122,19 @@ class CV_CallBack(DefaultCallbacks):
         self.begin_epi_dificulty = 0
         self.Reward_vec = []
         self.max_size = 100
-        self.Task_change = 1000
+        self.Task_change = False
+        self.task = 0
     
 
     def on_train_result(self, algorithm, result, **kwargs):
         tot_epi = result["episodes_total"]
         mean_epi_reward = result["episode_reward_mean"]
-        try:
-            task = min(min(algorithm.workers.foreach_worker(
-                lambda ev: ev.foreach_env(
-                    lambda env: env.get_task()))))
-        except:
-            task = 0
+        
+        max_difficulty = max(max(algorithm.workers.foreach_worker(
+                            lambda ev: ev.foreach_env(
+                                lambda env: env.max_difficulty))))
 
         n = len(self.Reward_vec)
-        self.Task_change += 1
         if n < self.max_size:
             self.Reward_vec.append(mean_epi_reward)
             mean_error = 10.
@@ -147,83 +153,66 @@ class CV_CallBack(DefaultCallbacks):
             per_goals = -1
     
         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-        previous_difficulty = deepcopy(task)
-        minmum_epi = 500000
-        max_epi = minmum_epi * 1.5
+        previous_difficulty = deepcopy(self.task)
+        minmum_epi = 100000
         
-        if  ((tot_epi_dificulty > minmum_epi and per_goals>.9) or \
-            (tot_epi_dificulty > max_epi*(task + 1)) or \
-            (mean_error<.01 and n>=self.max_size and mean_epi_reward>0 and self.Task_change>200)) and \
-                task < max(max(algorithm.workers.foreach_worker(
-                    lambda ev: ev.foreach_env(
-                        lambda env: env.max_difficulty)))):
+        Conditions = [tot_epi_dificulty > minmum_epi, mean_error<.01, mean_epi_reward>0, self.task < max_difficulty]
+        mean_error_old = deepcopy(mean_error)
+        if  (tot_epi_dificulty > minmum_epi \
+                and mean_error<.01  \
+                and mean_epi_reward>0 \
+                and self.task < max_difficulty) or \
+            (tot_epi_dificulty > 5*minmum_epi) :
+            
             self.Reward_vec = []
             mean_error = 10.
             self.begin_epi_dificulty = deepcopy(tot_epi)
-            algorithm.save( f"./Task_{task}")
-            task+=1
+            algorithm.save( f"./Task_{self.task}")
             self.Task_change = 0
-            
+            self.task+=1
+            self.Task_change = True
+
+        task = self.task
+        algorithm.workers.foreach_worker(
+            lambda ev: ev.foreach_env(
+                lambda env: env.set_task(task)))
+        
         result["custom_metrics"]["N_stored_mean_error"] = n
         result["custom_metrics"]["iteration"] = algorithm.iteration
         report  = "----------------------------------------------------------------\n"
         report += f"Episode reward mean: {mean_epi_reward}\n"
-        report += f"Mean error: {mean_error}\n"
+        report += f"Mean error: {mean_error_old}\n"
         report += f"n: {n}\n"
+        report += f"max_difficulty: {max_difficulty}\n"
         report += f"Percentage of goals: {per_goals}\n"
         report += f"Total episode: {tot_epi}\n"
         report += f"Total episode difficulty: {tot_epi_dificulty}\n"
         report += f"Current difficulty: {previous_difficulty}\n"
         report += f"Setting env to dificulty: {task}\n"
-        report += "----------------------------------------------------------------"
+        report += f"Conditions: \n"
+        for i, cond in enumerate(Conditions):
+            report += f"  {i}: {cond}\n"
+        if self.Task_change:
+            task_vector = algorithm.workers.foreach_worker(lambda ev: ev.foreach_env(lambda env: env.get_task()))
+            report += f"Task vector: \n"
+            for i, tsk in enumerate(task_vector):
+                report += f"  {i}: {tsk}\n"
+        report += "----------------------------------------------------------------\n"
+        if self.Task_change:
+            with open("./logs_CV.txt", "a") as f:
+                f.write(report)
         print(report)
-        algorithm.workers.foreach_worker(
-            lambda ev: ev.foreach_env(
-                lambda env: env.set_task(task)))
+        
+        self.Task_change = False
     
     
     def on_episode_end(self, *, worker, base_env, policies, episode, env_index: int,**kwargs) -> None:
         env = base_env.get_sub_environments()[env_index]
         percentage_of_goals = (1- np.sum(env.goals)/np.sum(env.initial_goals))
         episode.custom_metrics["percentage_of_goals"] = percentage_of_goals
+        return super().on_episode_end(worker=worker, base_env=base_env, policies=policies, episode=episode, env_index=env_index, **kwargs)
+    
+    def on_episode_step(self, *, worker, base_env, episode, env_index, **kwargs) -> None:
+        env = base_env.get_sub_environments()[env_index]
         episode.custom_metrics["task_difficulty"] = env.get_task()
-        # episode.custom_metrics["Power_truncated"] = env.truncated
-        return 
-
-# from ray.rllib.agents.callbacks import Callback
-# class CV_CallBack(Callback):
-#     def setup(
-#         self,
-#         stop= None,
-#         num_samples= None,
-#         total_num_samples = None,
-#         **info,
-#         ):
-#         self.task = 0
-#         self.begin_epi_dificulty  = 0
-
-#     def on_trial_result(self, iteration, trials, trial, result, **info):
-#         tot_epi = result["episodes_total"]
-#         mean_epi_reward = result["episode_reward_mean"]
-#         tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-#         mean_episode_goal = 90 * math.log(math.e + 6*self.task)
-#         mean_episode_lower = -100
-#         previous_difficulty = deepcopy(self.task)
-#         if tot_epi_dificulty > 80 and mean_epi_reward  > mean_episode_goal:
-#             self.task += 1
-#         elif mean_epi_reward < mean_episode_lower:
-#             self.task -= 1
-
-#         task = self.task
-#         print("----------------------------------------------------------------")
-#         print(f"Episode reward mean: {mean_epi_reward}")
-#         print(f"Total episode: {tot_epi}")
-#         print(f"Total episode difficulty: {tot_epi_dificulty}")
-#         print(f"Change Mean episode goal: {mean_episode_goal}")
-#         print(f"Current difficulty: {previous_difficulty}")
-#         print(f"Setting env to dificulty: {task}")
-#         print("----------------------------------------------------------------")
-#         for tr in trials:
-#             tr.workers.foreach_worker(
-#                 lambda ev: ev.foreach_env(
-#                     lambda env: env.set_task(task)))
+        return super().on_episode_step(worker=worker, base_env=base_env, episode=episode, env_index=env_index, **kwargs)
