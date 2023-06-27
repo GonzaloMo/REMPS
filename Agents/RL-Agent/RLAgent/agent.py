@@ -201,7 +201,7 @@ class RAY_agent:
         self.agent = PPO(config=config)
         self.agent.restore(checkpoint_path=path)
 
-    def get_action(self, observation, add_info=True, **kwargs):
+    def get_action(self, observation, Prob=True, **kwargs):
         if self.state is None and (self.config["model"]["use_lstm"]):
             if "lstm_cell_size" in self.config["model"].keys():
                 cell_size = self.config["model"]["lstm_cell_size"]
@@ -217,7 +217,7 @@ class RAY_agent:
         else:
             action, RNN_list_input, additional_info = res
         self.state = state
-        if add_info:
+        if Prob:
             return action, additional_info
         return action
     def add_to_config(self, config: Dict):

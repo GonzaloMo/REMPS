@@ -13,7 +13,13 @@ from gym import spaces
 
 class Voice(ABC):
 
-    def __init__(self, name):
+    def __init__(self,
+                 agent, 
+                 name: str = None):
+
+        self.agent = agent
+        if name is None:
+            name = self.agent.name
         self.name = name
     
     @abstractmethod
@@ -22,7 +28,10 @@ class Voice(ABC):
         return observation
 
     @abstractmethod
+    def transform_actionProbs(self, action: int) -> int:
+        return action
+
     def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
-        action_probs = []
+        action_probs = self.agent.get_action(obs, Prob=True)
         return action_probs
     
