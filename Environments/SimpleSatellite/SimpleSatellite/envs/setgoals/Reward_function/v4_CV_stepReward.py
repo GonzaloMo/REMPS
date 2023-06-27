@@ -269,8 +269,12 @@ def R_0(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] < 0 and not sim.Valid_action:
-            return -.01
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
+        
         if Power < 0:
             return -100
         elif Power < 25:
@@ -314,8 +318,11 @@ def R_1(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] < 0 and not sim.Valid_action:
-            return -.01
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
         if Power < 0:
             return -100
         elif Power < 25:
@@ -361,8 +368,11 @@ def R_2(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] < 0 and not sim.Valid_action:
-            return -.01
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
         if Power < 0:
             return -100
         elif Power < 25:
@@ -411,8 +421,11 @@ def R_3(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] < 0 and not sim.Valid_action:
-            return -.01
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
         if Power < 0:
             return -100
         elif Power < 25:
@@ -462,8 +475,11 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] < 0 and not sim.Valid_action:
-            return -.01
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
         if Power < 0:
             return -100
         elif Power < 25:
@@ -508,8 +524,11 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] < 0 and not sim.Valid_action:
-            return -.01
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
         if Power < 0:
             return -100
         elif Power < 25:
