@@ -5,7 +5,7 @@ Author: Gonzalo Montesino Valle
 Email: gonzalo.montesino-valle@strath.ac.uk
 """
 from abc import ABC, abstractmethod
-from typing import Dict, List, Tuple, Union, Any
+from typing import Dict, List, Tuple, Union, Any, Callable
 from gym import spaces
 import numpy as np
 from Architecture.ArbiterVoices.Voice import Voice
@@ -15,12 +15,18 @@ class Arbiter(ABC):
     def __init__(self, 
                 n_actions: int, 
                 Voices: List[Voice] = None,
+                Policy: Union[str, Callable] = "greedy",
                 ):
         self.n_actions = n_actions
         if Voices is None:
             Voices = []
         self.Voices = Voices
         self.n_Voice = len(Voices)
+        self.policy = Policy
+
+        assert self.policy in ["greedy", "stochastic"] or callable(self.policy), "Policy must be 'greedy', 'stochastic' or a function"
+        assert self.n_actions > 0, "Number of actions must be greater than 0"
+
 
     def addVoice(self, voice):
         self.Voices.append(voice)
@@ -29,15 +35,22 @@ class Arbiter(ABC):
         self.Voices.remove(voice)
     
     def getAction(self, obs: Dict[str, Any]) -> List[int]:
-        
+        # get action probabilities
         action_probs = np.zeros((self.n_actions, ))
-        for voice in enumerate(self.Voices):
+        eta = self.get_eta(obs)
+        for i, voice in enumerate(self.Voices):
             pi_v = voice.getActionProbs(obs)
-            eta_v = self.get_eta(obs)
-            action_probs += pi_v * eta_v
-
-
-
+            action_probs += pi_v * eta[i]
+        theta = self.getTheta(obs)
+        action_probs = theta * action_probs
+        # get action
+        if type(self.policy) == str:
+            if self.policy.lower() == "greedy":
+                action = np.argmax(action_probs)
+            elif self.policy.lower() == "stochastic":
+                action = np.random.choice(np.arange(self.n_actions), p=action_probs)
+        else:
+            action = self.policy(action_probs)
         return action
     
     @abstractmethod
