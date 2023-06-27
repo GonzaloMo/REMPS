@@ -1,5 +1,6 @@
-# RL Agent 
-This package is a RL agent made to solve gym.Env environments. It is based on the [RLlib](https://ray.readthedocs.io/en/latest/rllib.html) framework.
+# Architecture
+This Package is the implementation of the arbiter architecture. It contains the following modules:
+
 ## Installation
 To install the agent you need to install the following dependencies:
 ```

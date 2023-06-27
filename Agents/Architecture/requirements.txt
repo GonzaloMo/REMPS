@@ -1,0 +1,11 @@
+gym==0.26.2
+ifaddr==0.1.6
+ipython==8.14.0
+matplotlib==3.1.2
+numpy==1.17.4
+pyrsistent==0.15.5
+python_igraph==0.10.4
+PyYAML==6.0
+ray==2.0.1
+setuptools==45.2.0
+torch==2.0.1
