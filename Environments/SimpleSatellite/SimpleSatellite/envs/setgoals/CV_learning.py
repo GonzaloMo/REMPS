@@ -27,7 +27,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         self.task_dificulty = 0
         self.config = deepcopy(main_config)
         
-        if type(config_files["Reward_Function"]) == list:
+        if type(config_files["Reward_Function"]) == list and len(config_files["Reward_Function"]) > 1:
             self.Reward_list_names = config_files["Reward_Function"]
             Reward_name = self.Reward_list_names[0]
             self.Reward_name = Reward_name
@@ -121,90 +121,131 @@ class CV_CallBack(DefaultCallbacks):
         super().__init__(*args, **kwargs)
         self.begin_epi_dificulty = 0
         self.Reward_vec = []
+        self.percentage_of_goals = []
         self.max_size = 100
         self.Task_change = False
         self.task = 0
     
-
+    
     def on_train_result(self, algorithm, result, **kwargs):
+
         tot_epi = result["episodes_total"]
         mean_epi_reward = result["episode_reward_mean"]
-        
-        max_difficulty = max(max(algorithm.workers.foreach_worker(
-                            lambda ev: ev.foreach_env(
-                                lambda env: env.max_difficulty))))
+        CV_type = algorithm.workers.foreach_worker(lambda ev: ev.foreach_env(lambda env: env.CV_type))[1][1]
+        ############ Type of CV ################
+        if CV_type == "Reward":
+            ##    Step Reward  ##########################
+            max_difficulty = max(max(algorithm.workers.foreach_worker(
+                                lambda ev: ev.foreach_env(
+                                    lambda env: env.max_difficulty))))
+            n = len(self.Reward_vec)
+            if "percentage_of_goals_mean" in result["custom_metrics"].keys():
+                per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
+            else:
+                per_goals = -1
+            if n < self.max_size:
+                self.Reward_vec.append(mean_epi_reward)
+                self.percentage_of_goals.append(per_goals)
+                mean_error = 10.
+                result["custom_metrics"]["mean_error"] = 0
+            else:
+                self.Reward_vec.pop(0)
+                self.Reward_vec.append(mean_epi_reward)
+                self.percentage_of_goals.pop(0)
+                self.percentage_of_goals.append(per_goals)
+                range_limit = int(self.max_size//10)
+                mean_error = np.abs(np.mean(self.Reward_vec[-range_limit:]) - np.mean(self.Reward_vec[:range_limit]))/np.abs(np.mean(self.Reward_vec[:range_limit]))
+                result["custom_metrics"]["mean_error"] = mean_error
 
-        n = len(self.Reward_vec)
-        if n < self.max_size:
-            self.Reward_vec.append(mean_epi_reward)
-            mean_error = 10.
-            result["custom_metrics"]["mean_error"] = 0
-        else:
-            self.Reward_vec.pop(0)
-            self.Reward_vec.append(mean_epi_reward)
-            range_limit = int(self.max_size//10)
-            mean_error = np.abs(np.mean(self.Reward_vec[-range_limit:]) - np.mean(self.Reward_vec[:range_limit]))/np.abs(np.mean(self.Reward_vec[:range_limit]))
-            result["custom_metrics"]["mean_error"] = mean_error
-
-
-        if "percentage_of_goals_mean" in result["custom_metrics"].keys():
-            per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
-        else:
-            per_goals = -1
-    
-        tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
-        previous_difficulty = deepcopy(self.task)
-        minmum_epi = 100000
-        
-        Conditions = [tot_epi_dificulty > minmum_epi, mean_error<.01, mean_epi_reward>0, self.task < max_difficulty]
-        mean_error_old = deepcopy(mean_error)
-        if  (tot_epi_dificulty > minmum_epi \
-                and mean_error<.01  \
-                and mean_epi_reward>0 \
-                and self.task < max_difficulty) or \
-            (tot_epi_dificulty > 5*minmum_epi) :
+            tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
+            previous_difficulty = deepcopy(self.task)
+            minmum_epi = 100000
+            Conditions = [tot_epi_dificulty > minmum_epi, mean_error<.01, mean_epi_reward>0, self.task < max_difficulty]
+            mean_error_old = deepcopy(mean_error)
             
-            self.Reward_vec = []
-            mean_error = 10.
-            self.begin_epi_dificulty = deepcopy(tot_epi)
-            algorithm.save( f"./Task_{self.task}")
-            self.Task_change = 0
-            self.task+=1
-            self.Task_change = True
+            if  (tot_epi_dificulty > minmum_epi \
+                    and mean_error<.01  \
+                    and mean_epi_reward>0 \
+                    and self.task < max_difficulty) or \
+                (tot_epi_dificulty > 5*minmum_epi 
+                    and self.task < max_difficulty):
+                
+                self.Reward_vec = []
+                mean_error = 10.
+                self.begin_epi_dificulty = deepcopy(tot_epi)
+                algorithm.save( f"./Task_{self.task}")
+                self.Task_change = 0
+                self.task+=1
+                self.Task_change = True
 
-        task = self.task
-        algorithm.workers.foreach_worker(
-            lambda ev: ev.foreach_env(
-                lambda env: env.set_task(task)))
-        
-        result["custom_metrics"]["N_stored_mean_error"] = n
-        result["custom_metrics"]["iteration"] = algorithm.iteration
-        report  = "----------------------------------------------------------------\n"
-        report += f"Episode reward mean: {mean_epi_reward}\n"
-        report += f"Mean error: {mean_error_old}\n"
-        report += f"n: {n}\n"
-        report += f"max_difficulty: {max_difficulty}\n"
-        report += f"Percentage of goals: {per_goals}\n"
-        report += f"Total episode: {tot_epi}\n"
-        report += f"Total episode difficulty: {tot_epi_dificulty}\n"
-        report += f"Current difficulty: {previous_difficulty}\n"
-        report += f"Setting env to dificulty: {task}\n"
-        report += f"Conditions: \n"
-        for i, cond in enumerate(Conditions):
-            report += f"  {i}: {cond}\n"
-        if self.Task_change:
-            task_vector = algorithm.workers.foreach_worker(lambda ev: ev.foreach_env(lambda env: env.get_task()))
-            report += f"Task vector: \n"
-            for i, tsk in enumerate(task_vector):
-                report += f"  {i}: {tsk}\n"
-        report += "----------------------------------------------------------------\n"
+            task = self.task
+            algorithm.workers.foreach_worker(
+                lambda ev: ev.foreach_env(
+                    lambda env: env.set_task(task)))
+            
+            result["custom_metrics"]["N_stored_mean_error"] = n
+            result["custom_metrics"]["iteration"] = algorithm.iteration
+            report  = "----------------------------------------------------------------\n"
+            report += f"Episode reward mean: {mean_epi_reward}\n"
+            report += f"Mean error: {mean_error_old}\n"
+            report += f"n: {n}\n"
+            report += f"max_difficulty: {max_difficulty}\n"
+            report += f"Percentage of goals: {per_goals}\n"
+            report += f"Total episode: {tot_epi}\n"
+            report += f"Total episode difficulty: {tot_epi_dificulty}\n"
+            report += f"Current difficulty: {previous_difficulty}\n"
+            report += f"Setting env to dificulty: {task}\n"
+            report += f"Conditions: \n"
+            for i, cond in enumerate(Conditions):
+                report += f"  {i}: {cond}\n"
+            if self.Task_change:
+                task_vector = algorithm.workers.foreach_worker(lambda ev: ev.foreach_env(lambda env: env.get_task()))
+                report += f"Task vector: \n"
+                for i, tsk in enumerate(task_vector):
+                    report += f"  {i}: {tsk}\n"
+            report += "----------------------------------------------------------------\n"
+        else:
+            ##    Config Reward  ##########################
+            tot_epi = result["episodes_total"]
+            mean_epi_reward = result["episode_reward_mean"]
+            max_difficulty = max(max(algorithm.workers.foreach_worker(
+                                lambda ev: ev.foreach_env(
+                                    lambda env: env.max_difficulty))))
+            max_target = max(max(algorithm.workers.foreach_worker(
+                                lambda ev: ev.foreach_env(
+                                    lambda env: env.max_difficulty))))
+            
+            tot_epi_dificulty = tot_epi - self.begin_epi_dificulty
+            previous_difficulty = deepcopy(self.task)      
+            if  (mean_epi_reward > (max_target*35) \
+                    and self.task < max_difficulty):
+                self.begin_epi_dificulty = deepcopy(tot_epi)
+                algorithm.save( f"./Task_{self.task}")
+                self.Task_change = 0
+                self.task+=1
+                self.Task_change = True
+
+            task = self.task
+            algorithm.workers.foreach_worker(
+                lambda ev: ev.foreach_env(
+                    lambda env: env.set_task(task)))
+            result["custom_metrics"]["iteration"] = algorithm.iteration
+            report  = "----------------------------------------------------------------\n"
+            report += f"Episode reward mean: {mean_epi_reward}\n"
+            report += f"max_difficulty: {max_difficulty}\n"
+            report += f"max_target: {max_target}\n"
+            report += f"Total episode: {tot_epi}\n"
+            report += f"Total episode difficulty: {tot_epi_dificulty}\n"
+            report += f"Current difficulty: {previous_difficulty}\n"
+            report += f"Setting env to dificulty: {task}\n"
+            report += "----------------------------------------------------------------\n"
+        ####################################
         if self.Task_change:
             with open("./logs_CV.txt", "a") as f:
                 f.write(report)
         print(report)
         
         self.Task_change = False
-    
     
     def on_episode_end(self, *, worker, base_env, policies, episode, env_index: int,**kwargs) -> None:
         env = base_env.get_sub_environments()[env_index]

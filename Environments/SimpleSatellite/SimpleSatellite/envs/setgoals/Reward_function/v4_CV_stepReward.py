@@ -247,7 +247,6 @@ def Reward_bullseye(env: gym.Env, action_in: Tuple[int,int]):
 def R_0(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
-    period = env.SatSim.period
     if check_action:
         # Get action and observation 
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
@@ -279,22 +278,16 @@ def R_0(env: gym.Env, action_in: Tuple[int,int]):
             return -100
         elif Power < 25:
             return -.01
-    return 0.001
+    return 0.01
 
 # Learn to take pictures, and reduce benefits of Idle
 def R_1(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
-    period = env.SatSim.period
     if check_action:
         # Get action and observation 
-        obs = env.get_obs()
-        Memory_pic = obs["Images"] * env.initial_goals
-        Memrory_analysed = obs["Analysis"][0] * env.initial_goals
         goals = env.goals
         # images in memory
-        goals_pic_mem = np.array([max(0,goals[i] - Memory_pic[i]) for i in range(len(goals))])
-        goals_analysed_mem = np.array([max(0,goals[i] - Memrory_analysed[i]) for i in range(len(goals))])
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             # Reward for taking a picture of a goal
             return 1
@@ -319,7 +312,7 @@ def R_1(env: gym.Env, action_in: Tuple[int,int]):
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
         if sim.POWER_CONSUMPTION[compMode] > 0: 
-            return .01
+            return .1
         else: 
             if not sim.Valid_action:
                 return -.01
@@ -327,7 +320,7 @@ def R_1(env: gym.Env, action_in: Tuple[int,int]):
             return -100
         elif Power < 25:
             return -.01
-    return 0
+    return 0.001
 
 # Learn to analyze pictures
 def R_2(env: gym.Env, action_in: Tuple[int,int]):
@@ -432,7 +425,7 @@ def R_3(env: gym.Env, action_in: Tuple[int,int]):
             return -.01
     return -.001
 
-# Learn to reduce Idle time
+# Final Reward Function 
 def R_4(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
@@ -446,63 +439,8 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
         # images in memory
         goals_pic_mem = np.array([max(0,goals[i] - Memory_pic[i]) for i in range(len(goals))])
         goals_analysed_mem = np.array([max(0,goals[i] - Memrory_analysed[i]) for i in range(len(goals))])
-        if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            # Reward for taking a picture of a goal
-            if goals_pic_mem[img-1] > 0:
-                return  2
-            else:
-                return 1
-        elif action == SatelliteSim.ACTION_ANALYSE:
-            if goals_analysed_mem[img-1] > 0:
-                return 6
-            else:
-                return 1
-        elif action == SatelliteSim.ACTION_DUMP:
-            if goals[img-1] > 0:
-                return 18
-            else:
-                return 1
-            
-    # Check Power level
-    if env.SatSim.POWER_OPTION:
-        sim = deepcopy(env.SatSim)
-        Power = deepcopy(sim.Power)
-        compMode = sim.ACTION_NAMES[sim.Taking_action]
-        if compMode == "DN" :
-            if (sim.check_light() > 0):
-                compMode = "PowerGenerationRate"
-            else:
-                compMode = "NoGenRate"
-        Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
-
-        if sim.POWER_CONSUMPTION[compMode] > 0: 
-            return .01
-        else: 
-            if not sim.Valid_action:
-                return -.01
-        if Power < 0:
-            return -100
-        elif Power < 25:
-            return -.01
-    return -.001
-
-def R_4(env: gym.Env, action_in: Tuple[int,int]):
-    action, img = action_in
-    check_action, _ = env.SatSim.check_action(action,img)
-    period = env.SatSim.period
-    if check_action:
-        # Get action and observation 
-        obs = env.get_obs()
-        Memory_pic = obs["Images"] * env.initial_goals
-        Memrory_analysed = obs["Analysis"][0] * env.initial_goals
-        goals = env.goals
-        # images in memory
-        goals_pic_mem = np.array([max(0,goals[i] - Memory_pic[i]) for i in range(len(goals))])
-        goals_analysed_mem = np.array([max(0,goals[i] - Memrory_analysed[i]) for i in range(len(goals))])
-        if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            # Reward for taking a picture of a goal
-            if goals_pic_mem[img-1] > 0:
-                return  5
+        if goals_pic_mem[img-1] > 0:
+                return 5
 
         elif action == SatelliteSim.ACTION_ANALYSE:
             if goals_analysed_mem[img-1] > 0:
@@ -534,3 +472,4 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
         elif Power < 25:
             return -.01
     return -.001
+
