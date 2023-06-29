@@ -27,7 +27,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
         self.task_dificulty = 0
         self.config = deepcopy(main_config)
         
-        if type(config_files["Reward_Function"]) == list and len(config_files["Reward_Function"]) > 1:
+        if type(config_files["Reward_Function"]) == list:
             self.Reward_list_names = config_files["Reward_Function"]
             Reward_name = self.Reward_list_names[0]
             self.Reward_name = Reward_name

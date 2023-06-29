@@ -439,9 +439,9 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
         # images in memory
         goals_pic_mem = np.array([max(0,goals[i] - Memory_pic[i]) for i in range(len(goals))])
         goals_analysed_mem = np.array([max(0,goals[i] - Memrory_analysed[i]) for i in range(len(goals))])
-        if goals_pic_mem[img-1] > 0:
-                return 5
-
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            if goals_pic_mem[img-1] > 0:
+                    return 5
         elif action == SatelliteSim.ACTION_ANALYSE:
             if goals_analysed_mem[img-1] > 0:
                 return 12

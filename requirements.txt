@@ -16,3 +16,4 @@ scikit-image==0.19.2
 tqdm==4.63.0
 xlsxwriter==3.0.8
 pyarrow==11.0.0
+torchviz==0.0.2

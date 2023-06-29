@@ -528,5 +528,6 @@ class Base_Simple_satellite(gym.Env):
                             "Light Range": [list(targ) for targ in self.SatSim.light_matrix],
                             "Memory Size": self.SatSim.MEMORY_SIZE,
                             "N_Repeat": self.SatSim.N_repeating_orbits,
+                            "Action Duration": self.SatSim.DURATIONS,
                             }
         return self.EpisodeConfig
