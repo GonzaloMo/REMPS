@@ -65,6 +65,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                 self.Reward_list.append(getattr(self.Reward_module, reward_name))
 
     def difficulty(self, task_dificulty):
+        print(f"Setting dificulty to {task_dificulty} of {self.max_difficulty} rewards {self.Reward_list_names}")
         if self.CV_type == "Reward":
             self.Reward_name = self.Reward_list_names[task_dificulty]
             # with open("./logs_CV.txt", "a") as f:
@@ -74,6 +75,7 @@ class CurriculumEnv(Simple_satellite, TaskSettableEnv):
                 # f.write(f"Reward: {self.Reward_list[task_dificulty]}\n")
                 # f.write("----------------------------------------------------------------\n")
             self.Reward = getattr(self.Reward_module, self.Reward_name)
+            print(f"Reward: {self.Reward}")
         elif self.CV_type == "Config":
             self.config.update(self.difficulty_config[task_dificulty])
             config = deepcopy(self.config)
@@ -138,6 +140,10 @@ class CV_CallBack(DefaultCallbacks):
             max_difficulty = max(max(algorithm.workers.foreach_worker(
                                 lambda ev: ev.foreach_env(
                                     lambda env: env.max_difficulty))))
+            Reward_name = algorithm.workers.foreach_worker(
+                                lambda ev: ev.foreach_env(
+                                    lambda env: env.Reward_name))[1][1]
+            print(f"Reward name: {Reward_name}")
             n = len(self.Reward_vec)
             if "percentage_of_goals_mean" in result["custom_metrics"].keys():
                 per_goals = result["custom_metrics"]["percentage_of_goals_mean"]
@@ -198,11 +204,6 @@ class CV_CallBack(DefaultCallbacks):
             report += f"Conditions: \n"
             for i, cond in enumerate(Conditions):
                 report += f"  {i}: {cond}\n"
-            if self.Task_change:
-                task_vector = algorithm.workers.foreach_worker(lambda ev: ev.foreach_env(lambda env: env.get_task()))
-                report += f"Task vector: \n"
-                for i, tsk in enumerate(task_vector):
-                    report += f"  {i}: {tsk}\n"
             report += "----------------------------------------------------------------\n"
         else:
             ##    Config Reward  ##########################
