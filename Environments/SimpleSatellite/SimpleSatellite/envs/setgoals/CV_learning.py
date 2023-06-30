@@ -248,12 +248,6 @@ class CV_CallBack(DefaultCallbacks):
         
         self.Task_change = False
     
-    def on_episode_end(self, *, worker, base_env, policies, episode, env_index: int,**kwargs) -> None:
-        env = base_env.get_sub_environments()[env_index]
-        percentage_of_goals = (1- np.sum(env.goals)/np.sum(env.initial_goals))
-        episode.custom_metrics["percentage_of_goals"] = percentage_of_goals
-        return super().on_episode_end(worker=worker, base_env=base_env, policies=policies, episode=episode, env_index=env_index, **kwargs)
-    
     def on_episode_step(self, *, worker, base_env, episode, env_index, **kwargs) -> None:
         env = base_env.get_sub_environments()[env_index]
         episode.custom_metrics["task_difficulty"] = env.get_task()

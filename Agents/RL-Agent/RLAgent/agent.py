@@ -10,6 +10,7 @@ from copy import deepcopy
 from datetime import datetime
 from RLAgent.Utils.tune import env_creator
 from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
+from RLAgent.Utils.rllib import PG_callback
 import numpy as np
 
 
@@ -99,11 +100,12 @@ class RAY_agent:
         self.localdir = training_config["local_dir"] + "/" + Training["name"]
 
         self.save_config()
+        training_config["config"]["callbacks"] = [PG_callback]
         if "CV" in Environment["env"]:
             training_config["config"]["env"] = CurriculumEnv
             training_config["config"]["env_config"] = {**Environment["Env_setup"], "local_dir": self.localdir}
             training_config["config"]["env_task_fn"] = curriculum_fn
-            training_config["config"]["callbacks"] = CV_CallBack
+            training_config["config"]["callbacks"].append(CV_CallBack)
         if recover is not None:
             training_config["restore"] = self.getChkPath(recover, specific_chk)
         self.analysis = ray.tune.run(self.agent, **training_config)
