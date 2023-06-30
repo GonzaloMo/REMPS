@@ -8,7 +8,6 @@ from ray import tune
 from time import sleep
 from copy import deepcopy
 from datetime import datetime
-from RLAgent.Utils.tune import env_creator
 from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
 from RLAgent.Utils.rllib import PG_callback
 import numpy as np
@@ -64,9 +63,11 @@ class RAY_agent:
         self.algo_name = Algorithm
 
     def setupEnvironment(self, env: str, Env_setup: Dict, **kwargs):
-        from ray.tune.registry import register_env
-        register_env(env, env_creator)
-        self.Env_congif = {"env": env, "Env_setup": Env_setup}
+        if type(Env_setup) == str:
+            Env_setup = Env_setup.replace("./", f"{os.getcwd()}/")
+            with open(Env_setup, "r") as f:
+                Env_setup = yaml.load(f, Loader=yaml.FullLoader)
+        self.Env_congif = {"env": env, "Env_setup": Env_setup, **kwargs}
 
     def setupTraining(self, config: Dict, train: bool=True, **kwargs):
         if train:
@@ -100,13 +101,19 @@ class RAY_agent:
         self.localdir = training_config["local_dir"] + "/" + Training["name"]
 
         self.save_config()
-        training_config["config"]["callbacks"] = [PG_callback]
+        
         if "CV" in Environment["env"]:
             training_config["config"]["env"] = CurriculumEnv
             training_config["config"]["env_config"] = {**Environment["Env_setup"], "local_dir": self.localdir}
             training_config["config"]["env_task_fn"] = curriculum_fn
-            training_config["config"]["callbacks"].append(CV_CallBack)
+            training_config["config"]["callbacks"] = CV_CallBack
+        else:
+            training_config["config"]["env"] = Environment["env"]
+            training_config["config"]["env_config"] = Environment
+            training_config["config"]["callbacks"] = PG_callback
         if recover is not None:
+            exec("from ray.tune.registry import register_env")
+            exec("register_env(env, env_creator)")
             training_config["restore"] = self.getChkPath(recover, specific_chk)
         self.analysis = ray.tune.run(self.agent, **training_config)
 
