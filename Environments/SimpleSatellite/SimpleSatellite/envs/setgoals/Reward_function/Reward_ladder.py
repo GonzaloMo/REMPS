@@ -25,7 +25,7 @@ def R_0(env: gym.Env, action_in: Tuple[int,int]):
                 return 1000
             return 9
     else:
-        reward -= .01
+        reward -= .1
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)
@@ -39,7 +39,7 @@ def R_0(env: gym.Env, action_in: Tuple[int,int]):
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
         if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
-            return .1 
+            reward += .1 
         if Power < 0:
             return -100
         elif Power < 25:
