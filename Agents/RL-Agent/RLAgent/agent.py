@@ -208,6 +208,8 @@ class RAY_agent:
     def getChkPath(self, path, specific_chk):
         from RLAgent.Utils.helpers import get_checkpoints
         root_folders, checkpoints_all = get_checkpoints(path)
+        if len(checkpoints_all) == 0:
+            raise ValueError(f"No checkpoints found in {path}")
         for i, ch in enumerate(checkpoints_all):
             folderdir_ = deepcopy(root_folders[i]).split('/')[-2]
             if "task" in folderdir_.lower():
