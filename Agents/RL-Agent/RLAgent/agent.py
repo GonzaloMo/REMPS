@@ -8,6 +8,7 @@ from ray import tune
 from time import sleep
 from copy import deepcopy
 from datetime import datetime
+from RLAgent.Utils.tune import env_creator
 from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
 from RLAgent.Utils.rllib import PG_callback
 import numpy as np
@@ -112,8 +113,8 @@ class RAY_agent:
             training_config["config"]["env_config"] = Environment
             training_config["config"]["callbacks"] = PG_callback
         if recover is not None:
-            exec("from ray.tune.registry import register_env")
-            exec("register_env(env, env_creator)")
+            from ray.tune.registry import register_env
+            exec("register_env(env, env_creator)",{"register_env": register_env}, {"env": Environment["env"], "env_creator": env_creator})
             training_config["restore"] = self.getChkPath(recover, specific_chk)
         self.analysis = ray.tune.run(self.agent, **training_config)
 
