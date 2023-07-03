@@ -9,6 +9,7 @@ def Reward_test(env: gym.Env, action_in: Tuple[int,int]):
     check_action, _ = env.SatSim.check_action(action,img)
     reward = 0
     init_goals = env.initial_goals
+    done = False
     goals_after_action = deepcopy(env.goals)
     # All goals achieved terminate episode
     if check_action:
@@ -38,5 +39,5 @@ def Reward_test(env: gym.Env, action_in: Tuple[int,int]):
             return -10
 
     if done:
-        reward += np.sum(goals_after_action)/np.sum(init_goals)
+        reward += (1 - np.sum(goals_after_action)/np.sum(init_goals))
     return reward
