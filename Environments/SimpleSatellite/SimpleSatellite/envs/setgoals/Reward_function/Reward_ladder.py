@@ -54,18 +54,18 @@ def R_1(env: gym.Env, action_in: Tuple[int,int]):
     if check_action:
         # Get action and observation 
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
-            return 1
+            return 10
         elif action == SatelliteSim.ACTION_ANALYSE:
-            return 3
+            return 10
         elif action == SatelliteSim.ACTION_DUMP:
             goals = deepcopy(env.goals)
             goals[img-1] -= 1
             if np.sum(goals) == 0:
                 return 1000
             if goals[img-1] > -.5:
-                return 12
+                return 50
             else:
-                return 1
+                return 10
     else:
         reward -= .01
     # Check Power level
@@ -81,7 +81,7 @@ def R_1(env: gym.Env, action_in: Tuple[int,int]):
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
         if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
-            return .001 
+            return .01 
         if Power < 0:
             return -100
         elif Power < 25:
@@ -137,23 +137,34 @@ def R_3(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
     reward = 0
+    # Max orbits reached terminate episode
+    pos = env.SatSim.orbit_pos + env.SatSim.velocity*env.SatSim.dt
+    if pos > env.SatSim.CIRCUNFERENCE:   
+        if env.SatSim.orbit + 1 >= env.SatSim.MAX_ORBITS:
+           init_goals = env.initial_goals
+           goals_after_action = deepcopy(env.goals)
+           reward = np.sum(goals_after_action)/np.sum(init_goals)
     if check_action:
         # Get action and observation 
         goals = deepcopy(env.goals)
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             if goals[img-1] > 0:
-                return  4
+                return  10 + reward
             else:
-                return 1
+                return 1 + reward
         elif action == SatelliteSim.ACTION_ANALYSE:
             if goals[img-1] > 0:
-                return 8
+                return 20 + reward
+            else:
+                return 1 + reward
         elif action == SatelliteSim.ACTION_DUMP:
             goals[img-1] -= 1
             if np.sum(goals) == 0:
-                return 1000
+                return 1000 + reward
             if goals[img-1] > -.5:
-                return 12
+                return 30 + reward
+            else:
+                return 1 + reward
     else:
         reward -= .01
     # Check Power level
@@ -169,11 +180,12 @@ def R_3(env: gym.Env, action_in: Tuple[int,int]):
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
         if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
-            return .001 
+            return .001 + reward 
         if Power < 0:
-            return -100
+            return -100 + reward
         elif Power < 25:
-            return -.01
+            return -.1 + reward
+        
     return reward
 
 # Only action that take you to the goal are rewarded
@@ -181,24 +193,36 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
     reward = 0
+    # Max orbits reached terminate episode
+    pos = env.SatSim.orbit_pos + env.SatSim.velocity*env.SatSim.dt
+    if pos > env.SatSim.CIRCUNFERENCE:   
+        if env.SatSim.orbit + 1 >= env.SatSim.MAX_ORBITS:
+           init_goals = env.initial_goals
+           goals_after_action = deepcopy(env.goals)
+           reward = 1000*np.sum(goals_after_action)/np.sum(init_goals)
     if check_action:
         # Get action and observation 
         goals = deepcopy(env.goals)
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             if goals[img-1] > 0:
-                return  4
+                return  10 + reward
+            else:
+                return 1 + reward
         elif action == SatelliteSim.ACTION_ANALYSE:
             if goals[img-1] > 0:
-                return 8
+                return 20 + reward
+            else:
+                return 1 + reward
         elif action == SatelliteSim.ACTION_DUMP:
             goals[img-1] -= 1
             if np.sum(goals) == 0:
-                return 1000
+                return 1000 + reward
             if goals[img-1] > -.5:
-                return 12
+                return 40 + reward
+            else:
+                return 1 + reward
     else:
         reward -= .01
-            
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)
@@ -211,12 +235,13 @@ def R_4(env: gym.Env, action_in: Tuple[int,int]):
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
 
-        if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
-            return .001 
+        # if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
+        #     return .001 + reward 
         if Power < 0:
-            return -100
+            return -100 + reward
         elif Power < 25:
-            return -.01
+            return -.1 + reward
+        
     return reward
 
 
