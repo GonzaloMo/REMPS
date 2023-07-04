@@ -5,6 +5,7 @@ import SimpleWorld
 import curses
 import yaml
 import sys
+from copy import deepcopy
 from time import sleep
 from tqdm import tqdm
 from Utils.test_utils import *
@@ -31,32 +32,60 @@ if pObs:
     console.keypad(True)
 with open(config_file, "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
-action_input = {"w": 0, "s": 1, "a": 2, "d": 3, "q": "q"}
+
+action_input = []
 
 env = gym.make(env_name,**config)
+action_input = []
+action_list_render = "\n"
+for i in range(0, len(env.action_list), 2):
+    action_input.append(i)
+    action_input.append(i+1)
+    action_list_render += f"{i}: {env.action_list[i]:<20} {i+1}: {env.action_list[i+1]}\n"
+action_input.append("q")
+if "CV" in env_name:
+    difficulty = 0
+    env.set_task(difficulty)
 for epi in tqdm(range(n_test)):
+    n_timestep = 0
     observation = env.reset()
     env.render(render_type=render)
     done = False
     episode_reward = 0
     exitloop = False
-    action_info = {"Last Action": " ", "Actions": " "}
-    info = {**action_info, "Instant Reward":  0,"Reward": 0}
+    action_info = {"Action": "", "Last Action": " ", "Actions List": action_list_render}
+    info = [action_info, observation, {"Instant Reward":  0,"Reward": 0}]
     last_action = " "
     if pObs:
-        console =  print_obs(observation, console, other_info=info) # , stp=env.sim.grid_size)
+        console =  print_obs(info, console) # , stp=env.sim.grid_size)
     while not done:
         if inAct:
-            
-            action_in = console.getstr(26,21, 2).decode(encoding="utf-8")
-            if action_in in action_input.keys():
-                action = action_input[action_in]
+            if "Busy" in observation.keys():
+                if observation["Busy"] == 1:
+                    action_in = 0
+                else:
+                    action_in = None
+            if action_in is None:
+                if n_timestep > 0:
+                    n_timestep -= 1
+                    action_in = 0
+                else:
+                    action_in = console.getstr(1,21, 4).decode(encoding="utf-8")
+                    if action_in == "q":
+                        exitloop = True
+                        break
+                    elif action_in[0] == "0" and len(action_in) > 1:
+                        n_timestep = int(action_in[1:])
+                        action_in = 0
+                    else:
+                        n_timestep = 0
+                        action_in = int(action_in)
+            action = action_input[action_in]
+            action_info["Action"] = " "
         else:
             action = env.action_space.sample()
+            action_info["Action"] = env.action_list[int(action)]
         
-        if action == "q":
-            exitloop = True
-            break
         
         if action < env.action_space.n:
             if last_action == " ":
@@ -64,22 +93,25 @@ for epi in tqdm(range(n_test)):
             else:
                 last_action = env.action_list[int(last_action)]
             action_info["Last Action"] = last_action
-            action_info["Actions"] = env.action_list[int(action)]
+            
             last_action = action
             observation, reward, done, info_env = env.step(action)
             action_name = env.action_list[action]
             episode_reward += reward
-            info = {**action_info, "Instant Reward":  reward,"Reward": episode_reward, **info_env}
+            info = [action_info, observation, {"Reward Type": env.Reward_name,  "Instant Reward":  reward,"Reward": episode_reward}, info_env]
             if pObs:
-                console =  print_obs(observation, 
+                console =  print_obs(info, 
                                     console, 
-                                    other_info=info, 
                                     )
                 console.refresh()
             
             env.render(render_type=render)
         else:
             last_action = "Not Valid Action"
+    if "CV" in env_name:
+        difficulty += 1
+        env.set_task(difficulty)
+    sleep(1)
     env.quit()
     if exitloop:
         break

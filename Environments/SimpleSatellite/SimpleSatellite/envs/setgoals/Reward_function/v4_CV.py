@@ -78,7 +78,6 @@ def Reward_v1(env: gym.Env, action_in: Tuple[int,int]):
         reward -= .0001
     return reward
 
-
 def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     done = False
     reward = 0
@@ -150,7 +149,6 @@ def Reward_v2(env: gym.Env, action_in: Tuple[int,int]):
     elif obs["Memory Level"] > 0.8:
         reward -= .0001
     return reward
-
 
 def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
     done = False
@@ -299,7 +297,6 @@ def Reward_v3(env: gym.Env, action_in: Tuple[int,int]):
         reward -= .00001
     return reward
 
-
 def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
     done = False
     reward = 0
@@ -367,3 +364,55 @@ def Reward_v4(env: gym.Env, action_in: Tuple[int,int]):
     elif obs["Memory Level"] > 0.8:
         reward -= .0001
     return reward
+
+
+#####################################################################################################################################
+##                                              Reward Config Change                                                               ##
+#####################################################################################################################################
+
+def R_F(env: gym.Env, action_in: Tuple[int,int]):
+    action, img = action_in
+    check_action, _ = env.SatSim.check_action(action,img)
+    period = env.SatSim.period
+    if check_action:
+        # Get action and observation 
+        obs = env.get_obs()
+        Memory_pic = obs["Images"] * env.initial_goals
+        Memrory_analysed = obs["Analysis"][0] * env.initial_goals
+        goals = env.goals
+        # images in memory
+        goals_pic_mem = np.array([max(0,goals[i] - Memory_pic[i]) for i in range(len(goals))])
+        goals_analysed_mem = np.array([max(0,goals[i] - Memrory_analysed[i]) for i in range(len(goals))])
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            # Reward for taking a picture of a goal
+            if goals_pic_mem[img-1] > 0:
+                return 5
+        elif action == SatelliteSim.ACTION_ANALYSE:
+            if goals_analysed_mem[img-1] > 0:
+                return 10
+        elif action == SatelliteSim.ACTION_DUMP:
+            if goals[img-1] > 0:
+                return 20
+            
+    # Check Power level
+    if env.SatSim.POWER_OPTION:
+        sim = deepcopy(env.SatSim)
+        Power = deepcopy(sim.Power)
+        compMode = sim.ACTION_NAMES[sim.Taking_action]
+        if compMode == "DN" :
+            if (sim.check_light() > 0):
+                compMode = "PowerGenerationRate"
+            else:
+                compMode = "NoGenRate"
+        Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
+
+        if sim.POWER_CONSUMPTION[compMode] > 0: 
+            return .01
+        else: 
+            if not sim.Valid_action:
+                return -.01
+        if Power < 0:
+            return -100
+        elif Power < 25:
+            return -.01
+    return -.001

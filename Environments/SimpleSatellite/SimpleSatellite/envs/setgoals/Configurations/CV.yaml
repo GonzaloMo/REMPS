@@ -9,4 +9,4 @@ config_files:
       # "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_5.yaml",
       # "./SimpleSatellite/SimpleSatellite/envs/setgoals/Configurations/curriculum_learning/Dif_6.yaml",
   ]
-  Reward_Function: ["Reward_0", "Reward_1",]
+  Reward_Function: ["Reward_0_1", "Reward_1", "Reward_2",]

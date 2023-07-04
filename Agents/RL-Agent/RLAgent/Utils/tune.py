@@ -33,9 +33,14 @@ def env_creator(env_config: Dict={"env": "SimpleSatellite-setgoals-v0", "Env_set
     split_env_name = env_config["env"].split("-")
     module_name = ".".join([split_env_name[0], "envs", split_env_name[1], "Reward_function", split_env_name[2]])
     Rewards = importlib.import_module(module_name, package=None)
-    config = deepcopy(env_config["Env_setup"])
+    if type(env_config["Env_setup"]) == str:
+        env_config["Env_setup"] = env_config["Env_setup"].replace("./", f"{current_dir}/")
+        import yaml
+        with open(env_config["Env_setup"], "r") as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
+    else:
+        config = deepcopy(env_config["Env_setup"])
     config["Reward"] = getattr(Rewards, env_config["Reward_Function"])
-    config["Log_dir"] = env_config["Log_dir"]
     MyEnv = gym.make(env_config["env"], **config)
     return MyEnv  # return an env instance
 
@@ -44,6 +49,7 @@ def env_creator(env_config: Dict={"env": "SimpleSatellite-setgoals-v0", "Env_set
 #############################################################################################################################
         
 from ray.rllib.agents.ppo import PPOTrainer, APPOTrainer
+from ray.rllib.algorithms.alpha_zero import AlphaZeroConfig
 import torch
 from torch.utils.tensorboard import SummaryWriter
 import tensorflow as tf
@@ -54,7 +60,14 @@ class PPO(PPOTrainer):
 
 class APPO(APPOTrainer):
     def __init__(self, *args, **kwargs):
-        print("APPO init")
+        
+        print("APPO init/n")
+        super().__init__(*args, **kwargs)
+
+class APPO(APPOTrainer):
+    def __init__(self, *args, **kwargs):
+        
+        print("APPO init/n")
         super().__init__(*args, **kwargs)
 
 

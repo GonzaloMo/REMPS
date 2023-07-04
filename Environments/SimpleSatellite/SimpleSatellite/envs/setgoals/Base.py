@@ -31,6 +31,7 @@ class Base_Simple_satellite(gym.Env):
             Log_dir: str = "./Logs/Simulation/",
             Max_image_goals_per_target: int = 10,
             simulation_version: str = "v1",
+            generatetelemetry: bool = False,
             **kwargs
             ) -> None:
         """
@@ -47,6 +48,7 @@ class Base_Simple_satellite(gym.Env):
         # set true so initialization is only done once
         self.first_render = True
         self.Log_dir = Log_dir
+        self.generateTelemetry = generatetelemetry
         
 
         # save the satelite enviroment
@@ -468,3 +470,64 @@ class Base_Simple_satellite(gym.Env):
     def quit(self) -> None:
         pass
         
+    
+    def InitTelemetry(self):
+        """
+        Initialize the telemetry of the environment
+        """
+        self.telemetry = {
+                        "action": [],
+                        "Valid Action": [],
+                        "Orbit": [],
+                        "Pos": [],
+                        "Busy": [],
+                        "Memory Level": [],
+                        "Analysis": [],
+                        "Images": [],
+                        "Goals": [],
+                        "Power": [],
+                        }
+    
+    def StoreTelemetry(self, action: int):
+        """
+        Store the telemetry of the environment
+        """
+        state = self.SatSim.get_state()
+        self.telemetry["action"].append(int(action))
+        self.telemetry["Valid Action"].append(self.SatSim.Valid_action)
+        self.telemetry["Orbit"].append(state["Orbit"])
+        self.telemetry["Pos"].append(self.SatSim.orbit_pos + state["Orbit"]*360)
+        self.telemetry["Busy"].append(state["Busy"])
+        self.telemetry["Memory Level"].append(state["Memory Level"])
+        self.telemetry["Analysis"].append([ int(i) for i in state["Analysis"]])
+        self.telemetry["Images"].append([ int(i) for i in state["Images"]])
+        self.telemetry["Goals"].append([ int(i) for i in self.goals])
+        self.telemetry["Power"].append(state["Power"])
+    
+    def get_telemetry(self):
+        """
+        Get the telemetry of the environment
+        """
+        return self.telemetry
+    
+    def get_EpisodeConfig(self):
+        """
+        Get the episode configuration
+        """
+        return self.EpisodeConfig
+    
+    def getEpisodeConfig(self):
+        """
+        Get the initial configuration
+        """
+        self.EpisodeConfig = {
+                            "action_list": list(self.action_list),
+                            "Initial Goals": list(self.initial_goals),
+                            "Targets": [list(targ) for targ in self.SatSim.target_matrix],
+                            "Ground Stations": [list(gs) for gs in self.SatSim.GS_matrix],
+                            "Light Range": [list(targ) for targ in self.SatSim.light_matrix],
+                            "Memory Size": self.SatSim.MEMORY_SIZE,
+                            "N_Repeat": self.SatSim.N_repeating_orbits,
+                            "Action Duration": self.SatSim.DURATIONS,
+                            }
+        return self.EpisodeConfig

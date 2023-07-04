@@ -49,14 +49,14 @@ class Simple_satellite(Base_Simple_satellite):
         n_gs = self.SatSim.n_gs
         max_inf = np.inf
         obs_space = {
+                    'Pos':             spaces.Box(low=-1, high=1., shape=(1,), dtype=np.float32), # current position from 0 to 1
                     'Orbit':           spaces.Box(low=0., high=1., shape=(1,), dtype=np.float32), # current orbit position
-                    'Pos':             spaces.Box(low=-1, high=1., shape=(2,), dtype=np.float32), # current angular position
                     'Busy':            spaces.Box(low=0, high=1, shape=(1,), dtype=np.int32),# spaces.Discrete(2),# busy or not 
                     'Memory Level':    spaces.Box(low=0, high=1., shape=(1,), dtype=np.float32), # memory used %/100
                     'Images':          spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.float32),# n images per target taken
                     'Analysis':        spaces.Box(low=0, high=max_inf, shape=(n_targets,), dtype=np.float32), # n images per target analyzed
-                    'Targets':         spaces.Box(low=-1, high=1., shape=(n_targets*4,), dtype=np.float32), # target initial and final position in cos,sin
-                    'Ground Stations': spaces.Box(low=-1, high=1., shape=(n_gs*4,), dtype=np.float32), # ground station initial and final position in cos,sin
+                    'Targets':         spaces.Box(low=-1, high=1., shape=(n_targets,), dtype=np.float32), # target initial and final position in cos,sin
+                    'Ground Stations': spaces.Box(low=-1, high=1., shape=(n_gs,), dtype=np.float32), # ground station initial and final position in cos,sin
                     'Goals':           spaces.Box(low=0., high=1., shape=(n_targets,), dtype=np.float32), # percentage of goals achieved
                     'Eclipse':         spaces.Box(low=0., high=1., shape=(2,), dtype=np.float32), # Is it in light or not
                     } 
@@ -99,8 +99,6 @@ class Simple_satellite(Base_Simple_satellite):
         self.done = done
         observation = self.get_obs()
         # self.print_obs_shape_compare(observation, self.observation_space)
-        if self.generateTelemetry:
-            self.StoreTelemetry(action)
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:
@@ -119,8 +117,6 @@ class Simple_satellite(Base_Simple_satellite):
         self.goals = self.generate_goals()
         self.initial_goals = self.goals.copy()
         observation = self.get_obs()
-        if self.generateTelemetry:
-            self.InitTelemetry()
         return observation
         
 
@@ -134,17 +130,17 @@ class Simple_satellite(Base_Simple_satellite):
         """
         state = self.SatSim.get_state()
         pos = state["Pos"]
-        orbit_ = state["Orbit"]%self.SatSim.N_repeating_orbits / self.SatSim.N_repeating_orbits
         observation = { 
                         "Orbit": np.array([state["Orbit"]/self.SatSim.MAX_ORBITS], dtype=np.float32),
-                        "Pos": self.pos_to_sin_and_cos(pos),
+                        "Pos": np.array([(pos % 360)/360], dtype=np.float32),
                         "Busy": np.array([state["Busy"]] , dtype=np.int32),
                         "Memory Level": np.array([state["Memory Level"]/self.SatSim.MEMORY_SIZE], dtype=np.float32),
                         "Analysis": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
                         "Images": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
-                        "Targets": self.pos_to_sin_and_cos(state["Targets"]).flatten(),
-                        "Ground Stations": self.pos_to_sin_and_cos(state["Ground Stations"]).flatten(),
+                        "Targets": self.time2window(pos, state["Targets"]),
+                        "Ground Stations": self.time2window(pos, state["Ground Stations"]),
                         "Goals": np.zeros((self.SatSim.n_targets,), dtype=np.float32),
+                        "Eclipse": self.time2window(pos, [state["Eclipse"][0]]),
                         }
         imgs = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
         anls = np.zeros((self.SatSim.n_targets,), dtype=np.float32)
@@ -163,10 +159,26 @@ class Simple_satellite(Base_Simple_satellite):
 
         
 
-        # Check if the satellite is in light
-        observation["Eclipse"] = np.array(self.SatSim.check_time_of_eclipse(), dtype=np.float32)
-        # light_range = self.pos_to_sin_and_cos(state["Eclipse"][0]).flatten()
-        # observation["Eclipse"] = np.array(light_range, dtype=np.float32)
         if self.SatSim.POWER_OPTION:
             observation["Power"] = np.array([state["Power"]/100], dtype=np.float32)
         return observation
+    
+    def time2window(self, position: float, windows: List[int]) -> List[int]:
+        pos = position % 360
+        modified_windows = []
+        for window in windows:
+            if window[0] < pos < window[1]:
+                dpos = (window[1]% 360 - pos)
+                if dpos < 0:
+                    dpos += 360
+                time_left = dpos/360
+            else:
+                dpos = (pos - window[0]% 360)
+                if dpos > 0:
+                    dpos -= 360
+                time_left = dpos/360
+
+            modified_windows.append(time_left)
+        
+        return np.array(modified_windows)
+

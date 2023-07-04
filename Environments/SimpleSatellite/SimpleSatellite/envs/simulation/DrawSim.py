@@ -177,7 +177,7 @@ class SatelliteView:
                 img_text = self.text_digits[image-1]
             else:
                 # add info is the img
-                if sim.satellite_busy_time > 0 and action == SatelliteSim.ACTION_TAKE_IMAGE and (not Slotfound):
+                if sim.satellite_busy_time > 0 and action == SatelliteSim.ACTION_TAKE_IMAGE and (not Slotfound) and type(add_info) == int:
                     c1, c2 = SatelliteView.WHITE, SatelliteView.ORANGE
                     t = sim.satellite_busy_time/sim.DURATION_TAKE_IMAGE
                     panelColor = self.transitionColor(c1,c2,t)

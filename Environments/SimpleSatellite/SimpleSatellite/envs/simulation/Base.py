@@ -74,6 +74,7 @@ class SatelliteSim_Base:
             done: if the simulation is has been terminated.
         """
         done = False
+        self.Valid_action = False
         self.action_taken_list.append(action)
         self.check_visibility()
         # update time variables
@@ -93,21 +94,19 @@ class SatelliteSim_Base:
         if self.pos > SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits:
             self.pos -=  SatelliteSim_Base.CIRCUNFERENCE*self.N_repeating_orbits
             
-
-        
-
         # update the satellite state
         if self.satellite_busy_time > 0:
             self.busy = 1
         else:
-            if self.busy==1:
+            if self.busy==1 or (self.satellite_busy_time + self.dt > 0 and self.satellite_busy_time <= 0):
                 self.apply_effect()
                 self.Taking_action = SatelliteSim_Base.ACTION_DO_NOTHING
                 self.last_action = (0, None)
                 self.Taking_action_tuple = (0, None)
             # take action
-            self.apply_action(action)
             self.busy = 0
+            self.apply_action(action)
+            
 
         # Power update
         if self.POWER_OPTION:
@@ -172,6 +171,8 @@ class SatelliteSim_Base:
         self.analysis = [False] * self.MEMORY_SIZE
         self.satellite_busy_time = 0
         self.busy = 0
+        self.Valid_action = False
+        self.action_taken = False
 
         # update Eclipse
         self.Eclipse_generator()
@@ -290,8 +291,8 @@ class SatelliteSim_Base:
                 'Pos': self.pos,
                 'Busy': self.busy,
                 'Memory Level': self.memory_level,
-                'Images': self.images,
-                'Analysis': self.analysis,
+                'Images': np.array(self.images, dtype=int),
+                'Analysis': np.array(self.analysis, dtype=int),
                 'Targets': self.targets,
                 'Ground Stations': self.groundStations,
                 'Eclipse': [self.light_range, self.umbra_range],
@@ -359,7 +360,6 @@ class SatelliteSim_Base:
         Args:
             action: the action to be taken. 
         """
-        self.action_taken = False
         if len(action_in) == 1:
             action = action_in
             img = None
@@ -369,22 +369,33 @@ class SatelliteSim_Base:
         if action==SatelliteSim_Base.ACTION_DO_NOTHING or action==None:
             return
         check, add_info = self.check_action(action, img)
+        #! Next to lines are new maybe need to change to seperate version Linked with function change in line
+        self.satellite_busy_time = self.DURATIONS[action]
+        self.busy = 1
+        self.last_action = (action, add_info)
+        self.Taking_action = action
+        self.Taking_action_tuple = action_in
+        self.action_taken = False
+        #! End of new lines
         if not check and add_info in self.Failures["No Action Taken"]:
             return
         else:
             # take action
+            # Previous Version
+            # self.satellite_busy_time = self.DURATIONS[action]
+            # self.busy = 1
+            # self.last_action = (action, add_info)
+            # self.Taking_action = action
+            # self.Taking_action_tuple = action_in
+            self.Valid_action = True
             self.action_taken = True
-            self.last_action = (action, add_info)
-            self.satellite_busy_time = self.DURATIONS[action]
-            self.Taking_action = action
-            self.Taking_action_tuple = action_in
-            self.busy = 1
             return
             
     def apply_effect(self):
         action, add_info = self.last_action
         if not isinstance(add_info,str): 
             # Take picture action
+            self.Valid_action = False
             if action == SatelliteSim_Base.ACTION_TAKE_IMAGE:
                 # Check free location in the memory
                 if self.Underterministic_actions["TP"] < np.random.rand():
