@@ -14,16 +14,27 @@ import numpy as np
 class Voice(ABC):
 
     def __init__(self,
-                 agent, 
-                 n_actions: int,
-                 action_space: List[int],
-                 Obs_space: Dict[str, Any],
+                 agent=None, 
+                 n_actions: int=None,
+                 action_space: List[int]=None,
+                 Obs_space: Dict[str, Any]=None,
                  name: str = None,
                  ):
+        """
+        Initialize the Voice class
+        
+        Parameters
+        ----------
+        agent : Agent, optional. Base agent Class. The default is None.
+        n_actions : int, optional. Total number of actions. The default is None.
+        action_space : List[bool], optional. List of actions values. The default is None.
+        Obs_space : Dict[str, Any], optional. Observation space dictionary. The default is None.
+        name : str, optional. Name of the voice. The default is None.
+        """
 
         self.agent = agent
-        self.n_actions = n_actions
         self.action_space = action_space
+        self.n_actions = n_actions
         self.Obs_space = Obs_space
         if name is None:
             name = self.agent.name
@@ -42,4 +53,3 @@ class Voice(ABC):
     def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
         _, action_probs = self.agent.get_action(obs, Prob=True)
         return self.transform_actionProbs(action_probs)
-    
