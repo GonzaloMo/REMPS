@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple, Union, Any, Callable
 import numpy as np
 import gym
 
-class Arbiter_SimpleSatellite(Arbiter):
+class setGoalsv4(Arbiter):
     def __init__(self,  
                 env: gym.Env,
                 Voices: List[Voice] = None,
@@ -23,7 +23,8 @@ class Arbiter_SimpleSatellite(Arbiter):
                 Theta[a] = 1
             else:
                 Theta[a] = 0
-        return np.ones((self.n_actions, ))
+        Theta[0] = .5 # discourange no idle action
+        return Theta
     
     def getEta(self, obs: Dict[str, Any]) -> np.ndarray:
         """

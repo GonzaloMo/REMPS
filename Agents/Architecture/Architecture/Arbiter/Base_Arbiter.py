@@ -31,9 +31,11 @@ class Arbiter(ABC):
 
     def addVoice(self, voice):
         self.Voices.append(voice)
+        self.n_Voice += 1
     
     def removeVoice(self, voice):
         self.Voices.remove(voice)
+        self.n_Voice -= 1
     
     def getAction(self, obs: Dict[str, Any]) -> List[int]:
         # get action probabilities
@@ -81,3 +83,6 @@ class Arbiter(ABC):
         """
         eta = np.ones((self.n_Voice, ))/self.n_Voice
         return eta
+
+
+# Serach in a list a certian point

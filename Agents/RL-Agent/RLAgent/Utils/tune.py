@@ -55,19 +55,10 @@ from torch.utils.tensorboard import SummaryWriter
 import tensorflow as tf
 class PPO(PPOTrainer):
     def __init__(self, *args, **kwargs):
-        print("PPO init")
         super().__init__(*args, **kwargs)
 
 class APPO(APPOTrainer):
     def __init__(self, *args, **kwargs):
-        
-        print("APPO init/n")
-        super().__init__(*args, **kwargs)
-
-class APPO(APPOTrainer):
-    def __init__(self, *args, **kwargs):
-        
-        print("APPO init/n")
         super().__init__(*args, **kwargs)
 
 

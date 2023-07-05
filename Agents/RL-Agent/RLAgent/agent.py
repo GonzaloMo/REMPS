@@ -172,15 +172,14 @@ class RAY_agent:
                 config["env_task_fn"] = curriculum_fn
                 config["callbacks"] = CV_CallBack
             else:
+                from ray.tune.registry import register_env
+                exec("register_env(env, env_creator)",{"register_env": register_env}, {"env": self.Env_congif["env"], "env_creator": env_creator})
                 config["env"] = self.Env_congif["env"]
                 config["env_config"] = self.Env_congif
         self.agent = self.agent(config=config)
         self.agent.restore(checkpoint_path=checkpoint_path)
     
     def setTestMode(self):
-        print("Setting test mode")
-        print("WARNING: This will change the number of workers to 0")
-        print(f"{self.Agent_config}")
         self.Agent_config["config"]["num_workers"] = 0
         self.Agent_config["config"]["num_envs_per_worker"] = 1
 
@@ -212,10 +211,11 @@ class RAY_agent:
             raise ValueError(f"No checkpoints found in {path}")
         for i, ch in enumerate(checkpoints_all):
             folderdir_ = deepcopy(root_folders[i]).split('/')[-2]
-            if "task" in folderdir_.lower():
-                print(f"{i}: {ch} - {folderdir_} End")
-            else:
-                print(f"{i}: {ch}")
+            if specific_chk:
+                if "task" in folderdir_.lower():
+                    print(f"{i}: {ch} - {folderdir_} End")
+                else:
+                    print(f"{i}: {ch}")
         if specific_chk:
             answer = input("Select checkpoint: ")
             assert answer.isdigit(), "Must input an integer"
