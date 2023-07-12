@@ -45,6 +45,7 @@ class Gridworld_planfollowing_env(gym.Env):
         self.n_planner_obstacles = n_planner_obstacles
         self.Missing_actions = Missing_actions
         self.reward = Reward
+        self.Reward_name = Reward.__name__
 
         # Action space
         self.actions, self.num_action, self.action_dict = self.env.actions, self.env.num_action, self.env.action_dict

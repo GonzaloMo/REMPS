@@ -60,26 +60,33 @@ for epi in tqdm(range(n_test)):
         console =  print_obs(info, console) # , stp=env.sim.grid_size)
     while not done:
         if inAct:
-            if "Busy" in observation.keys():
+            action_in = None
+            if type(observation) == dict and "Busy" in observation.keys():
                 if observation["Busy"] == 1:
                     action_in = 0
-                else:
-                    action_in = None
             if action_in is None:
                 if n_timestep > 0:
                     n_timestep -= 1
                     action_in = 0
                 else:
-                    action_in = console.getstr(1,21, 4).decode(encoding="utf-8")
-                    if action_in == "q":
-                        exitloop = True
-                        break
-                    elif action_in[0] == "0" and len(action_in) > 1:
-                        n_timestep = int(action_in[1:])
-                        action_in = 0
-                    else:
-                        n_timestep = 0
-                        action_in = int(action_in)
+                    Correct_action = False
+                    while not Correct_action:
+                        if pObs:
+                            action_in = console.getstr(1,21, 4).decode(encoding="utf-8")
+                        else:
+                            action_in = input(f"Action {action_list_render} ")
+                        if action_in == "q":
+                            if pObs:
+                                curses.endwin() 
+                            exit()
+                        elif action_in[0] == "0" and len(action_in) > 1:
+                            n_timestep = int(action_in[1:])
+                            action_in = 0
+                        else:
+                            n_timestep = 0
+                            action_in = int(action_in)
+                            if int(action_in) < len(action_input):
+                                Correct_action = True
             action = action_input[action_in]
             action_info["Action"] = " "
         else:

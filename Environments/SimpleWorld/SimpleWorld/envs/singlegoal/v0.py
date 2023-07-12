@@ -32,6 +32,7 @@ class Gridworld_singlegoal_env(gym.Env):
         reward_name = f"Reward_{Reward}"
         reward_list = list(vars(reward_module).keys())
         assert reward_name in reward_list, f"Reward function {Reward} is not register as Reward function in SimpleWorld"
+        self.Reward_name = reward_name
         self.reward = getattr(reward_module, reward_name)
         SimModule = import_module(Simulation_Versions[SimV])
         self.sim = SimModule.Gridworld(**kwargs)
@@ -56,9 +57,10 @@ class Gridworld_singlegoal_env(gym.Env):
         self.observation_space = spaces.Dict({'Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32)})  
 
     def step(self, action):
-        done = self.move(action)
+        
         self.timestep +=1
         reward = self.reward(self, action)
+        done = self.move(action)
         observation = self.get_obs()
         info = {}
         return observation, reward, done, info
