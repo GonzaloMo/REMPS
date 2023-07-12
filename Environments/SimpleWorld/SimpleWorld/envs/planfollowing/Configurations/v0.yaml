@@ -2,8 +2,8 @@
 env: SimpleWorld-sinlgegoal-v0
 env_setup:
   SimV: "v1"
-  n_obstacle_range: [0, 10]
-  grid_size: 10
+  n_obstacle_range: [50, 100]
+  grid_size: 20
   NDAO: 
     Distance: 3
     Probability: .0
@@ -12,7 +12,7 @@ Missing_actions:
   Probability: 0.
   Number: 0
 
-n_planner_obstacles: [30, 40]
+n_planner_obstacles: [250, 350]
 
 plannerConfig:
 

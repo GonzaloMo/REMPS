@@ -24,9 +24,10 @@ def actionDistribution2Probabilities(ActionDistribution, type="softmax"):
     elif type == "sigmoid":
         from scipy.special import expit
         probs = np.array(expit(ActionDistribution), dtype=float)
+        
     else:
         raise ValueError(f"Type {type} not supported")
-    return list(probs)
+    return probs.tolist()
 
 def get_checkpoints(root_dir):
     checkpoints = []
