@@ -16,7 +16,7 @@ class Planner_CallBack(DefaultCallbacks):
         env_index= None,
         **kwargs,):
         if "set_planner_name" in sub_environment.__dict__.keys():
-            planner_name = f"planner_{env_index}"
+            planner_name = f"planner_{worker.worker_index}_{env_index}"
             sub_environment.set_planner_name(planner_name)
 
 

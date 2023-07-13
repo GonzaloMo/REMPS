@@ -20,6 +20,7 @@ class Gridworld_singlegoal_env(gym.Env):
                  Reward = "v0",
                  SimV="v0", 
                  n_obstacle_range=[0,80], 
+                 max_timestep=100,
                  NDAO = {
                         "Distance": 3,
                         "Probability": .0,
@@ -33,6 +34,7 @@ class Gridworld_singlegoal_env(gym.Env):
         reward_list = list(vars(reward_module).keys())
         assert reward_name in reward_list, f"Reward function {Reward} is not register as Reward function in SimpleWorld"
         self.Reward_name = reward_name
+        self.max_timestep = max_timestep
         self.reward = getattr(reward_module, reward_name)
         SimModule = import_module(Simulation_Versions[SimV])
         self.sim = SimModule.Gridworld(**kwargs)
@@ -63,6 +65,8 @@ class Gridworld_singlegoal_env(gym.Env):
         done = self.move(action)
         observation = self.get_obs()
         info = {}
+        if self.timestep >= self.max_timestep:
+            done = True
         return observation, reward, done, info
     
     def reset(self):
