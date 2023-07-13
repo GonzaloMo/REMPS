@@ -44,6 +44,8 @@ class Gridworld_planfollowing_env(gym.Env):
         self.agent = PDDLPlanner.Planner(self.env, name=name, **plannerConfig)
         self.n_planner_obstacles = n_planner_obstacles
         self.Missing_actions = Missing_actions
+        if type(Reward) == str:
+            Reward = getattr(import_module(f"SimpleWorld.envs.planfollowing.Reward_function.v0"), Reward)
         self.reward = Reward
         self.Reward_name = Reward.__name__
 

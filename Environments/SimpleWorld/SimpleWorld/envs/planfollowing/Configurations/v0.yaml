@@ -1,9 +1,12 @@
 
 env: SimpleWorld-sinlgegoal-v0
+Reward: Reward_v1
+name: Planner_
 env_setup:
   SimV: "v1"
-  n_obstacle_range: [50, 100]
-  grid_size: 20
+  n_obstacle_range: [0, 30]
+  max_timesteps: 200
+  grid_size: 10
   NDAO: 
     Distance: 3
     Probability: .0
@@ -12,7 +15,7 @@ Missing_actions:
   Probability: 0.
   Number: 0
 
-n_planner_obstacles: [250, 350]
+n_planner_obstacles: [10, 60]
 
 plannerConfig:
 
@@ -26,7 +29,7 @@ plannerConfig:
   wait_time: 10
 
   # verbose level of the planner
-  verbose: True
+  verbose: False
 
   # Planner settings
   planner_setup: 
