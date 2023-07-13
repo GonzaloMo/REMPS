@@ -11,7 +11,7 @@ import random
 import pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from time import sleep
-from SimpleWorld.envs.planfollowing.Reward_function.v0 import Reward_v0
+from SimpleWorld.envs.planfollowing.Reward_function.v0 import Reward_Test
 direc = "/".join(str(__file__).split("/")[:-2]) 
 # /home/ksb21109/Documents/PhD/REMPS/Environments/SimpleWorld/SimpleWorld/envs/singlegoal/v0.py
 with open(f"{direc}/Simulation/simulationVersions.yaml", "r") as f:
@@ -21,7 +21,7 @@ class Gridworld_planfollowing_env(gym.Env):
     def __init__(self,
 
                 name="Planner_0",
-                Reward=Reward_v0,
+                Reward=Reward_Test,
                 env_name="SimpleWorld-singlegoal-v0",
                 env_setup={}, 
                 n_planner_obstacles= [],
@@ -45,6 +45,7 @@ class Gridworld_planfollowing_env(gym.Env):
         self.n_planner_obstacles = n_planner_obstacles
         self.Missing_actions = Missing_actions
         if type(Reward) == str:
+            print(f"Loading reward function {Reward}")
             Reward = getattr(import_module(f"SimpleWorld.envs.planfollowing.Reward_function.v0"), Reward)
         self.reward = Reward
         self.Reward_name = Reward.__name__
