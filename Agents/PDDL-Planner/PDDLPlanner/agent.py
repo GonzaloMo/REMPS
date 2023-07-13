@@ -58,7 +58,6 @@ class Planner:
         # Plan
         self.Plan_file = self.planner_dir + f"/Plans/{name}.txt"
         self.Read_Plan = getattr(manager_lib, "read_Plan")
-        self.create_folders()
     
     def generateDomain(self, setup: Dict[str, Any] = None):
         self.Write_Domain(setup, self.Domain_file)
