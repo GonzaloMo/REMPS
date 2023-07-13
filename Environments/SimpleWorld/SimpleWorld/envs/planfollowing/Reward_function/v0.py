@@ -46,10 +46,11 @@ def Reward_v1(env, action_in):
     pos = env.pos
     x, y = pos
     blocked = False
-    x_n, y_n = np.clip(pos + dpos, 0, grid_size-1)
+    x_n, y_n = pos + dpos
     if x_n < 0 or x_n >= grid_size or y_n < 0 or y_n >= grid_size:
         blocked = True
         reward =  -1
+    x_n, y_n = np.clip(pos + dpos, 0, grid_size-1)
     if Map[x_n][y_n] == env.sim.obstacleTag:
         blocked = True
         reward =  -1
@@ -63,5 +64,5 @@ def Reward_v1(env, action_in):
         if X_nn == x_n and Y_nn == y_n:
             reward += 2
         reward += 1
-    info = {}
+    info = {"x_n": x_n, "y_n": y_n, "blocked": blocked, "reward": reward, "next_pos": next_pos, "pos": pos, "dpos": dpos, "Map": Map, "Map_plan": Map_plan, "action": action_in}
     return reward, info
