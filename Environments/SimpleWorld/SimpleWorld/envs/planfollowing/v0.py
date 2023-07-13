@@ -114,27 +114,16 @@ class Gridworld_planfollowing_env(gym.Env):
     
     def render(self, render_type="PYGAME"):
         if not render_type == "":
-            self.sim.full_Render(self.Map, render_type=render_type, path=[a.getEffects().tolist() for a in self.plan])
+            self.sim.full_Render(self.Map, render_type=render_type)
             if render_type == "PYGAME":
+                plan = [self.pos] + [a.getEffects() for a in self.plan]
+                print(plan)
+                self.sim.render_path(plan, colorname="r")
                 pygame.display.flip()
         sleep(.1)
 
     def quit(self):
         pass
-
-    def move(self, action):
-        done = False
-        new_pos = np.clip(self.pos - np.array(self.action_pos_dict[action]), a_min=0, a_max=self.sim.grid_size-1)
-        i, j = self.pos
-        i_n, j_n = new_pos
-        if self.Map[i_n, j_n] == self.sim.freeSpaceTag or self.Map[i_n, j_n] == self.sim.goalPositionTag:
-            if self.Map[i_n, j_n] == self.sim.goalPositionTag:
-                done = True
-            self.Map[i,j] = self.sim.freeSpaceTag
-            self.Map[i_n,j_n] = self.sim.positionTag
-            self.pos = [i_n, j_n]
-            return done
-
     
     def trim_plan(self, Map):
         self.info["Trimmed_plan_i"] = "None"
@@ -143,7 +132,8 @@ class Gridworld_planfollowing_env(gym.Env):
                 self.info["Trimmed_plan_i"] = i
                 self.next_plan_state = self.get_next_plan_state(i)
                 self.info["Next_state_trim"] = self.next_plan_state
-                self.plan.pop(i)
+                self.plan = self.plan[i+1:]
+                self.info["self.plan"] = [self.pos] + [a.getEffects() for a in self.plan]
                 break
     
     def get_next_plan_state(self, i, initial=True):

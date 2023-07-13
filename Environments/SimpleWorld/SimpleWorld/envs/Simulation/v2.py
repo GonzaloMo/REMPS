@@ -55,8 +55,10 @@ class Gridworld:
         return Map
     
     def Generate_init_and_Goal(self, Map):
-        start_pos = [0,0]
-        goal_pos = list(np.random.randint(int(self.grid_size/2), high=self.grid_size, size=2))
+        start_pos = list(np.random.randint(0, high=self.grid_size, size=2))
+        goal_pos = list(np.random.randint(0, high=self.grid_size, size=2))
+        while start_pos == goal_pos:
+            goal_pos = list(np.random.randint(0, high=self.grid_size, size=2))
         Map[start_pos[0]][start_pos[1]] = self.positionTag
         Map[goal_pos[0]][goal_pos[1]] = self.goalPositionTag
         return Map, start_pos, goal_pos

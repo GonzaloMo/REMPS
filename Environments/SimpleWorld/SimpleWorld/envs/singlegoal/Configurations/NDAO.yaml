@@ -4,4 +4,4 @@ max_timesteps: 200
 grid_size: 10
 NDAO: 
   Distance: 3
-  Probability: .0
+  Probability: .15

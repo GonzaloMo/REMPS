@@ -200,18 +200,24 @@ class Gridworld:
         block_size = Gridworld.block_size*Gridworld.Scale
         pygame.draw.circle(self.screen, Gridworld.blue, ((pos[0]*block_size)+Gridworld.Scale, (pos[1]*block_size)+Gridworld.Scale), int(0.75*Gridworld.Scale))            
 
-    def render_path(self, path, color='r', width=2):
-        if color == 'b':
-            c = Gridworld.blue
+    def render_path(self, path, color="b", width=2):     
+        if type(color) == str:
+            c = self.ColorStr2RGB(color)   
+            cl = False
         else:
-            c = Gridworld.red
-        
+            cl = True
         block_size = Gridworld.block_size*Gridworld.Scale
-        for i in range(len(path)-1):
-            pygame.draw.line(self.screen, c, (path[i]*block_size)+Gridworld.Scale, (path[i+1]*block_size)+Gridworld.Scale, width=width)
+        for i in range(0, len(path)):
+            if cl:
+                c = self.ColorStr2RGB(color[i])
             x,y = path[i]
             pygame.draw.circle(self.screen, c, ((x*block_size)+Gridworld.Scale, (y*block_size)+Gridworld.Scale), int(Gridworld.Scale*.3))
+            if i > 0:
+                pygame.draw.line(self.screen, c, (path[i-1]*block_size)+Gridworld.Scale, (path[i]*block_size)+Gridworld.Scale, width=width)
+            
 
     def close(self):
         pygame.QUIT
         return
+    
+    

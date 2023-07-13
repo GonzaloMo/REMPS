@@ -1,9 +1,9 @@
 
 env: SimpleWorld-sinlgegoal-v0
-Reward: Reward_v1
+Reward: Reward_1
 name: Planner_
 env_setup:
-  SimV: "v1"
+  SimV: "v2"
   n_obstacle_range: [0, 30]
   max_timesteps: 200
   grid_size: 10
