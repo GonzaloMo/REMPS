@@ -14,6 +14,7 @@ from SimpleSatellite.envs.simulation.DrawSim import SatelliteView
 from SimpleSatellite.envs.setgoals.Base import Base_Simple_satellite
 import pygame
 import random
+from copy import deepcopy
 from datetime import datetime
 
 # import the gym class and spaces
@@ -76,17 +77,22 @@ class Simple_satellite(Base_Simple_satellite):
             done: bool
             info: Dict
         """
+        info = {}
         action_tuple = self.Number2Tuple_action(action)
         # Get Reward
-        reward = self.Reward(self, action_tuple)
+        try :
+            reward, info_rew = self.Reward(self, action_tuple)
+        except:
+            reward = self.Reward(self, action_tuple)
+            info_rew = {}
         # Take action 
-        next_state, truncated = self.SatSim.update(action_tuple)
+        next_state, truncated, info_sim = self.SatSim.update(action_tuple)
         # Goals achieved
+        info["n_dumped"] = self.SatSim.n_images_dumped
         goals = self.initial_goals - np.array(self.SatSim.n_images_dumped)
         goals[goals<0] = 0
-        self.goals = goals
-        self.Total_reward += reward
-        info = {}  
+        self.goals = deepcopy(goals)
+        self.Total_reward += reward 
         # Check episode done
         terminated = False
         if np.all(goals==0):   
@@ -101,6 +107,7 @@ class Simple_satellite(Base_Simple_satellite):
         # self.print_obs_shape_compare(observation, self.observation_space)
         if self.generateTelemetry:
             self.StoreTelemetry(action)
+        info = {**info_sim, **info, **info_rew}
         return observation, reward, done, info
 
     def reset(self) -> Dict[str, Any]:

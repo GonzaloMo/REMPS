@@ -15,9 +15,10 @@ class SatelliteSim(SatelliteSim_Base):
         self.MAX_ORBITS = MAX_ORBITS
     # Remove done if run out of power
     def update(self, action):
+        info = {}
         done = False
         self.Valid_action = False
-        self.action_taken_list.append(action)
+        # self.action_taken_list.append(action)
         self.check_visibility()
         # update time variables
         self.sim_time += self.dt
@@ -41,12 +42,16 @@ class SatelliteSim(SatelliteSim_Base):
             self.busy = 1
         else:
             if self.busy==1 or (self.satellite_busy_time + self.dt > 0 and self.satellite_busy_time <= 0):
+                action_last, action_info = self.last_action
+                info["effects"] = f"Action: {action_last} -> {action_info}"
                 self.apply_effect()
                 self.Taking_action = SatelliteSim_Base.ACTION_DO_NOTHING
                 self.last_action = (0, None)
                 self.Taking_action_tuple = (0, None)
             # take action
             self.busy = 0
+            info["effects"] = f"Action: {self.pos} -> {self.above_gs}"
+            info["GS"] = self.groundStations
             self.apply_action(action)
             
 
@@ -69,7 +74,7 @@ class SatelliteSim(SatelliteSim_Base):
         if self.orbit >= self.MAX_ORBITS:
             done = True
         
-        return state, done
+        return state, done, info
 
     def reset(self, seed: int =None) -> np.ndarray:
         return self.Base_reset(seed=seed)

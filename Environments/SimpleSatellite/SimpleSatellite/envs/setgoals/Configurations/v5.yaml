@@ -3,11 +3,11 @@ action_space_type: "Advance" # "Simple" or "Advance"
 Max_image_goals_per_target: 5
 
 # SIMULATION PARAMETERS
-simulation_version: v1
+simulation_version: v1_2
 # General simulation parameters Parameters
 PERIOD: 600 # in seconds
-N_repeating_orbits: 2
-MAX_ORBITS: 10
+N_repeating_orbits: 5
+MAX_ORBITS: 15
 
 # Satellite parameters
 MEMORY_SIZE: 30 # Memory should be higher than 1 
@@ -25,7 +25,6 @@ Underterministic_actions:  # Values between 0 and 1
 # ACTION_SEED: 0
 
 # Target Generation Parameters
-fixed_windows: False
 Random_Targets: True
 Number_of_targets: 5
 TARGET_HALF_SIZE: 10. 

@@ -5,7 +5,7 @@ All rights reserved
 Authors: Gonzalo Montesino Valle, Michael Cashmore
 """
 from time import sleep
-from typing import List, Callable, Dict, Optional, Tuple, Any
+from typing import List, Callable, Dict, Optional, Tuple, Any, Union
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
@@ -26,7 +26,7 @@ rng = default_rng()
 
 class Base_Simple_satellite(gym.Env):
     def __init__(self,
-            Reward: Callable[[gym.Env, int], float] = default_reward,
+            Reward: Union[str, Callable[[gym.Env, int], float]] = default_reward,
             action_space_type: str = "Simple",
             Log_dir: str = "./Logs/Simulation/",
             Max_image_goals_per_target: int = 10,
@@ -38,7 +38,7 @@ class Base_Simple_satellite(gym.Env):
         Initialize the environment
 
         Input:
-            Reward: Callable[[gym.Env, int], float]
+            Reward: Callable[[gym.Env, int], float, str]
             random: bool
             action_space_type: str
             **kwargs
@@ -89,7 +89,14 @@ class Base_Simple_satellite(gym.Env):
             raise ValueError("action_space_type must be Simple or Advance")
         self.action_list = self.action_list_names
         self.Total_reward = 0
-        self.Reward = Reward
+        if type(Reward) == str:
+            reward_module = importlib.import_module(f"SimpleSatellite.envs.setgoals.Reward_function.v4")
+            assert Reward in dir(reward_module), f"Reward function {Reward} not found in {reward_module}"
+            self.Reward = getattr(reward_module, Reward)
+            self.Reward_name = Reward
+        else:
+            self.Reward = Reward
+            self.Reward_name = Reward.__name__
         
        
     def step(self, action: int) -> Tuple[Dict[str, Any], float, bool, Dict]:

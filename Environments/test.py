@@ -82,6 +82,7 @@ for epi in tqdm(range(n_test)):
                         elif action_in[0] == "0" and len(action_in) > 1:
                             n_timestep = int(action_in[1:])
                             action_in = 0
+                            Correct_action = True
                         else:
                             n_timestep = 0
                             action_in = int(action_in)
@@ -118,7 +119,12 @@ for epi in tqdm(range(n_test)):
     if "CV" in env_name:
         difficulty += 1
         env.set_task(difficulty)
-    sleep(1)
+    if pObs:
+        next_episode = console.getstr(1,21, 4).decode(encoding="utf-8")
+        if not next_episode == "y": 
+            break
+
+
     env.quit()
     if exitloop:
         break

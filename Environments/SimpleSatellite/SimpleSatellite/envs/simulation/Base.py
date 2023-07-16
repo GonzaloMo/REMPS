@@ -75,7 +75,7 @@ class SatelliteSim_Base:
         """
         done = False
         self.Valid_action = False
-        self.action_taken_list.append(action)
+        # self.action_taken_list.append(action)
         self.check_visibility()
         # update time variables
         self.sim_time += self.dt
@@ -163,7 +163,7 @@ class SatelliteSim_Base:
         self.Taking_action = 0
         self.Taking_action_tuple = (0, None)
         self.n_images_dumped = [0] * self.n_targets
-        self.action_taken_list = [0]
+        # self.action_taken_list = [0]
 
         # memory state
         self.memory_level = 0
@@ -215,7 +215,7 @@ class SatelliteSim_Base:
             max_windows = self.n_gs
 
         for i in range(max_windows):
-            if self.pos >= self.target_matrix[current_orbit][i][1]:
+            if self.pos >= window_matrix[current_orbit][i][1]:
                 window_list.append(window_matrix[next_orbit][i])
             else:
                 window_list.append(window_matrix[current_orbit][i])
@@ -507,9 +507,7 @@ class SatelliteSim_Base:
         # Dump picture
         if action == SatelliteSim_Base.ACTION_DUMP:                   
             # check if it is above the ground station
-            if self.above_gs:
-                pass
-            else:
+            if not self.above_gs:
                 return False, "Not above GS" 
 
             # Check if the image is analysed

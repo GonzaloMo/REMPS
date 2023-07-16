@@ -353,6 +353,7 @@ def R_6(env: gym.Env, action_in: Tuple[int,int]):
 
 # bullseye reward on the percentage of the goal achieved
 def R_7(env: gym.Env, action_in: Tuple[int,int]):
+    info = {}
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
     reward = 0
@@ -360,17 +361,20 @@ def R_7(env: gym.Env, action_in: Tuple[int,int]):
         # Get action and observation 
         goals = deepcopy(env.goals)
         goals_after_action = deepcopy(env.goals)
+        info["goals"] = goals
         if action == SatelliteSim.ACTION_TAKE_IMAGE:
             if goals[img-1] > 0:
-                return  5 + reward
+                return  5 + reward, info
         elif action == SatelliteSim.ACTION_ANALYSE:
             if goals[img-1] > 0:
-                return 10 + reward
+                return 10 + reward, info
         elif action == SatelliteSim.ACTION_DUMP:
+            goals_after_action[img-1] = max(0, goals_after_action[img-1]-1)
+            info["goals_after_action"] = goals_after_action
             if np.sum(goals_after_action) == 0:
-                return 4000 + reward
+                return 4000 + reward, info
             if goals[img-1] > 0:
-                return 80 + reward
+                return 80 + reward, info
     else:
         reward -= .01
     # Check Power level
@@ -388,8 +392,8 @@ def R_7(env: gym.Env, action_in: Tuple[int,int]):
         # if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
         #     return .001 + reward 
         if Power < 0:
-            return -100 + reward
+            return -100 + reward, info
         elif Power < 25:
-            return -.1 + reward
+            return -.1 + reward, info
         
-    return -0.001
+    return -0.001, info
