@@ -1,0 +1,4 @@
+SimV: "v2"
+n_obstacle_range: [0, 30]
+n_Goals_range: [5, 10]
+grid_size: 10
