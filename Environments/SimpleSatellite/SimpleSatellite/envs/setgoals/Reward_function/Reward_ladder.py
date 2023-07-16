@@ -352,25 +352,27 @@ def R_6(env: gym.Env, action_in: Tuple[int,int]):
     return -0.001
 
 # bullseye reward on the percentage of the goal achieved
-def R_End(env: gym.Env, action_in: Tuple[int,int]):
+def R_7(env: gym.Env, action_in: Tuple[int,int]):
     action, img = action_in
     check_action, _ = env.SatSim.check_action(action,img)
     reward = 0
-    init_goals = env.initial_goals
-    goals_after_action = deepcopy(env.goals)
-    # All goals achieved terminate episode
     if check_action:
-        if action == SatelliteSim.ACTION_DUMP:
-            # check if all goals are achieved
-            goals_after_action[img-1] -=1
+        # Get action and observation 
+        goals = deepcopy(env.goals)
+        goals_after_action = deepcopy(env.goals)
+        if action == SatelliteSim.ACTION_TAKE_IMAGE:
+            if goals[img-1] > 0:
+                return  5 + reward
+        elif action == SatelliteSim.ACTION_ANALYSE:
+            if goals[img-1] > 0:
+                return 10 + reward
+        elif action == SatelliteSim.ACTION_DUMP:
             if np.sum(goals_after_action) == 0:
-                done = True
-    # Max orbits reached terminate episode
-    pos = env.SatSim.orbit_pos + env.SatSim.velocity*env.SatSim.dt
-    if pos > env.SatSim.CIRCUNFERENCE:   
-        if env.SatSim.orbit + 1 >= env.SatSim.MAX_ORBITS:
-            done = True
-
+                return 4000 + reward
+            if goals[img-1] > 0:
+                return 80 + reward
+    else:
+        reward -= .01
     # Check Power level
     if env.SatSim.POWER_OPTION:
         sim = deepcopy(env.SatSim)
@@ -382,15 +384,12 @@ def R_End(env: gym.Env, action_in: Tuple[int,int]):
             else:
                 compMode = "NoGenRate"
         Power += sim.POWER_CONSUMPTION[compMode]*sim.dt
+
+        # if sim.POWER_CONSUMPTION[compMode] > 0 and Power < 100: 
+        #     return .001 + reward 
         if Power < 0:
-            done = True
-            reward -= 300
+            return -100 + reward
         elif Power < 25:
-            reward -= .01
-        if done:
-            reward += 500*np.sum(goals_after_action)/np.sum(init_goals)
+            return -.1 + reward
         
-        if reward == 0:
-            reward = -.001
-            
-    return reward
+    return -0.001
