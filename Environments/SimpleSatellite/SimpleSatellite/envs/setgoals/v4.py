@@ -86,7 +86,11 @@ class Simple_satellite(Base_Simple_satellite):
             reward = self.Reward(self, action_tuple)
             info_rew = {}
         # Take action 
-        next_state, truncated, info_sim = self.SatSim.update(action_tuple)
+        try:
+            next_state, truncated, info_sim = self.SatSim.update(action_tuple)
+        except:
+            next_state, truncated = self.SatSim.update(action_tuple)
+            info_sim = {}
         # Goals achieved
         info["n_dumped"] = self.SatSim.n_images_dumped
         goals = self.initial_goals - np.array(self.SatSim.n_images_dumped)
@@ -104,7 +108,6 @@ class Simple_satellite(Base_Simple_satellite):
         self.step_count += 1
         self.done = done
         observation = self.get_obs()
-        # self.print_obs_shape_compare(observation, self.observation_space)
         if self.generateTelemetry:
             self.StoreTelemetry(action)
         info = {**info_sim, **info, **info_rew}

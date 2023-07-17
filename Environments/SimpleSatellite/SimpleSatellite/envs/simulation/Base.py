@@ -395,7 +395,6 @@ class SatelliteSim_Base:
         action, add_info = self.last_action
         if not isinstance(add_info,str): 
             # Take picture action
-            self.Valid_action = False
             if action == SatelliteSim_Base.ACTION_TAKE_IMAGE:
                 # Check free location in the memory
                 if self.Underterministic_actions["TP"] < np.random.rand():
