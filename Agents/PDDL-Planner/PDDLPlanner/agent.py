@@ -3,6 +3,7 @@ from copy import copy
 import numpy as np
 import os
 from typing import Dict, List, Tuple, Union, Any
+from copy import deepcopy
 from PDDLPlanner.Utils.planner_utils import generatePlan
 import importlib
 
@@ -66,17 +67,18 @@ class Planner:
         self.Write_Problem(obs, self.Problem_file)
 
     def get_action(self, obs: Dict[str, Any]) -> int:
-        Map = self.observation_handler(obs)
+        obs = self.observation_handler(obs)
         # Check if plan is available
         if self.plan == []:
-            self.plan = self.get_plan(Map)
+            self.plan = self.get_plan(obs)
             if self.plan == []:
                 return self.env.action_space.sample()
             
         action = self.plan[0]
-        check = action.checkPreconditions(Map)
-        pos = np.reshape(np.array(np.where(Map==1)), (2,))
-        info = {"Plan": [str(a) for a in self.plan], "Pos": pos, "precondition": action.getPreconditions(), "Check": np.array([check])}
+        check = action.checkPreconditions(obs)
+        info = {}
+        # pos = np.reshape(np.array(np.where(obs["Map"]==1)), (2,))
+        # info = {"Plan": [str(a) for a in self.plan], "Pos": pos, "precondition": action.getPreconditions(), "Check": np.array([check])}
         if check:
             self.plan.pop(0)
             
@@ -85,13 +87,12 @@ class Planner:
             return self.env.action_space.sample(), info
     
     def observation_handler(self, obs: Dict[str, Any]) -> Dict[str, Any]:
-        grid_size = int(len(obs["Map"])**.5)
-        new_obs = np.reshape(obs["Map"], (grid_size, grid_size))
-        return new_obs
-    
-    def observation_handler(self, obs: Dict[str, Any]) -> Dict[str, Any]:
-        grid_size = int(len(obs["Map"])**.5)
-        new_obs = np.reshape(obs["Map"], (grid_size, grid_size))
+        new_obs = deepcopy(obs)
+        if "Map" in obs:
+            grid_size = int(len(obs["Map"])**.5)
+            new_obs = {"Map": np.reshape(obs["Map"], (grid_size, grid_size))}
+            if "Goal" in obs:
+                new_obs["Goal"] = np.reshape(obs["Goal"], (grid_size, grid_size))
         return new_obs
     
     def get_plan(self, Map) -> List[Any]:
@@ -125,3 +126,5 @@ class Planner:
         self.Problem_file = self.planner_dir + f"/Problems/{name}.pddl"
         self.Plan_file = self.planner_dir + f"/Plans/{name}.txt"
 
+    def reset_episode(self):
+        self.plan = []

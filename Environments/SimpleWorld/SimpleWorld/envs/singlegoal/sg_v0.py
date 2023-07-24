@@ -92,7 +92,7 @@ class Gridworld_singlegoal_env(gym.Env):
             self.sim.full_Render(self.Map, render_type=render_type, **kwargs)
             
             if render_type == "PYGAME":
-                self.sim.render_path(self.path, colorname=self.color_path, **kwargs)
+                self.sim.render_path(self.path, colorname=self.color_path)
                 pygame.display.flip()
         sleep(.1)
 

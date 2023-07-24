@@ -23,6 +23,7 @@ class Gridworld_planfollowing_env(gym.Env):
                 name="Planner_0",
                 Reward=Reward_Test,
                 env_name="SimpleWorld-singlegoal-v0",
+                n_planStates=5,
                 env_setup={}, 
                 n_planner_obstacles= [],
                 Missing_actions = {"Probability": 0.,
@@ -34,6 +35,7 @@ class Gridworld_planfollowing_env(gym.Env):
         super().__init__()
         env_setup = {**env_setup, **kwargs}
         self.env = gym.make(env_name, **env_setup)
+        self.n_planStates = n_planStates
 
         self.sim = self.env.sim
         if "plan_dir" in plannerConfig.keys():
@@ -59,8 +61,7 @@ class Gridworld_planfollowing_env(gym.Env):
         grid_size = self.env.sim.grid_size
         state_shape = (grid_size**2, )
         self.observation_space = spaces.Dict({**self.env.observation_space,
-                                              'Planner_Map': spaces.Box(low=0, high=self.sim.obstacleTag, shape=state_shape, dtype=np.int32),
-                                              'Next_state': spaces.Box(low=0, high=grid_size, shape=(2,), dtype=np.int32),})  
+                                              "Visible_Plan_States": spaces.Box(low=0, high=grid_size, shape=(2*self.n_planStates,), dtype=np.int32),})  
     def step(self, action):
         reward, info_reward = self.reward(self, action)
         _, _, done, info = self.env.step(action)
@@ -93,10 +94,20 @@ class Gridworld_planfollowing_env(gym.Env):
             x, y  = a.getEffects().tolist()
             obs_planner[x][y] = self.sim.goalPositionTag
         obs_env = self.env.get_obs()
+        VisPlanStates = []
+        i = 0
+        while len(VisPlanStates) < self.n_planStates:
+            try:
+                ps = self.plan[i].getEffects().tolist()
+                Map = np.reshape(obs_env["Map"], (self.sim.grid_size, self.sim.grid_size))
+                if not Map[ps[0]][ps[1]] == self.sim.obstacleTag:
+                    VisPlanStates.append(self.plan[i].getEffects().tolist())
+            except:
+                VisPlanStates.append(self.goal_pos)
+            i += 1
         obs = {
                 **obs_env,
-                "Planner_Map": np.array(obs_planner, dtype=np.int32).flatten(),
-                "Next_state": np.array(self.next_plan_state, dtype=np.int32),
+                "Visible_Plan_States": np.array(VisPlanStates, dtype=np.int32).flatten(),
                }
         return obs
     
@@ -117,7 +128,6 @@ class Gridworld_planfollowing_env(gym.Env):
             self.sim.full_Render(self.Map, render_type=render_type)
             if render_type == "PYGAME":
                 plan = [self.pos] + [a.getEffects() for a in self.plan]
-                print(plan)
                 self.sim.render_path(plan, colorname="r")
                 pygame.display.flip()
         sleep(.1)

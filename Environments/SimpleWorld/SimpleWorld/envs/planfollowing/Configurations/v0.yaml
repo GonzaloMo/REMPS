@@ -1,5 +1,6 @@
 
 env: SimpleWorld-sinlgegoal-v0
+n_planStates: 5
 Reward: Reward_1
 name: Planner_
 env_setup:

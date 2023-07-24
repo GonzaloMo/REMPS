@@ -73,13 +73,15 @@ for epi in tqdm(range(n_test)):
                     while not Correct_action:
                         if pObs:
                             action_in = console.getstr(1,21, 4).decode(encoding="utf-8")
+                            while len(action_in)<1:
+                                action_in = console.getstr(1,21, 4).decode(encoding="utf-8")
                         else:
                             action_in = input(f"Action {action_list_render} ")
                         if action_in == "q":
                             if pObs:
                                 curses.endwin() 
                             exit()
-                        elif action_in[0] == "0" and len(action_in) > 1:
+                        elif len(action_in) > 1 and action_in[0] == "0":
                             n_timestep = int(action_in[1:])
                             action_in = 0
                             Correct_action = True
@@ -114,6 +116,7 @@ for epi in tqdm(range(n_test)):
                 console.refresh()
             
             env.render(render_type=render)
+            
         else:
             last_action = "Not Valid Action"
     if "CV" in env_name:

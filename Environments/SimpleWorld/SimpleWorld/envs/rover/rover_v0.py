@@ -21,7 +21,7 @@ class Gridworld_Rover_env(gym.Env):
                  SimV="v0", 
                  Reward="Reward_Test",
                  n_obstacle_range=[0,80], 
-                 n_Goals_range=[2,10], 
+                 Minerals_setup = [2,10], 
                  **kwargs):
         # Initalize Gridworld Sim
 
@@ -30,7 +30,7 @@ class Gridworld_Rover_env(gym.Env):
         self.sim = SimModule.Gridworld(**kwargs)
         self.n_obstacle_range = np.clip(n_obstacle_range, a_min=0, a_max=.6*self.sim.grid_size**2)
         maxGoals = int(.1*self.sim.grid_size**2)
-        self.n_Goals_range = np.clip(n_Goals_range, a_min=0, a_max=maxGoals)
+        self.n_Goals_range = np.clip(Minerals_setup, a_min=0, a_max=maxGoals)
 
         # Action space
         '''Define actions'''
@@ -87,10 +87,12 @@ class Gridworld_Rover_env(gym.Env):
         return obs
 
     
-    def render(self, render_type="ASCII"):
+    def render(self, render_type="ASCII", Premade_path=None):
         if not render_type == "":
             self.sim.full_Render(self.Map, render_type=render_type)
             if render_type == "PYGAME":
+                if Premade_path is not None:
+                    self.sim.render_path(Premade_path, colorname="r")
                 self.render_goals()
                 pygame.display.flip()
         sleep(.1)
@@ -108,6 +110,7 @@ class Gridworld_Rover_env(gym.Env):
         if to_go_value == self.sim.freeSpaceTag or to_go_value == self.sim.goalPositionTag or to_go_value == self.goalTag:
             if self.Map[i_n, j_n] == self.sim.goalPositionTag:
                 done = True
+                self.info = {"Goal Map i_,j_n ": f"{self.GoalMap[i_n, j_n]}"}
             if self.GoalMap[i_n, j_n]:
                 self.info = {"Goal": f"[{i_n},{j_n}]"}
                 self.GoalMap[i_n, j_n] = 0
@@ -135,4 +138,5 @@ class Gridworld_Rover_env(gym.Env):
         block_size = sim.block_size*sim.Scale       
         for loc in self.goals_loc:
             x, y = loc
-            pygame.draw.circle(self.sim.screen, sim.ColorStr2RGB("g"), ((x*block_size)+sim.Scale, (y*block_size)+sim.Scale), int(sim.Scale)*.25)
+            if self.GoalMap[x,y]:
+                pygame.draw.circle(self.sim.screen, sim.ColorStr2RGB("g"), ((x*block_size)+sim.Scale, (y*block_size)+sim.Scale), int(sim.Scale)*.25)

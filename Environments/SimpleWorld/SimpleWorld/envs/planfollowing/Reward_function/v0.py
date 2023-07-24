@@ -8,8 +8,7 @@ def Reward_Test(env, action_in):
     grid_size = env.sim.grid_size
     obs = env.get_obs()
     Map = np.reshape(obs["Map"], (grid_size, grid_size))
-    Map_plan = np.reshape(obs["Planner_Map"], (grid_size, grid_size))
-    next_pos = env.next_plan_state
+    VisiblePalnStates = np.reshape(obs["Visible_Plan_States"], (grid_size, grid_size))
     dpos = env.action_pos_dict[action_in]
     pos = env.pos
     x_n, y_n = pos + dpos
@@ -21,7 +20,7 @@ def Reward_Test(env, action_in):
         
     if Map[x_n][y_n] == env.sim.goalPositionTag:
         return 1, info
-    if Map_plan[x_n][y_n] == env.sim.goalPositionTag:
+    if [x_n, y_n] in VisiblePalnStates:
         return 1, info
     # {"x_n": x_n, "y_n": y_n, "blocked": blocked, "reward": reward, "next_pos": next_pos, "pos": pos, "dpos": dpos, "Map": Map, "Map_plan": Map_plan, "action": action_in}
     return reward, info
@@ -33,7 +32,7 @@ def Reward_0(env, action_in):
     grid_size = env.sim.grid_size
     obs = env.get_obs()
     Map = np.reshape(obs["Map"], (grid_size, grid_size))
-    Map_plan = np.reshape(obs["Planner_Map"], (grid_size, grid_size))
+    VisiblePalnStates = np.reshape(obs["Visible_Plan_States"], (grid_size, grid_size))
     next_pos = env.next_plan_state
     dpos = env.action_pos_dict[action_in]
     pos = env.pos
@@ -47,7 +46,7 @@ def Reward_0(env, action_in):
     if Map[x_n][y_n] == env.sim.goalPositionTag:
         return 20, info
     X_nn, Y_nn = next_pos
-    if Map_plan[x_n][y_n] == env.sim.goalPositionTag:
+    if [x_n, y_n] in VisiblePalnStates:
         if X_nn == x_n and Y_nn == y_n:
             return 5, info
         return 1, info
@@ -61,7 +60,9 @@ def Reward_1(env, action_in):
     grid_size = env.sim.grid_size
     obs = env.get_obs()
     Map = np.reshape(obs["Map"], (grid_size, grid_size))
-    Map_plan = np.reshape(obs["Planner_Map"], (grid_size, grid_size))
+    obsVSP = list(np.reshape(obs["Visible_Plan_States"], (-1, 2)))
+    VisiblePalnStates = [list(a) for a in obsVSP]
+    info["VisiblePalnStates"] = VisiblePalnStates
     next_pos = env.next_plan_state
     dpos = env.action_pos_dict[action_in]
     pos = env.pos
@@ -76,7 +77,7 @@ def Reward_1(env, action_in):
     if Map[x_n][y_n] == env.sim.goalPositionTag:
         return 20, info
     X_nn, Y_nn = next_pos
-    if Map_plan[x_n][y_n] == env.sim.goalPositionTag:
+    if [x_n, y_n] in VisiblePalnStates:
         if X_nn == x_n and Y_nn == y_n:
             return 5, info
         return 1, info

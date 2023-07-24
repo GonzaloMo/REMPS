@@ -11,7 +11,7 @@ wait_time: 10
 planner_setup: 
   
   # Timeout for the planner in seconds
-  time_limit: 60
+  time_limit: 300
 
   # Memory limit for the planner in kB
   memory_limit: 1000000
