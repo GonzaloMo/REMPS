@@ -59,6 +59,7 @@ class Gridworld_planfollowing_env(gym.Env):
 
         # Observation Space 
         grid_size = self.env.sim.grid_size
+        self.grid_size = grid_size
         state_shape = (grid_size**2, )
         self.observation_space = spaces.Dict({**self.env.observation_space,
                                               "Visible_Plan_States": spaces.Box(low=0, high=grid_size, shape=(2*self.n_planStates,), dtype=np.int32),})  

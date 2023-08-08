@@ -9,8 +9,7 @@ from time import sleep
 from copy import deepcopy
 from datetime import datetime
 from RLAgent.Utils.tune import env_creator
-from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
-from RLAgent.Utils.rllib import PG_callback
+
 import numpy as np
 
 
@@ -104,6 +103,12 @@ class RAY_agent:
         self.save_config()
         
         if "CV" in Environment["env"]:
+            if "SimpleSatellite" in Environment["env"]:
+                from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
+                from RLAgent.Utils.rllib import PG_callback
+            elif "SimpleWorld" in Environment["env"]:
+                from SimpleWorld.envs.CV_learning.CV_pf0 import curriculum_fn, CurriculumEnv, CV_CallBack
+                from RLAgent.Utils.rllib import PG_callback
             training_config["config"]["env"] = CurriculumEnv
             training_config["config"]["env_config"] = {**Environment["Env_setup"], "local_dir": self.localdir}
             training_config["config"]["env_task_fn"] = curriculum_fn
