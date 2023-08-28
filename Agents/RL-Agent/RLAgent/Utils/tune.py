@@ -40,7 +40,10 @@ def env_creator(env_config: Dict={"env": "SimpleSatellite-setgoals-v0", "Env_set
             config = yaml.load(f, Loader=yaml.FullLoader)
     else:
         config = deepcopy(env_config["Env_setup"])
-    config["Reward"] = getattr(Rewards, env_config["Reward_Function"])
+    try:
+        config["Reward"] = getattr(Rewards, env_config["Reward_Function"])
+    except:
+        pass
     MyEnv = gym.make(env_config["env"], **config)
     return MyEnv  # return an env instance
 

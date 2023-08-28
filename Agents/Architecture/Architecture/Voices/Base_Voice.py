@@ -17,7 +17,6 @@ class Voice(ABC):
                  agent=None, 
                  n_actions: int=None,
                  action_space: List[int]=None,
-                 Obs_space: Dict[str, Any]=None,
                  name: str = None,
                  ):
         """
@@ -35,7 +34,6 @@ class Voice(ABC):
         self.agent = agent
         self.action_space = action_space
         self.n_actions = n_actions
-        self.Obs_space = Obs_space
         if name is None:
             name = self.agent.name
         self.name = name
@@ -51,5 +49,8 @@ class Voice(ABC):
         return action_Probs
 
     def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
-        _, action_probs = self.agent.get_action(obs, Prob=True)
+        obs_T = self.transform_observation(obs)
+        print(obs_T)
+        _, _, action_dict = self.agent.get_action(obs_T, Prob=True)
+        action_probs = action_dict["action_probs"]
         return self.transform_actionProbs(action_probs)
