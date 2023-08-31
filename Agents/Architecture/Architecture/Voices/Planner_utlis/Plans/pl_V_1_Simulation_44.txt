@@ -1,0 +1,62 @@
+Number of literals: 343
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has a finite lower bound: [0.000,inf]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has a finite lower bound: [0.000,inf]
+(image_score img5) has a finite lower bound: [0.000,inf]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has a finite lower bound: [0.000,inf]
+(image_score img8) has a finite lower bound: [0.000,inf]
+(image_score img9) has a finite lower bound: [0.000,inf]
+(image_score img10) has a finite lower bound: [0.000,inf]
+(image_score img11) has a finite lower bound: [0.000,inf]
+(image_score img12) has a finite lower bound: [0.000,inf]
+(image_score img13) has a finite lower bound: [0.000,inf]
+(image_score img14) has a finite lower bound: [0.000,inf]
+(image_score img15) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var0(image_score img1)
+- Must be >= -11.000
+Recognised a monotonic-change-induced limit on -1.000*var7(image_score img8)
+- Must be >= -9.000
+Recognised a monotonic-change-induced limit on -1.000*var9(image_score img10)
+- Must be >= -8.000
+Recognised a monotonic-change-induced limit on -1.000*var12(image_score img13)
+- Must be >= -2.000
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 36.000, admissible cost estimate nan
+b (35.000 | 16.000)b (34.000 | 30.001)b (33.000 | 62.001)b (32.000 | 76.000)b (30.000 | 90.001)b (27.000 | 158.000)b (26.000 | 200.000)b (25.000 | 200.000)b (24.000 | 214.001)b (23.000 | 246.002)b (22.000 | 246.002)b (21.000 | 279.000)b (17.000 | 293.001)b (16.000 | 325.001)b (14.000 | 569.000)b (13.000 | 580.000)b (12.000 | 594.001)b (11.000 | 626.002)b (10.000 | 626.002)b (9.000 | 686.005)b (7.000 | 810.001)b (6.000 | 955.000)b (5.000 | 969.001)b (4.000 | 1001.002)b (3.000 | 1001.002)(G)
+; LP calculated the cost
+
+; Plan found with metric 4.000
+; States evaluated so far: 307
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 0.74
+16.001: (take_image img7 mem0)  [14.000]
+30.002: (analyse_image img7 mem0)  [32.000]
+113.999: (dump_image img7 mem0)  [14.000]
+200.001: (take_image img13 mem0)  [14.000]
+214.002: (analyse_image img13 mem0)  [32.000]
+265.000: (dump_image img13 mem0)  [14.000]
+279.001: (take_image img8 mem0)  [14.000]
+293.002: (analyse_image img8 mem0)  [32.000]
+473.999: (dump_image img8 mem0)  [14.000]
+580.001: (take_image img10 mem0)  [14.000]
+594.002: (analyse_image img10 mem0)  [32.000]
+626.003: (dump_image img10 mem0)  [14.000]
+640.004: (take_image img12 mem1)  [14.000]
+801.998: (analyse_image img12 mem1)  [32.000]
+833.999: (dump_image img12 mem1)  [14.000]
+955.001: (take_image img1 mem0)  [14.000]
+969.002: (analyse_image img1 mem0)  [32.000]
+1001.003: (dump_image img1 mem0)  [14.000]
+
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (35.000 | 16.000)b (34.000 | 30.001)b (33.000 | 62.001)b (32.000 | 76.000)b (30.000 | 90.001)b (24.000 | 278.003)b (23.000 | 278.003)b (22.000 | 284.001)b (18.000 | 286.000)b (17.000 | 298.003)b (16.000 | 330.003)b (15.000 | 594.001)b (14.000 | 626.002)b (13.000 | 626.002)b (12.000 | 640.002)b (10.000 | 640.003)b (9.000 | 859.002)b (8.000 | 1001.002)b (7.000 | 1001.002)b (6.000 | 1015.002)b (4.000 | 1015.003)b (3.000 | 1170.001)b (2.000 | 1219.003)
+END

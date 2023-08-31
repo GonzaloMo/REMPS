@@ -1,0 +1,1 @@
+{"stop": {"episodes_total": 30000000}, "local_dir": "./Logs/RL_agent/", "checkpoint_freq": 100, "verbose": 3, "checkpoint_at_end": true, "keep_checkpoints_num": 10, "checkpoint_score_attr": "episode_reward_mean", "name": "2023-07-03-12-32-36/"}

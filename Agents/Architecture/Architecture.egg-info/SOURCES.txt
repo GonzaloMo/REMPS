@@ -1,0 +1,8 @@
+README.md
+setup.py
+Architecture/__init__.py
+Architecture.egg-info/PKG-INFO
+Architecture.egg-info/SOURCES.txt
+Architecture.egg-info/dependency_links.txt
+Architecture.egg-info/requires.txt
+Architecture.egg-info/top_level.txt

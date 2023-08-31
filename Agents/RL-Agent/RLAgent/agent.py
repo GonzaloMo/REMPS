@@ -9,7 +9,9 @@ from time import sleep
 from copy import deepcopy
 from datetime import datetime
 from RLAgent.Utils.tune import env_creator
-
+from RLAgent.Utils.helpers import actionDistribution2Probabilities
+from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
+from RLAgent.Utils.rllib import PG_callback
 import numpy as np
 
 
@@ -177,15 +179,14 @@ class RAY_agent:
                 config["env_task_fn"] = curriculum_fn
                 config["callbacks"] = CV_CallBack
             else:
+                from ray.tune.registry import register_env
+                exec("register_env(env, env_creator)",{"register_env": register_env}, {"env": self.Env_congif["env"], "env_creator": env_creator})
                 config["env"] = self.Env_congif["env"]
                 config["env_config"] = self.Env_congif
         self.agent = self.agent(config=config)
         self.agent.restore(checkpoint_path=checkpoint_path)
     
     def setTestMode(self):
-        print("Setting test mode")
-        print("WARNING: This will change the number of workers to 0")
-        print(f"{self.Agent_config}")
         self.Agent_config["config"]["num_workers"] = 0
         self.Agent_config["config"]["num_envs_per_worker"] = 1
 
@@ -200,7 +201,13 @@ class RAY_agent:
         else:
             state = self.state
         res = self.agent.compute_single_action(observation, state=state, full_fetch=add_info, **kwargs)
-        return res
+        if add_info:
+            action = res[0]
+            action_dict = res[2]
+            action_probs = actionDistribution2Probabilities(action_dict['action_dist_inputs'])
+            return action, action_probs
+        else:
+            return res
             
     def check_config(self, config: Dict):
         for item, value in config.items():
@@ -217,10 +224,11 @@ class RAY_agent:
             raise ValueError(f"No checkpoints found in {path}")
         for i, ch in enumerate(checkpoints_all):
             folderdir_ = deepcopy(root_folders[i]).split('/')[-2]
-            if "task" in folderdir_.lower():
-                print(f"{i}: {ch} - {folderdir_} End")
-            else:
-                print(f"{i}: {ch}")
+            if specific_chk:
+                if "task" in folderdir_.lower():
+                    print(f"{i}: {ch} - {folderdir_} End")
+                else:
+                    print(f"{i}: {ch}")
         if specific_chk:
             answer = input("Select checkpoint: ")
             assert answer.isdigit(), "Must input an integer"

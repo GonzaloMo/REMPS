@@ -1,0 +1,33 @@
+Number of literals: 126
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+(image_score img1) has finite bounds: [0.000,0.000]
+(image_score img2) has a finite lower bound: [0.000,inf]
+(image_score img3) has a finite lower bound: [0.000,inf]
+(image_score img4) has finite bounds: [0.000,0.000]
+(image_score img5) has finite bounds: [0.000,0.000]
+(image_score img6) has a finite lower bound: [0.000,inf]
+(image_score img7) has finite bounds: [0.000,0.000]
+(image_score img8) has finite bounds: [0.000,0.000]
+(image_score img9) has finite bounds: [0.000,0.000]
+(image_score img10) has finite bounds: [0.000,0.000]
+(image_score img11) has finite bounds: [0.000,0.000]
+(image_score img12) has finite bounds: [0.000,0.000]
+(image_score img13) has finite bounds: [0.000,0.000]
+(image_score img14) has finite bounds: [0.000,0.000]
+(image_score img15) has finite bounds: [0.000,0.000]
+(image_score img16) has a finite lower bound: [0.000,inf]
+(image_score img17) has finite bounds: [0.000,0.000]
+(image_score img18) has a finite lower bound: [0.000,inf]
+(image_score img19) has finite bounds: [0.000,0.000]
+(image_score img20) has a finite lower bound: [0.000,inf]
+(total_score) has a finite lower bound: [0.000,inf]
+Have identified that bigger values of (total_score) are preferable
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*var9(image_score img10)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on var9(image_score img10)
+Internal error - must only have > or >= limits here
+
+END
