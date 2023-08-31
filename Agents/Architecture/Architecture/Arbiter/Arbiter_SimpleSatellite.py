@@ -23,12 +23,14 @@ class setGoalsv4(Arbiter):
                 Theta[a] = 1
             else:
                 Theta[a] = 0
-        Theta[0] = .5 # discourange no idle action
+        Theta[0] = .1 # discourange no idle action
         return Theta
     
     def getEta(self, obs: Dict[str, Any]) -> np.ndarray:
         """
         This function calculates the the eta function that represents the preference of the user.
         """
-        eta = np.ones((self.n_Voice, ))/self.n_Voice
+        eta = np.ones((self.n_Voice, ))
+        # eta = np.zeros((self.n_Voice, ))
+        # eta[0] = 1
         return eta

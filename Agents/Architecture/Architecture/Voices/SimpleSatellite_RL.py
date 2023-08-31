@@ -48,10 +48,6 @@ class VoiceSetGoalsV4(Voice):
             else:
                 if v:
                     observation[k] = np.array(obs[k])
-        print("------------------")
-        for k, v in observation.items():
-            print(f"{k}: {v.shape}")
-        print("------------------")
         return observation
     
     def transform_actionProbs(self, actionProbs: int) -> int:

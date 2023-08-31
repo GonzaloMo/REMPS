@@ -9,8 +9,8 @@ from time import sleep
 from copy import deepcopy
 from datetime import datetime
 from RLAgent.Utils.tune import env_creator
+from RLAgent.Utils.helpers import actionDistribution2Probabilities
 from SimpleSatellite.envs.setgoals.CV_learning import curriculum_fn, CurriculumEnv, CV_CallBack
-from 
 from RLAgent.Utils.rllib import PG_callback
 import numpy as np
 
@@ -195,7 +195,13 @@ class RAY_agent:
         else:
             state = self.state
         res = self.agent.compute_single_action(observation, state=state, full_fetch=add_info, **kwargs)
-        return res
+        if add_info:
+            action = res[0]
+            action_dict = res[2]
+            action_probs = actionDistribution2Probabilities(action_dict['action_dist_inputs'])
+            return action, action_probs
+        else:
+            return res
             
     def check_config(self, config: Dict):
         for item, value in config.items():

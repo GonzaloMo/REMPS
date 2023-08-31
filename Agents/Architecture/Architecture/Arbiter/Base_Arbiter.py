@@ -37,8 +37,20 @@ class Arbiter(ABC):
         self.Voices.remove(voice)
         self.n_Voice -= 1
     
-    def getAction(self, obs: Dict[str, Any]) -> List[int]:
+    def get_action(self, obs: Dict[str, Any], **kwargs) -> List[int]:
         # get action probabilities
+        action_probs = self.getActionProbs(obs)
+        # get action
+        if type(self.policy) == str:
+            if self.policy.lower() == "greedy":
+                action = action_probs.argmax()
+            elif self.policy.lower() == "stochastic":
+                action = np.random.choice(np.arange(self.n_actions), p=action_probs)
+        else:
+            action = self.policy(action_probs)
+        return action, action_probs
+    
+    def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
         action_probs = np.zeros((self.n_actions, ))
         eta = self.getEta(obs)
         for i, voice in enumerate(self.Voices):
@@ -46,15 +58,10 @@ class Arbiter(ABC):
             action_probs += pi_v * eta[i]
         theta = self.getTheta(obs)
         action_probs = theta * action_probs
-        # get action
-        if type(self.policy) == str:
-            if self.policy.lower() == "greedy":
-                action = np.argmax(action_probs)
-            elif self.policy.lower() == "stochastic":
-                action = np.random.choice(np.arange(self.n_actions), p=action_probs)
-        else:
-            action = self.policy(action_probs)
-        return action
+        action_probs[0] /= self.n_Voice
+        if np.sum(action_probs[1:]) == 0:
+            action_probs[0] = 1
+        return action_probs
     
     @abstractmethod
     def getTheta(self, obs: Dict[str, Any]) -> np.ndarray:

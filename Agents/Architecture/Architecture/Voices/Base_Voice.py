@@ -50,7 +50,6 @@ class Voice(ABC):
 
     def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
         obs_T = self.transform_observation(obs)
-        print(obs_T)
-        _, _, action_dict = self.agent.get_action(obs_T, Prob=True)
-        action_probs = action_dict["action_probs"]
+        _, action_probs = self.agent.get_action(obs_T, Prob=True)
+        self.action_probs_own = np.array(action_probs)
         return self.transform_actionProbs(action_probs)
