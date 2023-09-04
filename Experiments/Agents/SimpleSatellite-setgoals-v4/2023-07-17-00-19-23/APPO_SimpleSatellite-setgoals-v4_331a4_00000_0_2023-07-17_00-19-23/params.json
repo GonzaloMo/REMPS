@@ -1,0 +1,77 @@
+{
+  "batch_mode": "truncate_episodes",
+  "callbacks": "<class 'RLAgent.Utils.rllib.PG_callback'>",
+  "clip_param": 0.3,
+  "entropy_coeff": 0.01,
+  "env": "SimpleSatellite-setgoals-v4",
+  "env_config": {
+    "Env_setup": {
+      "ACTION_THRESHOLD": 0.5,
+      "CoverageFile": "",
+      "DURATION_ANALYSE": 50,
+      "DURATION_DUMP": 20,
+      "DURATION_TAKE_IMAGE": 20,
+      "ECLIPSE": {
+        "Light": 0.6,
+        "Penumbra": 0.0,
+        "Umbra": 0.4
+      },
+      "GS_HALF_SIZE": 15.0,
+      "Log_dir": "./Logs/Simulation/",
+      "MAX_ORBITS": 15,
+      "MEMORY_SIZE": 30,
+      "Max_image_goals_per_target": 5,
+      "N_repeating_orbits": 5,
+      "Number_of_GS": 2,
+      "Number_of_targets": 5,
+      "Opportunity_Prob": 0.0,
+      "Opportunity_duration": 10,
+      "PERIOD": 600,
+      "POWER_CONSUMPTION": {
+        "AN": -0.1,
+        "DP": -0.3,
+        "PowerGenerationRate": 0.5,
+        "TP": -0.3
+      },
+      "POWER_OPTION": true,
+      "Random_GS": true,
+      "Random_Targets": true,
+      "TARGET_HALF_SIZE": 10.0,
+      "Underterministic_actions": {
+        "AN": 0.0,
+        "DP": 0.0,
+        "TP": 0.0
+      },
+      "action_space_type": "Advance",
+      "simulation_version": "v1_2"
+    },
+    "Reward_Function": "R_7",
+    "env": "SimpleSatellite-setgoals-v4"
+  },
+  "evaluation_config": {
+    "render_env": false
+  },
+  "evaluation_duration": 100,
+  "evaluation_interval": 100000,
+  "framework": "torch",
+  "gamma": 0.999,
+  "kl_coeff": 0.5,
+  "lambda": 0.95,
+  "lr": 0.0001,
+  "model": {
+    "fcnet_activation": "relu",
+    "fcnet_hiddens": [
+      256,
+      128,
+      64
+    ],
+    "lstm_cell_size": 128,
+    "use_lstm": false,
+    "vf_share_layers": false
+  },
+  "num_envs_per_worker": 10,
+  "num_gpus": 0,
+  "num_workers": 30,
+  "train_batch_size": 750,
+  "vf_loss_coeff": 1.0
+}
