@@ -1,3 +1,12 @@
+# Get arguments
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("-v", "--numberVoices", type=int, dest="Nv", default=2, help="Number of voices")
+parser.add_argument("-f", "--folder", type=str, dest="folder", default="./Results/arbiter_test/", help="Folder where the Results are stored")
+args = parser.parse_args()
+Results_folder = args.folder
+number_of_Voices = int(args.Nv)
+
 # Import Arbiter Arbiter and Voice
 from Architecture.Arbiter.Arbiter_SimpleSatellite import setGoalsv4
 from Architecture.Voices.SimpleSatellite_RL import VoiceSetGoalsV4
@@ -18,7 +27,6 @@ from copy import deepcopy
 from Utils.test_utils import test_episodes
 
 # Load Voice RL Agent 
-number_of_Voices = 2
 Voices_loc = ["/home/ksb21109/Documents/PhD/REMPS/Test/Results/agents/SimpleSatellite/setgoals_v4/R7/2023-07-17-11-34-31/"]*number_of_Voices
 
 # Load the environment configuration
@@ -53,5 +61,4 @@ for i, v_loc in enumerate(Voices_loc):
     
 
 # Test the arbiter
-Results_folder = f"./Results/arbiter_test/"
 results = test_episodes(arbiter, env, n_test= 10, render=True,  console=None, foldername=Results_folder)

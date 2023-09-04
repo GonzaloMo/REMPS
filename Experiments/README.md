@@ -14,4 +14,13 @@ conda config --set env_prompt '({name})' # To change the prompt to show the name
 conda activate ./REMPS_Env
 ```
 
+# Run the experimen (no overlap)
+To run the experiment, run the following command:
+
+```
+python3 NoOverlap.py -v/--numberVoices Nv -f/--folder "results/folder/name"
+```
+
+- Nv: is the number of voices to be used in the experiment, and 
+- "results/folder/name": is the name of the folder where the results will be stored.
 
