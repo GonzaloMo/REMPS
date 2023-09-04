@@ -27,10 +27,12 @@ class Arbiter(ABC):
 
         assert self.policy in ["greedy", "stochastic"] or callable(self.policy), "Policy must be 'greedy', 'stochastic' or a function"
         assert self.n_actions > 0, "Number of actions must be greater than 0"
+        self.reset_telemetry()
 
 
     def addVoice(self, voice):
         self.Voices.append(voice)
+        self.telemetry[voice.name] = []
         self.n_Voice += 1
     
     def removeVoice(self, voice):
@@ -55,13 +57,27 @@ class Arbiter(ABC):
         eta = self.getEta(obs)
         for i, voice in enumerate(self.Voices):
             pi_v = voice.getActionProbs(obs)
+            self.telemetry[voice.name].append(pi_v)
             action_probs += pi_v * eta[i]
         theta = self.getTheta(obs)
         action_probs = theta * action_probs
         action_probs[0] /= self.n_Voice
         if np.sum(action_probs[1:]) == 0:
             action_probs[0] = 1
+        self.telemetry["action_probs"].append(list(action_probs))
+        self.telemetry["theta"].append(list(theta))
+        self.telemetry["eta"].append(list(eta))
         return action_probs
+    
+    def reset_telemetry(self):
+        self.telemetry = {
+            "action_probs": [],
+            "theta": [],
+            "eta": [],
+        }
+
+        for voice in self.Voices:
+            self.telemetry[voice.name] = []
     
     @abstractmethod
     def getTheta(self, obs: Dict[str, Any]) -> np.ndarray:
@@ -90,6 +106,12 @@ class Arbiter(ABC):
         """
         eta = np.ones((self.n_Voice, ))/self.n_Voice
         return eta
+    
+    def get_telemetry(self):
+        telemetry_out = {}
+        for key, value in self.telemetry.items():
+            telemetry_out[key] = [value]
+        return self.telemetry
 
 
 # Serach in a list a certian point

@@ -13,6 +13,7 @@ class VoiceSetGoalsV4(Voice):
                 target_list: List[int] = None,
                 name: str = None,
                 obs_space: Dict[str, Any] = None,
+                Max_orbit: int = 15,
                 **kwargs
                 ):
         action_space = [0]
@@ -34,11 +35,15 @@ class VoiceSetGoalsV4(Voice):
         self.agent = RAY_agent()
         self.agent.load(agent_loc, mode="test")
         self.Obs_space = New_obs_space
+        self.Max_orbit = Max_orbit
+
 
     def transform_observation(self, obs: Dict[str, Any]) -> Dict[str, Any]:
         observation = {}
         obs["Targets"] = np.reshape(obs["Targets"], (-1, 4))
         for k, v in self.Obs_space.items():
+            if k=="Orbit":
+                observation[k] = np.array(obs[k])%self.Max_orbit
             if type(v) == list:
                 if k == "Targets":
                     mod_obs = obs[k][v].flatten()
