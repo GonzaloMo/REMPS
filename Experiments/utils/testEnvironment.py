@@ -1,47 +1,52 @@
-import pandas as pd
-
 import numpy as np
-import os
-import ray
 from tqdm import tqdm
-from RLAgent import RAY_agent
-from RLAgent.Utils.tune import env_creator
-from ray.tune.registry import register_env
-def test_episodes(agent, env, n_test: int = 1, render=False, console=None, add_info=True, foldername="./Results"):
+import random
+from copy import deepcopy
+from Architecture.Voices.SimpleSatellite_RL import VoiceSetGoalsV4
+from utils.helpers import  save_results
+def test_episodes(agent, env, n_test: int = 1, render=False, foldername="./Results", test_type="Overlapping", **kwargs):
     # Test
     for _ in tqdm(range(n_test)):
         # Single episode
-        Single_episode(env, agent, render=render, console=console, add_info=add_info, foldername=foldername)
+        if test_type == "Overlapping":
+            OverLap(env, agent, render=render, foldername=foldername, **kwargs)
+        elif test_type == "Variable_Voice":
+            VariableVoice(env, agent, render=render, foldername=foldername, **kwargs)
+        else:
+            raise ValueError(f"Test type {test_type} not recognized")
     env.close()
 
-def Single_episode(env, agent, render=True, console=None, add_info=True, foldername="./Results"):
+def OverLap(env, agent, render=True, foldername="./Results", voice_loc = None, n_voices = 1, overlap=0., **kwargs):
+    target_list = list(range(1, env.SatSim.n_targets+1))
+    obs = env.reset()
+    Base_obs = {}
+    for k, v in obs.items():
+        Base_obs[k] = True
+
+    for i in range(n_voices):
+        new_voice, target_list = createVoice(agent, voice_loc, target_list, Base_obs, voice_name=f"Voice_{i}", overlap=overlap)
+        agent.addVoice(new_voice)
     action_prob_epi = []
     epi_reward = 0
-    obs = env.reset()
-    done = False
-    try:
-        envConfig = env.getEpisodeConfig()
-    except:
-        print(f"No telemetry available for {env}")
-        envConfig = {}
-    while not done:
-        res =  agent.get_action(obs, add_info=add_info)
-        if add_info:
-            action, action_prob = res
-        else:
-            action = res
+    agent.reset()
+    goals = agent.get_goals()
 
-        obs, reward, done, info_env = env.step(action)
+    env.set_goals(goals)
+    done = False
+    # Get configuration of agent and environment
+    agentConfig = agent.getConfig()
+    envConfig = env.getEpisodeConfig()
+    extra_time = 30
+    while extra_time>0:
+        obs["Orbit"] = [env.SatSim.orbit]
+        action, action_prob =  agent.get_action(obs, add_info=True)
+        obs, reward, done, _ = env.step(action)
+        agent.update(env.SatSim.n_images_dumped)
         epi_reward += reward
-        info_env["Reward"] = reward
-        info_env["Done"] = done
-        info_env["Total Reward"] = epi_reward
-        action_name = env.Number2name_action(action)
-        info = [{"Action: ": action_name, 
-                "Action Weights: ": np.around(action_prob, 3)}, 
-                {**obs, **info_env}]
         if render:
             env.render()
+        if done:
+            extra_time -= 1
         action_prob_epi.append(action_prob)
         
     try: 
@@ -54,91 +59,113 @@ def Single_episode(env, agent, render=True, console=None, add_info=True, foldern
     except:
         print(f"No telemetry available for {env}")
         telemetry = {}
-    results = {"Reward": epi_reward, "Action_prob": action_prob_epi, **telemetry, **envConfig, **agent_telemetry}
-
+    results = {"Reward": epi_reward, "Action_prob": action_prob_epi, **telemetry, **envConfig, **agent_telemetry, **agentConfig}
     save_results(results, foldername)
 
 
-def to_valid_type(vari):
-    if type(vari) == np.float64:
-        return float(vari)
-    elif type(vari) == np.int64:
-        return int(vari)
-    elif type(vari) == np.ndarray:
-        return vari.tolist()
-    elif type(vari) == dict:
-        for k, v in vari.items():
-            vari[k] = to_valid_type(v)
-    elif type(vari) == list:
-        for i in range(len(vari)):
-            vari[i] = to_valid_type(vari[i])
-    return vari
-
-
-def to_file_type_debug(value, file=None, dp=0):
-        if type(value) == dict:
-            for k, v in value.items():
-                file.write(" "*dp+f"{k}: {type(value)}\n")
-                to_file_type_debug(v, file=file, dp=dp+1)
-        elif type(value) == list:
-            file.write(" -"*dp+f"{len(value)} \n")
-            for i in value:
-                to_file_type_debug(i, file=file, dp=dp+1)
-        else:
-            if type(value) != str and type(value) != int and type(value) != float and type(value) != bool:
-                file.write(" -"*dp+f"{type(value)}: {value}\n")
-                file.write("\n")
-
-def save_results(results, foldername, filename="results.feather"):
-    if not os.path.isdir(foldername):
-        os.makedirs(foldername)
+def VariableVoice(env, agent, render=True, foldername="./Results", voice_loc = None, n_voices = 1, overlap=0., **kwargs):   
+    target_list = list(range(1, env.SatSim.n_targets+1))
+    obs = env.reset()
+    Base_obs = {}
+    print2log(f"----------------------New Episode----------------------")
+    for k, v in obs.items():
+        Base_obs[k] = True
     
-    if filename in os.listdir(foldername):
-        for k, v in results.items():
-            if type(v) == list:
-                results[k] = [v] 
-        try:
-            results_df = pd.read_feather(f"{foldername}/{filename}")
-            results_df = pd.concat([results_df, pd.DataFrame(results)], ignore_index=True)
-        except:
-            print("Error reading results file, creating new one")
-            
-            results_df = pd.DataFrame(results)
-    else:
-        for k, v in results.items():
-            if type(v) == list:
-                results[k] = [v] 
-        results_df = pd.DataFrame(results)
-    results_df.reset_index()
-    results_df.to_feather(f"{foldername}/{filename}")
+    voice_list = []
+    voice_in = list(range(0, 5*n_voices, 5))
+    for i in range(n_voices):
+        new_voice, target_list = createVoice(agent, voice_loc, target_list, Base_obs, voice_name=f"Voice_{i}", overlap=overlap)
+        new_voice.addInitDumpedImages(env.SatSim.n_images_dumped)
+        voice_list.append(new_voice)    
+    action_prob_epi = []
+    epi_reward = 0
+    agent.reset()
+    goals = agent.get_goals()    
+    env.set_goals(goals)
+    done = False
+    # Get configuration of agent and environment
+    agentConfig = {}
+    agentConfig["voice Init Time"] = deepcopy(voice_in)
+    for voice in voice_list:
+        k1 = voice.name + " " + "Targets"
+        agentConfig[k1] = [list(voice.Obs_space["Targets"])]
+    agentConfig
+    envConfig = env.getEpisodeConfig()
+    extra_time = 30
+    while extra_time>0:
+        if len(voice_list)>0:
+            if env.SatSim.orbit == voice_in[0]:
+                print2log(f"Adding voice {voice_list[0]} at orbit {voice_in[0]} line 103")
+                agent.addVoice(voice_list[0])
+                goals = agent.get_goals()   
+                env.set_goals(goals)
+                print2log(f"New goals {goals}")
+                for v in agent.Voices:
+                    print2log(f"{v.name} has goals {v.goals}, targets {v.target_list} line 108")
+                voice_in.pop(0)
+                voice_list.pop(0)
+        obs["Orbit"] = [env.SatSim.orbit]
+        action, action_prob =  agent.get_action(obs, add_info=True)
+        obs, reward, done, _ = env.step(action)
+        agent.update(env.SatSim.n_images_dumped)
+        epi_reward += reward
+        if render:
+            env.render()
+        if done:
+            # print(f"Episode done at orbit {env.SatSim.orbit})")
+            # for k, v in env.info.items():
+            #     print(f"{k}: {v}")
+            # print(f"agent.n_Voice: {agent.n_Voice} and len(voice_list): {len(voice_list)}, Voice: {len(agent.Voices)}")
+            completed_all = True
+            for voice in agent.Voices:
+                goals_left = np.sum(voice.goals)
 
-def load_env(env_config):
-    register_env(env_config["env"], env_creator)
-    env = env_creator(env_config)
-    return env
+                if goals_left > 0:
+                    completed_all = False
+                    break
+            if len(voice_list)<1 and np.sum(env.goals) == 0 and completed_all:
+                extra_time -= 1
+            elif env.SatSim.orbit >= env.SatSim.MAX_ORBITS:
+                extra_time = -1
+        action_prob_epi.append(action_prob)
+    print2log(f"Final goals: {env.goals} line 137")
+    print2log(f"Episode done at orbit {env.SatSim.orbit}, Number of voices left: {agent.n_Voice} line 138")
+    for voice in agent.Voices:
+        goals_left = np.sum(voice.goals)
+        print2log(f"{voice.name} has goals {voice.goals}, targets {voice.target_list}")
+        print2log(f"{voice.name} has {goals_left} goals left")
+        
+    try: 
+        agent_telemetry = agent.get_telemetry()
+        agent.reset_telemetry()
+    except:
+        agent_telemetry = {}
+    try:
+        telemetry = env.get_telemetry()
+    except:
+        print(f"No telemetry available for {env}")
+        telemetry = {}
+    print2log(f"---------------------------------------------------")
+    results = {"Reward": epi_reward, "Action_prob": action_prob_epi, **telemetry, **envConfig, **agent_telemetry, **agentConfig}
+    save_results(results, foldername)
 
-def load_agent(fileloc, env_config, specific_checkpoint = None):
-    # Start Ray
-    ray.init(ignore_reinit_error=True, resources={"cpu": 1, "gpu": 0})
-    agent = RAY_agent()
-    root_folder, checkpoints = get_checkpoints(fileloc)
-    if specific_checkpoint is None:
-        specific_checkpoint = checkpoints[-1]
-    assert specific_checkpoint in checkpoints, f"Checkpoint {specific_checkpoint} not found in {fileloc} available checkpoints are {checkpoints}"
-    specific_checkpoint = root_folder +"/" + specific_checkpoint
-    _, _, _ = agent.load(fileloc, mode="test", specific_checkpoint=specific_checkpoint, env=env_config)
-    return agent
+def createVoice(agent, v_loc, target_list, Base_obs, voice_name="Voice_0", overlap=0.):
+    t_list = random.sample(target_list, 5)
+    t_list.sort()
+    N_unique = int(5*(1-overlap))
+    t_list_unique = random.sample(t_list, N_unique)
+    new_target_list = [t for t in target_list if t not in t_list_unique]
+    # print(f"Voice {voice_name} has targets {t_list} and unique targets {t_list_unique} and v loc {v_loc}")
+    new_voice = VoiceSetGoalsV4(v_loc,
+                            name=f"{voice_name}",
+                            n_actions=agent.n_actions,
+                            target_list=deepcopy(t_list),
+                            obs_space=Base_obs)
+    new_voice.generateGoals()
+    return new_voice, new_target_list
 
-def get_checkpoints(root_dir):
-    checkpoints = []
-    root_folder = []
-    for folder, subfolders, _ in os.walk(root_dir):
-        if any("checkpoint" in subfolder for subfolder in subfolders):
-                for subfolder in subfolders:
-                        if "checkpoint" in subfolder:
-                                checkpoints.append(subfolder)
-                                root_folder.append(folder+"/")
-                if len(checkpoints) > 0:
-                    root_folder = [x for _, x in sorted(zip(checkpoints, root_folder), key=lambda pair: pair[0])]
-                    checkpoints = sorted(checkpoints)
-    return root_folder, checkpoints
+def print2log(astring):
+    with open("log.txt", "a") as f:
+        assert isinstance(astring, str)
+        f.write(astring + "\n")
+        f.close()

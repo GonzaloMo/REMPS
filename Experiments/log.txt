@@ -1,0 +1,397 @@
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b6060bbe0> at orbit 0 line 80
+Voice_0 has goals [0 3 2 3 4], targets [7, 11, 13, 15, 18]
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b6060bd00> at orbit 5 line 103
+New goals [0. 0. 1. 0. 0. 2. 0. 0. 0. 1. 1. 0. 0. 3. 0. 3. 0. 0. 0. 0.]
+Voice_0 has goals [0 1 0 0 0], targets [7, 11, 13, 15, 18] line 108
+Voice_1 has goals [1 2 1 3 3], targets [3, 6, 10, 14, 16] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b6060bbb0> at orbit 10 line 103
+New goals [0. 0. 0. 1. 4. 0. 0. 0. 4. 0. 1. 0. 0. 1. 0. 1. 2. 0. 4. 0.]
+Voice_0 has goals [0 1 0 0 0], targets [7, 11, 13, 15, 18] line 108
+Voice_1 has goals [0 0 0 1 1], targets [3, 6, 10, 14, 16] line 108
+Voice_2 has goals [1 4 4 2 4], targets [4, 5, 9, 17, 19] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b6029e5b0> at orbit 15 line 103
+New goals [2. 3. 0. 0. 2. 0. 0. 2. 0. 0. 1. 0. 0. 1. 0. 1. 0. 0. 4. 3.]
+Voice_0 has goals [0 1 0 0 0], targets [7, 11, 13, 15, 18] line 108
+Voice_1 has goals [0 0 0 1 1], targets [3, 6, 10, 14, 16] line 108
+Voice_2 has goals [0 2 0 0 4], targets [4, 5, 9, 17, 19] line 108
+Voice_3 has goals [2 3 2 0 3], targets [1, 2, 8, 12, 20] line 108
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [0 1 0 0 0]
+      Voice_1 goals [0 0 0 1 1]
+      Voice_2 goals [0 2 0 0 2]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 3 and 3
+Final goals: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 60, Number of voices left: 3 line 138
+Voice_0 has goals [0 1 0 0 0], targets [7, 11, 13, 15, 18]
+Voice_0 has 1 goals left
+Voice_1 has goals [0 0 0 1 1], targets [3, 6, 10, 14, 16]
+Voice_1 has 1 goals left
+Voice_2 has goals [0 2 0 0 0], targets [4, 5, 9, 17, 19]
+Voice_2 has 1 goals left
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7c77354370> at orbit 0 line 80
+Voice_0 has goals [0 1 0 0 0], targets [7, 11, 13, 15, 18]
+Voice_1 has goals [0 0 0 1 1], targets [3, 6, 10, 14, 16]
+Voice_2 has goals [0 2 0 0 0], targets [4, 5, 9, 17, 19]
+Voice_0 has goals [3 4 0 3 4], targets [2, 8, 10, 11, 14]
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b603de2b0> at orbit 5 line 103
+New goals [3. 0. 1. 1. 4. 2. 0. 1. 4. 1. 1. 0. 4. 0. 3. 2. 2. 4. 4. 2.]
+Voice_0 has goals [0 1 2 3 4], targets [7, 11, 13, 15, 18] line 108
+Voice_1 has goals [1 2 1 0 2], targets [3, 6, 10, 14, 16] line 108
+Voice_2 has goals [1 4 4 2 4], targets [4, 5, 9, 17, 19] line 108
+Voice_0 has goals [0 1 0 1 0], targets [2, 8, 10, 11, 14] line 108
+Voice_1 has goals [3 4 4 0 2], targets [1, 9, 13, 16, 20] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b441c8d00> at orbit 10 line 103
+New goals [2. 0. 2. 3. 4. 0. 1. 1. 3. 1. 1. 0. 3. 0. 3. 1. 3. 4. 4. 1.]
+Voice_0 has goals [0 1 1 3 4], targets [7, 11, 13, 15, 18] line 108
+Voice_1 has goals [0 0 1 0 1], targets [3, 6, 10, 14, 16] line 108
+Voice_2 has goals [0 4 3 1 4], targets [4, 5, 9, 17, 19] line 108
+Voice_0 has goals [0 1 0 1 0], targets [2, 8, 10, 11, 14] line 108
+Voice_1 has goals [2 3 3 0 1], targets [1, 9, 13, 16, 20] line 108
+Voice_2 has goals [2 3 0 1 3], targets [3, 4, 6, 7, 17] line 108
+Voice_2 goals [0 0 0 0 0]
+      Voice_0 goals [0 1 0 1 1]
+      Voice_1 goals [0 0 0 0 1]
+      Voice_2 goals [0 4 2 0 2]
+      Voice_0 goals [0 1 0 1 0]
+      Voice_1 goals [1 2 1 0 0]
+      Voice_2 goals [0 0 0 0 0]
+Voices: 5 and 5
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f7b441c8040> at orbit 15 line 103
+New goals [1. 0. 0. 0. 4. 0. 0. 1. 2. 0. 1. 2. 1. 0. 1. 1. 0. 2. 4. 0.]
+Voice_0 has goals [0 1 0 1 0], targets [7, 11, 13, 15, 18] line 108
+Voice_1 has goals [0 0 0 0 1], targets [3, 6, 10, 14, 16] line 108
+Voice_2 has goals [0 4 2 0 2], targets [4, 5, 9, 17, 19] line 108
+Voice_0 has goals [0 1 0 1 0], targets [2, 8, 10, 11, 14] line 108
+Voice_1 has goals [1 2 1 0 0], targets [1, 9, 13, 16, 20] line 108
+Voice_3 has goals [2 2 0 2 4], targets [5, 12, 15, 18, 19] line 108
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5d9c7ebc70> at orbit 0 line 80
+Voice_0 has goals [4 3 4 1 2], targets [3, 6, 12, 18, 20]
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5d9c7ebb50> at orbit 5 line 103
+New goals [0. 3. 2. 0. 3. 0. 0. 0. 0. 4. 0. 2. 0. 0. 0. 0. 0. 0. 0. 0.]
+Voice_0 has goals [2 0 2 0 0], targets [3, 6, 12, 18, 20] line 108
+Voice_1 has goals [3 3 4 0 0], targets [2, 5, 10, 11, 16] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5d9c7eb9a0> at orbit 10 line 103
+New goals [2. 0. 2. 0. 1. 0. 1. 0. 2. 0. 0. 2. 0. 4. 0. 0. 0. 0. 0. 0.]
+Voice_0 has goals [2 0 2 0 0], targets [3, 6, 12, 18, 20] line 108
+Voice_1 has goals [0 1 0 0 0], targets [2, 5, 10, 11, 16] line 108
+Voice_2 has goals [2 1 2 4 0], targets [1, 7, 9, 14, 17] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5cd833ed30> at orbit 15 line 103
+New goals [0. 0. 2. 3. 1. 0. 0. 2. 0. 0. 0. 2. 3. 1. 4. 0. 0. 0. 1. 0.]
+Voice_0 has goals [2 0 2 0 0], targets [3, 6, 12, 18, 20] line 108
+Voice_1 has goals [0 1 0 0 0], targets [2, 5, 10, 11, 16] line 108
+Voice_2 has goals [0 0 0 1 0], targets [1, 7, 9, 14, 17] line 108
+Voice_3 has goals [3 2 3 4 1], targets [4, 8, 13, 15, 19] line 108
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [2 0 2 0 0]
+      Voice_1 goals [0 1 0 0 0]
+      Voice_2 goals [0 0 0 1 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 3 and 3
+Final goals: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 60, Number of voices left: 3 line 138
+Voice_0 has goals [2 0 2 0 0], targets [3, 6, 12, 18, 20]
+Voice_0 has 4 goals left
+Voice_1 has goals [0 1 0 0 0], targets [2, 5, 10, 11, 16]
+Voice_1 has 4 goals left
+Voice_2 has goals [0 0 0 1 0], targets [1, 7, 9, 14, 17]
+Voice_2 has 4 goals left
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5cd8315f40> at orbit 0 line 80
+Voice_0 has goals [2 0 2 0 0], targets [3, 6, 12, 18, 20]
+Voice_1 has goals [0 1 0 0 0], targets [2, 5, 10, 11, 16]
+Voice_2 has goals [0 0 0 1 0], targets [1, 7, 9, 14, 17]
+Voice_0 has goals [0 0 2 1 1], targets [1, 3, 5, 12, 15]
+---- Voice Voice_0 removed ----
+Voice_0 goals [0 0 0 0 0]
+      Voice_0 goals [2 3 2 1 2]
+      Voice_1 goals [3 1 4 0 0]
+      Voice_2 goals [2 1 2 3 0]
+      Voice_0 goals [0 0 0 0 0]
+Voices: 3 and 3
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5cd83f9ac0> at orbit 5 line 103
+New goals [2. 3. 2. 0. 1. 3. 1. 4. 2. 4. 0. 2. 1. 4. 0. 0. 0. 1. 0. 2.]
+Voice_0 has goals [2 3 2 1 2], targets [3, 6, 12, 18, 20] line 108
+Voice_1 has goals [3 1 4 0 0], targets [2, 5, 10, 11, 16] line 108
+Voice_2 has goals [2 1 2 3 0], targets [1, 7, 9, 14, 17] line 108
+Voice_1 has goals [0 4 2 1 4], targets [6, 8, 9, 13, 14] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f5cd83f9dc0> at orbit 10 line 103
+New goals [0. 2. 2. 4. 1. 0. 3. 4. 0. 1. 0. 2. 0. 2. 0. 0. 0. 1. 0. 1.]
+Voice_0 has goals [2 0 2 1 0], targets [3, 6, 12, 18, 20] line 108
+Voice_1 has goals [2 1 1 0 0], targets [2, 5, 10, 11, 16] line 108
+Voice_2 has goals [0 0 0 2 0], targets [1, 7, 9, 14, 17] line 108
+Voice_1 has goals [0 4 0 0 2], targets [6, 8, 9, 13, 14] line 108
+Voice_2 has goals [4 3 1 0 1], targets [4, 7, 10, 18, 20] line 108
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f320076baf0> at orbit 0 line 80
+Voice_0 has goals [0 0 0 3 1], targets [3, 8, 9, 12, 17]
+---- Voice Voice_0 removed ----
+Voice_0 goals [0 0 0 0 0]
+      Voice_0 goals [0 0 0 0 0]
+Voices: 0 and 0
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f320076ba00> at orbit 5 line 103
+New goals [2. 3. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 2. 0. 0.]
+Voice_1 has goals [2 3 0 1 2], targets [1, 2, 6, 10, 18] line 108
+---- Voice Voice_1 removed ----
+Voice_1 goals [0 0 0 0 0]
+      Voice_1 goals [0 0 0 0 0]
+Voices: 0 and 0
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f320076b850> at orbit 10 line 103
+New goals [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 2. 0. 0. 0. 0. 3.]
+Voice_2 has goals [0 1 2 0 3], targets [4, 11, 15, 16, 20] line 108
+---- Voice Voice_2 removed ----
+Voice_2 goals [0 0 0 0 0]
+      Voice_2 goals [0 0 0 0 0]
+Voices: 0 and 0
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f322312cee0> at orbit 15 line 103
+New goals [0. 0. 0. 0. 2. 0. 1. 0. 0. 0. 0. 0. 4. 2. 0. 0. 0. 0. 0. 0.]
+Voice_3 has goals [2 1 4 2 0], targets [5, 7, 13, 14, 19] line 108
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 0 and 0
+Final goals: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 33, Number of voices left: 0 line 138
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f3148616a30> at orbit 0 line 80
+Voice_0 has goals [1 3 1 1 4], targets [6, 7, 16, 17, 19]
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f31486167c0> at orbit 5 line 103
+New goals [0. 0. 3. 0. 0. 1. 3. 4. 0. 0. 0. 2. 0. 3. 3. 0. 0. 0. 0. 0.]
+Voice_0 has goals [1 3 0 0 0], targets [6, 7, 16, 17, 19] line 108
+Voice_1 has goals [3 4 2 3 3], targets [3, 8, 12, 14, 15] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f31486169a0> at orbit 10 line 103
+New goals [0. 1. 0. 0. 2. 0. 2. 4. 0. 0. 0. 1. 4. 1. 0. 0. 0. 0. 0. 0.]
+Voice_0 has goals [0 2 0 0 0], targets [6, 7, 16, 17, 19] line 108
+Voice_1 has goals [0 4 1 1 0], targets [3, 8, 12, 14, 15] line 108
+Voice_2 has goals [1 2 0 0 4], targets [2, 5, 10, 11, 13] line 108
+---- Voice Voice_2 removed ----
+Voice_2 goals [0 0 0 0 0]
+      Voice_0 goals [0 1 0 0 0]
+      Voice_1 goals [0 4 1 1 0]
+      Voice_2 goals [0 0 0 0 0]
+Voices: 2 and 2
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f30e40b4d60> at orbit 15 line 103
+New goals [2. 0. 0. 3. 0. 0. 1. 4. 1. 0. 0. 1. 0. 1. 0. 0. 0. 0. 0. 1.]
+Voice_0 has goals [0 1 0 0 0], targets [6, 7, 16, 17, 19] line 108
+Voice_1 has goals [0 4 1 1 0], targets [3, 8, 12, 14, 15] line 108
+Voice_3 has goals [2 3 1 0 1], targets [1, 4, 9, 18, 20] line 108
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [0 1 0 0 0]
+      Voice_1 goals [0 4 1 1 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 2 and 2
+Final goals: [0. 0. 0. 0. 0. 0. 0. 4. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 60, Number of voices left: 2 line 138
+Voice_0 has goals [0 1 0 0 0], targets [6, 7, 16, 17, 19]
+Voice_0 has 1 goals left
+Voice_1 has goals [0 4 1 1 0], targets [3, 8, 12, 14, 15]
+Voice_1 has 6 goals left
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f30e4184d90> at orbit 0 line 80
+Voice_0 has goals [0 1 0 0 0], targets [6, 7, 16, 17, 19]
+Voice_1 has goals [0 4 1 1 0], targets [3, 8, 12, 14, 15]
+Voice_0 has goals [2 4 1 3 0], targets [1, 6, 10, 16, 20]
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f30e41580d0> at orbit 5 line 103
+New goals [0. 0. 3. 0. 0. 0. 2. 3. 3. 1. 3. 4. 2. 2. 3. 0. 1. 0. 4. 0.]
+Voice_0 has goals [0 2 0 1 4], targets [6, 7, 16, 17, 19] line 108
+Voice_1 has goals [3 3 1 2 3], targets [3, 8, 12, 14, 15] line 108
+Voice_0 has goals [0 0 1 0 0], targets [1, 6, 10, 16, 20] line 108
+Voice_1 has goals [2 3 3 4 2], targets [7, 9, 11, 12, 13] line 108
+---- Voice Voice_0 removed ----
+Voice_0 goals [0 0 0 0 0]
+      Voice_0 goals [0 1 0 1 4]
+      Voice_1 goals [3 3 1 2 3]
+      Voice_0 goals [0 0 0 0 0]
+      Voice_1 goals [0 2 3 3 2]
+Voices: 3 and 3
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f30e4158a90> at orbit 10 line 103
+New goals [0. 0. 3. 0. 0. 0. 1. 3. 2. 0. 3. 1. 0. 2. 0. 0. 4. 3. 2. 0.]
+Voice_0 has goals [0 1 0 0 2], targets [6, 7, 16, 17, 19] line 108
+Voice_1 has goals [3 3 0 2 0], targets [3, 8, 12, 14, 15] line 108
+Voice_1 has goals [0 2 3 1 0], targets [7, 9, 11, 12, 13] line 108
+Voice_2 has goals [0 3 1 4 3], targets [2, 8, 14, 17, 18] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f30e41d5d90> at orbit 15 line 103
+New goals [0. 0. 3. 0. 0. 0. 1. 2. 1. 0. 0. 1. 0. 1. 0. 0. 0. 0. 3. 0.]
+Voice_0 has goals [0 1 0 0 2], targets [6, 7, 16, 17, 19] line 108
+Voice_1 has goals [3 2 0 1 0], targets [3, 8, 12, 14, 15] line 108
+Voice_1 has goals [0 1 0 1 0], targets [7, 9, 11, 12, 13] line 108
+Voice_2 has goals [0 1 0 0 0], targets [2, 8, 14, 17, 18] line 108
+Voice_3 has goals [3 0 0 0 3], targets [3, 4, 5, 15, 19] line 108
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [0 1 0 0 1]
+      Voice_1 goals [0 2 0 1 0]
+      Voice_1 goals [0 1 0 1 0]
+      Voice_2 goals [0 1 0 0 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 4 and 4
+Final goals: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 60, Number of voices left: 4 line 138
+Voice_0 has goals [0 1 0 0 1], targets [6, 7, 16, 17, 19]
+Voice_0 has 2 goals left
+Voice_1 has goals [0 2 0 1 0], targets [3, 8, 12, 14, 15]
+Voice_1 has 3 goals left
+Voice_1 has goals [0 1 0 1 0], targets [7, 9, 11, 12, 13]
+Voice_1 has 2 goals left
+Voice_2 has goals [0 1 0 0 0], targets [2, 8, 14, 17, 18]
+Voice_2 has 1 goals left
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7f2fe9acadc0> at orbit 0 line 80
+Voice_0 has goals [0 1 0 0 1], targets [6, 7, 16, 17, 19]
+Voice_1 has goals [0 2 0 1 0], targets [3, 8, 12, 14, 15]
+Voice_1 has goals [0 1 0 1 0], targets [7, 9, 11, 12, 13]
+Voice_2 has goals [0 1 0 0 0], targets [2, 8, 14, 17, 18]
+Voice_0 has goals [0 1 0 3 1], targets [2, 4, 14, 17, 19]
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c68eb80> at orbit 0 line 103
+New goals [0. 0. 0. 0. 0. 0. 4. 4. 0. 0. 0. 0. 3. 0. 0. 0. 1. 0. 0. 0.]
+Voice_0 has goals [0 4 4 3 1], targets [3, 7, 8, 13, 17] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c68ea60> at orbit 5 line 103
+New goals [2. 0. 0. 4. 2. 1. 2. 3. 0. 0. 0. 0. 0. 0. 0. 0. 0. 4. 0. 0.]
+Voice_0 has goals [0 2 3 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [2 4 2 1 4], targets [1, 4, 5, 6, 18] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c32ff70> at orbit 10 line 103
+New goals [1. 0. 0. 2. 0. 0. 2. 1. 2. 0. 1. 1. 0. 0. 2. 0. 0. 0. 0. 0.]
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [1 2 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [2 1 1 2 0], targets [9, 11, 12, 15, 20] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c221fa0> at orbit 15 line 103
+New goals [1. 3. 0. 2. 0. 0. 2. 1. 0. 0. 1. 0. 0. 3. 0. 3. 0. 0. 1. 0.]
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [1 2 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [0 1 0 0 0], targets [9, 11, 12, 15, 20] line 108
+Voice_3 has goals [3 0 3 3 1], targets [2, 10, 14, 16, 19] line 108
+---- Voice Voice_2 removed ----
+Voice_2 goals [0 0 0 0 0]
+      Voice_0 goals [0 2 1 0 0]
+      Voice_1 goals [1 2 0 0 0]
+      Voice_2 goals [0 0 0 0 0]
+      Voice_3 goals [1 0 3 1 0]
+Voices: 3 and 3
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [0 2 1 0 0]
+      Voice_1 goals [1 2 0 0 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 2 and 2
+Final goals: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 60, Number of voices left: 2 line 138
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17]
+Voice_0 has 3 goals left
+Voice_1 has goals [1 2 0 0 0], targets [1, 4, 5, 6, 18]
+Voice_1 has 3 goals left
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c40f1f0> at orbit 0 line 103
+New goals [2. 0. 0. 2. 0. 0. 2. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 4. 0.]
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [1 2 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_0 has goals [2 2 0 0 4], targets [1, 7, 14, 15, 19] line 108
+---- Voice Voice_0 removed ----
+Voice_0 goals [0 0 0 0 0]
+      Voice_0 goals [0 2 4 3 1]
+      Voice_1 goals [0 4 2 1 4]
+      Voice_0 goals [0 0 0 0 0]
+Voices: 2 and 2
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c2ddfd0> at orbit 5 line 103
+New goals [0. 0. 0. 2. 3. 1. 2. 3. 0. 0. 0. 0. 3. 0. 0. 0. 1. 4. 0. 0.]
+Voice_0 has goals [0 2 3 3 1], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [0 2 2 1 4], targets [1, 4, 5, 6, 18] line 108
+Voice_1 has goals [2 3 1 1 0], targets [4, 5, 6, 8, 13] line 108
+---- Voice Voice_1 removed ----
+Voice_1 goals [0 0 0 0 0]
+      Voice_0 goals [0 2 2 1 1]
+      Voice_1 goals [0 2 0 0 4]
+      Voice_1 goals [0 0 0 0 0]
+Voices: 2 and 2
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c40f130> at orbit 10 line 103
+New goals [0. 0. 0. 2. 0. 0. 2. 1. 4. 0. 4. 0. 0. 0. 0. 0. 1. 4. 0. 3.]
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [0 2 0 0 1], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [4 4 1 4 3], targets [9, 11, 17, 18, 20] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54427d5e0> at orbit 15 line 103
+New goals [0. 3. 3. 2. 0. 0. 2. 1. 3. 0. 4. 4. 0. 0. 0. 0. 0. 0. 0. 0.]
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [0 2 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [3 4 0 0 0], targets [9, 11, 17, 18, 20] line 108
+Voice_3 has goals [3 3 0 4 0], targets [2, 3, 10, 12, 16] line 108
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [0 2 1 0 0]
+      Voice_1 goals [0 2 0 0 0]
+      Voice_2 goals [1 1 0 0 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 3 and 3
+Final goals: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] line 137
+Episode done at orbit 60, Number of voices left: 3 line 138
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17]
+Voice_0 has 3 goals left
+Voice_1 has goals [0 2 0 0 0], targets [1, 4, 5, 6, 18]
+Voice_1 has 2 goals left
+Voice_2 has goals [1 0 0 0 0], targets [9, 11, 17, 18, 20]
+Voice_2 has 1 goals left
+---------------------------------------------------
+----------------------New Episode----------------------
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c28ee20> at orbit 0 line 103
+New goals [0. 0. 0. 2. 2. 0. 2. 1. 1. 0. 4. 4. 0. 0. 0. 0. 0. 0. 4. 0.]
+Voice_0 has goals [0 2 1 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [0 2 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [1 0 0 0 0], targets [9, 11, 17, 18, 20] line 108
+Voice_0 has goals [2 4 4 0 4], targets [5, 11, 12, 14, 19] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c3601c0> at orbit 5 line 103
+New goals [2. 0. 0. 4. 0. 1. 2. 3. 3. 0. 3. 2. 3. 0. 0. 0. 1. 4. 4. 3.]
+Voice_0 has goals [0 2 3 3 1], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [2 2 0 1 4], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [3 3 1 4 3], targets [9, 11, 17, 18, 20] line 108
+Voice_0 has goals [0 3 2 0 4], targets [5, 11, 12, 14, 19] line 108
+Voice_1 has goals [4 0 2 0 1], targets [4, 6, 9, 10, 17] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc54c28e190> at orbit 10 line 103
+New goals [1. 4. 2. 1. 0. 0. 2. 2. 3. 0. 3. 2. 0. 0. 4. 0. 0. 0. 2. 3.]
+Voice_0 has goals [0 2 2 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [1 1 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [3 3 0 0 2], targets [9, 11, 17, 18, 20] line 108
+Voice_0 has goals [0 3 2 0 2], targets [5, 11, 12, 14, 19] line 108
+Voice_1 has goals [1 0 1 0 0], targets [4, 6, 9, 10, 17] line 108
+Voice_2 has goals [4 2 1 4 3], targets [2, 3, 8, 15, 20] line 108
+Adding voice <Architecture.Voices.SimpleSatellite_RL.VoiceSetGoalsV4 object at 0x7fc5440ac0d0> at orbit 15 line 103
+New goals [2. 1. 0. 1. 0. 0. 4. 2. 1. 0. 1. 2. 1. 0. 1. 2. 0. 3. 2. 0.]
+Voice_0 has goals [0 2 2 0 0], targets [3, 7, 8, 13, 17] line 108
+Voice_1 has goals [1 1 0 0 0], targets [1, 4, 5, 6, 18] line 108
+Voice_2 has goals [1 1 0 0 0], targets [9, 11, 17, 18, 20] line 108
+Voice_0 has goals [0 1 2 0 2], targets [5, 11, 12, 14, 19] line 108
+Voice_1 has goals [1 0 0 0 0], targets [4, 6, 9, 10, 17] line 108
+Voice_2 has goals [1 0 0 1 0], targets [2, 3, 8, 15, 20] line 108
+Voice_3 has goals [2 4 1 2 3], targets [1, 7, 13, 16, 18] line 108
+---- Voice Voice_3 removed ----
+Voice_3 goals [0 0 0 0 0]
+      Voice_0 goals [0 0 2 0 0]
+      Voice_1 goals [0 1 0 0 0]
+      Voice_2 goals [1 1 0 0 0]
+      Voice_0 goals [0 1 2 0 2]
+      Voice_1 goals [1 0 0 0 0]
+      Voice_2 goals [1 0 0 1 0]
+      Voice_3 goals [0 0 0 0 0]
+Voices: 6 and 6
+---- Voice Voice_2 removed ----
+Voice_2 goals [0. 0. 0. 0. 0.]
+      Voice_0 goals [0. 1. 0. 0. 2.]
+      Voice_1 goals [0. 0. 2. 1. 0.]
+      Voice_2 goals [0. 0. 0. 0. 0.]
+      Voice_3 goals [3. 0. 1. 1. 0.]
+Voices: 3 and 3
+---- Voice Voice_0 removed ----
+Voice_0 goals [0. 0. 0. 0. 0.]
+      Voice_0 goals [0. 0. 0. 0. 0.]
+      Voice_1 goals [0. 0. 2. 1. 0.]
+      Voice_3 goals [3. 0. 1. 1. 0.]
+Voices: 2 and 2

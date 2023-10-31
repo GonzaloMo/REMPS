@@ -120,13 +120,15 @@ class Base_Simple_satellite(gym.Env):
         goals[goals<0] = 0
         self.goals = goals
         self.Total_reward += reward
+    
         info = {}  
         # Check episode done
         terminated = False
         if np.all(goals==0):   
             terminated = True
-        if terminated or truncated:
+        if (terminated and not self.SatSim.busy) or truncated:
             done = True
+            print(f"Episode done busy {self.SatSim.busy} goals {goals}")
         else:
             done = False
         self.step_count += 1

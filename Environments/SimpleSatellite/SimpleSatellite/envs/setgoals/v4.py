@@ -99,6 +99,7 @@ class Simple_satellite(Base_Simple_satellite):
         self.Total_reward += reward 
         # Check episode done
         terminated = False
+        self.info = {"truncated": truncated, "terminated": terminated, "goals": goals}
         if np.all(goals==0):   
             terminated = True
         if terminated or truncated:
@@ -180,3 +181,13 @@ class Simple_satellite(Base_Simple_satellite):
         if self.SatSim.POWER_OPTION:
             observation["Power"] = np.array([state["Power"]/100], dtype=np.float32)
         return observation
+    
+    def set_goals(self, goals: np.ndarray) -> None:
+        """
+        Set the goals of the enviroment
+        Input:
+            goals: np.ndarray
+        """
+        self.goals = goals.copy()
+        self.initial_goals = goals.copy()
+        # self.SatSim.n_images_dumped = np.zeros((self.SatSim.n_targets,), dtype=np.int32)

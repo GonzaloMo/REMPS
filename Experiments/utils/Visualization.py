@@ -105,43 +105,35 @@ def plotConfig(configDict, fig=None, ax=None, epsilon=0.1, fig_size=(20, 10), y_
         fig, ax = plt.subplots(1,1, figsize=fig_size)
     
     Repeat_deg = configDict["N_Repeat"]*360
+    NR = configDict["N_Repeat"]
+    
     n_repeat = int(x_max//Repeat_deg)+1
-
+    print(Repeat_deg)
     # Target Locations
     for tar_list in configDict["Targets"]:
         for j, tar in enumerate(tar_list):
             for i in range(n_repeat):
-                x0, x1 = tar[0]+ i*Repeat_deg, tar[1]+ i*Repeat_deg
-
-                ax.fill_betweenx([.0, .35*y_max], x0, x1, color=f"C3", alpha=0.2)
-                if x_min < x0+1 < x_max:
-                    ax.text(x0+epsilon, 0.17*y_max, f"T{j+1}", color=f"C3")
+                x0, x1 = tar[0]/360 + i*NR, tar[1]/360 + i*NR
+                Tg = j+1
+                dy = 0.2
+                ax.fill_betweenx([Tg - dy, Tg + dy], x0, x1, color=f"C3", alpha=0.4)
         
     # GS Locations
+    len_action = len(configDict["action_list"])
+    init_dump_action = len_action - len(tar_list)
+    dy = .5
     for gs_list in configDict["Ground Stations"]:
         for i, gs in enumerate(gs_list):
             for i in range(n_repeat):
-                x0, x1 = gs[0]+ i*Repeat_deg, gs[1]+ i*Repeat_deg
-
-                ax.fill_betweenx([.35*y_max, .7*y_max], x0, x1, color=f"C2", alpha=0.2)
-                if x_min < x0+1 < x_max:
-                    ax.text(x0+epsilon, 0.5*y_max, f"GS", color=f"C2")
+                x0, x1 = gs[0]/360+ + i*NR, gs[1]/360+ + i*NR
+                ax.fill_betweenx([init_dump_action-dy, len_action+dy], x0, x1, color=f"C2", alpha=0.2)
 
     # Light Shadow
     for i, light in enumerate(configDict["Light Range"]):
         for i in range(n_repeat):
-            x0, x1 = light[0]+ i*Repeat_deg, light[1]+ i*Repeat_deg
-
-            ax.fill_betweenx([0.7*y_max, 1*y_max], x0, x1, color=f"C1", alpha=0.2)
-            if x_min < x0+1 < x_max:
-                ax.text(x0+epsilon, 0.85*y_max, f"LIGHT", color=f"C1")
-
-    # Orbit end Line
-    for i in range(10):
-        ax.axvline(i*Repeat_deg, color="k", alpha=0.3)
-    
+            x0, x1 = light[0]/360 + + i*NR, light[1]/360 + + i*NR
+            ax.fill_betweenx([0, 1*y_max], x0, x1, color=f"C1", alpha=0.2)    
     return fig, ax
-    
 
 def plot_action_prob(res_df, Ac_df, action_list, epi, fig_size=(20, 10), fig=None, color=None):
     if fig is None:

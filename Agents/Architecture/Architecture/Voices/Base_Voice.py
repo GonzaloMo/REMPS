@@ -10,6 +10,7 @@ Description:
 from abc import ABC, abstractmethod
 from typing import Dict, List, Tuple, Union, Any
 import numpy as np
+from copy import deepcopy
 
 class Voice(ABC):
 
@@ -49,7 +50,7 @@ class Voice(ABC):
         return action_Probs
 
     def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
-        obs_T = self.transform_observation(obs)
+        obs_T = self.transform_observation(deepcopy(obs))
         _, action_probs = self.agent.get_action(obs_T, Prob=True)
         self.action_probs_own = np.array(action_probs)
         return self.transform_actionProbs(action_probs)

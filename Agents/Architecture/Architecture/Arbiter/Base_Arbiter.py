@@ -24,6 +24,7 @@ class Arbiter(ABC):
         self.Voices = Voices
         self.n_Voice = len(Voices)
         self.policy = Policy
+        self.action_list = env.action_list_names
 
         assert self.policy in ["greedy", "stochastic"] or callable(self.policy), "Policy must be 'greedy', 'stochastic' or a function"
         assert self.n_actions > 0, "Number of actions must be greater than 0"
@@ -36,20 +37,27 @@ class Arbiter(ABC):
         self.n_Voice += 1
     
     def removeVoice(self, voice):
+        # print("Removing voice: ", voice.name)
         self.Voices.remove(voice)
         self.n_Voice -= 1
     
     def get_action(self, obs: Dict[str, Any], **kwargs) -> List[int]:
-        # get action probabilities
-        action_probs = self.getActionProbs(obs)
-        # get action
-        if type(self.policy) == str:
-            if self.policy.lower() == "greedy":
-                action = action_probs.argmax()
-            elif self.policy.lower() == "stochastic":
-                action = np.random.choice(np.arange(self.n_actions), p=action_probs)
+        if self.n_Voice != 0:
+            # get action probabilities
+            action_probs = self.getActionProbs(obs)
+            # get action
+        
+            if type(self.policy) == str:
+                if self.policy.lower() == "greedy":
+                    action = action_probs.argmax()
+                elif self.policy.lower() == "stochastic":
+                    action = np.random.choice(np.arange(self.n_actions), p=action_probs)
+            else:
+                action = self.policy(action_probs)
         else:
-            action = self.policy(action_probs)
+            action = self.idle_action
+            action_probs = np.zeros((self.n_actions, ))
+            action_probs[self.idle_action] = 1
         return action, action_probs
     
     def getActionProbs(self, obs: Dict[str, Any]) -> List[float]:
@@ -57,27 +65,21 @@ class Arbiter(ABC):
         eta = self.getEta(obs)
         for i, voice in enumerate(self.Voices):
             pi_v = voice.getActionProbs(obs)
-            self.telemetry[voice.name].append(pi_v)
             action_probs += pi_v * eta[i]
         theta = self.getTheta(obs)
         action_probs = theta * action_probs
         action_probs[0] /= self.n_Voice
         if np.sum(action_probs[1:]) == 0:
             action_probs[0] = 1
-        self.telemetry["action_probs"].append(list(action_probs))
         self.telemetry["theta"].append(list(theta))
         self.telemetry["eta"].append(list(eta))
         return action_probs
     
     def reset_telemetry(self):
         self.telemetry = {
-            "action_probs": [],
             "theta": [],
             "eta": [],
         }
-
-        for voice in self.Voices:
-            self.telemetry[voice.name] = []
     
     @abstractmethod
     def getTheta(self, obs: Dict[str, Any]) -> np.ndarray:
@@ -112,6 +114,8 @@ class Arbiter(ABC):
         for key, value in self.telemetry.items():
             telemetry_out[key] = [value]
         return self.telemetry
-
-
-# Serach in a list a certian point
+    
+    @abstractmethod
+    def getConfig(self):
+        config = {}
+        return config
